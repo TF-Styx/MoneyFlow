@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace MoneyFlow.Utils.Commands
 {
-    public class RelayCommand
+    public class RelayCommand : ICommand
     {
         private Action<object> _execute;
         private Func<object, bool> _canExecute;
