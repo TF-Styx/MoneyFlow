@@ -10,4 +10,12 @@
     </LinearGradientBrush>
     <!--#endregion-->
 
+    <!--#region Общие цвета -->
+    <SolidColorBrush x:Key="AppTextColor" Color="White"/>
+    <!--#endregion-->
+
+    <!-- Стили для окна << AuthWindow >> -->
+    
+    <!-- Стили для окна << AuthWindow >> -->
+
 </ResourceDictionary>
