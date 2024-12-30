@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.Extensions.DependencyInjection;
-using MoneyFlow.MVVM.View.Windows;
+﻿using Microsoft.Extensions.DependencyInjection;
+using MoneyFlow.MVVM.Models.MSSQL_DB;
+using MoneyFlow.Utils.Services.DataBaseServices;
 using MoneyFlow.Utils.Services.NavigationServices.PageNavigationsService;
 using MoneyFlow.Utils.Services.NavigationServices.WindowNavigationsService;
 using System.Windows;
@@ -37,6 +37,10 @@ namespace MoneyFlow
         {
             services.AddSingleton<IWindowNavigationService, WindowNavigationService>();
             services.AddSingleton<IPageNavigationService, PageNavigationService>();
+
+            services.AddTransient<MoneyFlowContext>();
+            services.AddSingleton<Func<MoneyFlowContext>>(provider => () => provider.GetRequiredService<MoneyFlowContext>());
+            services.AddSingleton<IDataBaseService, DataBaseService>();
         }
     }
 }
