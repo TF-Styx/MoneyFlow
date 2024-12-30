@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
+    <!--<Nullable>enable</Nullable>-->
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
@@ -11,16 +11,11 @@
   <ItemGroup>
     <Folder Include="MVVM\Models\AppModel\" />
     <Folder Include="MVVM\Models\MSSQL_DB\" />
-    <Folder Include="MVVM\ViewModels\PageVM\" />
-    <Folder Include="MVVM\ViewModels\WindowVM\" />
-    <Folder Include="MVVM\View\Pages\" />
     <Folder Include="Utils\Behaviors\" />
     <Folder Include="Utils\Enums\" />
     <Folder Include="Utils\Helpers\" />
-    <Folder Include="Utils\Serviсes\DataBaseServices\" />
-    <Folder Include="Utils\Serviсes\DialogServices\" />
-    <Folder Include="Utils\Serviсes\NavigationSevices\PageNavigationsService\" />
-    <Folder Include="Utils\Serviсes\NavigationSevices\WindowNavigationsService\" />
+    <Folder Include="Utils\Services\DataBaseServices\" />
+    <Folder Include="Utils\Services\DialogServices\" />
     <Folder Include="Utils\Settings\" />
     <Folder Include="Utils\ValueConverters\" />
   </ItemGroup>
