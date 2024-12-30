@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="MVVM\Model\AppModel\" />
-    <Folder Include="MVVM\Model\MSSQL_DB\" />
+    <Folder Include="MVVM\Models\AppModel\" />
+    <Folder Include="MVVM\Models\MSSQL_DB\" />
     <Folder Include="MVVM\ViewModels\PageVM\" />
     <Folder Include="MVVM\ViewModels\WindowVM\" />
     <Folder Include="MVVM\View\Pages\" />
@@ -23,6 +23,23 @@
     <Folder Include="Utils\Serviсes\NavigationSevices\WindowNavigationsService\" />
     <Folder Include="Utils\Settings\" />
     <Folder Include="Utils\ValueConverters\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FontAwesome5" Version="2.1.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
   </ItemGroup>
 
 </Project>

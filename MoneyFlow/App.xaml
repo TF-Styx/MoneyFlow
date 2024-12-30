@@ -35,3 +35,11 @@
     </Application.Resources>
 
 </Application>
+
+<!--
+    Scaffold-DbContext "Server=STYX;Database=MoneyFlow;Trusted_Connection=true;TrustServerCertificate=true" Microsoft.EntityFrameworkCore.SqlServer  -OutputDir MVVM/Models/MSSQL_DB -Force
+-->
+
+<!--
+    Scaffold-DbContext "Server=<НАЗВАНИЕ СЕРВЕРА>;Database=<НАЗВАНИЕ БД>;Trusted_Connection=true;TrustServerCertificate=true" Microsoft.EntityFrameworkCore.SqlServer  -OutputDir<НАНЗВАНИЕ ПАПКИ>
+-->
