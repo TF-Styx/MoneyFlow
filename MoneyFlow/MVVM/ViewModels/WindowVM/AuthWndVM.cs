@@ -2,6 +2,7 @@
 using MoneyFlow.MVVM.Models.MSSQL_DB;
 using MoneyFlow.MVVM.ViewModels.BaseVM;
 using MoneyFlow.Utils.Commands;
+using MoneyFlow.Utils.Services.AuthorizationVerificationServices;
 using MoneyFlow.Utils.Services.DataBaseServices;
 using MoneyFlow.Utils.Services.NavigationServices;
 using MoneyFlow.Utils.Services.NavigationServices.WindowNavigationsService;
@@ -15,6 +16,7 @@ namespace MoneyFlow.MVVM.ViewModels.WindowVM
 
         private readonly IDataBaseService _dataBaseService;
         private readonly IWindowNavigationService _windowNavigationService;
+        private readonly IAuthorizationVerificationService _authorizationVerificationService;
 
         public AuthWndVM(IServiceProvider serviceProvider)
         {
@@ -22,6 +24,7 @@ namespace MoneyFlow.MVVM.ViewModels.WindowVM
 
             _dataBaseService = _serviceProvider.GetService<IDataBaseService>();
             _windowNavigationService = _serviceProvider.GetService<IWindowNavigationService>();
+            _authorizationVerificationService = _serviceProvider.GetService<IAuthorizationVerificationService>();
         }
         public void Update(object parameter)
         {
@@ -71,6 +74,8 @@ namespace MoneyFlow.MVVM.ViewModels.WindowVM
         {
             if (await _dataBaseService.ExistsAsync<User>(x => x.Login == Login))
             {
+                _authorizationVerificationService.CreateJsonUser(await _dataBaseService.FirstOrDefaultAsync<User>(x => x.Login == Login));
+
                 _windowNavigationService.NavigateTo("MainWindow", _dataBaseService.FirstOrDefaultAsync<User>(x => x.Login == Login));
                 _windowNavigationService.CloseWindow("AuthWnd");
             }
@@ -95,6 +100,8 @@ namespace MoneyFlow.MVVM.ViewModels.WindowVM
                 };
 
                 await _dataBaseService.AddAsync(user);
+
+                _authorizationVerificationService.CreateJsonUser(await _dataBaseService.FirstOrDefaultAsync<User>(x => x.Login == Login));
 
                 _windowNavigationService.NavigateTo("MainWindow", _dataBaseService.FirstOrDefaultAsync<User>(x => x.Login.ToLower() == Login.ToLower()));
                 _windowNavigationService.CloseWindow("AuthWnd");
