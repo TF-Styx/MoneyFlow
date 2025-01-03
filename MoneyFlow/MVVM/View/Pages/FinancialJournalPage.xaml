@@ -1,0 +1,85 @@
+﻿<Page x:Class="MoneyFlow.MVVM.View.Pages.FinancialJournalPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MoneyFlow.MVVM.View.Pages" 
+      xmlns:pagevm="clr-namespace:MoneyFlow.MVVM.ViewModels.PageVM" 
+      d:DataContext="{d:DesignInstance Type=pagevm:FinancialJournalPageVM}"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="FinancialJournalPage">
+
+    <Grid>
+        <!--<ListView Background="Transparent" BorderBrush="Transparent" ItemsSource="{Binding FinancialRecords}" d:ItemsSource="{d:SampleData ItemCount=5}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="White" BorderThickness="1">
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <TextBlock Text="{Binding RecordName}" Margin="0 0 5 0" Style="{StaticResource BaseTextBlockStyle}"/>
+                            <TextBlock Text="{Binding Amount}" Margin="0 0 5 0" Style="{StaticResource BaseTextBlockStyle}"/>
+                            <TextBlock Text="{Binding Description}" Margin="0 0 5 0" Style="{StaticResource BaseTextBlockStyle}"/>
+                            <DatePicker Text="{Binding Date}" Background="Transparent" BorderBrush="Transparent" Margin="0 0 5 0"/>
+                            <TextBlock Text="{Binding IdCategoryNavigation.CategoryName}" Margin="0 0 5 0" Style="{StaticResource BaseTextBlockStyle}"/>
+                            <TextBlock Text="{Binding IdSubcategoryNavigation.SubcategoryName}" Margin="0 0 5 0" Style="{StaticResource BaseTextBlockStyle}"/>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>-->
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Margin="5">
+            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Orientation="Horizontal">
+                <StackPanel Margin="5">
+                    <TextBlock Text="Наименование" Style="{StaticResource BaseTextBlockStyle}"/>
+                    <TextBox Width="150" Text="{Binding RecordName}"/>
+                </StackPanel>
+                <StackPanel Margin="5">
+                    <TextBlock Text="Сумма" Style="{StaticResource BaseTextBlockStyle}"/>
+                    <TextBox Width="150" Text="{Binding Amount}"/>
+                </StackPanel>
+                <StackPanel Margin="5">
+                    <TextBlock Text="Дата" Style="{StaticResource BaseTextBlockStyle}"/>
+                    <DatePicker SelectedDate="{Binding Date}"/>
+                </StackPanel>
+                <StackPanel Margin="5">
+                    <TextBlock Text="Категория" Style="{StaticResource BaseTextBlockStyle}"/>
+                    <ComboBox ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" DisplayMemberPath="CategoryName"/>
+                </StackPanel>
+                <StackPanel Margin="5">
+                    <TextBlock Text="Под категория" Style="{StaticResource BaseTextBlockStyle}"/>
+                    <ComboBox ItemsSource="{Binding Subcategories}" SelectedItem="{Binding SelectedSubCategory}" DisplayMemberPath="SubcategoryName"/>
+                </StackPanel>
+                <StackPanel Margin="5">
+                    <TextBlock Text="Описание траты" Style="{StaticResource BaseTextBlockStyle}"/>
+                    <TextBox Width="150" Text="{Binding Description}"/>
+                </StackPanel>
+                <Button Content="+" Command="{Binding AddFinancialRecordCommand}"/>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="1">
+            <ListView ItemsSource="{Binding FinancialRecords}" SelectedItem="{Binding SelectedFinancialRecord}" Background="Transparent" Foreground="White">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Название" DisplayMemberBinding="{Binding RecordName}"/>
+                        <GridViewColumn Header="сумма" DisplayMemberBinding="{Binding Amount}"/>
+                        <GridViewColumn Header="Даиа" DisplayMemberBinding="{Binding Date}"/>
+                        <GridViewColumn Header="Категория" DisplayMemberBinding="{Binding IdCategoryNavigation.CategoryName}"/>
+                        <GridViewColumn Header="Под категория" DisplayMemberBinding="{Binding IdSubcategoryNavigation.SubcategoryName}"/>
+                        <GridViewColumn Header="Описание" DisplayMemberBinding="{Binding Description}"/>
+                    </GridView>
+                </ListView.View>
+
+            </ListView>
+        </Border>
+        
+        
+    </Grid>
+    
+</Page>
