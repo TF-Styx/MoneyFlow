@@ -7,11 +7,11 @@ public partial class FinancialRecord
 {
     public int IdFinancialRecord { get; set; }
 
-    public string RecordName { get; set; } = null!;
+    public string RecordName { get; set; }
 
     public decimal Amount { get; set; }
 
-    public string? Description { get; set; }
+    public string Description { get; set; }
 
     public DateTime Date { get; set; }
 
@@ -19,7 +19,7 @@ public partial class FinancialRecord
 
     public int? IdSubcategory { get; set; }
 
-    public virtual Category IdCategoryNavigation { get; set; } = null!;
+    public virtual Category IdCategoryNavigation { get; set; }
 
-    public virtual Subcategory? IdSubcategoryNavigation { get; set; }
+    public virtual Subcategory IdSubcategoryNavigation { get; set; }
 }

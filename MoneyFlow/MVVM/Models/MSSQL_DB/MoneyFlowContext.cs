@@ -26,7 +26,6 @@ public partial class MoneyFlowContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=STYX;Database=MoneyFlow;Trusted_Connection=true;TrustServerCertificate=true");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -36,7 +35,9 @@ public partial class MoneyFlowContext : DbContext
             entity.HasKey(e => e.IdCategory);
 
             entity.Property(e => e.IdCategory).HasColumnName("id_category");
-            entity.Property(e => e.CategoryName).HasColumnName("category_name");
+            entity.Property(e => e.CategoryName)
+                .IsRequired()
+                .HasColumnName("category_name");
             entity.Property(e => e.Color)
                 .HasMaxLength(20)
                 .HasColumnName("color");
@@ -57,7 +58,7 @@ public partial class MoneyFlowContext : DbContext
 
             entity.Property(e => e.IdFinancialRecord).HasColumnName("id_financial_record");
             entity.Property(e => e.Amount)
-                .HasColumnType("money")
+                .HasColumnType("decimal(38, 2)")
                 .HasColumnName("amount");
             entity.Property(e => e.Date)
                 .HasColumnType("datetime")
@@ -65,7 +66,9 @@ public partial class MoneyFlowContext : DbContext
             entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.IdCategory).HasColumnName("id_category");
             entity.Property(e => e.IdSubcategory).HasColumnName("id_subcategory");
-            entity.Property(e => e.RecordName).HasColumnName("record_Name");
+            entity.Property(e => e.RecordName)
+                .IsRequired()
+                .HasColumnName("record_Name");
 
             entity.HasOne(d => d.IdCategoryNavigation).WithMany(p => p.FinancialRecords)
                 .HasForeignKey(d => d.IdCategory)
@@ -83,6 +86,7 @@ public partial class MoneyFlowContext : DbContext
 
             entity.Property(e => e.IdGender).HasColumnName("id_gender");
             entity.Property(e => e.GenderName)
+                .IsRequired()
                 .HasMaxLength(50)
                 .HasColumnName("gender_name");
         });
@@ -94,7 +98,9 @@ public partial class MoneyFlowContext : DbContext
             entity.Property(e => e.IdSubcategory).HasColumnName("id_subcategory");
             entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.Image).HasColumnName("image");
-            entity.Property(e => e.SubcategoryName).HasColumnName("subcategory_name");
+            entity.Property(e => e.SubcategoryName)
+                .IsRequired()
+                .HasColumnName("subcategory_name");
         });
 
         modelBuilder.Entity<User>(entity =>
@@ -105,13 +111,16 @@ public partial class MoneyFlowContext : DbContext
 
             entity.Property(e => e.IdUser).HasColumnName("id_user");
             entity.Property(e => e.IdGender).HasColumnName("Id_gender");
-            entity.Property(e => e.Login).HasColumnName("login");
-            entity.Property(e => e.Password).HasColumnName("password");
+            entity.Property(e => e.Login)
+                .IsRequired()
+                .HasColumnName("login");
+            entity.Property(e => e.Password)
+                .IsRequired()
+                .HasColumnName("password");
             entity.Property(e => e.UserName).HasColumnName("user_name");
 
             entity.HasOne(d => d.IdGenderNavigation).WithMany(p => p.Users)
                 .HasForeignKey(d => d.IdGender)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_User_Genders");
         });
 

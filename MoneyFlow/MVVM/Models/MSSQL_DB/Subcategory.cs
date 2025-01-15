@@ -7,11 +7,11 @@ public partial class Subcategory
 {
     public int IdSubcategory { get; set; }
 
-    public string SubcategoryName { get; set; } = null!;
+    public string SubcategoryName { get; set; }
 
-    public byte[]? Image { get; set; }
+    public byte[] Image { get; set; }
 
-    public string? Description { get; set; }
+    public string Description { get; set; }
 
     public virtual ICollection<FinancialRecord> FinancialRecords { get; set; } = new List<FinancialRecord>();
 }
