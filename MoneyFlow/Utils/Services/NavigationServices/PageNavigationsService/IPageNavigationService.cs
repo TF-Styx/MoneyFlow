@@ -10,7 +10,7 @@ namespace MoneyFlow.Utils.Services.NavigationServices.PageNavigationsService
     internal interface IPageNavigationService
     {
         void NavigateTo(string namePage, object parameter = null);
-        void RefreshData(string namePage, object parameter);
+        void RefreshData(string namePage, object parameter = null);
         void InitializeFrame(Frame frame);
     }
 }

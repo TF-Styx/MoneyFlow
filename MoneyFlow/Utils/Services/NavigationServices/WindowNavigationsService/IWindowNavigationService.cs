@@ -3,6 +3,7 @@
     public interface IWindowNavigationService
     {
         void NavigateTo(string nameWin, object parameter = null);
-        void RefreshData(string nameWin, object parameter);
+        void RefreshData(string nameWin, object parameter = null);
+        void CloseWindow(string nameWin);
     }
 }

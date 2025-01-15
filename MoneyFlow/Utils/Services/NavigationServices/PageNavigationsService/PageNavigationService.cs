@@ -30,7 +30,7 @@ namespace MoneyFlow.Utils.Services.NavigationServices.PageNavigationsService
             OpenPage(namePage, parameter);
         }
 
-        public void RefreshData(string namePage, object parameter)
+        public void RefreshData(string namePage, object parameter = null)
         {
             if (_pages.TryGetValue(namePage, out var page))
             {
@@ -47,14 +47,26 @@ namespace MoneyFlow.Utils.Services.NavigationServices.PageNavigationsService
         {
             Action action = namePage switch
             {
+                "FinanceJournal" => () =>
+                {
+                    FinancialJournalPageVM financialJournalPageVM = new FinancialJournalPageVM(_serviceProvider);
+                    FinancialJournalPage financialJournalPage = new FinancialJournalPage { DataContext = financialJournalPageVM };
+
+                    _pages.TryAdd(namePage, financialJournalPage);
+                    _frame.Navigate(financialJournalPage);
+
+                    financialJournalPageVM.Update(parameter);
+                },
+
                 "Profile" => () =>
                 {
                     ProfilePageVM profilePageVM = new ProfilePageVM(_serviceProvider);
-                    ProfilePage profilePage = new ProfilePage { DataContext = profilePageVM};
+                    ProfilePage profilePage = new ProfilePage { DataContext = profilePageVM };
 
                     _pages.TryAdd(namePage, profilePage);
-
                     _frame.Navigate(profilePage);
+
+                    profilePageVM.Update(parameter);
                 },
 
                 _ => () =>

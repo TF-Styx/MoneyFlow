@@ -34,7 +34,7 @@ namespace MoneyFlow.Utils.Services.NavigationServices.WindowNavigationsService
         }
 
         // Тоже самое что и NavigateTo, но без открытия окна
-        public void RefreshData(string nameWin, object parameter)
+        public void RefreshData(string nameWin, object parameter = null)
         {
             if (_windows.TryGetValue(nameWin, out var win))
             {
@@ -55,28 +55,41 @@ namespace MoneyFlow.Utils.Services.NavigationServices.WindowNavigationsService
             {
                 "AuthWnd" => () =>
                 {
-                    AuthWndVM authWndVM = new AuthWndVM(_serviceProvider);
-                    AuthWnd authWnd = new AuthWnd { DataContext = authWndVM };
+                    AuthWndVM vM = new AuthWndVM(_serviceProvider);
+                    AuthWnd authWnd = new AuthWnd { DataContext = vM };
 
                     _windows.TryAdd(nameWin, authWnd);
 
-                    authWndVM.Update(parameter);
+                    vM.Update(parameter);
 
                     authWnd.Closed += (c, e) => _windows.Remove(nameWin);
                     authWnd.Show();
                 },
 
+                "FinancialRecordAdd" => () =>
+                {
+                    FinancialRecordAddVM vM = new FinancialRecordAddVM(_serviceProvider);
+                    FinancialRecordAddWindow wnd = new FinancialRecordAddWindow { DataContext = vM };
+
+                    _windows.TryAdd(nameWin, wnd);
+
+                    vM.Update(parameter);
+
+                    wnd.Closed += (c, e) => _windows.Remove(nameWin);
+                    wnd.Show();
+                },
+
                 "MainWindow" => () =>
                 {
-                    MainWindowVM mainWindowVM = new MainWindowVM(_serviceProvider);
-                    MainWindow mainWindow = new MainWindow { DataContext = mainWindowVM };
+                    MainWindowVM vM = new MainWindowVM(_serviceProvider);
+                    MainWindow wnd = new MainWindow(_serviceProvider) { DataContext = vM };
 
-                    _windows.TryAdd(nameWin, mainWindow);
+                    _windows.TryAdd(nameWin, wnd);
 
-                    mainWindowVM.Update(parameter);
+                    vM.Update(parameter);
 
-                    mainWindow.Closed += (c, e) => _windows.Remove(nameWin);
-                    mainWindow.Show();
+                    wnd.Closed += (c, e) => _windows.Remove(nameWin);
+                    wnd.Show();
                 }
                 ,
 
@@ -86,6 +99,14 @@ namespace MoneyFlow.Utils.Services.NavigationServices.WindowNavigationsService
                 }
             };
             action?.Invoke();
+        }
+
+        public void CloseWindow(string nameWin)
+        {
+            if (_windows.TryGetValue(nameWin, out var win))
+            {
+                win.Close();
+            }
         }
     }
 }

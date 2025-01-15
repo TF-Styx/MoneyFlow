@@ -1,0 +1,104 @@
+﻿<Window x:Class="MoneyFlow.MVVM.View.Windows.FinancialRecordAddWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MoneyFlow.MVVM.View.Windows" 
+        xmlns:fa="http://schemas.fontawesome.com/icons/"
+        mc:Ignorable="d"
+        Title="FinancialRecordAddWindow" 
+        Height="292" Width="818" 
+        ResizeMode="NoResize">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="34"/>
+    </WindowChrome.WindowChrome>
+
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static SystemCommands.CloseWindowCommand}" CanExecute="CommandBinding_CanExecute" Executed="CommandBinding_Executed_Close" />
+    </Window.CommandBindings>
+
+    <Border x:Name="MainWindowBorder" Background="{StaticResource AppGradientBrush}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="39"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button WindowChrome.IsHitTestVisibleInChrome="True" Command="{x:Static SystemCommands.CloseWindowCommand}" Style="{StaticResource CloseButtonStyle}"/>
+                </StackPanel>
+            </Grid>
+
+            <!--#region Добавление -->
+            <Border Grid.Row="1" Margin="0 0 0 10" Padding="10"
+                    BorderBrush="White" BorderThickness="1" CornerRadius="10"
+                    HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel>
+                    <Border BorderBrush="White" BorderThickness="0 1 0 1" CornerRadius="10" >
+                        <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
+                            <!--#region Левый столбец -->
+                            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <DockPanel>
+                                    <TextBlock Text="Наименование" Style="{StaticResource IntroductoryDataFinancialJournal}"/>
+                                    <TextBox Text="{Binding RecordName}" HorizontalAlignment="Right" Style="{StaticResource FinancilaJournalTBox}"/>
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Сумма" Style="{StaticResource IntroductoryDataFinancialJournal}"/>
+                                    <TextBox Text="{Binding Amount}" HorizontalAlignment="Right" Style="{StaticResource FinancilaJournalTBox}"/>
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Дата" Style="{StaticResource IntroductoryDataFinancialJournal}"/>
+                                    <DatePicker HorizontalAlignment="Right" Width="250">
+                                        <DatePicker.CalendarStyle>
+                                            <StaticResource ResourceKey="StyleCalendar" />
+                                        </DatePicker.CalendarStyle>
+                                    </DatePicker>
+                                </DockPanel>
+                            </StackPanel>
+                            <!--#endregion-->
+
+                            <!--#region Правый столбе -->
+                            <StackPanel Margin="20 0 0 0" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                <DockPanel>
+                                    <TextBlock Text="Категория" Style="{StaticResource IntroductoryDataFinancialJournal}"/>
+                                    <ComboBox ItemsSource="{Binding Categories}" 
+                                              SelectedItem="{Binding SelectedCategory}" 
+                                              DisplayMemberPath="CategoryName" 
+                                              Style="{DynamicResource MainComboBox}"/>
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Под категория" Style="{StaticResource IntroductoryDataFinancialJournal}"/>
+                                    <ComboBox ItemsSource="{Binding Subcategories}" 
+                                              SelectedItem="{Binding SelectedSubCategory}" 
+                                              DisplayMemberPath="SubcategoryName" 
+                                              Style="{DynamicResource MainComboBox}"/>
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Описание" Style="{StaticResource IntroductoryDataFinancialJournal}"/>
+                                    <TextBox Text="{Binding Description}" Style="{StaticResource FinancilaJournalTBox}"/>
+                                </DockPanel>
+                            </StackPanel>
+                            <!--#endregion-->
+                        </DockPanel>
+                    </Border>
+
+                    <Border BorderBrush="White" BorderThickness="0 1 0 1" CornerRadius="10" Margin="0 15 0 0">
+                        <DockPanel>
+                            <Button Margin="10" Content="Добавить запись" 
+                                    Command="{Binding AddFinancialRecordCommand}" 
+                                    Style="{StaticResource BaseBtn}" HorizontalAlignment="Left"/>
+
+                            <Button Margin="10" Content="Изменить запись" 
+                                    Command="{Binding AddFinancialRecordCommand}" 
+                                    Style="{StaticResource BaseBtn}" HorizontalAlignment="Right"/>
+                        </DockPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+            <!--#endregion-->
+
+        </Grid>
+    </Border>
+</Window>
