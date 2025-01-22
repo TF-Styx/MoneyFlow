@@ -3,12 +3,411 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:MoneyFlow.MVVM.View.Pages"
+      xmlns:local="clr-namespace:MoneyFlow.MVVM.View.Pages" 
+      xmlns:pagevm="clr-namespace:MoneyFlow.MVVM.ViewModels.PageVM" 
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
+      xmlns:fa="http://schemas.fontawesome.com/icons/"
+      d:DataContext="{d:DesignInstance Type=pagevm:ProfilePageVM}"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="61000" d:DesignWidth="1100"
       Title="ProfilePage">
 
-    <Grid>
-        
-    </Grid>
+    <ScrollViewer>
+        <Border BorderBrush="White" BorderThickness="2" CornerRadius="10">
+            <StackPanel>
+                <!--#region Информация о пользователи -->
+                <Border Margin="10" BorderBrush="White" BorderThickness="0 1 0 1" CornerRadius="10">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch">
+                        <Border Margin="10" BorderBrush="White" BorderThickness="0 1 0 1" CornerRadius="10">
+                            <StackPanel Orientation="Horizontal">
+                                <!--#region Аватарка -->
+                                <Border Margin="10" BorderBrush="White" BorderThickness="1" CornerRadius="10">
+                                    <StackPanel>
+                                        <Border BorderThickness="0 0 0 1" BorderBrush="White">
+                                            <Image Source="{Binding SelectAvatarImage}" d:Source="/Res/Kotozila.jpg" Width="100" Height="100" Margin="5"/>
+                                        </Border>
+
+                                        <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 2 0 4">
+                                            <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Left" Command="{Binding SelectedAvatarImageCommand}">
+                                                <fa:ImageAwesome Icon="Regular_FileImage" Width="10" Foreground="#FF3053C2"/>
+                                            </Button>
+                                            <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Right" Margin="10 0 0 0" Command="{Binding ClearAvatarImageCommand}">
+                                                <fa:ImageAwesome Icon="Solid_TrashAlt" Width="10" Foreground="#FFDD3D3D"/>
+                                            </Button>
+                                        </WrapPanel>
+                                    </StackPanel>
+                                </Border>
+                                <!--#endregion-->
+                                
+                                <!--#region Обшая информация -->
+                                <Border Margin="10" BorderBrush="White" BorderThickness="1 0 1 0" CornerRadius="10">
+                                    <StackPanel Margin="5 0 5 0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                        <DockPanel>
+                                            <TextBlock Text="UserName: " Style="{StaticResource BaseTextBlockStyle}"/>
+                                            <TextBlock Text="Styx" Margin="30 0 0 0" HorizontalAlignment="Right" Style="{StaticResource BaseTextBlockStyle}"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock Text="Gender: " Style="{StaticResource BaseTextBlockStyle}"/>
+                                            <TextBlock Text="M" Margin="30 0 0 0" HorizontalAlignment="Right" Style="{StaticResource BaseTextBlockStyle}"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock Text="Balance:" Style="{StaticResource BaseTextBlockStyle}"/>
+                                            <TextBlock Text="1 650 346.87" Margin="30 0 0 0" HorizontalAlignment="Right" Style="{StaticResource BaseTextBlockStyle}"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock Text="Account:" Style="{StaticResource BaseTextBlockStyle}"/>
+                                            <TextBlock Text="6" Margin="30 0 0 0" HorizontalAlignment="Right" Style="{StaticResource BaseTextBlockStyle}"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock Text="Number of purchases: " Style="{StaticResource BaseTextBlockStyle}"/>
+                                            <TextBlock Text="3 457" Margin="30 0 0 0" HorizontalAlignment="Right" Style="{StaticResource BaseTextBlockStyle}"/>
+                                        </DockPanel>
+                                    </StackPanel>
+                                </Border>
+                                <!--#endregion-->
+                                
+                                <!--#region Дополнительная информация -->
+                                <Border Margin="10" BorderBrush="White" BorderThickness="1 0 1 0" CornerRadius="10">
+                                    <StackPanel Margin="5 0 5 0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                        <DockPanel>
+                                            <TextBlock Text="Category:" Style="{StaticResource BaseTextBlockStyle}"/>
+                                            <TextBlock Text="25" Margin="30 0 0 0" HorizontalAlignment="Right" Style="{StaticResource BaseTextBlockStyle}"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock Text="Subcategory:" Style="{StaticResource BaseTextBlockStyle}"/>
+                                            <TextBlock Text="87" Margin="30 0 0 0" HorizontalAlignment="Right" Style="{StaticResource BaseTextBlockStyle}"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock Text="Earned:" Style="{StaticResource BaseTextBlockStyle}"/>
+                                            <TextBlock Text="984 893.93" Margin="30 0 0 0" HorizontalAlignment="Right" Style="{StaticResource BaseTextBlockStyle}"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock Text="Spent: " Style="{StaticResource BaseTextBlockStyle}"/>
+                                            <TextBlock Text="257 948.83" Margin="30 0 0 0" HorizontalAlignment="Right" Style="{StaticResource BaseTextBlockStyle}"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock Text="Account:" Style="{StaticResource BaseTextBlockStyle}"/>
+                                            <TextBlock Text="6" Margin="30 0 0 0" HorizontalAlignment="Right" Style="{StaticResource BaseTextBlockStyle}"/>
+                                        </DockPanel>
+                                    </StackPanel>
+                                </Border>
+                                <!--#endregion-->
+                                
+                                <!--#region Сохранить изменение профиля -->
+                                <Border Margin="10" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                    <StackPanel>
+                                        <Button Content="Сохранить" Style="{StaticResource BaseBtn}"/>
+                                    </StackPanel>
+                                </Border>
+                                <!--#endregion-->
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+                <!--#endregion-->
+                
+                <!--#region Категория-->
+                <Border Margin="10" BorderBrush="White" BorderThickness="0 1 0 1" CornerRadius="10">
+                    <DockPanel Margin="10" HorizontalAlignment="Center" VerticalAlignment="Stretch">
+                        <!--#region Список категорий -->
+                        <Border HorizontalAlignment="Left" BorderBrush="White" BorderThickness="0 1 0 1" CornerRadius="10">
+                            <DataGrid Margin="10 0 10 10"
+                                      AutoGenerateColumns="False"
+                                      IsReadOnly="True"
+                                      GridLinesVisibility="None"
+                                      HeadersVisibility="Column"
+                                      RowHeaderWidth="0"
+                                      SelectionMode="Single"
+                                      ItemsSource="{Binding Categories}"
+                                      SelectedItem="{Binding SelectedCategory}"
+                                      d:ItemsSource="{d:SampleData ItemCount=3}">
+                                <!--#region DoubleClick-->
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseDoubleClick">
+                                        <i:InvokeCommandAction Command="{Binding ItemDoubleClickCommand}" 
+                                       CommandParameter="{Binding SelectedFinancialRecord}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <!--#endregion-->
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding Image}" Width="10"/>
+                                    <DataGridTextColumn Header="Категория" Binding="{Binding CategoryName}" Width="Auto"/>
+                                    <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="Auto"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Border>
+                        <!--#endregion-->
+
+                        <!--#region Информация о категории -->
+                        <Border HorizontalAlignment="Right" Margin="10 0 10 0" BorderBrush="White" BorderThickness="0 1 0 1" CornerRadius="10">
+                            <DockPanel>
+                                <!--#region Выбор картинки для категории-->
+                                <StackPanel Margin="10" HorizontalAlignment="Left">
+                                    <Border BorderBrush="White" BorderThickness="1" CornerRadius="10">
+                                        <StackPanel>
+                                            <Border BorderThickness="0 0 0 1" BorderBrush="White">
+                                                <Image Source="{Binding SelectCategoryImage}" d:Source="/Res/Kotozila.jpg" Width="100" Height="100" Margin="5"/>
+                                            </Border>
+
+                                            <Separator Background="Black" />
+
+                                            <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 2 0 4">
+                                                <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Left" Command="{Binding SelectedCategoryImageCommand}">
+                                                    <fa:ImageAwesome Icon="Regular_FileImage" Width="10" Foreground="#FF3053C2"/>
+                                                </Button>
+                                                <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Right" Margin="10 0 0 0" Command="{Binding ClearCategoryImageCommand}">
+                                                    <fa:ImageAwesome Icon="Solid_TrashAlt" Width="10" Foreground="#FFDD3D3D"/>
+                                                </Button>
+                                            </WrapPanel>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                                <!--#endregion-->
+
+                                <!--#region Поля для категории -->
+                                <Border Margin="10" BorderBrush="White" BorderThickness="1 0 1 0" CornerRadius="10">
+                                    <StackPanel HorizontalAlignment="Right" Margin="5 0 5 0">
+                                        <DockPanel>
+                                            <TextBlock Text="Назименование категории" Style="{StaticResource BaseTextBlockStyle}"/>
+                                            <TextBox Text="{Binding CategoryName}" HorizontalAlignment="Right" Margin="30 5 0 5" Style="{StaticResource FinancilaJournalTBox}"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock Text="Описание категории" VerticalAlignment="Top" Style="{StaticResource BaseTextBlockStyle}"/>
+                                            <TextBox Text="{Binding CategoryDescription}" TextWrapping="Wrap" Height="100" HorizontalAlignment="Right" Margin="30 5 0 5" Style="{StaticResource FinancilaJournalTBox}"/>
+                                        </DockPanel>
+                                        <Border Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                            <DockPanel>
+                                                <Button Content="Сохранить изменения" HorizontalAlignment="Left" Style="{StaticResource BaseBtn}"/>
+                                                <Button Content="Сохранить запись"  Command="{Binding CategoryAddCommand}" Margin="60 0 0 0" HorizontalAlignment="Right" Style="{StaticResource BaseBtn}"/>
+                                            </DockPanel>
+                                        </Border>
+                                    </StackPanel>
+                                </Border>
+                                <!--#endregion-->
+                            </DockPanel>
+                        </Border>
+                        <!--#endregion-->
+                    </DockPanel>
+                </Border>
+                <!--#endregion-->
+                
+                <!--#region Подкатегория-->
+                <Border Margin="10" BorderBrush="White" BorderThickness="0 1 0 1" CornerRadius="10">
+                    <DockPanel Margin="10" HorizontalAlignment="Center" VerticalAlignment="Stretch">
+                        <!--#region Список подкатегорий -->
+                        <Border HorizontalAlignment="Left" BorderBrush="White" BorderThickness="0 1 0 1" CornerRadius="10">
+                            <DataGrid Margin="10 0 10 10"
+                                      AutoGenerateColumns="False"
+                                      IsReadOnly="True"
+                                      GridLinesVisibility="None"
+                                      HeadersVisibility="Column"
+                                      RowHeaderWidth="0"
+                                      SelectionMode="Single"
+                                      ItemsSource="{Binding Subcategories}"
+                                      SelectedItem="{Binding SelectedSubcategory}"
+                                      d:ItemsSource="{d:SampleData ItemCount=3}">
+                                <!--#region DoubleClick-->
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseDoubleClick">
+                                        <i:InvokeCommandAction Command="{Binding ItemDoubleClickCommand}" 
+                                       CommandParameter="{Binding SelectedFinancialRecord}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <!--#endregion-->
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding Image}" Width="10"/>
+                                    <DataGridTextColumn Header="Подкатегория" Binding="{Binding SubcategoryName}" Width="Auto"/>
+                                    <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="Auto"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Border>
+                        <!--#endregion-->
+
+                        <!--#region Информация о подкатегории -->
+                        <Border HorizontalAlignment="Right" Margin="10 0 10 0" BorderBrush="White" BorderThickness="0 1 0 1" CornerRadius="10">
+                            <DockPanel>
+                                <!--#region Выбор картинки для подкатегории-->
+                                <StackPanel Margin="10" HorizontalAlignment="Left">
+                                    <Border BorderBrush="White" BorderThickness="1" CornerRadius="10">
+                                        <StackPanel>
+                                            <Border BorderThickness="0 0 0 1" BorderBrush="White">
+                                                <Image Source="{Binding SelectSubcategoryImage}" d:Source="/Res/Kotozila.jpg" Width="100" Height="100" Margin="5"/>
+                                            </Border>
+
+                                            <Separator Background="Black" />
+
+                                            <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 2 0 4">
+                                                <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Left" Command="{Binding SelectedSubcategoryImageCommand}">
+                                                    <fa:ImageAwesome Icon="Regular_FileImage" Width="10" Foreground="#FF3053C2"/>
+                                                </Button>
+                                                <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Right" Margin="10 0 0 0" Command="{Binding ClearSubcategoryImageCommand}">
+                                                    <fa:ImageAwesome Icon="Solid_TrashAlt" Width="10" Foreground="#FFDD3D3D"/>
+                                                </Button>
+                                            </WrapPanel>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                                <!--#endregion-->
+
+                                <!--#region Поля для категории -->
+                                <Border Margin="10" BorderBrush="White" BorderThickness="1 0 1 0" CornerRadius="10">
+                                    <StackPanel HorizontalAlignment="Right" Margin="5 0 5 0">
+                                        <DockPanel>
+                                            <TextBlock Text="Назименование подкатегории" Style="{StaticResource BaseTextBlockStyle}"/>
+                                            <TextBox Text="{Binding SubcategoryName}" HorizontalAlignment="Right" Margin="30 5 0 5" Style="{StaticResource FinancilaJournalTBox}"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock Text="Описание подкатегории" VerticalAlignment="Top" Style="{StaticResource BaseTextBlockStyle}"/>
+                                            <TextBox Text="{Binding SubcategoryDescription}" TextWrapping="Wrap" Height="100" HorizontalAlignment="Right" Margin="30 5 0 5" Style="{StaticResource FinancilaJournalTBox}"/>
+                                        </DockPanel>
+                                        <Border Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                            <DockPanel>
+                                                <Button Content="Сохранить изменения" HorizontalAlignment="Left" Style="{StaticResource BaseBtn}"/>
+                                                <Button Content="Сохранить запись" Command="{Binding SubcategoryAddCommand}" Margin="50 0 0 0" HorizontalAlignment="Right" Style="{StaticResource BaseBtn}"/>
+                                            </DockPanel>
+                                        </Border>
+                                    </StackPanel>
+                                </Border>
+                                <!--#endregion-->
+                            </DockPanel>
+                        </Border>
+                        <!--#endregion-->
+                    </DockPanel>
+                </Border>
+                <!--#endregion-->
+                
+                <!--#region Счета-->
+                <Border Margin="10" BorderBrush="White" BorderThickness="0 1 0 1" CornerRadius="10">
+                    <DockPanel Margin="10" HorizontalAlignment="Center" VerticalAlignment="Stretch">
+                        <!--#region Список счетов -->
+                        <Border HorizontalAlignment="Left" BorderBrush="White" BorderThickness="0 1 0 1" CornerRadius="10">
+                            <DataGrid Margin="10 0 10 10"
+                                      AutoGenerateColumns="False"
+                                      IsReadOnly="True"
+                                      GridLinesVisibility="None"
+                                      HeadersVisibility="Column"
+                                      RowHeaderWidth="0"
+                                      SelectionMode="Single"
+                                      ItemsSource="{Binding Accounts}"
+                                      SelectedItem="{Binding SelectedAccount}"
+                                      d:ItemsSource="{d:SampleData ItemCount=3}">
+                                <!--#region DoubleClick-->
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseDoubleClick">
+                                        <i:InvokeCommandAction Command="{Binding ItemDoubleClickCommand}" 
+                                       CommandParameter="{Binding SelectedFinancialRecord}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <!--#endregion-->
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Банк" Binding="{Binding IdBankNavigation.BankName}" Width="Auto"/>
+                                    <DataGridTextColumn Header="Номер счета" Binding="{Binding NumberAccount}" Width="Auto"/>
+                                    <DataGridTextColumn Header="Тип счета" Binding="{Binding IdAccountType}" Width="Auto"/>
+                                    <DataGridTextColumn Header="Баланс" Binding="{Binding Balance}" Width="Auto"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Border>
+                        <!--#endregion-->
+
+                        <!--#region Информация о подкатегории -->
+                        <Border HorizontalAlignment="Right" Margin="10 0 10 0" BorderBrush="White" BorderThickness="0 1 0 1" CornerRadius="10">
+                            <StackPanel>
+                                <!--#region Поля для категории -->
+                                <Border Margin="10" BorderBrush="White" BorderThickness="1 0 1 0" CornerRadius="10">
+                                    <StackPanel HorizontalAlignment="Right" Margin="5 0 5 0">
+                                        <DockPanel>
+                                            <TextBlock Text="Номер счета" Style="{StaticResource BaseTextBlockStyle}"/>
+                                            <TextBox Text="{Binding NumberAccount}" HorizontalAlignment="Right" Margin="30 5 0 5" Style="{StaticResource FinancilaJournalTBox}"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock Text="Банк" Style="{StaticResource BaseTextBlockStyle}"/>
+                                            <ComboBox ItemsSource="{Binding Banks}" 
+                                                      SelectedItem="{Binding SelectedBank}" 
+                                                      DisplayMemberPath="AccountTypeName"
+                                                      Margin="30 5 0 5" HorizontalAlignment="Right"
+                                                      Style="{StaticResource MainComboBox}"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock Text="Тип счета" Style="{StaticResource BaseTextBlockStyle}"/>
+                                            <ComboBox ItemsSource="{Binding AccountTypes}" 
+                                                      SelectedItem="{Binding SelectedAccountTypes}" 
+                                                      DisplayMemberPath="AccountTypeName"
+                                                      Margin="30 5 0 5" HorizontalAlignment="Right"
+                                                      Style="{StaticResource MainComboBox}"/>
+                                        </DockPanel>
+                                        <Border Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                            <DockPanel>
+                                                <Button Content="Сохранить изменения" HorizontalAlignment="Left" Style="{StaticResource BaseBtn}"/>
+                                                <Button Content="Сохранить запись" Command="{Binding SubcategoryAddCommand}" Margin="50 0 0 0" HorizontalAlignment="Right" Style="{StaticResource BaseBtn}"/>
+                                            </DockPanel>
+                                        </Border>
+                                    </StackPanel>
+                                </Border>
+                                <!--#endregion-->
+                            </StackPanel>
+                        </Border>
+                        <!--#endregion-->
+                    </DockPanel>
+                </Border>
+                <!--#endregion-->
+                
+            </StackPanel>
+        </Border>
+    </ScrollViewer>
+
+    <!--<Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ScrollViewer Grid.Row="0">
+            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <ListView ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}" Background="Transparent" Foreground="White" FontSize="15">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding CategoryName}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <ListView ItemsSource="{Binding Subcategories}" SelectedItem="{Binding SelectedSubcategory}" Background="Transparent" Foreground="White" FontSize="15">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding SubcategoryName}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <ListView ItemsSource="{Binding Accounts}" SelectedItem="{Binding SelectedAccount}" Background="Transparent" Foreground="White" FontSize="15">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding NumberAccount}"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </WrapPanel>
+        </ScrollViewer>
+
+        <DockPanel Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <StackPanel HorizontalAlignment="Left">
+                <TextBox Text="{Binding CategoryName}" Style="{StaticResource FinancilaJournalTBox}" Margin="10"/>
+                <Button Command="{Binding CategoryAddCommand}" Content="Добавить категорию" Style="{StaticResource BaseBtn}"/>
+            </StackPanel>
+            
+            <StackPanel HorizontalAlignment="Center">
+                <TextBox Text="{Binding SubcategoryName}" Style="{StaticResource FinancilaJournalTBox}" Margin="10"/>
+                <Button Command="{Binding SubcategoryAddCommand}" Content="Добавить подкатегорию" Style="{StaticResource BaseBtn}"/>
+            </StackPanel>
+            
+            <StackPanel HorizontalAlignment="Right">
+                <TextBox Text="{Binding NumberAccount}" Style="{StaticResource FinancilaJournalTBox}" Margin="10"/>
+                <ComboBox ItemsSource="{Binding AccountTypes}" 
+                          SelectedItem="{Binding SelectedAccountTypes}" 
+                          DisplayMemberPath="AccountTypeName"
+                          Style="{StaticResource MainComboBox}" Margin="0" HorizontalAlignment="Center"/>
+                <Button Command="{Binding AccountAddCommand}" Content="Добавить подкатегорию" Style="{StaticResource BaseBtn}"/>
+            </StackPanel>
+        </DockPanel>
+    </Grid>-->
 </Page>
