@@ -1,4 +1,5 @@
-﻿using MoneyFlow.MVVM.Models.DB_MSSQL;
+﻿using Microsoft.EntityFrameworkCore;
+using MoneyFlow.MVVM.Models.DB_MSSQL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,14 +12,23 @@ namespace MoneyFlow.Utils.Helpers
     {
         private readonly Func<MoneyFlowDbContext> _context = context;
 
-        public FinancialRecord LastRecordFinancialRecord(User user)
+        public FinancialRecord LastRecordFinancialRecord(User user, int index)
         {
             using (MoneyFlowDbContext context = _context())
             {
-                return context.FinancialRecords
-                    .Where(x => x.IdCategoryNavigation.IdUser == user.IdUser)
-                        .OrderByDescending(x => x.IdFinancialRecord)
-                            .FirstOrDefault();
+                var record = context.FinancialRecords
+                    .Include(x => x.IdCategoryNavigation)
+                    .Include(x => x.IdSubcategoryNavigation)
+                    .Include(x => x.IdTransactionTypeNavigation)
+                    .Include(x => x.IdAccountNavigation).ThenInclude(x => x.IdBankNavigation)
+                    .Include(x => x.IdAccountNavigation).ThenInclude(x => x.IdAccountTypeNavigation)
+                        .Where(x => x.IdUser == user.IdUser)
+                            .OrderByDescending(x => x.IdFinancialRecord)
+                                .FirstOrDefault();
+
+                record.IndexRecord = index + 1;
+
+                return record;
             }
         }
 

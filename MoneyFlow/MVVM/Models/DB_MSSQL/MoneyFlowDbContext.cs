@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace MoneyFlow.MVVM.Models.DB_MSSQL;
 
@@ -32,6 +34,7 @@ public partial class MoneyFlowDbContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=STYX;Database=MoneyFlowDB;Trusted_Connection=true;TrustServerCertificate=true");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -119,6 +122,7 @@ public partial class MoneyFlowDbContext : DbContext
             entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.IdAccount).HasColumnName("id_account");
             entity.Property(e => e.IdCategory).HasColumnName("id_category");
+            entity.Property(e => e.IdSubcategory).HasColumnName("id_subcategory");
             entity.Property(e => e.IdTransactionType).HasColumnName("id_transaction_type");
             entity.Property(e => e.IdUser).HasColumnName("id_user");
             entity.Property(e => e.RecordName)
@@ -132,6 +136,10 @@ public partial class MoneyFlowDbContext : DbContext
             entity.HasOne(d => d.IdCategoryNavigation).WithMany(p => p.FinancialRecords)
                 .HasForeignKey(d => d.IdCategory)
                 .HasConstraintName("FK_FInancial_records_Categories1");
+
+            entity.HasOne(d => d.IdSubcategoryNavigation).WithMany(p => p.FinancialRecords)
+                .HasForeignKey(d => d.IdSubcategory)
+                .HasConstraintName("FK_FInancial_records_Subcategories");
 
             entity.HasOne(d => d.IdTransactionTypeNavigation).WithMany(p => p.FinancialRecords)
                 .HasForeignKey(d => d.IdTransactionType)
@@ -192,6 +200,7 @@ public partial class MoneyFlowDbContext : DbContext
             entity.ToTable("User");
 
             entity.Property(e => e.IdUser).HasColumnName("id_user");
+            entity.Property(e => e.Avatar).HasColumnName("avatar");
             entity.Property(e => e.IdGender).HasColumnName("id_gender");
             entity.Property(e => e.Login)
                 .IsRequired()

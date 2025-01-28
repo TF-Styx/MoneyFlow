@@ -9,6 +9,8 @@ public partial class User
 
     public string UserName { get; set; }
 
+    public byte[] Avatar { get; set; }
+
     public string Login { get; set; }
 
     public string Password { get; set; }

@@ -15,5 +15,7 @@ public partial class Subcategory
 
     public int IdCategory { get; set; }
 
+    public virtual ICollection<FinancialRecord> FinancialRecords { get; set; } = new List<FinancialRecord>();
+
     public virtual Category IdCategoryNavigation { get; set; }
 }
