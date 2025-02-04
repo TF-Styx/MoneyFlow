@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
-using MoneyFlow.MVVM.Models.MSSQL_DB;
+using MoneyFlow.MVVM.Models.DB_MSSQL;
 using System.Linq.Expressions;
 
 namespace MoneyFlow.Utils.Services.DataBaseServices
 {
-    public class DataBaseService(Func<MoneyFlowContext> ContextFactory) : IDataBaseService
+    public class DataBaseService(Func<MoneyFlowDbContext> ContextFactory) : IDataBaseService
     {
-        private readonly Func<MoneyFlowContext> _contextFactory = ContextFactory;
+        private readonly Func<MoneyFlowDbContext> _contextFactory = ContextFactory;
 
         public async Task<IEnumerable<T>> GetDataTableAsync<T>(Func<IQueryable<T>, IQueryable<T>> include = null) where T : class
         {
@@ -91,6 +91,25 @@ namespace MoneyFlow.Utils.Services.DataBaseServices
                 }
 
                 return await query.FirstOrDefaultAsync(predicate);
+            }
+        }
+
+        public T FirstOrDefault<T>(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IQueryable<T>> include = null, bool reverse = false) where T : class
+        {
+            using (var context = _contextFactory())
+            {
+                IQueryable<T> query = context.Set<T>();
+
+                if (include != null)
+                {
+                    query = include(query);
+                }
+                if (reverse)
+                {
+                    query = query.Reverse();
+                }
+
+                return query.FirstOrDefault(predicate);
             }
         }
 

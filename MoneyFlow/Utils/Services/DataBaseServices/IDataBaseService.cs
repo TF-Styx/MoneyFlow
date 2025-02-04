@@ -1,4 +1,4 @@
-﻿using MoneyFlow.MVVM.Models.MSSQL_DB;
+﻿using MoneyFlow.MVVM.Models.DB_MSSQL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +15,7 @@ namespace MoneyFlow.Utils.Services.DataBaseServices
         Task<List<T>> GetDataTableListAsync<T>(Func<IQueryable<T>, IQueryable<T>> include = null) where T : class;
         Task<T> GetByIdAsync<T>(int id, string propertyName, Func<IQueryable<T>, IQueryable<T>> include = null) where T : class;
         Task<T> FirstOrDefaultAsync<T>(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IQueryable<T>> include = null, bool reverse = false) where T : class;
+        T FirstOrDefault<T>(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IQueryable<T>> include = null, bool reverse = false) where T : class;
         Task<T> LastOrDefaultAsync<T>(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IQueryable<T>> include = null) where T : class;
         /// <summary>
         /// 

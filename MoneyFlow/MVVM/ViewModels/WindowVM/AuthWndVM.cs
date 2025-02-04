@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using MoneyFlow.MVVM.Models.MSSQL_DB;
+using MoneyFlow.MVVM.Models.DB_MSSQL;
 using MoneyFlow.MVVM.ViewModels.BaseVM;
 using MoneyFlow.Utils.Commands;
 using MoneyFlow.Utils.Services.AuthorizationVerificationServices;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualBasic;
-using MoneyFlow.MVVM.Models.MSSQL_DB;
+using MoneyFlow.MVVM.Models.DB_MSSQL;
 using MoneyFlow.MVVM.ViewModels.BaseVM;
 using MoneyFlow.Utils.Commands;
 using MoneyFlow.Utils.Helpers;
@@ -45,7 +45,7 @@ namespace MoneyFlow.MVVM.ViewModels.PageVM
 
             if (parameter == null)
             {
-                FinancialRecords.Add(_lastRecordHelper.LastRecordFinancialRecord(CurrentUser));
+                //FinancialRecords.Add(_lastRecordHelper.LastRecordFinancialRecord(CurrentUser));
             }
         }
 
@@ -91,11 +91,23 @@ namespace MoneyFlow.MVVM.ViewModels.PageVM
             }
         }
 
+        public ObservableCollection<Account> Accounts { get; set; } = [];
         public ObservableCollection<FinancialRecord> FinancialRecords { get; set; } = [];
+
 
         private RelayCommand _openFinancialRecordAddCommand;
         public RelayCommand OpenFinancialRecordAddCommand { get => _openFinancialRecordAddCommand ??= new(obj => { OpenFinancialRecordAdd(); }); }
 
+        private RelayCommand _itemDoubleClickCommand;
+        public RelayCommand ItemDoubleClickCommand => _itemDoubleClickCommand ??= new RelayCommand(DoubleClick);
+
+        private void DoubleClick(object parameter)
+        {
+            if (parameter is FinancialRecord financialRecord)
+            {
+                _windowNavigationService.NavigateTo("FinancialRecordAdd", financialRecord);
+            }
+        }
 
         private async void GetFinancialRecordData(User user)
         {
@@ -103,9 +115,10 @@ namespace MoneyFlow.MVVM.ViewModels.PageVM
 
             var financialRecordData = 
                 await _dataBaseService.GetDataTableAsync<FinancialRecord>(x => x
-                    .Include(x => x.IdSubcategoryNavigation)
-                    .Include(x => x.IdCategoryNavigation.IdUserNavigation)
-                        .Where(x => x.IdCategoryNavigation.IdUserNavigation.IdUser == user.IdUser));
+                            .Include(x => x.IdAccountNavigation.IdBankNavigation)
+                            .Include(x => x.IdAccountNavigation.IdAccountTypeNavigation)
+                            //.Include(x => x.IdCategoryNavigation.IdSubcategoryNavigation)
+                                .Where(x => x.IdUser == user.IdUser));
 
             foreach (var item in financialRecordData)
             {

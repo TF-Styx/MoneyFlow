@@ -1,5 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using MoneyFlow.MVVM.Models.MSSQL_DB;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using MoneyFlow.MVVM.Models.DB_MSSQL;
 using MoneyFlow.Utils.Services.DataBaseServices;
 using System.IO;
 using System.Text.Json;
@@ -10,6 +11,8 @@ namespace MoneyFlow.Utils.Services.AuthorizationVerificationServices
     {
         private readonly IServiceProvider _serviceProvider;
 
+        private readonly IDataBaseService _dataBaseService;
+
         private readonly static string RoamingPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         private readonly static string AppDirectory = Path.Combine(RoamingPath, "MoneyFlow");
         private readonly static string JsonFilePath = AppDirectory + @"\User.json";
@@ -19,6 +22,8 @@ namespace MoneyFlow.Utils.Services.AuthorizationVerificationServices
         public AuthorizationVerificationService(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
+
+            _dataBaseService = _serviceProvider.GetService<IDataBaseService>();
 
             if (!Directory.Exists(AppDirectory))
             {
@@ -32,7 +37,8 @@ namespace MoneyFlow.Utils.Services.AuthorizationVerificationServices
             {
                 string json = File.ReadAllText(JsonFilePath);
                 var authUser = JsonSerializer.Deserialize<User>(json);
-                CurrentUser = authUser;
+                CurrentUser = _dataBaseService.FirstOrDefault<User>(predicate: x => x.IdUser == authUser.IdUser,
+                                                                               include: x => x.Include(x => x.IdGenderNavigation));
 
                 return true;
             }
@@ -45,5 +51,7 @@ namespace MoneyFlow.Utils.Services.AuthorizationVerificationServices
             File.WriteAllText(JsonFilePath, json);
             CurrentUser = user;
         }
+
+        // TODO : Реализовать обновление файла при каждом запуске/выходе/обновлении
     }
 }

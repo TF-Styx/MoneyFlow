@@ -1,13 +1,7 @@
-﻿using System.Text;
+﻿using Microsoft.Extensions.DependencyInjection;
+using MoneyFlow.Utils.Services.NavigationServices.PageNavigationsService;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MoneyFlow
 {
@@ -16,11 +10,20 @@ namespace MoneyFlow
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private readonly IServiceProvider _serviceProvider;
+
+        private readonly IPageNavigationService _pageNavigationService;
+
+        public MainWindow(IServiceProvider serviceProvider)
         {
             InitializeComponent();
 
             StateChanged += MainWindowStateChangeRaised;
+
+            _serviceProvider = serviceProvider;
+
+            _pageNavigationService = _serviceProvider.GetService<IPageNavigationService>();
+            _pageNavigationService.InitializeFrame(MainFrame);
         }
 
         // Can execute
@@ -70,6 +73,5 @@ namespace MoneyFlow
                 MaximizeButton.Visibility = Visibility.Visible;
             }
         }
-
     }
 }

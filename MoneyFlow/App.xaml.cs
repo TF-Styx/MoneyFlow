@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using MoneyFlow.MVVM.Models.MSSQL_DB;
+using MoneyFlow.MVVM.Models.DB_MSSQL;
+using MoneyFlow.Utils.Helpers;
 using MoneyFlow.Utils.Services.AuthorizationVerificationServices;
 using MoneyFlow.Utils.Services.DataBaseServices;
+using MoneyFlow.Utils.Services.DialogServices.OpenFileDialogServices;
 using MoneyFlow.Utils.Services.NavigationServices.PageNavigationsService;
 using MoneyFlow.Utils.Services.NavigationServices.WindowNavigationsService;
 using System.Windows;
@@ -56,10 +58,12 @@ namespace MoneyFlow
             services.AddSingleton<IWindowNavigationService, WindowNavigationService>();
             services.AddSingleton<IPageNavigationService, PageNavigationService>();
             services.AddSingleton<IAuthorizationVerificationService, AuthorizationVerificationService>();
+            services.AddSingleton<IOpenFileDialogService, OpenFileDialogService>();
 
-            services.AddTransient<MoneyFlowContext>();
-            services.AddSingleton<Func<MoneyFlowContext>>(provider => () => provider.GetRequiredService<MoneyFlowContext>());
+            services.AddTransient<MoneyFlowDbContext>();
+            services.AddSingleton<Func<MoneyFlowDbContext>>(provider => () => provider.GetRequiredService<MoneyFlowDbContext>());
             services.AddSingleton<IDataBaseService, DataBaseService>();
+            services.AddSingleton<LastRecordHelper>();
         }
     }
 }

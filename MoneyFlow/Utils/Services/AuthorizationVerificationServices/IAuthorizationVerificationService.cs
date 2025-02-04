@@ -1,4 +1,4 @@
-﻿using MoneyFlow.MVVM.Models.MSSQL_DB;
+﻿using MoneyFlow.MVVM.Models.DB_MSSQL;
 
 namespace MoneyFlow.Utils.Services.AuthorizationVerificationServices
 {

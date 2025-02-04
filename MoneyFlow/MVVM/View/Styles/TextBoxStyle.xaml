@@ -48,4 +48,13 @@
             </MultiTrigger>
         </Style.Triggers>
     </Style>
+
+    <Style x:Key="FinancilaJournalTBox" TargetType="TextBox" BasedOn="{StaticResource AuthTextBox}">
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontFamily" Value="Segoe UI"/>
+        <Setter Property="Width" Value="250"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
 </ResourceDictionary>

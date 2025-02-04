@@ -3,12 +3,15 @@
 
     <Style x:Key="BaseTextBlockStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource AppTextColor}"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Margin" Value="0 5 0 5"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 
     <Style x:Key="AuthText" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}">
         <Setter Property="FontSize" Value="30"/>
         <Setter Property="FontFamily" Value="Engravers MT"/>
-        
+
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsAuthenticated}" Value="False">
                 <Setter Property="Foreground" Value="Red"/>
@@ -17,6 +20,22 @@
                 <Setter Property="Foreground" Value="{StaticResource AppTextColor}"/>
             </DataTrigger>
         </Style.Triggers>
+    </Style>
+
+    <Style x:Key="IntroductoryDataFinancialJournal" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}">
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Margin" Value="0 5 0 5"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="dgTB" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}">
+        <Setter Property="MaxWidth" Value="150"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Margin" Value="0 5 0 5"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
     </Style>
 
 </ResourceDictionary>

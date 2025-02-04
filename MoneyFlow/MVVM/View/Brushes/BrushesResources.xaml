@@ -14,8 +14,13 @@
     <SolidColorBrush x:Key="AppTextColor" Color="White"/>
     <!--#endregion-->
 
-    <!-- Стили для окна << AuthWindow >> -->
-    
-    <!-- Стили для окна << AuthWindow >> -->
+    <!--#region SideMenuBrushes -->
+    <LinearGradientBrush x:Key="SideMenuBrushes" StartPoint="1,0" EndPoint="0,1">
+        <GradientStop Color="#001dfa" Offset="0" />
+        <GradientStop Color="#071fcf" Offset="0.25" />
+        <GradientStop Color="#0d1d9c" Offset="0.75" />
+        <GradientStop Color="#0f1752" Offset="1" />
+    </LinearGradientBrush>
+    <!--#endregion-->
 
 </ResourceDictionary>

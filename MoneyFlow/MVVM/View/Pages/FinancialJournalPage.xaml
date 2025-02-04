@@ -6,29 +6,13 @@
       xmlns:local="clr-namespace:MoneyFlow.MVVM.View.Pages" 
       xmlns:pagevm="clr-namespace:MoneyFlow.MVVM.ViewModels.PageVM" 
       d:DataContext="{d:DesignInstance Type=pagevm:FinancialJournalPageVM}"
-      xmlns:fa="http://schemas.fontawesome.com/icons/"
+      xmlns:fa="http://schemas.fontawesome.com/icons/" 
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="900"
       Title="FinancialJournalPage">
 
     <Grid>
-        <!--<ListView Background="Transparent" BorderBrush="Transparent" ItemsSource="{Binding FinancialRecords}" d:ItemsSource="{d:SampleData ItemCount=5}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Border BorderBrush="White" BorderThickness="1">
-                        <StackPanel Orientation="Horizontal" Margin="5">
-                            <TextBlock Text="{Binding RecordName}" Margin="0 0 5 0" Style="{StaticResource BaseTextBlockStyle}"/>
-                            <TextBlock Text="{Binding Amount}" Margin="0 0 5 0" Style="{StaticResource BaseTextBlockStyle}"/>
-                            <TextBlock Text="{Binding Description}" Margin="0 0 5 0" Style="{StaticResource BaseTextBlockStyle}"/>
-                            <DatePicker Text="{Binding Date}" Background="Transparent" BorderBrush="Transparent" Margin="0 0 5 0"/>
-                            <TextBlock Text="{Binding IdCategoryNavigation.CategoryName}" Margin="0 0 5 0" Style="{StaticResource BaseTextBlockStyle}"/>
-                            <TextBlock Text="{Binding IdSubcategoryNavigation.SubcategoryName}" Margin="0 0 5 0" Style="{StaticResource BaseTextBlockStyle}"/>
-                        </StackPanel>
-                    </Border>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>-->
-
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
@@ -49,89 +33,42 @@
                       SelectionMode="Single"
                       ItemsSource="{Binding FinancialRecords}"
                       SelectedItem="{Binding SelectedFinancialRecord}"
-                      d:ItemsSource="{d:SampleData ItemCount=5}">           
+                      d:ItemsSource="{d:SampleData ItemCount=5}">
+                <!--#region DoubleClick -->
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <i:InvokeCommandAction Command="{Binding ItemDoubleClickCommand}" 
+                                               CommandParameter="{Binding SelectedFinancialRecord}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <!--#endregion-->
+                
                 <DataGrid.Columns>
-                    <DataGridCheckBoxColumn Width="Auto"/>
-                    <DataGridTextColumn Header="Название записи" Binding="{Binding RecordName}" Width="Auto"/>
-                    <DataGridTextColumn Header="Сумма" Binding="{Binding Amount}" Width="*"/>
-                    <DataGridTextColumn Header="Дата" Binding="{Binding Date, StringFormat=dd MMM yyyy}" Width="*"/>
-                    <DataGridTextColumn Header="Категория" Binding="{Binding IdCategoryNavigation.CategoryName}" Width="*"/>
-                    <DataGridTextColumn Header="Подкатегория" Binding="{Binding IdSubcategoryNavigation.SubcategoryName}" Width="*"/>
-                    <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="*"/>
-
-                    <!--#region Тест -->
-                    <!--<DataGridTextColumn Header="Счет" Binding="{Binding Account}" Width="Auto" />
-                    <DataGridTemplateColumn Header="Тип" Width="Auto">
+                    <DataGridTextColumn Header="Банк" Binding="{Binding IdAccountNavigation.IdBankNavigation.BankName}" Width="Auto"/>
+                    <DataGridTemplateColumn Header="Название записи" Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock HorizontalAlignment="Center">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Text" Value="→"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Type}" Value="In">
-                                                    <Setter Property="Text" Value="←"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Type}" Value="Transfer">
-                                                    <Setter Property="Text" Value="⇆"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-
-                    <DataGridTextColumn Header="Контрагент" Binding="{Binding Contractor}" Width="*" />
-                    <DataGridTextColumn Header="Статья" Binding="{Binding Category}" Width="*" />
-                    <DataGridTextColumn Header="Проект" Binding="{Binding Project}" Width="*" />
-                    <DataGridTextColumn Header="Сделка" Binding="{Binding Deal}" Width="*" />
-                    <DataGridTemplateColumn Header="Сумма" Width="Auto">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                    <TextBlock Text="{Binding Amount, StringFormat={}{0:+#,0 ₽;-#,0 ₽}}" Margin="0,0,5,0"/>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock HorizontalAlignment="Center">
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Setter Property="Text" Value="Д"/>
-                                                    <Setter Property="Background" Value="#008000"/>
-                                                    <Setter Property="Foreground" Value="White"/>
-                                                    <Setter Property="Padding" Value="2"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding AmountType}" Value="Expense">
-                                                            <Setter Property="Text" Value="К"/>
-                                                            <Setter Property="Background" Value="#B80000"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock HorizontalAlignment="Center">
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Setter Property="Text" Value="!"/>
-                                                    <Setter Property="Background" Value="#D7BC00"/>
-                                                    <Setter Property="Foreground" Value="White"/>
-                                                    <Setter Property="Padding" Value="2"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding AmountType}" Value="Expense">
-                                                            <Setter Property="Text" Value="!"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-                                    </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding RecordName}"/>
+                                    <TextBlock Text="{Binding IdAccountNavigation.NumberAccount}"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>-->
-                    <!--#endregion-->
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Сумма" Width="auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Ammount}"/>
+                                    <TextBlock Text="{Binding IdAccountNavigation.IdAccountTypeNavigation.AccountTypeName}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Дата" Binding="{Binding Date, StringFormat=dd MMM yyyy}" Width="auto"/>
+                    <DataGridTextColumn Header="Категория" Binding="{Binding IdCategoryNavigation.CategoryName}" Width="*"/>
+                    <!--<DataGridTextColumn Header="Подкатегория" Binding="{Binding IdCategoryNavigation.IdSubcategoryNavigation.SubcategoryName}" Width="*"/>-->
+                    <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Border>

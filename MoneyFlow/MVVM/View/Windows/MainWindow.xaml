@@ -3,11 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MoneyFlow"
+        xmlns:local="clr-namespace:MoneyFlow" 
+        xmlns:windowvm="clr-namespace:MoneyFlow.MVVM.ViewModels.WindowVM" 
+        d:DataContext="{d:DesignInstance Type=windowvm:MainWindowVM}"
+        xmlns:fa="http://schemas.fontawesome.com/icons/"
         mc:Ignorable="d"
         Title="Главная страница" 
         WindowStartupLocation="CenterScreen"
-        Height="450" Width="800">
+        Height="550" Width="1150">
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="34"/>
@@ -37,7 +40,25 @@
             </Grid>
 
             <Grid Grid.Row="1">
-                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
+                    <Border>
+                        <StackPanel>
+                            <ToggleButton HorizontalAlignment="Left" IsChecked="{Binding IsCheckedProfileButton}" Command="{Binding OpenProfilePageCommand}" Style="{StaticResource MainBtn}">
+                                <fa:ImageAwesome Icon="Regular_User" Foreground="White"/>
+                            </ToggleButton>
+                            <ToggleButton HorizontalAlignment="Left" IsChecked="{Binding IsCheckedFinancialJournalButton}" Command="{Binding OpenFinancialJournalPageCommand}" Style="{StaticResource MainBtn}">
+                                <fa:ImageAwesome Icon="Regular_MoneyBillAlt" Foreground="White"/>
+                            </ToggleButton>
+                        </StackPanel>
+                    </Border>
+                </ScrollViewer>
+
+                <Frame Grid.Column="1" x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
             </Grid>
         </Grid>
     </Border>

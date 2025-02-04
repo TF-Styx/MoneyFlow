@@ -115,11 +115,11 @@
                                             <StackPanel>
                                                 <DockPanel Margin="30 5 0 5">
                                                     <TextBlock Text="От" Style="{StaticResource BaseTextBlockStyle}"/>
-                                                    <TextBox HorizontalAlignment="Right" Margin="30 5 0 5" Style="{StaticResource FinancilaJournalTBox}"/>
+                                                    <TextBox Text="{Binding StartAmount}" HorizontalAlignment="Right" Margin="30 5 0 5" Style="{StaticResource FinancilaJournalTBox}"/>
                                                 </DockPanel>
                                                 <DockPanel Margin="30 5 0 5">
                                                     <TextBlock Text="До" Style="{StaticResource BaseTextBlockStyle}"/>
-                                                    <TextBox HorizontalAlignment="Right" Margin="30 5 0 5" Style="{StaticResource FinancilaJournalTBox}"/>
+                                                    <TextBox Text="{Binding EndAmount}" HorizontalAlignment="Right" Margin="30 5 0 5" Style="{StaticResource FinancilaJournalTBox}"/>
                                                 </DockPanel>
                                             </StackPanel>
                                         </DockPanel>
@@ -128,7 +128,7 @@
                                             <StackPanel>
                                                 <DockPanel Margin="30 5 0 5">
                                                     <TextBlock Text="От" Style="{StaticResource BaseTextBlockStyle}"/>
-                                                    <DatePicker HorizontalAlignment="Right" Width="250">
+                                                    <DatePicker SelectedDate="{Binding StartDate}" HorizontalAlignment="Right" Width="250">
                                                         <DatePicker.CalendarStyle>
                                                             <StaticResource ResourceKey="StyleCalendar" />
                                                         </DatePicker.CalendarStyle>
@@ -136,7 +136,7 @@
                                                 </DockPanel>
                                                 <DockPanel Margin="30 5 0 5">
                                                     <TextBlock Text="До" Style="{StaticResource BaseTextBlockStyle}"/>
-                                                    <DatePicker HorizontalAlignment="Right" Width="250">
+                                                    <DatePicker SelectedDate="{Binding EndDate}" HorizontalAlignment="Right" Width="250">
                                                         <DatePicker.CalendarStyle>
                                                             <StaticResource ResourceKey="StyleCalendar" />
                                                         </DatePicker.CalendarStyle>
@@ -145,21 +145,37 @@
                                             </StackPanel>
                                         </DockPanel>
                                         <DockPanel>
+                                            <TextBlock Text="Счет" Style="{StaticResource BaseTextBlockStyle}"/>
+                                            <ComboBox ItemsSource="{Binding Accounts}" 
+                                                      SelectedItem="{Binding SelectedAccountFilter}" 
+                                                      DisplayMemberPath="NumberAccount"
+                                                      HorizontalAlignment="Right" Margin="30 5 0 5" 
+                                                      Style="{StaticResource MainComboBox}"/>
+                                        </DockPanel>
+                                        <DockPanel>
                                             <TextBlock Text="Банк" Style="{StaticResource BaseTextBlockStyle}"/>
-                                            <ComboBox HorizontalAlignment="Right" Margin="30 5 0 5" Style="{StaticResource MainComboBox}"/>
+                                            <ComboBox ItemsSource="{Binding Banks}" 
+                                                      SelectedItem="{Binding SelectedBankFilter}" 
+                                                      DisplayMemberPath="BankName"
+                                                      HorizontalAlignment="Right" Margin="30 5 0 5" 
+                                                      Style="{StaticResource MainComboBox}"/>
                                         </DockPanel>
                                         <DockPanel>
                                             <TextBlock Text="Категория" Style="{StaticResource BaseTextBlockStyle}"/>
-                                            <ComboBox HorizontalAlignment="Right" Margin="30 5 0 5" Style="{StaticResource MainComboBox}"/>
-                                        </DockPanel>
-                                        <DockPanel>
-                                            <TextBlock Text="Подкатегория" Style="{StaticResource BaseTextBlockStyle}"/>
-                                            <ComboBox HorizontalAlignment="Right" Margin="30 5 0 5" Style="{StaticResource MainComboBox}"/>
+                                            <ComboBox ItemsSource="{Binding Categories}" 
+                                                      SelectedItem="{Binding SelectedCategoryFilter}" 
+                                                      DisplayMemberPath="CategoryName"
+                                                      HorizontalAlignment="Right" Margin="30 5 0 5" 
+                                                      Style="{StaticResource MainComboBox}"/>
                                         </DockPanel>
                                         <DockPanel>
                                             <TextBlock Text="Сортировка" Style="{StaticResource BaseTextBlockStyle}"/>
                                             <ComboBox HorizontalAlignment="Right" Margin="30 5 0 5" Style="{StaticResource MainComboBox}"/>
                                         </DockPanel>
+                                        <CheckBox Content="Учитывать фильтры" 
+                                                  Foreground="White" FontSize="15" 
+                                                  IsChecked="{Binding ConsiderFilters}"/>
+                                        <Button Content="Применить" Command="{Binding AcceptFilterCommand}"/>
                                     </StackPanel>
                                 </Border>
                             </Popup>
@@ -213,7 +229,7 @@
                                 <DataGridTemplateColumn Header="Название записи" Width="*">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <StackPanel>
+                                            <StackPanel HorizontalAlignment="Left">
                                                 <TextBlock Text="{Binding RecordName}" d:Text="Магаз" Style="{StaticResource dgTB}"/>
                                                 <TextBlock Text="{Binding IdAccountNavigation.NumberAccount}" d:Text="№ 14454" Style="{StaticResource dgTB}"/>
                                             </StackPanel>

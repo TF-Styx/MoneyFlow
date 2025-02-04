@@ -14,6 +14,7 @@ using MoneyFlow.Utils.Services.NavigationServices.WindowNavigationsService;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Windows;
 
 namespace MoneyFlow.MVVM.ViewModels.PageVM
@@ -40,21 +41,25 @@ namespace MoneyFlow.MVVM.ViewModels.PageVM
 
             _lastRecordHelper = _serviceProvider.GetRequiredService<LastRecordHelper>();
 
-            //CurrentUser = _authorizationVerificationService.CurrentUser;
+            CurrentUser = _authorizationVerificationService.CurrentUser;
+
+            GetCategoriesData();
+            GetAccountsData();
 
             GetAccountTypesData();
             GetGendersData();
             GetBanksData();
 
             GetFinancialRecordData(_authorizationVerificationService.CurrentUser);
+            LoadFinancialRecordData();
         }
 
         public void Update(object parameter)
         {
-            CurrentUser = _authorizationVerificationService.CurrentUser;
+            //CurrentUser = _authorizationVerificationService.CurrentUser;
 
-            GetCategoriesData();
-            GetAccountsData();
+            //GetCategoriesData();
+            //GetAccountsData();
 
             //SelectedFinancialRecord = null;
 
@@ -62,6 +67,20 @@ namespace MoneyFlow.MVVM.ViewModels.PageVM
             {
                 FinancialRecords.Add(_lastRecordHelper.LastRecordFinancialRecord(CurrentUser, FinancialRecords.Count));
                 CountRecords = FinancialRecords.Count;
+            }
+
+            if (parameter is int id)
+            {
+                var finRec = 
+                    _dataBaseService.GetDataTable<FinancialRecord>(x => x
+                                    .Include(x => x.IdCategoryNavigation)
+                                    .Include(x => x.IdSubcategoryNavigation)
+                                    .Include(x => x.IdTransactionTypeNavigation)
+                                    .Include(x => x.IdAccountNavigation).ThenInclude(x => x.IdBankNavigation)
+                                    .Include(x => x.IdAccountNavigation).ThenInclude(x => x.IdAccountTypeNavigation)
+                                        .Where(x => x.IdFinancialRecord == id)).FirstOrDefault();
+
+                FinancialRecords[FinancialRecords.IndexOf(FinancialRecords.FirstOrDefault(x => x.IdFinancialRecord == id))] = finRec;
             }
         }
 
@@ -208,16 +227,18 @@ namespace MoneyFlow.MVVM.ViewModels.PageVM
 
         public ObservableCollection<Category> Categories { get; set; } = [];
 
-        private async void GetCategoriesData()
+        private void GetCategoriesData()
         {
             Categories.Clear();
 
-            var categories = await _dataBaseService.GetDataTableAsync<Category>(x => x.Where(x => x.IdUser == CurrentUser.IdUser));
+            var categories = _dataBaseService.GetDataTable<Category>(x => x.Where(x => x.IdUser == CurrentUser.IdUser));
 
             foreach (var item in categories)
             {
                 Categories.Add(item);
             }
+
+            SelectedCategoryFilter = Categories.FirstOrDefault();
         }
 
 
@@ -345,11 +366,11 @@ namespace MoneyFlow.MVVM.ViewModels.PageVM
 
         public ObservableCollection<Subcategory> Subcategories { get; set; } = [];
 
-        private async void GetSubcategoriesData()
+        private void GetSubcategoriesData()
         {
             Subcategories.Clear();
 
-            var subcategories = await _dataBaseService.GetDataTableAsync<Subcategory>(x => x.Where(x => x.IdCategory == SelectedCategory.IdCategory));
+            var subcategories = _dataBaseService.GetDataTable<Subcategory>(x => x.Where(x => x.IdCategory == SelectedCategory.IdCategory));
 
             foreach (var item in subcategories)
             {
@@ -494,11 +515,11 @@ namespace MoneyFlow.MVVM.ViewModels.PageVM
 
         public ObservableCollection<Account> Accounts { get; set; } = [];
 
-        private async void GetAccountsData()
+        private void GetAccountsData()
         {
             Accounts.Clear();
 
-            var account = await _dataBaseService.GetDataTableAsync<Account>(x => x
+            var account = _dataBaseService.GetDataTable<Account>(x => x
                                                     .Include(x => x.IdBankNavigation)
                                                     .Include(x => x.IdAccountTypeNavigation)
                                                         .Where(x => x.IdUser == CurrentUser.IdUser));
@@ -507,6 +528,8 @@ namespace MoneyFlow.MVVM.ViewModels.PageVM
             {
                 Accounts.Add(item);
             }
+
+            SelectedAccountFilter = Accounts.FirstOrDefault();
         }
 
         public ObservableCollection<AccountType> AccountTypes { get; set; } = [];
@@ -525,16 +548,18 @@ namespace MoneyFlow.MVVM.ViewModels.PageVM
 
         public ObservableCollection<Bank> Banks { get; set; } = [];
 
-        private async void GetBanksData()
+        private void GetBanksData()
         {
             Banks.Clear();
 
-            var banks = await _dataBaseService.GetDataTableAsync<Bank>();
+            var banks = _dataBaseService.GetDataTable<Bank>();
 
             foreach (var item in banks)
             {
                 Banks.Add(item);
             }
+
+            SelectedBankFilter = Banks.FirstOrDefault();
         }
 
 
@@ -598,7 +623,7 @@ namespace MoneyFlow.MVVM.ViewModels.PageVM
         #endregion
 
 
-        #region Транзакций
+        #region Транзакции
 
         private int _countRecords;
         public int CountRecords
@@ -658,14 +683,124 @@ namespace MoneyFlow.MVVM.ViewModels.PageVM
         }
 
 
+        private const string NOT_INCLUDE = "Не учитывать!";
+
+        private decimal? _startAmount = 0;
+        public decimal? StartAmount
+        {
+            get => _startAmount;
+            set
+            {
+                _startAmount = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private decimal? _endAmount = 999999999;
+        public decimal? EndAmount
+        {
+            get => _endAmount;
+            set
+            {
+                _endAmount = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private DateTime? _startDate = DateTime.Now.AddYears(-1);
+        public DateTime? StartDate
+        {
+            get => _startDate;
+            set
+            {
+                _startDate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private DateTime? _endDate = DateTime.Now;
+        public DateTime? EndDate
+        {
+            get => _endDate;
+            set
+            {
+                _endDate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Account _selectedAccountFilter;
+        public Account SelectedAccountFilter
+        {
+            get => _selectedAccountFilter;
+            set
+            {
+                _selectedAccountFilter = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Bank _selectedBankFilter;
+        public Bank SelectedBankFilter
+        {
+            get => _selectedBankFilter;
+            set
+            {
+                _selectedBankFilter = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Category _selectedCategoryFilter;
+        public Category SelectedCategoryFilter
+        {
+            get => _selectedCategoryFilter;
+            set
+            {
+                _selectedCategoryFilter = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _considerFilters = false;
+        public bool ConsiderFilters
+        {
+            get => _considerFilters;
+            set
+            {
+                _considerFilters = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private List<FinancialRecord> ApplyFilter(List<FinancialRecord> financialRecords)
+        {
+            if (ConsiderFilters)
+            {
+                var filters = new List<Func<FinancialRecord, bool>>();
+
+                filters.Add(x => x.Ammount >= StartAmount && x.Ammount <= EndAmount);
+                filters.Add(x => x.Date >= StartDate && x.Date <= EndDate);
+                filters.Add(x => x.IdAccount == SelectedAccountFilter.IdAccount);
+                filters.Add(x => x.IdAccountNavigation.IdBank == SelectedBankFilter.IdBank);
+                filters.Add(x => x.IdCategory == SelectedCategoryFilter.IdCategory);
+
+                var record = filters.Aggregate(_financialRecords.AsEnumerable(), (current, filter) => current.Where(filter));
+                financialRecords = record.ToList();
+
+                return financialRecords;
+            }
+            else { return financialRecords; }
+        }
+
+
+        private List<FinancialRecord> _financialRecords { get; set; } = [];
         public ObservableCollection<FinancialRecord> FinancialRecords { get; set; } = [];
 
-        private async void GetFinancialRecordData(User user)
+        private void GetFinancialRecordData(User user)
         {
-            FinancialRecords.Clear();
-
             var financialRecordData =
-                await _dataBaseService.GetDataTableAsync<FinancialRecord>(x => x
+                _dataBaseService.GetDataTable<FinancialRecord>(x => x
                             .Include(x => x.IdCategoryNavigation)
                             .Include(x => x.IdSubcategoryNavigation)
                             .Include(x => x.IdTransactionTypeNavigation)
@@ -673,28 +808,24 @@ namespace MoneyFlow.MVVM.ViewModels.PageVM
                             .Include(x => x.IdAccountNavigation).ThenInclude(x => x.IdAccountTypeNavigation)
                                 .Where(x => x.IdUser == user.IdUser));
 
-            foreach (var item in financialRecordData)
-            {
-                //FinancialRecords.Add(new FinancialRecordDTO()
-                //{
-                //    RecordName = item.RecordName,
-                //    Ammount = item.Ammount,
-                //    Description = item.Description,
-                //    TransactionType = item.IdTransactionTypeNavigation,
-                //    User = item.IdUserNavigation,
-                //    Category = item.IdCategoryNavigation,
-                //    Account = item.IdAccountNavigation,
-                //    Bank = item.IdAccountNavigation.IdBankNavigation,
-                //    Date = item.Date,
-                //    Subcategory = item.IdSubcategoryNavigation,
-                //});
+            _financialRecords.AddRange(financialRecordData);
+        }
 
+        private void LoadFinancialRecordData()
+        {
+            FinancialRecords.Clear();
+
+            foreach (var item in ApplyFilter(_financialRecords))
+            {
                 FinancialRecords.Add(item);
                 item.IndexRecord = FinancialRecords.IndexOf(item) + 1;
             }
 
             CountRecords = FinancialRecords.Count;
         }
+
+        private RelayCommand _acceptFilterCommand;
+        public RelayCommand AcceptFilterCommand { get => _acceptFilterCommand ??= new(obj => { LoadFinancialRecordData(); }); }
 
 
         private RelayCommand _openFinancialRecordAddCommand;

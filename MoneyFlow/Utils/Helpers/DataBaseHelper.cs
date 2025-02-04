@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MoneyFlow.MVVM.Models.MSSQL_DB;
+using MoneyFlow.MVVM.Models.DB_MSSQL;
 
 namespace MoneyFlow.Utils.Helpers
 {
@@ -7,7 +7,7 @@ namespace MoneyFlow.Utils.Helpers
     {
         public static async Task<List<Subcategory>> GetSubcategoriesByUserIdAsync(int idUser)
         {
-            using (var context = new MoneyFlowContext())
+            using (var context = new MoneyFlowDbContext())
             {
                 var subcategories = await context.Subcategories
                     .Where(sub => context.Categories

@@ -4,10 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MoneyFlow.MVVM.View.Windows" 
-        xmlns:fa="http://schemas.fontawesome.com/icons/"
+        xmlns:fa="http://schemas.fontawesome.com/icons/" 
+        xmlns:windowvm="clr-namespace:MoneyFlow.MVVM.ViewModels.WindowVM" 
+        d:DataContext="{d:DesignInstance Type=windowvm:FinancialRecordAddVM}"
         mc:Ignorable="d"
         Title="FinancialRecordAddWindow" 
-        Height="292" Width="818" 
+        Height="330" Width="830" 
         ResizeMode="NoResize">
 
     <WindowChrome.WindowChrome>
@@ -42,11 +44,15 @@
                             <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center">
                                 <DockPanel>
                                     <TextBlock Text="Наименование" Style="{StaticResource IntroductoryDataFinancialJournal}"/>
-                                    <TextBox Text="{Binding RecordName}" HorizontalAlignment="Right" Style="{StaticResource FinancilaJournalTBox}"/>
+                                    <TextBox Text="{Binding RecordName}" HorizontalAlignment="Right" Margin="30 5 0 5" Style="{StaticResource FinancilaJournalTBox}"/>
                                 </DockPanel>
                                 <DockPanel>
                                     <TextBlock Text="Сумма" Style="{StaticResource IntroductoryDataFinancialJournal}"/>
-                                    <TextBox Text="{Binding Amount}" HorizontalAlignment="Right" Style="{StaticResource FinancilaJournalTBox}"/>
+                                    <TextBox Text="{Binding Amount}" HorizontalAlignment="Right" Margin="30 5 0 5" Style="{StaticResource FinancilaJournalTBox}"/>
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Описание" Style="{StaticResource IntroductoryDataFinancialJournal}"/>
+                                    <TextBox Text="{Binding Description}" HorizontalAlignment="Right" Style="{StaticResource FinancilaJournalTBox}"/>
                                 </DockPanel>
                                 <DockPanel>
                                     <TextBlock Text="Дата" Style="{StaticResource IntroductoryDataFinancialJournal}"/>
@@ -62,22 +68,36 @@
                             <!--#region Правый столбе -->
                             <StackPanel Margin="20 0 0 0" HorizontalAlignment="Right" VerticalAlignment="Center">
                                 <DockPanel>
+                                    <TextBlock Text="Счет" Style="{StaticResource IntroductoryDataFinancialJournal}"/>
+                                    <ComboBox ItemsSource="{Binding Accounts}"
+                                              SelectedItem="{Binding SelectedAccount, Mode=TwoWay}"
+                                              DisplayMemberPath="NumberAccount"
+                                              HorizontalAlignment="Right" Margin="20 5 0 5"
+                                              Style="{DynamicResource MainComboBox}"/>
+                                </DockPanel>
+                                <DockPanel>
+                                    <TextBlock Text="Тип операции" Style="{StaticResource IntroductoryDataFinancialJournal}"/>
+                                    <ComboBox ItemsSource="{Binding TransactionTypes}"
+                                              SelectedItem="{Binding SelectedTransactionType, Mode=TwoWay}"
+                                              DisplayMemberPath="TransactionTypeName"
+                                              HorizontalAlignment="Right" Margin="20 5 0 5"
+                                              Style="{DynamicResource MainComboBox}"/>
+                                </DockPanel>
+                                <DockPanel>
                                     <TextBlock Text="Категория" Style="{StaticResource IntroductoryDataFinancialJournal}"/>
-                                    <ComboBox ItemsSource="{Binding Categories}" 
-                                              SelectedItem="{Binding SelectedCategory}" 
-                                              DisplayMemberPath="CategoryName" 
+                                    <ComboBox ItemsSource="{Binding Categories}"
+                                              SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"
+                                              DisplayMemberPath="CategoryName"
+                                              HorizontalAlignment="Right" Margin="20 5 0 5"
                                               Style="{DynamicResource MainComboBox}"/>
                                 </DockPanel>
                                 <DockPanel>
                                     <TextBlock Text="Под категория" Style="{StaticResource IntroductoryDataFinancialJournal}"/>
-                                    <ComboBox ItemsSource="{Binding Subcategories}" 
-                                              SelectedItem="{Binding SelectedSubCategory}" 
-                                              DisplayMemberPath="SubcategoryName" 
+                                    <ComboBox ItemsSource="{Binding Subcategories}"
+                                              SelectedItem="{Binding SelectedSubCategory, Mode=TwoWay}"
+                                              DisplayMemberPath="SubcategoryName"
+                                              HorizontalAlignment="Right" Margin="20 5 0 5"
                                               Style="{DynamicResource MainComboBox}"/>
-                                </DockPanel>
-                                <DockPanel>
-                                    <TextBlock Text="Описание" Style="{StaticResource IntroductoryDataFinancialJournal}"/>
-                                    <TextBox Text="{Binding Description}" Style="{StaticResource FinancilaJournalTBox}"/>
                                 </DockPanel>
                             </StackPanel>
                             <!--#endregion-->
@@ -91,7 +111,7 @@
                                     Style="{StaticResource BaseBtn}" HorizontalAlignment="Left"/>
 
                             <Button Margin="10" Content="Изменить запись" 
-                                    Command="{Binding AddFinancialRecordCommand}" 
+                                    Command="{Binding UpdateFinancialRecordCommand}" 
                                     Style="{StaticResource BaseBtn}" HorizontalAlignment="Right"/>
                         </DockPanel>
                     </Border>
