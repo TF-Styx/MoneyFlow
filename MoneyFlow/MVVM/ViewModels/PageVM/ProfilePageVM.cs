@@ -518,15 +518,21 @@ namespace MoneyFlow.MVVM.ViewModels.PageVM
         private void GetAccountsData()
         {
             Accounts.Clear();
+            //AccountsFilter.Clear();
 
             var account = _dataBaseService.GetDataTable<Account>(x => x
                                                     .Include(x => x.IdBankNavigation)
                                                     .Include(x => x.IdAccountTypeNavigation)
                                                         .Where(x => x.IdUser == CurrentUser.IdUser));
+            //AccountsFilter.Add(new Account()
+            //{
+            //    NumberAccount = 0000
+            //});
 
             foreach (var item in account)
             {
                 Accounts.Add(item);
+                //AccountsFilter.Add(item);
             }
 
             SelectedAccountFilter = Accounts.FirstOrDefault();
@@ -550,13 +556,20 @@ namespace MoneyFlow.MVVM.ViewModels.PageVM
 
         private void GetBanksData()
         {
-            Banks.Clear();
+            Banks.Clear(); 
+            //BanksFilter.Clear();
 
             var banks = _dataBaseService.GetDataTable<Bank>();
+
+            //BanksFilter.Add(new Bank()
+            //{
+            //    BankName = NOT_INCLUDE
+            //});
 
             foreach (var item in banks)
             {
                 Banks.Add(item);
+                //BanksFilter.Add(item);
             }
 
             SelectedBankFilter = Banks.FirstOrDefault();
@@ -683,6 +696,56 @@ namespace MoneyFlow.MVVM.ViewModels.PageVM
         }
 
 
+        private List<FinancialRecord> _financialRecords { get; set; } = [];
+        public ObservableCollection<FinancialRecord> FinancialRecords { get; set; } = [];
+
+        private void GetFinancialRecordData(User user)
+        {
+            var financialRecordData =
+                _dataBaseService.GetDataTable<FinancialRecord>(x => x
+                            .Include(x => x.IdCategoryNavigation)
+                            .Include(x => x.IdSubcategoryNavigation)
+                            .Include(x => x.IdTransactionTypeNavigation)
+                            .Include(x => x.IdAccountNavigation).ThenInclude(x => x.IdBankNavigation)
+                            .Include(x => x.IdAccountNavigation).ThenInclude(x => x.IdAccountTypeNavigation)
+                                .Where(x => x.IdUser == user.IdUser));
+
+            _financialRecords.AddRange(financialRecordData);
+        }
+
+
+        private RelayCommand _openFinancialRecordAddCommand;
+        public RelayCommand OpenFinancialRecordAddCommand { get => _openFinancialRecordAddCommand ??= new(obj => { OpenFinancialRecordAdd(); }); }
+
+        private void OpenFinancialRecordAdd()
+        {
+            _windowNavigationService.NavigateTo("FinancialRecordAdd", CurrentUser);
+        }
+
+        private RelayCommand _itemDoubleClickCommand;
+        public RelayCommand ItemDoubleClickCommand => _itemDoubleClickCommand ??= new RelayCommand(DoubleClick);
+
+        private void DoubleClick(object parameter)
+        {
+            if (parameter is FinancialRecord financialRecord)
+            {
+                //MessageBox.Show($"{financialRecord.RecordName}\n" +
+                //    $"{financialRecord.Ammount}\n" +
+                //    $"{financialRecord.Date}\n" +
+                //    $"{financialRecord.IdAccount}\n" +
+                //    $"{financialRecord.IdTransactionType}\n" +
+                //    $"{financialRecord.IdCategory}\n" +
+                //    $"{financialRecord.Description}\n");
+
+                _windowNavigationService.NavigateTo("FinancialRecordAdd", financialRecord);
+            }
+        }
+
+        #endregion
+
+
+        #region Фильтр
+
         private const string NOT_INCLUDE = "Не учитывать!";
 
         private decimal? _startAmount = 0;
@@ -729,17 +792,6 @@ namespace MoneyFlow.MVVM.ViewModels.PageVM
             }
         }
 
-        private Account _selectedAccountFilter;
-        public Account SelectedAccountFilter
-        {
-            get => _selectedAccountFilter;
-            set
-            {
-                _selectedAccountFilter = value;
-                OnPropertyChanged();
-            }
-        }
-
         private Bank _selectedBankFilter;
         public Bank SelectedBankFilter
         {
@@ -747,6 +799,17 @@ namespace MoneyFlow.MVVM.ViewModels.PageVM
             set
             {
                 _selectedBankFilter = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Account _selectedAccountFilter;
+        public Account SelectedAccountFilter
+        {
+            get => _selectedAccountFilter;
+            set
+            {
+                _selectedAccountFilter = value;
                 OnPropertyChanged();
             }
         }
@@ -773,6 +836,12 @@ namespace MoneyFlow.MVVM.ViewModels.PageVM
             }
         }
 
+
+        public ObservableCollection<Bank> BanksFilter { get; set; } = [];
+        public ObservableCollection<Account> AccountsFilter { get; set; } = [];
+        public ObservableCollection<Category> CategoriesFilter { get; set; } = [];
+
+
         private List<FinancialRecord> ApplyFilter(List<FinancialRecord> financialRecords)
         {
             if (ConsiderFilters)
@@ -781,8 +850,8 @@ namespace MoneyFlow.MVVM.ViewModels.PageVM
 
                 filters.Add(x => x.Ammount >= StartAmount && x.Ammount <= EndAmount);
                 filters.Add(x => x.Date >= StartDate && x.Date <= EndDate);
-                filters.Add(x => x.IdAccount == SelectedAccountFilter.IdAccount);
                 filters.Add(x => x.IdAccountNavigation.IdBank == SelectedBankFilter.IdBank);
+                filters.Add(x => x.IdAccount == SelectedAccountFilter.IdAccount);
                 filters.Add(x => x.IdCategory == SelectedCategoryFilter.IdCategory);
 
                 var record = filters.Aggregate(_financialRecords.AsEnumerable(), (current, filter) => current.Where(filter));
@@ -794,22 +863,8 @@ namespace MoneyFlow.MVVM.ViewModels.PageVM
         }
 
 
-        private List<FinancialRecord> _financialRecords { get; set; } = [];
-        public ObservableCollection<FinancialRecord> FinancialRecords { get; set; } = [];
-
-        private void GetFinancialRecordData(User user)
-        {
-            var financialRecordData =
-                _dataBaseService.GetDataTable<FinancialRecord>(x => x
-                            .Include(x => x.IdCategoryNavigation)
-                            .Include(x => x.IdSubcategoryNavigation)
-                            .Include(x => x.IdTransactionTypeNavigation)
-                            .Include(x => x.IdAccountNavigation).ThenInclude(x => x.IdBankNavigation)
-                            .Include(x => x.IdAccountNavigation).ThenInclude(x => x.IdAccountTypeNavigation)
-                                .Where(x => x.IdUser == user.IdUser));
-
-            _financialRecords.AddRange(financialRecordData);
-        }
+        private RelayCommand _acceptFilterCommand;
+        public RelayCommand AcceptFilterCommand { get => _acceptFilterCommand ??= new(obj => { LoadFinancialRecordData(); }); }
 
         private void LoadFinancialRecordData()
         {
@@ -822,37 +877,6 @@ namespace MoneyFlow.MVVM.ViewModels.PageVM
             }
 
             CountRecords = FinancialRecords.Count;
-        }
-
-        private RelayCommand _acceptFilterCommand;
-        public RelayCommand AcceptFilterCommand { get => _acceptFilterCommand ??= new(obj => { LoadFinancialRecordData(); }); }
-
-
-        private RelayCommand _openFinancialRecordAddCommand;
-        public RelayCommand OpenFinancialRecordAddCommand { get => _openFinancialRecordAddCommand ??= new(obj => { OpenFinancialRecordAdd(); }); }
-
-        private void OpenFinancialRecordAdd()
-        {
-            _windowNavigationService.NavigateTo("FinancialRecordAdd", CurrentUser);
-        }
-
-        private RelayCommand _itemDoubleClickCommand;
-        public RelayCommand ItemDoubleClickCommand => _itemDoubleClickCommand ??= new RelayCommand(DoubleClick);
-
-        private void DoubleClick(object parameter)
-        {
-            if (parameter is FinancialRecord financialRecord)
-            {
-                //MessageBox.Show($"{financialRecord.RecordName}\n" +
-                //    $"{financialRecord.Ammount}\n" +
-                //    $"{financialRecord.Date}\n" +
-                //    $"{financialRecord.IdAccount}\n" +
-                //    $"{financialRecord.IdTransactionType}\n" +
-                //    $"{financialRecord.IdCategory}\n" +
-                //    $"{financialRecord.Description}\n");
-
-                _windowNavigationService.NavigateTo("FinancialRecordAdd", financialRecord);
-            }
         }
 
         #endregion

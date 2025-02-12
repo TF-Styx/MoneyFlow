@@ -145,18 +145,18 @@
                                             </StackPanel>
                                         </DockPanel>
                                         <DockPanel>
-                                            <TextBlock Text="Счет" Style="{StaticResource BaseTextBlockStyle}"/>
-                                            <ComboBox ItemsSource="{Binding Accounts}" 
-                                                      SelectedItem="{Binding SelectedAccountFilter}" 
-                                                      DisplayMemberPath="NumberAccount"
-                                                      HorizontalAlignment="Right" Margin="30 5 0 5" 
-                                                      Style="{StaticResource MainComboBox}"/>
-                                        </DockPanel>
-                                        <DockPanel>
                                             <TextBlock Text="Банк" Style="{StaticResource BaseTextBlockStyle}"/>
                                             <ComboBox ItemsSource="{Binding Banks}" 
                                                       SelectedItem="{Binding SelectedBankFilter}" 
                                                       DisplayMemberPath="BankName"
+                                                      HorizontalAlignment="Right" Margin="30 5 0 5" 
+                                                      Style="{StaticResource MainComboBox}"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock Text="Счет" Style="{StaticResource BaseTextBlockStyle}"/>
+                                            <ComboBox ItemsSource="{Binding Accounts}" 
+                                                      SelectedItem="{Binding SelectedAccountFilter}" 
+                                                      DisplayMemberPath="NumberAccount"
                                                       HorizontalAlignment="Right" Margin="30 5 0 5" 
                                                       Style="{StaticResource MainComboBox}"/>
                                         </DockPanel>
