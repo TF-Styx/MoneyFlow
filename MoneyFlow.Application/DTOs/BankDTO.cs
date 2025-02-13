@@ -1,4 +1,6 @@
 ﻿using MoneyFlow.Shared.Constants;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace MoneyFlow.Application.DTOs
 {
@@ -10,8 +12,8 @@ namespace MoneyFlow.Application.DTOs
             BankName = bankName;
         }
 
-        public int IdBank { get; }
-        public string? BankName { get; }
+        public int IdBank { get; private set; }
+        public string? BankName { get; private set; }
 
 
         public static (BankDTO BankDTO, string Message) Create(int idBank, string bankName)
@@ -26,6 +28,14 @@ namespace MoneyFlow.Application.DTOs
             var bank = new BankDTO(idBank, bankName);
 
             return (bank, message);
+        }
+
+        public BankDTO SetProperty(int idBank, string bankName)
+        {
+            IdBank = idBank;
+            BankName = bankName;
+
+            return this;
         }
     }
 }

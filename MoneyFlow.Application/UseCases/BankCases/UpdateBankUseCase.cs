@@ -19,9 +19,9 @@ namespace MoneyFlow.Application.UseCases.BankCases
                 throw new Exception("Данного банка не существует!!");
             }
 
-            var exist = await _banksRepository.Get(idBank);
+            var existBank = await _banksRepository.Get(idBank);
 
-            if (exist == null)
+            if (existBank == null)
             {
                 throw new Exception("Данного банка не существует!!");
             }

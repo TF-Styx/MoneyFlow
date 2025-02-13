@@ -6,7 +6,7 @@ namespace MoneyFlow.WPF.Services
 {
     internal class NavigationWindows : INavigationWindows
     {
-        private Dictionary<string, Window> _windows = [];
+        private Dictionary<TypeWindow, Window> _windows = [];
         private readonly Dictionary<string, IWindowFactory> _windowFactories = [];
 
         public NavigationWindows(IEnumerable<IWindowFactory> windowFactories)
@@ -14,7 +14,7 @@ namespace MoneyFlow.WPF.Services
             _windowFactories = windowFactories.ToDictionary(f => f.GetType().Name.Replace("Factory", ""), f => f);
         }
 
-        public void OpenWindow(string nameWindow, object parameter = null, TypeParameter typeParameter = TypeParameter.None)
+        public void OpenWindow(TypeWindow nameWindow, object parameter = null, TypeParameter typeParameter = TypeParameter.None)
         {
             if (_windows.TryGetValue(nameWindow, out var windowExist))
             {
@@ -30,14 +30,14 @@ namespace MoneyFlow.WPF.Services
             Open(nameWindow, parameter, typeParameter);
         }
 
-        public void TransitObject(string nameWindow, object parameter, TypeParameter typeParameter = TypeParameter.None)
+        public void TransitObject(TypeWindow nameWindow, object parameter, TypeParameter typeParameter = TypeParameter.None)
         {
             throw new NotImplementedException();
         }
 
-        private void Open(string nameWindow, object parameter = null, TypeParameter typeParameter = TypeParameter.None)
+        private void Open(TypeWindow nameWindow, object parameter = null, TypeParameter typeParameter = TypeParameter.None)
         {
-            if (_windowFactories.TryGetValue(nameWindow, out var factory))
+            if (_windowFactories.TryGetValue(nameWindow.ToString(), out var factory))
             {
                 var window = factory.CreateWindow(parameter);
 
@@ -49,6 +49,14 @@ namespace MoneyFlow.WPF.Services
             else
             {
                 throw new Exception($"Такое окно не зарегистрировано {nameWindow}");
+            }
+        }
+
+        public void CloseWindow(TypeWindow nameWindow)
+        {
+            if (_windows.TryGetValue(nameWindow, out var window))
+            {
+                window.Close();
             }
         }
     }

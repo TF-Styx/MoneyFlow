@@ -60,6 +60,12 @@ namespace MoneyFlow.Infrastructure.Repositories
         public async Task<BankDomain> Get(string bankName)
         {
             var bankEntity = await _context.Banks.FirstOrDefaultAsync(x => x.BankName == bankName);
+
+            if (bankEntity == null)
+            {
+                return null;
+            }
+            
             var bankDomain = new BankDomain()
             {
                 IdBank = bankEntity.IdBank,
@@ -71,10 +77,11 @@ namespace MoneyFlow.Infrastructure.Repositories
 
         public async Task<int> Update(int idBank, string bankName)
         {
-            await _context.Banks
-                .Where(x => x.IdBank == idBank)
-                    .ExecuteUpdateAsync(x => x
-                        .SetProperty(x => x.BankName, x => bankName));
+            var entity = await _context.Banks.FirstOrDefaultAsync(x => x.IdBank == idBank);
+            entity.BankName = bankName;
+
+            _context.Banks.Update(entity);
+            _context.SaveChanges();
 
             return idBank;
         }

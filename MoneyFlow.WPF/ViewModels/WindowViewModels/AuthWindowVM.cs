@@ -27,8 +27,15 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
             
         }
 
-        //private RelayCommand _open;
-        //public RelayCommand Open { get => _open ??= new(obj => { _navigationWindows.Value.OpenWindow("MainWindow", 10); }); }
+        private RelayCommand _open;
+        public RelayCommand Open 
+        { 
+            get => _open ??= new(obj => 
+            { 
+                _navigationWindows.Value.OpenWindow(TypeWindow.MainWindow);
+                _navigationWindows.Value.CloseWindow(TypeWindow.AuthWindow);
+            }); 
+        }
 
         //private RelayCommand _open;
         //public RelayCommand Open { get => _open ??= new(async obj => 

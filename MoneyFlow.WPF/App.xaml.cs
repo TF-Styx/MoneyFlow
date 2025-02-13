@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MoneyFlow.Application.Extension;
 using MoneyFlow.Infrastructure.Extension;
+using MoneyFlow.WPF.Enums;
 using MoneyFlow.WPF.Interfaces;
 using MoneyFlow.WPF.Services;
 using MoneyFlow.WPF.ViewModels.PageViewModels;
@@ -38,7 +39,7 @@ namespace MoneyFlow.WPF
             ServiceProvider = services.BuildServiceProvider();
 
             var navigationWindows = ServiceProvider.GetService<INavigationWindows>();
-            navigationWindows.OpenWindow("AuthWindow");
+            navigationWindows.OpenWindow(TypeWindow.AuthWindow);
 
             // Остальная реализация взята из оригинального класса
             base.OnStartup(e);
@@ -49,11 +50,13 @@ namespace MoneyFlow.WPF
         {
             services.AddTransient<IWindowFactory, AuthWindowFactory>();
             services.AddTransient<IWindowFactory, MainWindowFactory>();
+            services.AddTransient<IWindowFactory, AddBaseInformationWindowFactory>();
 
             services.AddTransient(typeof(Lazy<>), typeof(LazyService<>));
 
             services.AddTransient<AuthWindowVM>();
             services.AddTransient<MainWindowVM>();
+            services.AddTransient<AddBaseInformationVM>();
         }
 
         // Добавляем страницы и их VM в коллекцию сервисов 

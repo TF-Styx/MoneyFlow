@@ -7,11 +7,18 @@
         xmlns:windowviewmodels="clr-namespace:MoneyFlow.WPF.ViewModels.WindowViewModels" 
         d:DataContext="{d:DesignInstance Type=windowviewmodels:MainWindowVM}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" 
+        Height="450" Width="800"
+        Background="Black">
     <Grid>
-        <TextBlock Text="{Binding Counter}" 
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   FontSize="50"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0">
+            <MenuItem Header="Добавить">
+                <MenuItem Header="Основная информация" Command="{Binding OpenAddBaseInformationWindowCommand}"/>
+            </MenuItem>
+        </Menu>
     </Grid>
 </Window>

@@ -6,8 +6,9 @@ namespace MoneyFlow.Domain.Interfaces.Repositories
     {
         Task<int> CreateAsync(string genderName);
         Task Delete(int idGender);
-        Task<GenderDomain> Get(int idGender);
         Task<List<GenderDomain>> GetAll();
+        Task<GenderDomain> Get(int idGender);
+        Task<GenderDomain> Get(string genderName);
         Task<int> Update(int idGender, string genderName);
     }
 }

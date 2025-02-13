@@ -57,14 +57,33 @@ namespace MoneyFlow.Infrastructure.Repositories
             return genderDomain;
         }
 
+        public async Task<GenderDomain> Get(string genderName)
+        {
+            var genderEntity = await _context.Genders.FirstOrDefaultAsync(x => x.GenderName.ToLower() == genderName.ToLower());
+
+            if (genderEntity == null)
+            {
+                return null;
+            }
+
+            var genderDomain = new GenderDomain()
+            {
+                IdGender = genderEntity.IdGender,
+                GenderName = genderEntity.GenderName,
+            };
+
+            return genderDomain;
+        }
+
         public async Task<int> Update(int idGender, string genderName)
         {
-            await _context.Genders
-                .Where(x => x.IdGender == idGender)
-                    .ExecuteUpdateAsync(x => x
-                        .SetProperty(x => x.GenderName, x => genderName));
+            var entity = await _context.Genders.FirstOrDefaultAsync(x => x.IdGender == idGender);
+            entity.GenderName = genderName;
 
-            return idGender;
+            _context.Update(entity);
+            _context.SaveChanges();
+
+            return entity.IdGender;
         }
 
         public async Task Delete(int idGender)
