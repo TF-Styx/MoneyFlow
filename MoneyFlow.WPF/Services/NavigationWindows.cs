@@ -1,13 +1,14 @@
 ﻿using MoneyFlow.WPF.Enums;
 using MoneyFlow.WPF.Interfaces;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace MoneyFlow.WPF.Services
 {
     internal class NavigationWindows : INavigationWindows
     {
         private Dictionary<TypeWindow, Window> _windows = [];
-        private readonly Dictionary<string, IWindowFactory> _windowFactories = [];
+        private readonly Dictionary<string, IWindowFactory> _windowFactories = []; // Хранит в себе методы на создание окон и VM
 
         public NavigationWindows(IEnumerable<IWindowFactory> windowFactories)
         {
@@ -16,7 +17,7 @@ namespace MoneyFlow.WPF.Services
 
         public void OpenWindow(TypeWindow nameWindow, object parameter = null, TypeParameter typeParameter = TypeParameter.None)
         {
-            if (_windows.TryGetValue(nameWindow, out var windowExist))
+            if (_windows.TryGetValue(nameWindow, out var windowExist))  // Безопасно получает значение
             {
                 if (windowExist.DataContext is IUpdatable viewModel)
                 {
@@ -57,6 +58,58 @@ namespace MoneyFlow.WPF.Services
             if (_windows.TryGetValue(nameWindow, out var window))
             {
                 window.Close();
+            }
+        }
+
+        public void MinimizeWindow(TypeWindow nameWindow)
+        {
+            if (_windows.TryGetValue(nameWindow, out var window))
+            {
+                SystemCommands.MinimizeWindow(window);
+            }
+        }
+
+        public void MaximizeWindow(TypeWindow nameWindow)
+        {
+            if (_windows.TryGetValue(nameWindow, out var window))
+            {
+                SystemCommands.MaximizeWindow(window);
+            }
+        }
+
+        public void RestoreWindow(TypeWindow nameWindow)
+        {
+            if (_windows.TryGetValue(nameWindow, out var window))
+            {
+                SystemCommands.RestoreWindow(window);
+            }
+        }
+
+        public void Shutdown()
+        {
+            App.Current.Shutdown();
+        }
+
+        private void MainWindowStateChangeRaised(object sender, EventArgs e)
+        {
+            if (sender is Window window)
+            {
+                var mainWindowBorder = (Border)window.FindName("MainWindowBorder");
+                var restoreButton = (Button)window.FindName("RestoreButton");
+                var maximizeButton = (Button)window.FindName("MaximizeButton");
+
+                if (window.WindowState == WindowState.Maximized)
+                {
+                    mainWindowBorder.BorderThickness = new Thickness(8);
+                    restoreButton.Visibility = Visibility.Visible;
+                    maximizeButton.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    mainWindowBorder.BorderThickness = new Thickness(0);
+                    restoreButton.Visibility = Visibility.Collapsed;
+                    maximizeButton.Visibility = Visibility.Visible;
+                }
             }
         }
     }

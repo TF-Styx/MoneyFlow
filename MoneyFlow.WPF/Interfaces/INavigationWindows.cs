@@ -9,5 +9,13 @@ namespace MoneyFlow.WPF.Interfaces
         void TransitObject(TypeWindow nameWindow, object parameter, TypeParameter typeParameter = TypeParameter.None);
 
         void CloseWindow(TypeWindow nameWindow);
+
+        void MinimizeWindow(TypeWindow nameWindow);
+
+        void MaximizeWindow(TypeWindow nameWindow);
+
+        void RestoreWindow(TypeWindow nameWindow);
+
+        void Shutdown();
     }
 }

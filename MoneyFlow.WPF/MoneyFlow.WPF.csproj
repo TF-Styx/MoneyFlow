@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <Folder Include="Assets\Styles\" />
-    <Folder Include="UserControls\" />
   </ItemGroup>
 
 </Project>

@@ -108,7 +108,8 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
             get => _bankUpdateCommand ??= new(async obj =>
             {
                 var idUpdatableBank = await _bankService.UpdateBank(SelectedBank.IdBank, BankName);
-                var updatableBank = Banks.FirstOrDefault(x => x.IdBank == SelectedBank.IdBank).SetProperty(idUpdatableBank, BankName);
+                var updatableBank = Banks.FirstOrDefault(x => x.IdBank == SelectedBank.IdBank)
+                                         .SetProperty(x => { x.IdBank = idUpdatableBank; x.BankName = BankName; });
                 var index = Banks.IndexOf(updatableBank);
 
                 Banks.RemoveAt(index);
@@ -194,7 +195,8 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
             get => _genderUpdateCommand ??= new(async obj =>
             {
                 var idUpdatableGender = await _genderService.UpdateGender(SelectedGender.IdGender, GenderName);
-                var updatableGender = Genders.FirstOrDefault(x => x.IdGender == SelectedGender.IdGender).SetProperty(idUpdatableGender, GenderName);
+                var updatableGender = Genders.FirstOrDefault(x => x.IdGender == SelectedGender.IdGender)
+                                             .SetProperty(x => { x.IdGender = idUpdatableGender; x.GenderName = GenderName; });
                 var index = Genders.IndexOf(updatableGender);
 
                 Genders.RemoveAt(index);

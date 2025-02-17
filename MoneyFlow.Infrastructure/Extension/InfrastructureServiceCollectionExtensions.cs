@@ -15,6 +15,7 @@ namespace MoneyFlow.Infrastructure.Extension
 
             services.AddScoped<IBanksRepository, BanksRepository>();
             services.AddScoped<IGendersRepository, GendersRepository>();
+            services.AddScoped<IUsersRepository, UsersRepository>();
 
             return services;
         }
