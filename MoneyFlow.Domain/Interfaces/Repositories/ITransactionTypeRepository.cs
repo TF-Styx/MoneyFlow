@@ -1,6 +1,6 @@
 ﻿using MoneyFlow.Domain.DomainModels;
 
-namespace MoneyFlow.Infrastructure.Repositories
+namespace MoneyFlow.Domain.Interfaces.Repositories
 {
     public interface ITransactionTypeRepository
     {

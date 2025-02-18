@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MoneyFlow.Domain.DomainModels;
+using MoneyFlow.Domain.Interfaces.Repositories;
 using MoneyFlow.Infrastructure.Context;
 using MoneyFlow.Infrastructure.EntityModel;
 

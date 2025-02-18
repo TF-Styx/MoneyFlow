@@ -3,9 +3,11 @@ using MoneyFlow.Application.Services.Abstraction;
 using MoneyFlow.Application.Services.Realization;
 using MoneyFlow.Application.UseCaseInterfaces.BankCaseInterfaces;
 using MoneyFlow.Application.UseCaseInterfaces.GenderCaseInterfaces;
+using MoneyFlow.Application.UseCaseInterfaces.TransactionTypeCaseInterfaces;
 using MoneyFlow.Application.UseCaseInterfaces.UserCaseInterfaces;
 using MoneyFlow.Application.UseCases.BankCases;
 using MoneyFlow.Application.UseCases.GenderCases;
+using MoneyFlow.Application.UseCases.TransactionTypeCases;
 using MoneyFlow.Application.UseCases.UserCases;
 
 namespace MoneyFlow.Application.Extension
@@ -24,17 +26,23 @@ namespace MoneyFlow.Application.Extension
             services.AddScoped<IGetGenderUseCase,    GetGenderUseCase>();
             services.AddScoped<IUpdateGenderUseCase, UpdateGenderUseCase>();
 
+            services.AddScoped<ICreateTransactionTypeUseCase, CreateTransactionTypeUseCase>();
+            services.AddScoped<IDeleteTransactionTypeUseCase, DeleteTransactionTypeUseCase>();
+            services.AddScoped<IGetTransactionTypeUseCase,    GetTransactionTypeUseCase>();
+            services.AddScoped<IUpdateTransactionTypeUseCase, UpdateTransactionTypeUseCase>();
+
             services.AddScoped<ICreateUserUseCase, CreateUserUseCase>();
             services.AddScoped<IDeleteUserUseCase, DeleteUserUseCase>();
             services.AddScoped<IGetUserUseCase,    GetUserUseCase>();
             services.AddScoped<IUpdateUserUseCase, UpdateUserUseCase>();
 
-            services.AddSingleton<IAuthorizationService, AuthorizationService>();
-            services.AddSingleton<IRegistrationService, RegistrationService>();
-            services.AddSingleton<IRecoveryService, RecoveryService>();
-            services.AddSingleton<IBankService,   BankService>();
-            services.AddSingleton<IGenderService, GenderService>();
-            services.AddSingleton<IUserService,   UserService>();
+            services.AddSingleton<IAuthorizationService,    AuthorizationService>();
+            services.AddSingleton<IRegistrationService,     RegistrationService>();
+            services.AddSingleton<IRecoveryService,         RecoveryService>();
+            services.AddSingleton<IBankService,             BankService>();
+            services.AddSingleton<IGenderService,           GenderService>();
+            services.AddSingleton<ITransactionTypeService,  TransactionTypeService>();
+            services.AddSingleton<IUserService,             UserService>();
 
             return services;
         }

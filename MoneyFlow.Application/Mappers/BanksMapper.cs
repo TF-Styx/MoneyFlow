@@ -7,10 +7,8 @@ namespace MoneyFlow.Application.Mappers
     {
         public static (BankDTO BankDTO, string Message) ToDTO(this BankDomain bank)
         {
-            if (bank == null)
-            {
-                return (null, "Банк ноль");
-            }
+            if (bank == null) { return (null, "Банк не найден!!"); }
+
             return BankDTO.Create(bank.IdBank, bank.BankName);
         }
 
@@ -22,6 +20,7 @@ namespace MoneyFlow.Application.Mappers
             {
                 list.Add(item.ToDTO().BankDTO);
             }
+
             return list;
         }
     }

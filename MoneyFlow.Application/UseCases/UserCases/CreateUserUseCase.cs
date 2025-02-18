@@ -27,10 +27,7 @@ namespace MoneyFlow.Application.UseCases.UserCases
 
             var existUser = await _usersRepository.GetAsync(login);
 
-            if (existUser != null)
-            {
-                return (null, "Пользователь с таким логином уже есть!!");
-            }
+            if (existUser != null) { return (null, "Пользователь с таким логином уже есть!!"); }
 
             var idUser = await _usersRepository.CreateAsync(userName, login, password);
             var userDomain = await _usersRepository.GetAsync(idUser);
