@@ -92,7 +92,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
         {
             get => _bankAddCommand ??= new(async obj =>
             {
-                var newBank = await _bankService.CreateBank(BankName);
+                var newBank = await _bankService.CreateAsyncBank(BankName);
                 if (newBank.Message != string.Empty)
                 {
                     MessageBox.Show(newBank.Message);
@@ -122,7 +122,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
         {
             get => _bankDeleteCommand ??= new(async obj =>
             {
-                await _bankService.DeleteBank(SelectedBank.IdBank);
+                await _bankService.DeleteAsyncBank(SelectedBank.IdBank);
                 Banks.Remove(SelectedBank);
             });
         }
@@ -150,7 +150,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
         {
             Genders.Clear();
 
-            var list = await _genderService.GetAllGender();
+            var list = await _genderService.GetAllAsyncGender();
 
             foreach (var item in list)
             {
@@ -179,7 +179,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
         {
             get => _GenderAddCommand ??= new(async obj =>
             {
-                var newGender = await _genderService.CreateGender(GenderName);
+                var newGender = await _genderService.CreateAsyncGender(GenderName);
                 if (newGender.Message != string.Empty)
                 {
                     MessageBox.Show(newGender.Message);
@@ -194,7 +194,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
         {
             get => _genderUpdateCommand ??= new(async obj =>
             {
-                var idUpdatableGender = await _genderService.UpdateGender(SelectedGender.IdGender, GenderName);
+                var idUpdatableGender = await _genderService.UpdateAsyncGender(SelectedGender.IdGender, GenderName);
                 var updatableGender = Genders.FirstOrDefault(x => x.IdGender == SelectedGender.IdGender)
                                              .SetProperty(x => { x.IdGender = idUpdatableGender; x.GenderName = GenderName; });
                 var index = Genders.IndexOf(updatableGender);
@@ -209,7 +209,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
         {
             get => _GenderDeleteCommand ??= new(async obj =>
             {
-                await _genderService.DeleteGender(SelectedGender.IdGender);
+                await _genderService.DeleteAsyncGender(SelectedGender.IdGender);
                 Genders.Remove(SelectedGender);
             });
         }

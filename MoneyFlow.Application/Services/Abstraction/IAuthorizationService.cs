@@ -6,6 +6,7 @@ namespace MoneyFlow.Application.Services.Abstraction
     {
         UserDTO CurrentUser { get; }
 
-        Task<(UserDTO UserDTO, string Message)> Auth(string login, string password);
+        Task<(UserDTO UserDTO, string Message)> AuthAsync(string login, string password);
+        (UserDTO UserDTO, string Message) Auth(string login, string password);
     }
 }

@@ -14,7 +14,7 @@ namespace MoneyFlow.Application.UseCases.BankCases
             _banksRepository = banksRepository;
         }
 
-        public async Task<(BankDTO BankDTO, string Message)> CreateBank(string bankName)
+        public async Task<(BankDTO BankDTO, string Message)> CreateAsyncBank(string bankName)
         {
             string message = string.Empty;
 
@@ -23,7 +23,7 @@ namespace MoneyFlow.Application.UseCases.BankCases
                 return (null, "Вы не указали название банка!!");
             }
 
-            var existBank = await _banksRepository.Get(bankName);
+            var existBank = await _banksRepository.GetAsync(bankName);
 
             if (existBank != null)
             {
@@ -31,7 +31,28 @@ namespace MoneyFlow.Application.UseCases.BankCases
             }
 
             var idBank = await _banksRepository.CreateAsync(bankName);
-            var bankDomain = await _banksRepository.Get(idBank);
+            var bankDomain = await _banksRepository.GetAsync(idBank);
+
+            return (bankDomain.ToDTO().BankDTO, message);
+        }
+        public (BankDTO BankDTO, string Message) CreateBank(string bankName)
+        {
+            string message = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(bankName))
+            {
+                return (null, "Вы не указали название банка!!");
+            }
+
+            var existBank = _banksRepository.Get(bankName);
+
+            if (existBank != null)
+            {
+                return (null, "Банк с таким именем уже есть!!");
+            }
+
+            var idBank = _banksRepository.Create(bankName);
+            var bankDomain = _banksRepository.Get(idBank);
 
             return (bankDomain.ToDTO().BankDTO, message);
         }

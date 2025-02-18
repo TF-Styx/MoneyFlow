@@ -12,21 +12,37 @@ namespace MoneyFlow.Application.UseCases.BankCases
             _banksRepository = banksRepository;
         }
 
-        public async Task<int> UpdateBank(int idBank, string bankName)
+        public async Task<int> UpdateAsyncBank(int idBank, string bankName)
         {
             if (string.IsNullOrWhiteSpace(bankName))
             {
                 throw new Exception("Данного банка не существует!!");
             }
 
-            var existBank = await _banksRepository.Get(idBank);
+            var existBank = await _banksRepository.GetAsync(idBank);
 
             if (existBank == null)
             {
                 throw new Exception("Данного банка не существует!!");
             }
 
-            return await _banksRepository.Update(idBank, bankName);
+            return await _banksRepository.UpdateAsync(idBank, bankName);
+        }
+        public int UpdateBank(int idBank, string bankName)
+        {
+            if (string.IsNullOrWhiteSpace(bankName))
+            {
+                throw new Exception("Данного банка не существует!!");
+            }
+
+            var existBank = _banksRepository.Get(idBank);
+
+            if (existBank == null)
+            {
+                throw new Exception("Данного банка не существует!!");
+            }
+
+            return _banksRepository.Update(idBank, bankName);
         }
     }
 }

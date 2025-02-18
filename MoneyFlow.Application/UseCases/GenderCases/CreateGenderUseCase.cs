@@ -14,7 +14,7 @@ namespace MoneyFlow.Application.UseCases.GenderCases
             _genderRepository = genderRepository;
         }
 
-        public async Task<(GenderDTO GenderDTO, string Message)> CreateGender(string genderName)
+        public async Task<(GenderDTO GenderDTO, string Message)> CreateAsyncGender(string genderName)
         {
             string message = string.Empty;
 
@@ -23,7 +23,7 @@ namespace MoneyFlow.Application.UseCases.GenderCases
                 return (null, "Вы не указали наименование пола!!");
             }
 
-            var existGender = await _genderRepository.Get(genderName);
+            var existGender = await _genderRepository.GetAsync(genderName);
 
             if (existGender != null)
             {
@@ -31,7 +31,28 @@ namespace MoneyFlow.Application.UseCases.GenderCases
             }
 
             var idGender = await _genderRepository.CreateAsync(genderName);
-            var genderDomain = await _genderRepository.Get(idGender);
+            var genderDomain = await _genderRepository.GetAsync(idGender);
+
+            return (genderDomain.ToDTO().GenderDTO, message);
+        }
+        public (GenderDTO GenderDTO, string Message) CreateGender(string genderName)
+        {
+            string message = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(genderName))
+            {
+                return (null, "Вы не указали наименование пола!!");
+            }
+
+            var existGender = _genderRepository.Get(genderName);
+
+            if (existGender != null)
+            {
+                return (null, "Пол с таким именем уже есть!!");
+            }
+
+            var idGender = _genderRepository.Create(genderName);
+            var genderDomain = _genderRepository.Get(idGender);
 
             return (genderDomain.ToDTO().GenderDTO, message);
         }

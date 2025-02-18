@@ -12,11 +12,19 @@ namespace MoneyFlow.Application.Services.Realization
             _userService = userService;
         }
 
-        public async Task<(UserDTO UserDTO, string Message)> Recovery(string login, string password)
+        public async Task<(UserDTO UserDTO, string Message)> RecoveryAsync(string login, string password)
         {
-            var user = await _userService.GetUser(login);
-            var idUser = await _userService.UpdateUser(user.IdUser, user.UserName, user.Avatar, password, user.IdGender);
-            var updateUser = await _userService.GetUser(idUser);
+            var user = await _userService.GetAsyncUser(login);
+            var idUser = await _userService.UpdateAsyncUser(user.IdUser, user.UserName, user.Avatar, password, user.IdGender);
+            var updateUser = await _userService.GetAsyncUser(idUser);
+
+            return (updateUser, "Пароль изменен!!");
+        }
+        public (UserDTO UserDTO, string Message) Recovery(string login, string password)
+        {
+            var user = _userService.GetUser(login);
+            var idUser = _userService.UpdateUser(user.IdUser, user.UserName, user.Avatar, password, user.IdGender);
+            var updateUser = _userService.GetUser(idUser);
 
             return (updateUser, "Пароль изменен!!");
         }

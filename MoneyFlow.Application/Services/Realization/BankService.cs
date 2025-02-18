@@ -8,40 +8,69 @@ namespace MoneyFlow.Application.Services.Realization
     {
         private readonly ICreateBankUseCase _createBankUseCase;
         private readonly IDeleteBankUseCase _deleteBankUseCase;
-        private readonly IGetBankUseCase _getBankUseCase;
+        private readonly IGetBankUseCase    _getBankUseCase;
         private readonly IUpdateBankUseCase _updateBankUseCase;
 
         public BankService(ICreateBankUseCase createBankUseCase, IDeleteBankUseCase deleteBankUseCase, IGetBankUseCase getBankUseCase, IUpdateBankUseCase updateBankUseCase)
         {
             _createBankUseCase = createBankUseCase;
             _deleteBankUseCase = deleteBankUseCase;
-            _getBankUseCase = getBankUseCase;
+            _getBankUseCase    = getBankUseCase;
             _updateBankUseCase = updateBankUseCase;
         }
 
-        public async Task<(BankDTO BankDTO, string Message)> CreateBank(string bankName)
+        public async Task<(BankDTO BankDTO, string Message)> CreateAsyncBank(string bankName)
         {
-            return await _createBankUseCase.CreateBank(bankName);
+            return await _createBankUseCase.CreateAsyncBank(bankName);
+        }
+        public (BankDTO BankDTO, string Message) CreateBank(string bankName)
+        {
+            return _createBankUseCase.CreateBank(bankName);
         }
 
-        public async Task DeleteBank(int idBank)
+        public async Task<List<BankDTO>> GetAllAsyncBank()
         {
-            await _deleteBankUseCase.DeleteBank(idBank);
+            return await _getBankUseCase.GetAllAsyncBank();
+        }
+        public List<BankDTO> GetAllBank()
+        {
+            return _getBankUseCase.GetAllBank();
         }
 
-        public async Task<List<BankDTO>> GetAllBank()
+        public async Task<BankDTO> GetAsyncBank(int idBank)
         {
-            return await _getBankUseCase.GetAllBank();
+            return await _getBankUseCase.GetAsyncBank(idBank);
+        }
+        public BankDTO GetBank(int idBank)
+        {
+            return _getBankUseCase.GetBank(idBank);
         }
 
-        public async Task<BankDTO> GetBank(int id)
+        public async Task<BankDTO> GetAsyncBank(string bankName)
         {
-            return await _getBankUseCase.GetBank(id);
+            return await _getBankUseCase.GetAsyncBank(bankName);
+        }
+        public BankDTO GetBank(string bankName)
+        {
+            return _getBankUseCase.GetBank(bankName);
         }
 
-        public async Task<int> UpdateBank(int idBank, string bankName)
+        public async Task<int> UpdateAsyncBank(int idBank, string bankName)
         {
-            return await _updateBankUseCase.UpdateBank(idBank, bankName);
+            return await _updateBankUseCase.UpdateAsyncBank(idBank, bankName);
+        }
+        public int UpdateBank(int idBank, string bankName)
+        {
+            return _updateBankUseCase.UpdateBank(idBank, bankName);
+        }
+
+        public async Task DeleteAsyncBank(int idBank)
+        {
+            await _deleteBankUseCase.DeleteAsyncBank(idBank);
+        }
+        public void DeleteBank(int idBank)
+        {
+            _deleteBankUseCase.DeleteBank(idBank);
         }
     }
 }

@@ -27,8 +27,20 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             return _context.Banks.FirstOrDefault(x => x.BankName == bankName).IdBank;
         }
+        public int Create(string bankName)
+        {
+            var bankEntity = new Bank
+            {
+                BankName = bankName
+            };
 
-        public async Task<List<BankDomain>> GetAll()
+            _context.AddAsync(bankEntity);
+            _context.SaveChangesAsync();
+
+            return _context.Banks.FirstOrDefault(x => x.BankName == bankName).IdBank;
+        }
+
+        public async Task<List<BankDomain>> GetAllAsync()
         {
             var bankList = new List<BankDomain>();
             var bankEntities = await _context.Banks.ToListAsync();
@@ -44,8 +56,24 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             return bankList;
         }
+        public List<BankDomain> GetAll()
+        {
+            var bankList = new List<BankDomain>();
+            var bankEntities = _context.Banks.ToList();
 
-        public async Task<BankDomain> Get(int idBank)
+            foreach (var item in bankEntities)
+            {
+                bankList.Add(new BankDomain()
+                {
+                    IdBank = item.IdBank,
+                    BankName = item.BankName,
+                });
+            }
+
+            return bankList;
+        }
+
+        public async Task<BankDomain> GetAsync(int idBank)
         {
             var bankEntity = await _context.Banks.FirstOrDefaultAsync(x => x.IdBank == idBank);
             var bankDomain = new BankDomain()
@@ -56,16 +84,9 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             return bankDomain;
         }
-
-        public async Task<BankDomain> Get(string bankName)
+        public BankDomain Get(int idBank)
         {
-            var bankEntity = await _context.Banks.FirstOrDefaultAsync(x => x.BankName == bankName);
-
-            if (bankEntity == null)
-            {
-                return null;
-            }
-            
+            var bankEntity = _context.Banks.FirstOrDefault(x => x.IdBank == idBank);
             var bankDomain = new BankDomain()
             {
                 IdBank = bankEntity.IdBank,
@@ -75,7 +96,36 @@ namespace MoneyFlow.Infrastructure.Repositories
             return bankDomain;
         }
 
-        public async Task<int> Update(int idBank, string bankName)
+        public async Task<BankDomain> GetAsync(string bankName)
+        {
+            var bankEntity = await _context.Banks.FirstOrDefaultAsync(x => x.BankName == bankName);
+
+            if (bankEntity == null) { return null; }
+
+            var bankDomain = new BankDomain()
+            {
+                IdBank = bankEntity.IdBank,
+                BankName = bankEntity.BankName,
+            };
+
+            return bankDomain;
+        }
+        public BankDomain Get(string bankName)
+        {
+            var bankEntity = _context.Banks.FirstOrDefault(x => x.BankName == bankName);
+
+            if (bankEntity == null) { return null; }
+
+            var bankDomain = new BankDomain()
+            {
+                IdBank = bankEntity.IdBank,
+                BankName = bankEntity.BankName,
+            };
+
+            return bankDomain;
+        }
+
+        public async Task<int> UpdateAsync(int idBank, string bankName)
         {
             var entity = await _context.Banks.FirstOrDefaultAsync(x => x.IdBank == idBank);
             entity.BankName = bankName;
@@ -85,10 +135,24 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             return idBank;
         }
+        public int Update(int idBank, string bankName)
+        {
+            var entity = _context.Banks.FirstOrDefault(x => x.IdBank == idBank);
+            entity.BankName = bankName;
 
-        public async Task Delete(int idBank)
+            _context.Banks.Update(entity);
+            _context.SaveChanges();
+
+            return idBank;
+        }
+
+        public async Task DeleteAsync(int idBank)
         {
             await _context.Banks.Where(x => x.IdBank == idBank).ExecuteDeleteAsync();
+        }
+        public void Delete(int idBank)
+        {
+            _context.Banks.Where(x => x.IdBank == idBank).ExecuteDelete();
         }
     }
 }

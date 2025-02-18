@@ -2,6 +2,7 @@
 {
     public interface IDeleteGenderUseCase
     {
-        Task DeleteGender(int idGender);
+        Task DeleteAsyncGender(int idGender);
+        void DeleteGender(int idGender);
     }
 }

@@ -4,8 +4,13 @@ namespace MoneyFlow.Application.UseCaseInterfaces.UserCaseInterfaces
 {
     public interface IGetUserUseCase
     {
-        Task<List<UserDTO>> GetAllUser();
-        Task<UserDTO> GetUser(int idUser);
-        Task<UserDTO> GetUser(string login);
+        Task<List<UserDTO>> GetAllAsyncUser();
+        List<UserDTO> GetAllUser();
+
+        Task<UserDTO> GetAsyncUser(int idUser);
+        UserDTO GetUser(int idUser);
+
+        Task<UserDTO> GetAsyncUser(string login); 
+        UserDTO GetUser(string login);
     }
 }

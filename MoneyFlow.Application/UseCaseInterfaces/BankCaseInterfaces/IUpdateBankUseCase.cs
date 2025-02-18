@@ -2,6 +2,7 @@
 {
     public interface IUpdateBankUseCase
     {
-        Task<int> UpdateBank(int idBank, string bankName);
+        Task<int> UpdateAsyncBank(int idBank, string bankName);
+        int UpdateBank(int idBank, string bankName);
     }
 }

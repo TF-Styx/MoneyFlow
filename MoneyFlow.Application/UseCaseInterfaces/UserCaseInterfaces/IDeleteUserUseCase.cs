@@ -2,6 +2,7 @@
 {
     public interface IDeleteUserUseCase
     {
-        Task DeleteUser(int idUser);
+        Task DeleteAsyncUser(int idUser);
+        void DeleteUser(int idUser);
     }
 }

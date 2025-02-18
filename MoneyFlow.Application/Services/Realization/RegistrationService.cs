@@ -12,9 +12,15 @@ namespace MoneyFlow.Application.Services.Realization
             _userService = userService;
         }
 
-        public async Task<(UserDTO UserDTO, string Message)> Registration(string userName, string login, string password)
+        public async Task<(UserDTO UserDTO, string Message)> RegistrationAsync(string userName, string login, string password)
         {
-            var (UserDTO, Message) = await _userService.CreateUser(userName, login, password);
+            var (UserDTO, Message) = await _userService.CreateAsyncUser(userName, login, password);
+
+            return (UserDTO, Message);
+        }
+        public (UserDTO UserDTO, string Message) Registration(string userName, string login, string password)
+        {
+            var (UserDTO, Message) = _userService.CreateUser(userName, login, password);
 
             return (UserDTO, Message);
         }

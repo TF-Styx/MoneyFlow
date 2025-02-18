@@ -12,9 +12,13 @@ namespace MoneyFlow.Application.UseCases.GenderCases
             _gendersRepository = gendersRepository;
         }
 
-        public async Task DeleteGender(int idGender)
+        public async Task DeleteAsyncGender(int idGender)
         {
-            await _gendersRepository.Delete(idGender); // TODO : Сделать проверки на существование элемента
+            await _gendersRepository.DeleteAsync(idGender); // TODO : Сделать проверки на существование элемента
+        }
+        public void DeleteGender(int idGender)
+        {
+            _gendersRepository.Delete(idGender); // TODO : Сделать проверки на существование элемента
         }
     }
 }

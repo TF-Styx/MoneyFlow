@@ -29,13 +29,47 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             return _context.Users.FirstOrDefault(x => x.Login == login).IdUser;
         }
+        public int Create(string userName, string login, string password)
+        {
+            var userEntity = new User
+            {
+                UserName = userName,
+                Login = login,
+                Password = password
+            };
 
-        public async Task<List<UserDomain>> GetAll()
+            _context.Add(userEntity);
+            _context.SaveChanges();
+
+            return _context.Users.FirstOrDefault(x => x.Login == login).IdUser;
+        }
+
+        public async Task<List<UserDomain>> GetAllAsync()
         {
             var userList = new List<UserDomain>();
             var userEntity = await _context.Users.ToListAsync();
 
-            foreach (var item in userList)
+            foreach (var item in userEntity)
+            {
+                userList.Add(new UserDomain()
+                {
+                    IdUser = item.IdUser,
+                    UserName = item.UserName,
+                    Avatar = item.Avatar,
+                    Login = item.Login,
+                    Password = item.Password,
+                    IdGender = item.IdGender,
+                });
+            }
+
+            return userList;
+        }
+        public List<UserDomain> GetAll()
+        {
+            var userList = new List<UserDomain>();
+            var userEntity = _context.Users.ToList();
+
+            foreach (var item in userEntity)
             {
                 userList.Add(new UserDomain()
                 {
@@ -51,7 +85,7 @@ namespace MoneyFlow.Infrastructure.Repositories
             return userList;
         }
 
-        public async Task<UserDomain> Get(int idUser)
+        public async Task<UserDomain> GetAsync(int idUser)
         {
             var userEntity = await _context.Users.FirstOrDefaultAsync(x => x.IdUser == idUser);
             var userDomain = new UserDomain()
@@ -66,8 +100,23 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             return userDomain;
         }
+        public UserDomain Get(int idUser)
+        {
+            var userEntity = _context.Users.FirstOrDefault(x => x.IdUser == idUser);
+            var userDomain = new UserDomain()
+            {
+                IdUser = userEntity.IdUser,
+                UserName = userEntity.UserName,
+                Avatar = userEntity.Avatar,
+                Login = userEntity.Login,
+                Password = userEntity.Password,
+                IdGender = userEntity.IdGender,
+            };
 
-        public async Task<UserDomain> Get(string login)
+            return userDomain;
+        }
+
+        public async Task<UserDomain> GetAsync(string login)
         {
             var userEntity = await _context.Users.FirstOrDefaultAsync(x => x.Login == login);
 
@@ -85,8 +134,26 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             return userDomain;
         }
+        public UserDomain Get(string login)
+        {
+            var userEntity = _context.Users.FirstOrDefault(x => x.Login == login);
 
-        public async Task<int> Update(int idUser, string? userName, byte[]? avatar,
+            if (userEntity == null) { return null; }
+
+            var userDomain = new UserDomain()
+            {
+                IdUser = userEntity.IdUser,
+                UserName = userEntity.UserName,
+                Avatar = userEntity.Avatar,
+                Login = userEntity.Login,
+                Password = userEntity.Password,
+                IdGender = userEntity.IdGender,
+            };
+
+            return userDomain;
+        }
+
+        public async Task<int> UpdateAsync(int idUser, string? userName, byte[]? avatar,
                                       string password, int? idGender)
         {
             var entity = await _context.Users.FirstOrDefaultAsync(x => x.IdUser == idUser);
@@ -101,10 +168,29 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             return idUser;
         }
+        public int Update(int idUser, string? userName, byte[]? avatar,
+                                      string password, int? idGender)
+        {
+            var entity = _context.Users.FirstOrDefault(x => x.IdUser == idUser);
 
-        public async Task Delete(int idUser)
+            entity.UserName = userName;
+            entity.Avatar = avatar;
+            entity.Password = password;
+            entity.IdGender = idGender;
+
+            _context.Users.Update(entity);
+            _context.SaveChanges();
+
+            return idUser;
+        }
+
+        public async Task DeleteAsync(int idUser)
         {
             await _context.Users.Where(x => x.IdUser == idUser).ExecuteDeleteAsync();
+        }
+        public void Delete(int idUser)
+        {
+            _context.Users.Where(x => x.IdUser == idUser).ExecuteDelete();
         }
     }
 }

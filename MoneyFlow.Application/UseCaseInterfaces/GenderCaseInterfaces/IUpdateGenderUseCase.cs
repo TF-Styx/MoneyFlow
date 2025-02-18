@@ -2,6 +2,7 @@
 {
     public interface IUpdateGenderUseCase
     {
-        Task<int> UpdateGender(int idGender, string genderName);
+        Task<int> UpdateAsyncGender(int idGender, string genderName);
+        int UpdateGender(int idGender, string genderName);
     }
 }

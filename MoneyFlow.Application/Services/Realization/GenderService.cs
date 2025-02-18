@@ -19,29 +19,58 @@ namespace MoneyFlow.Application.Services.Realization
             _updateGenderUseCase = updateGenderUseCase;
         }
 
-        public async Task<(GenderDTO GenderDTO, string Message)> CreateGender(string genderName)
+        public async Task<(GenderDTO GenderDTO, string Message)> CreateAsyncGender(string genderName)
         {
-            return await _createGenderUseCase.CreateGender(genderName);
+            return await _createGenderUseCase.CreateAsyncGender(genderName);
+        }
+        public (GenderDTO GenderDTO, string Message) CreateGender(string genderName)
+        {
+            return _createGenderUseCase.CreateGender(genderName);
         }
 
-        public async Task DeleteGender(int idGender)
+        public async Task<List<GenderDTO>> GetAllAsyncGender()
         {
-            await _deleteGenderUseCase.DeleteGender(idGender);
+            return await _getGenderUseCase.GetAllAsyncGender();
+        }
+        public List<GenderDTO> GetAllGender()
+        {
+            return _getGenderUseCase.GetAllGender();
         }
 
-        public async Task<List<GenderDTO>> GetAllGender()
+        public async Task<GenderDTO> GetAsyncGender(int idGender)
         {
-            return await _getGenderUseCase.GetAllGender();
+            return await _getGenderUseCase.GetAsyncGender(idGender);
+        }
+        public GenderDTO GetGender(int idGender)
+        {
+            return _getGenderUseCase.GetGender(idGender);
         }
 
-        public async Task<GenderDTO> GetGender(int id)
+        public async Task<GenderDTO> GetAsyncGender(string genderName)
         {
-            return await _getGenderUseCase.GetGender(id);
+            return await _getGenderUseCase.GetAsyncGender(genderName);
+        }
+        public GenderDTO GetGender(string genderName)
+        {
+            return _getGenderUseCase.GetGender(genderName);
         }
 
-        public async Task<int> UpdateGender(int idGender, string genderName)
+        public async Task<int> UpdateAsyncGender(int idGender, string genderName)
         {
-            return await _updateGenderUseCase.UpdateGender(idGender, genderName);
+            return await _updateGenderUseCase.UpdateAsyncGender(idGender, genderName);
+        }
+        public int UpdateGender(int idGender, string genderName)
+        {
+            return _updateGenderUseCase.UpdateGender(idGender, genderName);
+        }
+
+        public async Task DeleteAsyncGender(int idGender)
+        {
+            await _deleteGenderUseCase.DeleteAsyncGender(idGender);
+        }
+        public void DeleteGender(int idGender)
+        {
+            _deleteGenderUseCase.DeleteGender(idGender);
         }
     }
 }

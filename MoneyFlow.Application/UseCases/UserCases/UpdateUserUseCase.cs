@@ -12,17 +12,29 @@ namespace MoneyFlow.Application.UseCases.UserCases
             _usersRepository = usersRepository;
         }
 
-        public async Task<int> UpdateUser(int idUser, string? userName, byte[]? avatar,
+        public async Task<int> UpdateAsyncUser(int idUser, string? userName, byte[]? avatar,
                                       string password, int? idGender)
         {
-            var existUser = await _usersRepository.Get(idUser);
+            var existUser = await _usersRepository.GetAsync(idUser);
 
             if (existUser == null)
             {
                 throw new Exception("Данного пользователя не существует!!");
             }
 
-            return await _usersRepository.Update(idUser, userName, avatar, password, idGender);
+            return await _usersRepository.UpdateAsync(idUser, userName, avatar, password, idGender);
+        }
+        public int UpdateUser(int idUser, string? userName, byte[]? avatar,
+                                      string password, int? idGender)
+        {
+            var existUser = _usersRepository.Get(idUser);
+
+            if (existUser == null)
+            {
+                throw new Exception("Данного пользователя не существует!!");
+            }
+
+            return _usersRepository.Update(idUser, userName, avatar, password, idGender);
         }
     }
 }

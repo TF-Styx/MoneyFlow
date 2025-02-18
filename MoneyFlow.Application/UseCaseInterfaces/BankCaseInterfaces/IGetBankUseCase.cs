@@ -4,7 +4,14 @@ namespace MoneyFlow.Application.UseCaseInterfaces.BankCaseInterfaces
 {
     public interface IGetBankUseCase
     {
-        Task<List<BankDTO>> GetAllBank();
-        Task<BankDTO> GetBank(int id);
+        Task<List<BankDTO>> GetAllAsyncBank();
+        List<BankDTO> GetAllBank();
+
+        Task<BankDTO> GetAsyncBank(int idBank);
+        BankDTO GetBank(int idBank);
+
+        Task<BankDTO> GetAsyncBank(string nameBank);
+        BankDTO GetBank(string nameBank);
+
     }
 }

@@ -19,35 +19,60 @@ namespace MoneyFlow.Application.Services.Realization
             _updateUserUseCase = updateUserUseCase;
         }
 
-        public async Task<(UserDTO UserDTO, string Message)> CreateUser(string userName, string login, string password)
+        public async Task<(UserDTO UserDTO, string Message)> CreateAsyncUser(string userName, string login, string password)
         {
-            return await _createUserUseCase.CreateUser(userName, login, password);
+            return await _createUserUseCase.CreateAsyncUser(userName, login, password);
+        }
+        public (UserDTO UserDTO, string Message) CreateUser(string userName, string login, string password)
+        {
+            return _createUserUseCase.CreateUser(userName, login, password);
         }
 
-        public async Task DeleteUser(int idUser)
+        public async Task<List<UserDTO>> GetAllAsyncUser()
         {
-            await _deleteUserCase.DeleteUser(idUser);
+            return await _getUserUseCase.GetAllAsyncUser();
+        }
+        public List<UserDTO> GetAllUser()
+        {
+            return _getUserUseCase.GetAllUser();
         }
 
-        public async Task<List<UserDTO>> GetAllUser()
+        public async Task<UserDTO> GetAsyncUser(int idUser)
         {
-            return await _getUserUseCase.GetAllUser();
+            return await _getUserUseCase.GetAsyncUser(idUser);
+        }
+        public UserDTO GetUser(int idUser)
+        {
+            return _getUserUseCase.GetUser(idUser);
         }
 
-        public async Task<UserDTO> GetUser(int idUser)
+        public async Task<UserDTO> GetAsyncUser(string login)
         {
-            return await _getUserUseCase.GetUser(idUser);
+            return await _getUserUseCase.GetAsyncUser(login);
+        }
+        public UserDTO GetUser(string login)
+        {
+            return _getUserUseCase.GetUser(login);
         }
 
-        public async Task<UserDTO> GetUser(string login)
-        {
-            return await _getUserUseCase.GetUser(login);
-        }
-
-        public async Task<int> UpdateUser(int idUser, string? userName, byte[]? avatar,
+        public async Task<int> UpdateAsyncUser(int idUser, string? userName, byte[]? avatar,
                                       string password, int? idGender)
         {
-            return await _updateUserUseCase.UpdateUser(idUser, userName, avatar, password, idGender);
+            return await _updateUserUseCase.UpdateAsyncUser(idUser, userName, avatar, password, idGender);
+        }
+        public int UpdateUser(int idUser, string? userName, byte[]? avatar,
+                                      string password, int? idGender)
+        {
+            return _updateUserUseCase.UpdateUser(idUser, userName, avatar, password, idGender);
+        }
+
+        public async Task DeleteAsyncUser(int idUser)
+        {
+            await _deleteUserCase.DeleteAsyncUser(idUser);
+        }
+        public void DeleteUser(int idUser)
+        {
+            _deleteUserCase.DeleteAsyncUser(idUser);
         }
     }
 }       

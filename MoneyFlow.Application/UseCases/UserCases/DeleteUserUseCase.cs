@@ -12,9 +12,13 @@ namespace MoneyFlow.Application.UseCases.UserCases
             _usersRepository = usersRepository;
         }
 
-        public async Task DeleteUser(int idUser)
+        public async Task DeleteAsyncUser(int idUser)
         {
-            await _usersRepository.Delete(idUser); // TODO : Сделать проверку на существование элемента
+            await _usersRepository.DeleteAsync(idUser); // TODO : Сделать проверку на существование элемента
+        }
+        public void DeleteUser(int idUser)
+        {
+            _usersRepository.Delete(idUser); // TODO : Сделать проверку на существование элемента
         }
     }
 }

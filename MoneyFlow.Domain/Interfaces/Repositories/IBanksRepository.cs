@@ -5,10 +5,21 @@ namespace MoneyFlow.Domain.Interfaces.Repositories
     public interface IBanksRepository
     {
         Task<int> CreateAsync(string bankName);
-        Task Delete(int idBank);
-        Task<List<BankDomain>> GetAll();
-        Task<BankDomain> Get(int idBank);
-        Task<BankDomain> Get(string bankName);
-        Task<int> Update(int idBank, string bankName);
+        int Create(string bankName);
+
+        Task<List<BankDomain>> GetAllAsync();
+        List<BankDomain> GetAll();
+
+        Task<BankDomain> GetAsync(int idBank);
+        BankDomain Get(int idBank);
+
+        Task<BankDomain> GetAsync(string bankName);
+        BankDomain Get(string bankName);
+
+        Task<int> UpdateAsync(int idBank, string bankName);
+        int Update(int idBank, string bankName);
+
+        Task DeleteAsync(int idBank);
+        void Delete(int idBank);
     }
 }

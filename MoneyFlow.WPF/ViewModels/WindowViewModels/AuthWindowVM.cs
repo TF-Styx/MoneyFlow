@@ -1,5 +1,4 @@
 ﻿using MoneyFlow.Application.Services.Abstraction;
-using MoneyFlow.Application.UseCaseInterfaces.BankCaseInterfaces;
 using MoneyFlow.WPF.Commands;
 using MoneyFlow.WPF.Enums;
 using MoneyFlow.WPF.Interfaces;
@@ -94,7 +93,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
             Action action = CurrentAuthorizationType == TypeAuthentication.Auth ?
                 async () =>
                 {
-                    var (UserDTO, Message) = await _authorizationService.Auth(LoginAuth, PasswordAuth);
+                    var (UserDTO, Message) = await _authorizationService.AuthAsync(LoginAuth, PasswordAuth);
 
                     if (UserDTO == null)
                     {
@@ -168,7 +167,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
             Action action = CurrentAuthorizationType == TypeAuthentication.Registration ?
                 async () =>
                 {
-                    var (UserDTO, Message) = await _registrationService.Registration(UserNameRegistration, LoginRegistration, PasswordRegistration);
+                    var (UserDTO, Message) = await _registrationService.RegistrationAsync(UserNameRegistration, LoginRegistration, PasswordRegistration);
 
                     if (UserDTO == null)
                     {
@@ -176,7 +175,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
                         return;
                     }
 
-                    await _authorizationService.Auth(UserDTO.Login, UserDTO.Password);
+                    await _authorizationService.AuthAsync(UserDTO.Login, UserDTO.Password);
                     _navigationWindows.Value.OpenWindow(TypeWindow.MainWindow);
                     _navigationWindows.Value.CloseWindow(TypeWindow.AuthWindow);
                 }
@@ -232,7 +231,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
             Action action = CurrentAuthorizationType == TypeAuthentication.RecoverPassword ?
                 async () =>
                 {
-                    var (UserDTO, Message) = await _recoveryService.Recovery(LoginRecovery, NewPasswordRecovery);
+                    var (UserDTO, Message) = await _recoveryService.RecoveryAsync(LoginRecovery, NewPasswordRecovery);
 
                     if (UserDTO == null)
                     {
