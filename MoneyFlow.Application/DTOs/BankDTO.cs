@@ -14,7 +14,6 @@ namespace MoneyFlow.Application.DTOs
         public int IdBank { get; set; }
         public string? BankName { get; set; }
 
-
         public static (BankDTO BankDTO, string Message) Create(int idBank, string bankName)
         {
             var message = string.Empty;

@@ -13,5 +13,10 @@
 
         public const int MAX_TRANSACTIONTYPENAME_LENGHT = 255;
         public const int MAX_DESCRIPTION_LENGHT = 255;
+
+        public const int MAX_ACCOUNT_TYPE_NAME_LENGHT = 255;
+
+
+        public const int MAX_NUMBERACCOUNT_LENGHT = 16;
     }
 }

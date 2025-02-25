@@ -13,10 +13,12 @@ namespace MoneyFlow.Infrastructure.Extension
             services.AddSingleton<Func<ContextMF>>(provider => () => provider.GetRequiredService<ContextMF>());
 
 
-            services.AddScoped<IBanksRepository, BanksRepository>();
-            services.AddScoped<IGendersRepository, GendersRepository>();
-            services.AddScoped<IUsersRepository, UsersRepository>();
-            services.AddScoped<ITransactionTypeRepository, TransactionTypeRepository>();
+            services.AddScoped<IAccountRepository,          AccountRepository>();
+            services.AddScoped<IAccountTypeRepository,      AccountTypeRepository>();
+            services.AddScoped<IBanksRepository,            BanksRepository>();
+            services.AddScoped<IGendersRepository,          GendersRepository>();
+            services.AddScoped<ITransactionTypeRepository,  TransactionTypeRepository>();
+            services.AddScoped<IUsersRepository,            UsersRepository>();
 
             return services;
         }
