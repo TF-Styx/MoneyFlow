@@ -5,12 +5,14 @@ using MoneyFlow.Application.UseCaseInterfaces.AccountCaseInterface;
 using MoneyFlow.Application.UseCaseInterfaces.AccountTypeCaseInterfaces;
 using MoneyFlow.Application.UseCaseInterfaces.BankCaseInterfaces;
 using MoneyFlow.Application.UseCaseInterfaces.GenderCaseInterfaces;
+using MoneyFlow.Application.UseCaseInterfaces.SubcategoryCaseInterfaces;
 using MoneyFlow.Application.UseCaseInterfaces.TransactionTypeCaseInterfaces;
 using MoneyFlow.Application.UseCaseInterfaces.UserCaseInterfaces;
 using MoneyFlow.Application.UseCases.AccountCases;
 using MoneyFlow.Application.UseCases.AccountTypeCases;
 using MoneyFlow.Application.UseCases.BankCases;
 using MoneyFlow.Application.UseCases.GenderCases;
+using MoneyFlow.Application.UseCases.SubcategoryCases;
 using MoneyFlow.Application.UseCases.TransactionTypeCases;
 using MoneyFlow.Application.UseCases.UserCases;
 
@@ -39,6 +41,11 @@ namespace MoneyFlow.Application.Extension
             services.AddScoped<IDeleteGenderUseCase, DeleteGenderUseCase>();
             services.AddScoped<IGetGenderUseCase,    GetGenderUseCase>();
             services.AddScoped<IUpdateGenderUseCase, UpdateGenderUseCase>();
+
+            services.AddScoped<ICreateSubcategoryUseCase, CreateSubcategoryUseCase>();
+            services.AddScoped<IDeleteSubcategoryUseCase, DeleteSubcategoryUseCase>();
+            services.AddScoped<IGetSubcategoryUseCase,    GetSubcategoryUseCase>();
+            services.AddScoped<IUpdateSubcategoryUseCase, UpdateSubcategoryUseCase>();
 
             services.AddScoped<ICreateTransactionTypeUseCase, CreateTransactionTypeUseCase>();
             services.AddScoped<IDeleteTransactionTypeUseCase, DeleteTransactionTypeUseCase>();

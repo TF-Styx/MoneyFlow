@@ -18,5 +18,7 @@
 
 
         public const int MAX_NUMBERACCOUNT_LENGHT = 16;
+
+        public const int MAX_SUBCATEGORYNAME_LENGHT = 255;
     }
 }
