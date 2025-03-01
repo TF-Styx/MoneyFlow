@@ -47,11 +47,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             foreach (var item in accountTypeEntities)
             {
-                accountTypeList.Add(new AccountTypeDomain()
-                {
-                    IdAccountType = item.IdAccountType,
-                    AccountTypeName = item.AccountTypeName,
-                });
+                accountTypeList.Add(AccountTypeDomain.Create(item.IdAccountType, item.AccountTypeName).AccountTypeDomain);
             }
 
             return accountTypeList;
@@ -63,11 +59,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             foreach (var item in accountTypeEntities)
             {
-                accountTypeList.Add(new AccountTypeDomain()
-                {
-                    IdAccountType = item.IdAccountType,
-                    AccountTypeName = item.AccountTypeName,
-                });
+                accountTypeList.Add(AccountTypeDomain.Create(item.IdAccountType, item.AccountTypeName).AccountTypeDomain);
             }
 
             return accountTypeList;
@@ -76,22 +68,14 @@ namespace MoneyFlow.Infrastructure.Repositories
         public async Task<AccountTypeDomain> GetAsync(int idAccountType)
         {
             var accountTypeEntity = await _context.AccountTypes.FirstOrDefaultAsync(x => x.IdAccountType == idAccountType);
-            var accountTypeDomain = new AccountTypeDomain()
-            {
-                IdAccountType = accountTypeEntity.IdAccountType,
-                AccountTypeName = accountTypeEntity.AccountTypeName,
-            };
+            var accountTypeDomain = AccountTypeDomain.Create(idAccountType, accountTypeEntity.AccountTypeName).AccountTypeDomain;
 
             return accountTypeDomain;
         }
         public AccountTypeDomain Get(int idAccountType)
         {
             var accountTypeEntity = _context.AccountTypes.FirstOrDefault(x => x.IdAccountType == idAccountType);
-            var accountTypeDomain = new AccountTypeDomain()
-            {
-                IdAccountType = accountTypeEntity.IdAccountType,
-                AccountTypeName = accountTypeEntity.AccountTypeName,
-            };
+            var accountTypeDomain = AccountTypeDomain.Create(idAccountType, accountTypeEntity.AccountTypeName).AccountTypeDomain;
 
             return accountTypeDomain;
         }
@@ -102,11 +86,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             if (accountTypeEntity == null) { return null; }
 
-            var accountTypeDomain = new AccountTypeDomain()
-            {
-                IdAccountType = accountTypeEntity.IdAccountType,
-                AccountTypeName = accountTypeEntity.AccountTypeName,
-            };
+            var accountTypeDomain = AccountTypeDomain.Create(accountTypeEntity.IdAccountType, accountTypeName).AccountTypeDomain;
 
             return accountTypeDomain;
         }
@@ -116,11 +96,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             if (accountTypeEntity == null) { return null; }
 
-            var accountTypeDomain = new AccountTypeDomain()
-            {
-                IdAccountType = accountTypeEntity.IdAccountType,
-                AccountTypeName = accountTypeEntity.AccountTypeName,
-            };
+            var accountTypeDomain = AccountTypeDomain.Create(accountTypeEntity.IdAccountType, accountTypeName).AccountTypeDomain;
 
             return accountTypeDomain;
         }

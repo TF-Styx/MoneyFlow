@@ -23,13 +23,9 @@ public partial class FinancialRecord
 
     public DateTime? Date { get; set; }
 
-    public int? IdSubcategory { get; set; }
-
     public virtual Account? IdAccountNavigation { get; set; }
 
     public virtual Category? IdCategoryNavigation { get; set; }
-
-    public virtual Subcategory? IdSubcategoryNavigation { get; set; }
 
     public virtual TransactionType? IdTransactionTypeNavigation { get; set; }
 

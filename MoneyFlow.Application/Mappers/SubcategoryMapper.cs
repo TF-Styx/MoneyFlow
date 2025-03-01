@@ -9,7 +9,7 @@ namespace MoneyFlow.Application.Mappers
         {
             if (subcategory == null) { return (null, "Данной под категории не найдено!!"); }
 
-            return SubcategoryDTO.Create(subcategory.IdSubcategory, subcategory.SubcategoryName, subcategory.Description, subcategory.Image, subcategory.IdCategory);
+            return SubcategoryDTO.Create(subcategory.IdSubcategory, subcategory.SubcategoryName, subcategory.Description, subcategory.Image);
         }
 
         public static List<SubcategoryDTO> ToListDTO(this IEnumerable<SubcategoryDomain> subcategories)

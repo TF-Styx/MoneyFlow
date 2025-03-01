@@ -63,7 +63,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
         {
             Banks.Clear();
 
-            var list = await _bankService.GetAllBank();
+            var list = await _bankService.GetAllAsyncBank();
 
             foreach (var item in list)
             {
@@ -107,7 +107,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
         {
             get => _bankUpdateCommand ??= new(async obj =>
             {
-                var idUpdatableBank = await _bankService.UpdateBank(SelectedBank.IdBank, BankName);
+                var idUpdatableBank = await _bankService.UpdateAsyncBank(SelectedBank.IdBank, BankName);
                 var updatableBank = Banks.FirstOrDefault(x => x.IdBank == SelectedBank.IdBank)
                                          .SetProperty(x => { x.IdBank = idUpdatableBank; x.BankName = BankName; });
                 var index = Banks.IndexOf(updatableBank);

@@ -13,9 +13,5 @@ public partial class Subcategory
 
     public byte[]? Image { get; set; }
 
-    public int IdCategory { get; set; }
-
-    public virtual ICollection<FinancialRecord> FinancialRecords { get; set; } = new List<FinancialRecord>();
-
-    public virtual Category IdCategoryNavigation { get; set; } = null!;
+    public virtual ICollection<CatLinkSub> CatLinkSubs { get; set; } = new List<CatLinkSub>();
 }

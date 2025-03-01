@@ -19,13 +19,13 @@ namespace MoneyFlow.Application.Services.Realization
             _updateSubcategoryUseCase = updateSubcategoryUseCase;
         }
 
-        public async Task<(SubcategoryDTO SubcategoryDTO, string Message)> CreateAsyncSubcategory(string? subcategoryName, string? description, byte[]? image, int idCategory)
+        public async Task<(SubcategoryDTO SubcategoryDTO, string Message)> CreateAsyncSubcategory(string? subcategoryName, string? description, byte[]? image)
         {
-            return await _createSubcategoryUseCase.CreateAsyncSubcategory(subcategoryName, description, image, idCategory);
+            return await _createSubcategoryUseCase.CreateAsyncSubcategory(subcategoryName, description, image);
         }
-        public (SubcategoryDTO SubcategoryDTO, string Message) CreateSubcategory(string? subcategoryName, string? description, byte[]? image, int idCategory)
+        public (SubcategoryDTO SubcategoryDTO, string Message) CreateSubcategory(string? subcategoryName, string? description, byte[]? image)
         {
-            return _createSubcategoryUseCase.CreateSubcategory(subcategoryName, description, image, idCategory);
+            return _createSubcategoryUseCase.CreateSubcategory(subcategoryName, description, image);
         }
 
         public async Task<List<SubcategoryDTO>> GetAllAsyncSubcategory()
@@ -55,13 +55,13 @@ namespace MoneyFlow.Application.Services.Realization
             return _getSubcategoryUseCase.GetSubcategory(subcategoryName);
         }
 
-        public async Task<int> UpdateAsyncSubcategory(int idSubcategory, string? subcategoryName, string? description, byte[]? image, int idCategory)
+        public async Task<int> UpdateAsyncSubcategory(int idSubcategory, string? subcategoryName, string? description, byte[]? image)
         {
-            return await _updateSubcategoryUseCase.UpdateAsyncSubcategory(idSubcategory, subcategoryName, description, image, idCategory);
+            return await _updateSubcategoryUseCase.UpdateAsyncSubcategory(idSubcategory, subcategoryName, description, image);
         }
-        public int UpdateSubcategory(int idSubcategory, string? subcategoryName, string? description, byte[]? image, int idCategory)
+        public int UpdateSubcategory(int idSubcategory, string? subcategoryName, string? description, byte[]? image)
         {
-            return _updateSubcategoryUseCase.UpdateSubcategory(idSubcategory, subcategoryName, description, image, idCategory);
+            return _updateSubcategoryUseCase.UpdateSubcategory(idSubcategory, subcategoryName, description, image);
         }
 
         public async Task DeleteAsyncSubcategory(int idSubcategory)

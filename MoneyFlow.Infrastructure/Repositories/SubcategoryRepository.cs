@@ -15,14 +15,13 @@ namespace MoneyFlow.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<int> CreateAsync(string? subcategoryName, string? description, byte[]? image, int idCategory)
+        public async Task<int> CreateAsync(string? subcategoryName, string? description, byte[]? image)
         {
             var entity = new Subcategory()
             {
                 SubcategoryName = subcategoryName,
                 Description = description,
                 Image = image,
-                IdCategory = idCategory
             };
 
             await _context.AddAsync(entity);
@@ -30,14 +29,13 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             return _context.Subcategories.FirstOrDefault(x => x.SubcategoryName == subcategoryName).IdSubcategory;
         }
-        public int Create(string? subcategoryName, string? description, byte[]? image, int idCategory)
+        public int Create(string? subcategoryName, string? description, byte[]? image)
         {
             var entity = new Subcategory()
             {
                 SubcategoryName = subcategoryName,
                 Description = description,
                 Image = image,
-                IdCategory = idCategory
             };
 
             _context.Add(entity);
@@ -58,8 +56,7 @@ namespace MoneyFlow.Infrastructure.Repositories
                     IdSubcategory = item.IdSubcategory,
                     SubcategoryName = item.SubcategoryName,
                     Description = item.Description,
-                    Image = item.Image,
-                    IdCategory = item.IdCategory
+                    Image = item.Image
                 });
             }
 
@@ -77,8 +74,7 @@ namespace MoneyFlow.Infrastructure.Repositories
                     IdSubcategory = item.IdSubcategory,
                     SubcategoryName = item.SubcategoryName,
                     Description = item.Description,
-                    Image = item.Image,
-                    IdCategory = item.IdCategory
+                    Image = item.Image
                 });
             }
 
@@ -94,7 +90,6 @@ namespace MoneyFlow.Infrastructure.Repositories
                 SubcategoryName = entity.SubcategoryName,
                 Description = entity.Description,
                 Image = entity.Image,
-                IdCategory = entity.IdCategory
             };
 
             return domain;
@@ -108,7 +103,6 @@ namespace MoneyFlow.Infrastructure.Repositories
                 SubcategoryName = entity.SubcategoryName,
                 Description = entity.Description,
                 Image = entity.Image,
-                IdCategory = entity.IdCategory
             };
 
             return domain;
@@ -123,7 +117,6 @@ namespace MoneyFlow.Infrastructure.Repositories
                 SubcategoryName = entity.SubcategoryName,
                 Description = entity.Description,
                 Image = entity.Image,
-                IdCategory = entity.IdCategory
             };
 
             return domain;
@@ -137,34 +130,31 @@ namespace MoneyFlow.Infrastructure.Repositories
                 SubcategoryName = entity.SubcategoryName,
                 Description = entity.Description,
                 Image = entity.Image,
-                IdCategory = entity.IdCategory
             };
 
             return domain;
         }
 
-        public async Task<int> UpdateAsync(int idSubcategory, string? subcategoryName, string? description, byte[]? image, int idCategory)
+        public async Task<int> UpdateAsync(int idSubcategory, string? subcategoryName, string? description, byte[]? image)
         {
             var entity = await _context.Subcategories.FirstOrDefaultAsync(x => x.IdSubcategory == idSubcategory);
 
             entity.SubcategoryName = subcategoryName;
             entity.Description = description;
             entity.Image = image;
-            entity.IdCategory = idCategory;
 
             _context.Subcategories.Update(entity);
             _context.SaveChanges();
 
             return idSubcategory;
         }
-        public int Update(int idSubcategory, string? subcategoryName, string? description, byte[]? image, int idCategory)
+        public int Update(int idSubcategory, string? subcategoryName, string? description, byte[]? image)
         {
             var entity = _context.Subcategories.FirstOrDefault(x => x.IdSubcategory == idSubcategory);
 
             entity.SubcategoryName = subcategoryName;
             entity.Description = description;
             entity.Image = image;
-            entity.IdCategory = idCategory;
 
             _context.Subcategories.Update(entity);
             _context.SaveChanges();

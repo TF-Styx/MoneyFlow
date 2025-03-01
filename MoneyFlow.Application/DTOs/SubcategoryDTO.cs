@@ -5,22 +5,20 @@ namespace MoneyFlow.Application.DTOs
 {
     public class SubcategoryDTO : BaseDTO<SubcategoryDTO>
     {
-        private SubcategoryDTO(int idSubcategory, string?subcategoryName, string? description, byte[] image, int idCategory)
+        private SubcategoryDTO(int idSubcategory, string?subcategoryName, string? description, byte[] image)
         {
             IdSubcategory = idSubcategory;
             SubcategoryName = subcategoryName;
             Description = description;
             Image = image;
-            IdCategory = idCategory;
         }
 
         public int IdSubcategory { get; set; }
         public string? SubcategoryName { get; set; }
         public string? Description { get; set; }
         public byte[]? Image { get; set; }
-        public int IdCategory { get; set; }
 
-        public static (SubcategoryDTO SubcategoryDTO, string Message) Create(int idSubcategory, string? subcategoryName, string? description, byte[] image, int idCategory)
+        public static (SubcategoryDTO SubcategoryDTO, string Message) Create(int idSubcategory, string? subcategoryName, string? description, byte[] image)
         {
             var message = string.Empty;
 
@@ -29,7 +27,7 @@ namespace MoneyFlow.Application.DTOs
                 return (null, "Превышена допустимая длина в «255» символов");
             }
 
-            var subcategory = new SubcategoryDTO(idSubcategory, subcategoryName, description, image, idCategory);
+            var subcategory = new SubcategoryDTO(idSubcategory, subcategoryName, description, image);
 
             return (subcategory, message);
         }

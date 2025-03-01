@@ -22,6 +22,8 @@ public partial class ContextMF : DbContext
 
     public virtual DbSet<Bank> Banks { get; set; }
 
+    public virtual DbSet<CatLinkSub> CatLinkSubs { get; set; }
+
     public virtual DbSet<Category> Categories { get; set; }
 
     public virtual DbSet<FinancialRecord> FinancialRecords { get; set; }
@@ -35,6 +37,7 @@ public partial class ContextMF : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=STYX;Database=MoneyFlowDB;Trusted_Connection=true;TrustServerCertificate=true");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -85,6 +88,33 @@ public partial class ContextMF : DbContext
             entity.Property(e => e.BankName).HasColumnName("bank_name");
         });
 
+        modelBuilder.Entity<CatLinkSub>(entity =>
+        {
+            entity.HasKey(e => new { e.IdCategory, e.IdSubcategory }).HasName("PK_Cat_Link_Sub_1");
+
+            entity.ToTable("Cat_Link_Sub");
+
+            entity.Property(e => e.IdCategory).HasColumnName("id_category");
+            entity.Property(e => e.IdSubcategory).HasColumnName("id_subcategory");
+            entity.Property(e => e.CreatedAt)
+                .HasColumnType("datetime")
+                .HasColumnName("created_at");
+            entity.Property(e => e.IdUser).HasColumnName("id_user");
+            entity.Property(e => e.UpdatedAt)
+                .HasColumnType("datetime")
+                .HasColumnName("updated_at");
+
+            entity.HasOne(d => d.IdCategoryNavigation).WithMany(p => p.CatLinkSubs)
+                .HasForeignKey(d => d.IdCategory)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Cat_Link_Sub_Categories");
+
+            entity.HasOne(d => d.IdSubcategoryNavigation).WithMany(p => p.CatLinkSubs)
+                .HasForeignKey(d => d.IdSubcategory)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Cat_Link_Sub_Subcategories");
+        });
+
         modelBuilder.Entity<Category>(entity =>
         {
             entity.HasKey(e => e.IdCategory);
@@ -122,7 +152,6 @@ public partial class ContextMF : DbContext
             entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.IdAccount).HasColumnName("id_account");
             entity.Property(e => e.IdCategory).HasColumnName("id_category");
-            entity.Property(e => e.IdSubcategory).HasColumnName("id_subcategory");
             entity.Property(e => e.IdTransactionType).HasColumnName("id_transaction_type");
             entity.Property(e => e.IdUser).HasColumnName("id_user");
             entity.Property(e => e.RecordName)
@@ -136,10 +165,6 @@ public partial class ContextMF : DbContext
             entity.HasOne(d => d.IdCategoryNavigation).WithMany(p => p.FinancialRecords)
                 .HasForeignKey(d => d.IdCategory)
                 .HasConstraintName("FK_FInancial_records_Categories1");
-
-            entity.HasOne(d => d.IdSubcategoryNavigation).WithMany(p => p.FinancialRecords)
-                .HasForeignKey(d => d.IdSubcategory)
-                .HasConstraintName("FK_FInancial_records_Subcategories");
 
             entity.HasOne(d => d.IdTransactionTypeNavigation).WithMany(p => p.FinancialRecords)
                 .HasForeignKey(d => d.IdTransactionType)
@@ -166,16 +191,10 @@ public partial class ContextMF : DbContext
 
             entity.Property(e => e.IdSubcategory).HasColumnName("id_subcategory");
             entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.IdCategory).HasColumnName("id_category");
             entity.Property(e => e.Image).HasColumnName("image");
             entity.Property(e => e.SubcategoryName)
                 .HasMaxLength(50)
                 .HasColumnName("subcategory_name");
-
-            entity.HasOne(d => d.IdCategoryNavigation).WithMany(p => p.Subcategories)
-                .HasForeignKey(d => d.IdCategory)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Subcategories_Categories");
         });
 
         modelBuilder.Entity<TransactionType>(entity =>

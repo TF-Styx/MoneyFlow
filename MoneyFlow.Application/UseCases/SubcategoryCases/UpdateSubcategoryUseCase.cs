@@ -12,7 +12,7 @@ namespace MoneyFlow.Application.UseCases.SubcategoryCases
             _subcategoryRepository = subcategoryRepository;
         }
 
-        public async Task<int> UpdateAsyncSubcategory(int idSubcategory, string? subcategoryName, string? description, byte[]? image, int idCategory)
+        public async Task<int> UpdateAsyncSubcategory(int idSubcategory, string? subcategoryName, string? description, byte[]? image)
         {
             var exist = await _subcategoryRepository.GetAsync(idSubcategory);
 
@@ -21,9 +21,9 @@ namespace MoneyFlow.Application.UseCases.SubcategoryCases
                 throw new Exception("Данной подкатегории не существует!!");
             }
 
-            return await _subcategoryRepository.UpdateAsync(idSubcategory, subcategoryName, description, image, idCategory);
+            return await _subcategoryRepository.UpdateAsync(idSubcategory, subcategoryName, description, image);
         }
-        public int UpdateSubcategory(int idSubcategory, string? subcategoryName, string? description, byte[]? image, int idCategory)
+        public int UpdateSubcategory(int idSubcategory, string? subcategoryName, string? description, byte[]? image)
         {
             var exist = _subcategoryRepository.Get(idSubcategory);
 
@@ -32,7 +32,7 @@ namespace MoneyFlow.Application.UseCases.SubcategoryCases
                 throw new Exception("Данной подкатегории не существует!!");
             }
 
-            return _subcategoryRepository.Update(idSubcategory, subcategoryName, description, image, idCategory);
+            return _subcategoryRepository.Update(idSubcategory, subcategoryName, description, image);
         }
     }
 }

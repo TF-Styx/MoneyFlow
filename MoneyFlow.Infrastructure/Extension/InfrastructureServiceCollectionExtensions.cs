@@ -16,6 +16,8 @@ namespace MoneyFlow.Infrastructure.Extension
             services.AddScoped<IAccountRepository,          AccountRepository>();
             services.AddScoped<IAccountTypeRepository,      AccountTypeRepository>();
             services.AddScoped<IBanksRepository,            BanksRepository>();
+            services.AddScoped<ICategoryRepository,         CategoryRepository>();
+            services.AddScoped<ICatLinkSubRepository,       CatLinkSubRepository>();
             services.AddScoped<IGendersRepository,          GendersRepository>();
             services.AddScoped<ISubcategoryRepository,      SubcategoryRepository>();
             services.AddScoped<ITransactionTypeRepository,  TransactionTypeRepository>();

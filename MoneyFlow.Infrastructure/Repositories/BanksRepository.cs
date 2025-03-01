@@ -47,11 +47,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             foreach (var item in bankEntities)
             {
-                bankList.Add(new BankDomain()
-                {
-                    IdBank = item.IdBank,
-                    BankName = item.BankName,
-                });
+                bankList.Add(BankDomain.Create(item.IdBank, item.BankName).BankDomain);
             }
 
             return bankList;
@@ -63,11 +59,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             foreach (var item in bankEntities)
             {
-                bankList.Add(new BankDomain()
-                {
-                    IdBank = item.IdBank,
-                    BankName = item.BankName,
-                });
+                bankList.Add(BankDomain.Create(item.IdBank, item.BankName).BankDomain);
             }
 
             return bankList;
@@ -76,22 +68,14 @@ namespace MoneyFlow.Infrastructure.Repositories
         public async Task<BankDomain> GetAsync(int idBank)
         {
             var bankEntity = await _context.Banks.FirstOrDefaultAsync(x => x.IdBank == idBank);
-            var bankDomain = new BankDomain()
-            {
-                IdBank = bankEntity.IdBank,
-                BankName = bankEntity.BankName,
-            };
+            var bankDomain = BankDomain.Create(idBank, bankEntity.BankName).BankDomain;
 
             return bankDomain;
         }
         public BankDomain Get(int idBank)
         {
             var bankEntity = _context.Banks.FirstOrDefault(x => x.IdBank == idBank);
-            var bankDomain = new BankDomain()
-            {
-                IdBank = bankEntity.IdBank,
-                BankName = bankEntity.BankName,
-            };
+            var bankDomain = BankDomain.Create(idBank, bankEntity.BankName).BankDomain;
 
             return bankDomain;
         }
@@ -102,11 +86,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             if (bankEntity == null) { return null; }
 
-            var bankDomain = new BankDomain()
-            {
-                IdBank = bankEntity.IdBank,
-                BankName = bankEntity.BankName,
-            };
+            var bankDomain = BankDomain.Create(bankEntity.IdBank, bankName).BankDomain;
 
             return bankDomain;
         }
@@ -116,11 +96,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             if (bankEntity == null) { return null; }
 
-            var bankDomain = new BankDomain()
-            {
-                IdBank = bankEntity.IdBank,
-                BankName = bankEntity.BankName,
-            };
+            var bankDomain = BankDomain.Create(bankEntity.IdBank, bankName).BankDomain;
 
             return bankDomain;
         }

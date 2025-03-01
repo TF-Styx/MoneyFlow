@@ -14,7 +14,7 @@ namespace MoneyFlow.Application.UseCases.SubcategoryCases
             _subcategoryRepository = subcategoryRepository;
         }
 
-        public async Task<(SubcategoryDTO SubcategoryDTO, string Message)> CreateAsyncSubcategory(string? subcategoryName, string? description, byte[]? image, int idCategory)
+        public async Task<(SubcategoryDTO SubcategoryDTO, string Message)> CreateAsyncSubcategory(string? subcategoryName, string? description, byte[]? image)
         {
             var message = string.Empty;
 
@@ -25,14 +25,14 @@ namespace MoneyFlow.Application.UseCases.SubcategoryCases
 
             var exist = await _subcategoryRepository.GetAsync(subcategoryName);
 
-            if (exist != null) { return (null, "Подкатегория с таким именем уде есть!!"); }
+            if (exist != null) { return (null, "Подкатегория с таким именем уже есть!!"); }
 
-            var id = await _subcategoryRepository.CreateAsync(subcategoryName, description, image, idCategory);
+            var id = await _subcategoryRepository.CreateAsync(subcategoryName, description, image);
             var domain = await _subcategoryRepository.GetAsync(id);
 
             return (domain.ToDTO().SubcategoryDTO, message);
         }
-        public (SubcategoryDTO SubcategoryDTO, string Message) CreateSubcategory(string? subcategoryName, string? description, byte[]? image, int idCategory)
+        public (SubcategoryDTO SubcategoryDTO, string Message) CreateSubcategory(string? subcategoryName, string? description, byte[]? image)
         {
             var message = string.Empty;
 
@@ -45,7 +45,7 @@ namespace MoneyFlow.Application.UseCases.SubcategoryCases
 
             if (exist != null) { return (null, "Подкатегория с таким именем уде есть!!"); }
 
-            var id = _subcategoryRepository.Create(subcategoryName, description, image, idCategory);
+            var id = _subcategoryRepository.Create(subcategoryName, description, image);
             var domain = _subcategoryRepository.Get(id);
 
             return (domain.ToDTO().SubcategoryDTO, message);

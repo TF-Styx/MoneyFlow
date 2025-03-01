@@ -2,7 +2,7 @@
 {
     public interface IUpdateSubcategoryUseCase
     {
-        Task<int> UpdateAsyncSubcategory(int idSubcategory, string? subcategoryName, string? description, byte[]? image, int idCategory);
-        int UpdateSubcategory(int idSubcategory, string? subcategoryName, string? description, byte[]? image, int idCategory);
+        Task<int> UpdateAsyncSubcategory(int idSubcategory, string? subcategoryName, string? description, byte[]? image);
+        int UpdateSubcategory(int idSubcategory, string? subcategoryName, string? description, byte[]? image);
     }
 }

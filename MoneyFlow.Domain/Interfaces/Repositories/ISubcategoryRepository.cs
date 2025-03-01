@@ -4,17 +4,22 @@ namespace MoneyFlow.Domain.Interfaces.Repositories
 {
     public interface ISubcategoryRepository
     {
-        int Create(string? subcategoryName, string? description, byte[]? image, int idCategory);
-        Task<int> CreateAsync(string? subcategoryName, string? description, byte[]? image, int idCategory);
-        void Delete(int idSubcategory);
-        Task DeleteAsync(int idSubcategory);
-        SubcategoryDomain Get(int idSubcategory);
-        SubcategoryDomain Get(string subcategoryName);
-        List<SubcategoryDomain> GetAll();
+        Task<int> CreateAsync(string? subcategoryName, string? description, byte[]? image);
+        int Create(string? subcategoryName, string? description, byte[]? image);
+
         Task<List<SubcategoryDomain>> GetAllAsync();
+        List<SubcategoryDomain> GetAll();
+
         Task<SubcategoryDomain> GetAsync(int idSubcategory);
+        SubcategoryDomain Get(int idSubcategory);
+        
         Task<SubcategoryDomain> GetAsync(string subcategoryName);
-        int Update(int idSubcategory, string? subcategoryName, string? description, byte[]? image, int idCategory);
-        Task<int> UpdateAsync(int idSubcategory, string? subcategoryName, string? description, byte[]? image, int idCategory);
+        SubcategoryDomain Get(string subcategoryName);
+
+        Task<int> UpdateAsync(int idSubcategory, string? subcategoryName, string? description, byte[]? image);
+        int Update(int idSubcategory, string? subcategoryName, string? description, byte[]? image);
+
+        Task DeleteAsync(int idSubcategory);
+        void Delete(int idSubcategory);
     }
 }
