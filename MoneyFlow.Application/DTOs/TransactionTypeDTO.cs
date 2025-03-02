@@ -1,8 +1,9 @@
-﻿using MoneyFlow.Shared.Constants;
+﻿using MoneyFlow.Application.DTOs.BaseDTOs;
+using MoneyFlow.Shared.Constants;
 
 namespace MoneyFlow.Application.DTOs
 {
-    public class TransactionTypeDTO
+    public class TransactionTypeDTO : BaseDTO<TransactionTypeDTO>
     {
         private TransactionTypeDTO(int idTransactionType, string? transactionTypeName, string? description)
         {

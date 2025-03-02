@@ -1,8 +1,9 @@
-﻿using MoneyFlow.Shared.Constants;
+﻿using MoneyFlow.Application.DTOs.BaseDTOs;
+using MoneyFlow.Shared.Constants;
 
 namespace MoneyFlow.Application.DTOs
 {
-    public class AccountDTO
+    public class AccountDTO : BaseDTO<AccountDTO>
     {
         private AccountDTO(int idAccount, int? numberAccount, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance)
         {

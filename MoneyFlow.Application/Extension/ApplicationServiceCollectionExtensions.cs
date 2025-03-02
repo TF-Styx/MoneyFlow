@@ -5,6 +5,7 @@ using MoneyFlow.Application.UseCaseInterfaces.AccountCaseInterface;
 using MoneyFlow.Application.UseCaseInterfaces.AccountTypeCaseInterfaces;
 using MoneyFlow.Application.UseCaseInterfaces.BankCaseInterfaces;
 using MoneyFlow.Application.UseCaseInterfaces.CategoryCaseInterfaces;
+using MoneyFlow.Application.UseCaseInterfaces.FinancialRecordCaseInterfaces;
 using MoneyFlow.Application.UseCaseInterfaces.GenderCaseInterfaces;
 using MoneyFlow.Application.UseCaseInterfaces.SubcategoryCaseInterfaces;
 using MoneyFlow.Application.UseCaseInterfaces.TransactionTypeCaseInterfaces;
@@ -13,6 +14,7 @@ using MoneyFlow.Application.UseCases.AccountCases;
 using MoneyFlow.Application.UseCases.AccountTypeCases;
 using MoneyFlow.Application.UseCases.BankCases;
 using MoneyFlow.Application.UseCases.CategoryCases;
+using MoneyFlow.Application.UseCases.FinancialRecordCases;
 using MoneyFlow.Application.UseCases.GenderCases;
 using MoneyFlow.Application.UseCases.SubcategoryCases;
 using MoneyFlow.Application.UseCases.TransactionTypeCases;
@@ -44,6 +46,11 @@ namespace MoneyFlow.Application.Extension
             services.AddScoped<IGetCategoryUseCase,    GetCategoryUseCase>();
             services.AddScoped<IUpdateCategoryUseCase, UpdateCategoryUseCase>();
 
+            services.AddScoped<ICreateFinancialRecordUseCase, CreateFinancialRecordUseCase>();
+            services.AddScoped<IDeleteFinancialRecordUseCase, DeleteFinancialRecordUseCase>();
+            services.AddScoped<IGetFinancialRecordUseCase,    GetFinancialRecordUseCase>();
+            services.AddScoped<IUpdateFinancialRecordUseCase, UpdateFinancialRecordUseCase>();
+
             services.AddScoped<ICreateGenderUseCase, CreateGenderUseCase>();
             services.AddScoped<IDeleteGenderUseCase, DeleteGenderUseCase>();
             services.AddScoped<IGetGenderUseCase,    GetGenderUseCase>();
@@ -70,6 +77,7 @@ namespace MoneyFlow.Application.Extension
             services.AddSingleton<IRecoveryService,         RecoveryService>();
             services.AddSingleton<IBankService,             BankService>();
             services.AddSingleton<ICategoryService,         CategoryService>();
+            services.AddSingleton<IFinancialRecordService,  FinancialRecordService>();
             services.AddSingleton<IGenderService,           GenderService>();
             services.AddSingleton<ITransactionTypeService,  TransactionTypeService>();
             services.AddSingleton<IUserService,             UserService>();

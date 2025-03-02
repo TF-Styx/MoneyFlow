@@ -1,8 +1,9 @@
-﻿using MoneyFlow.Shared.Constants;
+﻿using MoneyFlow.Application.DTOs.BaseDTOs;
+using MoneyFlow.Shared.Constants;
 
 namespace MoneyFlow.Application.DTOs
 {
-    public class CategoryDTO
+    public class CategoryDTO : BaseDTO<CategoryDTO>
     {
         private CategoryDTO(int idCategory, string? categoryName, string? description, string? color, byte[]? image, int idUser)
         {

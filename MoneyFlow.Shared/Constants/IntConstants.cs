@@ -22,5 +22,8 @@
         public const int MAX_CATEGORYNAME_LENGHT = 255;
 
         public const int MAX_SUBCATEGORYNAME_LENGHT = 255;
+
+        public const int MAX_RECORDNAME_LENGHT = 255;
+        public const decimal MAX_AMOUNT_LENGHT = 1000000000;
     }
 }
