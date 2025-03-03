@@ -13,5 +13,8 @@ namespace MoneyFlow.Application.UseCaseInterfaces.BankCaseInterfaces
         Task<BankDTO> GetAsyncBank(string nameBank);
         BankDTO GetBank(string nameBank);
 
+        Task<UserBanksDTO> GetByIdUserAsync(int idUser);
+        UserBanksDTO GetByIdUser(int idUser);
+
     }
 }

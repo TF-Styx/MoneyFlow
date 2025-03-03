@@ -15,7 +15,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
             _navigationWindows = navigationWindows;
         }
 
-        public void Update(object parameter, TypeParameter typeParameter = TypeParameter.None)
+        public void Update(object parameter, ParameterType typeParameter = ParameterType.None)
         {
             //Counter += (int)parameter;
         }
@@ -36,7 +36,25 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
         { 
             get => _openAddBaseInformationWindowCommand ??= new(obj => 
             { 
-                _navigationWindows.OpenWindow(TypeWindow.AddBaseInformationWindow); 
+                _navigationWindows.OpenWindow(WindowType.AddBaseInformationWindow); 
+            }); 
+        }
+
+        private RelayCommand _openProfileUserPageCommand;
+        public RelayCommand OpenProfileUserPageCommand
+        {
+            get => _openProfileUserPageCommand ??= new(obj =>
+            {
+                _navigationPages.OpenPage(PageType.UserPage);
+            });
+        }
+
+        private RelayCommand _openBankPageCommand;
+        public RelayCommand OpenBankPageCommand
+        { 
+            get => _openBankPageCommand ??= new(obj => 
+            {
+                _navigationPages.OpenPage(PageType.BankPage);
             }); 
         }
     }

@@ -16,6 +16,9 @@ namespace MoneyFlow.Domain.Interfaces.Repositories
         Task<BankDomain> GetAsync(string bankName);
         BankDomain Get(string bankName);
 
+        Task<UserBanksDomain> GetByIdUserAsync(int idUser);
+        UserBanksDomain GetByIdUser(int idUser);
+
         Task<int> UpdateAsync(int idBank, string bankName);
         int Update(int idBank, string bankName);
 

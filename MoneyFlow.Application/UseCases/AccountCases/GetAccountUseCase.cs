@@ -14,16 +14,16 @@ namespace MoneyFlow.Application.UseCases.AccountCases
             _accountRepository = accountRepository;
         }
 
-        public async Task<List<AccountDTO>> GetAllAsyncAccount()
+        public async Task<List<AccountDTO>> GetAllAsyncAccount(int idUser)
         {
-            var accounts = await _accountRepository.GetAllAsync();
+            var accounts = await _accountRepository.GetAllAsync(idUser);
             var accountsDTO = accounts.ToListDTO();
 
             return accountsDTO;
         }
-        public List<AccountDTO> GetAllAccount()
+        public List<AccountDTO> GetAllAccount(int idUser)
         {
-            var accounts = _accountRepository.GetAll();
+            var accounts = _accountRepository.GetAll(idUser);
             var accountsDTO = accounts.ToListDTO();
 
             return accountsDTO;

@@ -7,7 +7,7 @@ namespace MoneyFlow.WPF.Services
 {
     internal class NavigationWindows : INavigationWindows
     {
-        private Dictionary<TypeWindow, Window> _windows = [];
+        private Dictionary<WindowType, Window> _windows = [];
         private readonly Dictionary<string, IWindowFactory> _windowFactories = []; // Хранит в себе методы на создание окон и VM
 
         public NavigationWindows(IEnumerable<IWindowFactory> windowFactories)
@@ -15,7 +15,7 @@ namespace MoneyFlow.WPF.Services
             _windowFactories = windowFactories.ToDictionary(f => f.GetType().Name.Replace("Factory", ""), f => f);
         }
 
-        public void OpenWindow(TypeWindow nameWindow, object parameter = null, TypeParameter typeParameter = TypeParameter.None)
+        public void OpenWindow(WindowType nameWindow, object parameter = null, ParameterType typeParameter = ParameterType.None)
         {
             if (_windows.TryGetValue(nameWindow, out var windowExist))  // Безопасно получает значение
             {
@@ -31,12 +31,12 @@ namespace MoneyFlow.WPF.Services
             Open(nameWindow, parameter, typeParameter);
         }
 
-        public void TransitObject(TypeWindow nameWindow, object parameter, TypeParameter typeParameter = TypeParameter.None)
+        public void TransitObject(WindowType nameWindow, object parameter, ParameterType typeParameter = ParameterType.None)
         {
             throw new NotImplementedException();
         }
 
-        private void Open(TypeWindow nameWindow, object parameter = null, TypeParameter typeParameter = TypeParameter.None)
+        private void Open(WindowType nameWindow, object parameter = null, ParameterType typeParameter = ParameterType.None)
         {
             if (_windowFactories.TryGetValue(nameWindow.ToString(), out var factory))
             {
@@ -53,7 +53,7 @@ namespace MoneyFlow.WPF.Services
             }
         }
 
-        public void CloseWindow(TypeWindow nameWindow)
+        public void CloseWindow(WindowType nameWindow)
         {
             if (_windows.TryGetValue(nameWindow, out var window))
             {
@@ -61,7 +61,7 @@ namespace MoneyFlow.WPF.Services
             }
         }
 
-        public void MinimizeWindow(TypeWindow nameWindow)
+        public void MinimizeWindow(WindowType nameWindow)
         {
             if (_windows.TryGetValue(nameWindow, out var window))
             {
@@ -69,7 +69,7 @@ namespace MoneyFlow.WPF.Services
             }
         }
 
-        public void MaximizeWindow(TypeWindow nameWindow)
+        public void MaximizeWindow(WindowType nameWindow)
         {
             if (_windows.TryGetValue(nameWindow, out var window))
             {
@@ -77,7 +77,7 @@ namespace MoneyFlow.WPF.Services
             }
         }
 
-        public void RestoreWindow(TypeWindow nameWindow)
+        public void RestoreWindow(WindowType nameWindow)
         {
             if (_windows.TryGetValue(nameWindow, out var window))
             {

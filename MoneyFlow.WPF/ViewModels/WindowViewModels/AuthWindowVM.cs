@@ -26,7 +26,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
             _recoveryService = recoveryService;
         }
 
-        public void Update(object parameter, TypeParameter typeParameter = TypeParameter.None)
+        public void Update(object parameter, ParameterType typeParameter = ParameterType.None)
         {
             
         }
@@ -35,8 +35,8 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
 
         #region Текущее отображение
 
-        private TypeAuthentication _currentAuthorizationType;
-        public TypeAuthentication CurrentAuthorizationType
+        private AuthenticationType _currentAuthorizationType;
+        public AuthenticationType CurrentAuthorizationType
         {
             get => _currentAuthorizationType;
             set
@@ -90,7 +90,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
 
         private async void Auth()
         {
-            Action action = CurrentAuthorizationType == TypeAuthentication.Auth ?
+            Action action = CurrentAuthorizationType == AuthenticationType.Auth ?
                 async () =>
                 {
                     var (UserDTO, Message) = await _authorizationService.AuthAsync(LoginAuth, PasswordAuth);
@@ -101,10 +101,10 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
                         return;
                     }
 
-                    _navigationWindows.Value.OpenWindow(TypeWindow.MainWindow);
-                    _navigationWindows.Value.CloseWindow(TypeWindow.AuthWindow);
+                    _navigationWindows.Value.OpenWindow(WindowType.MainWindow);
+                    _navigationWindows.Value.CloseWindow(WindowType.AuthWindow);
                 }
-            : () => CurrentAuthorizationType = TypeAuthentication.Auth;
+            : () => CurrentAuthorizationType = AuthenticationType.Auth;
 
             action.Invoke();
         }
@@ -164,7 +164,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
 
         private async void Registration()
         {
-            Action action = CurrentAuthorizationType == TypeAuthentication.Registration ?
+            Action action = CurrentAuthorizationType == AuthenticationType.Registration ?
                 async () =>
                 {
                     var (UserDTO, Message) = await _registrationService.RegistrationAsync(UserNameRegistration, LoginRegistration, PasswordRegistration);
@@ -176,10 +176,10 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
                     }
 
                     await _authorizationService.AuthAsync(UserDTO.Login, UserDTO.Password);
-                    _navigationWindows.Value.OpenWindow(TypeWindow.MainWindow);
-                    _navigationWindows.Value.CloseWindow(TypeWindow.AuthWindow);
+                    _navigationWindows.Value.OpenWindow(WindowType.MainWindow);
+                    _navigationWindows.Value.CloseWindow(WindowType.AuthWindow);
                 }
-            : () => CurrentAuthorizationType = TypeAuthentication.Registration;
+            : () => CurrentAuthorizationType = AuthenticationType.Registration;
 
             action.Invoke();
         }
@@ -228,7 +228,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
 
         private async void Recovery()
         {
-            Action action = CurrentAuthorizationType == TypeAuthentication.RecoverPassword ?
+            Action action = CurrentAuthorizationType == AuthenticationType.RecoverPassword ?
                 async () =>
                 {
                     var (UserDTO, Message) = await _recoveryService.RecoveryAsync(LoginRecovery, NewPasswordRecovery);
@@ -245,7 +245,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
                     CodeVerificationRecovery = string.Empty;
                     NewPasswordRecovery = string.Empty;
                 }
-                : () => CurrentAuthorizationType = TypeAuthentication.RecoverPassword;
+                : () => CurrentAuthorizationType = AuthenticationType.RecoverPassword;
 
             action.Invoke();
         }
@@ -261,8 +261,8 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
         { 
             get => _open ??= new(obj => 
             { 
-                _navigationWindows.Value.OpenWindow(TypeWindow.MainWindow);
-                _navigationWindows.Value.CloseWindow(TypeWindow.AuthWindow);
+                _navigationWindows.Value.OpenWindow(WindowType.MainWindow);
+                _navigationWindows.Value.CloseWindow(WindowType.AuthWindow);
             });
         }
 

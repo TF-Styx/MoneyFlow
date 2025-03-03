@@ -4,7 +4,7 @@ using MoneyFlow.WPF.ViewModels.WindowViewModels;
 using MoneyFlow.WPF.Views.Windows;
 using System.Windows;
 
-namespace MoneyFlow.WPF.WindowFactories
+namespace MoneyFlow.WPF.Factory.WindowFactories
 {
     internal class AuthWindowFactory : IWindowFactory
     {

@@ -9,10 +9,12 @@ namespace MoneyFlow.Infrastructure.Repositories
     public class BanksRepository : IBanksRepository
     {
         private readonly ContextMF _context;
+        private readonly Func<ContextMF> _factory;
 
-        public BanksRepository(ContextMF context)
+        public BanksRepository(ContextMF context, Func<ContextMF> factory)
         {
             _context = context;
+            _factory = factory;
         }
 
         public async Task<int> CreateAsync(string bankName)
@@ -40,17 +42,32 @@ namespace MoneyFlow.Infrastructure.Repositories
             return _context.Banks.FirstOrDefault(x => x.BankName == bankName).IdBank;
         }
 
+        //public async Task<List<BankDomain>> GetAllAsync()
+        //{
+        //    var bankList = new List<BankDomain>();
+        //    var bankEntities = await _context.Banks.ToListAsync();
+
+        //    foreach (var item in bankEntities)
+        //    {
+        //        bankList.Add(BankDomain.Create(item.IdBank, item.BankName).BankDomain);
+        //    }
+
+        //    return bankList;
+        //}
         public async Task<List<BankDomain>> GetAllAsync()
         {
-            var bankList = new List<BankDomain>();
-            var bankEntities = await _context.Banks.ToListAsync();
-
-            foreach (var item in bankEntities)
+            using (var context = _factory())
             {
-                bankList.Add(BankDomain.Create(item.IdBank, item.BankName).BankDomain);
-            }
+                var bankList = new List<BankDomain>();
+                var bankEntities = await context.Banks.ToListAsync();
 
-            return bankList;
+                foreach (var item in bankEntities)
+                {
+                    bankList.Add(BankDomain.Create(item.IdBank, item.BankName).BankDomain);
+                }
+
+                return bankList;
+            }
         }
         public List<BankDomain> GetAll()
         {
@@ -99,6 +116,67 @@ namespace MoneyFlow.Infrastructure.Repositories
             var bankDomain = BankDomain.Create(bankEntity.IdBank, bankName).BankDomain;
 
             return bankDomain;
+        }
+
+        //public async Task<UserBanksDomain> GetByIdUserAsync(int idUser)
+        //{
+        //    var banksId = await _context.Accounts.Where(x => x.IdUser == idUser).Select(x => x.IdBank).Distinct().ToListAsync();
+        //    var userBanks = await _context.Banks.Where(x => banksId.Contains(x.IdBank)).ToListAsync();
+        //    var bankDomain = new List<BankDomain>();
+
+        //    foreach (var item in userBanks)
+        //    {
+        //        bankDomain.Add(BankDomain.Create(item.IdBank, item.BankName).BankDomain);
+        //    }
+
+        //    var domain = new UserBanksDomain()
+        //    {
+        //        IdUser = idUser,
+        //        Banks = bankDomain
+        //    };
+
+        //    return domain;
+        //}
+        public async Task<UserBanksDomain> GetByIdUserAsync(int idUser)
+        {
+            using (var context = _factory())
+            {
+                var banksId = await context.Accounts.Where(x => x.IdUser == idUser).Select(x => x.IdBank).Distinct().ToListAsync();
+                var userBanks = await context.Banks.Where(x => banksId.Contains(x.IdBank)).ToListAsync();
+                var bankDomain = new List<BankDomain>();
+
+                foreach (var item in userBanks)
+                {
+                    bankDomain.Add(BankDomain.Create(item.IdBank, item.BankName).BankDomain);
+                }
+
+                var domain = new UserBanksDomain()
+                {
+                    IdUser = idUser,
+                    Banks = bankDomain
+                };
+
+                return domain;
+            }
+        }        
+        public UserBanksDomain GetByIdUser(int idUser)
+        {
+            var banksId = _context.Accounts.Where(x => x.IdUser == idUser).Select(x => x.IdBank).Distinct().ToList();
+            var userBanks = _context.Banks.Where(x => banksId.Contains(x.IdBank)).ToList();
+            var bankDomain = new List<BankDomain>();
+
+            foreach (var item in userBanks)
+            {
+                bankDomain.Add(BankDomain.Create(item.IdBank, item.BankName).BankDomain);
+            }
+
+            var domain = new UserBanksDomain()
+            {
+                IdUser = idUser,
+                Banks = bankDomain
+            };
+
+            return domain;
         }
 
         public async Task<int> UpdateAsync(int idBank, string bankName)

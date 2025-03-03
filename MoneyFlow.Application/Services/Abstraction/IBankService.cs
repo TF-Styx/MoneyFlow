@@ -16,6 +16,9 @@ namespace MoneyFlow.Application.Services.Abstraction
         Task<BankDTO> GetAsyncBank(string bankName);
         BankDTO GetBank(string bankName);
 
+        Task<UserBanksDTO> GetByIdUserAsync(int idUser);
+        UserBanksDTO GetByIdUser(int idUser);
+
         Task<int> UpdateAsyncBank(int idBank, string bankName);
         int UpdateBank(int idBank, string bankName);
 

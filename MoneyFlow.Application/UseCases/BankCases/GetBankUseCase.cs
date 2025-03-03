@@ -70,5 +70,26 @@ namespace MoneyFlow.Application.UseCases.BankCases
 
             return bankDTO.BankDTO;
         }
+
+        public async Task<UserBanksDTO> GetByIdUserAsync(int idUser)
+        {
+            var userBanks = await _banksRepository.GetByIdUserAsync(idUser);
+
+            if (userBanks == null) { return null; }
+
+            var userBanksDTO = userBanks.ToDTO();
+
+            return userBanksDTO;
+        }
+        public UserBanksDTO GetByIdUser(int idUser)
+        {
+            var userBanks = _banksRepository.GetByIdUser(idUser);
+
+            if (userBanks == null) { return null; }
+
+            var userBanksDTO = userBanks.ToDTO();
+
+            return userBanksDTO;
+        }
     }
 }

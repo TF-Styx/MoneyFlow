@@ -4,17 +4,17 @@ namespace MoneyFlow.WPF.Interfaces
 {
     internal interface INavigationWindows
     {
-        void OpenWindow(TypeWindow nameWindow, object parameter = null, TypeParameter typeParameter = TypeParameter.None);
+        void OpenWindow(WindowType nameWindow, object parameter = null, ParameterType typeParameter = ParameterType.None);
 
-        void TransitObject(TypeWindow nameWindow, object parameter, TypeParameter typeParameter = TypeParameter.None);
+        void TransitObject(WindowType nameWindow, object parameter, ParameterType typeParameter = ParameterType.None);
 
-        void CloseWindow(TypeWindow nameWindow);
+        void CloseWindow(WindowType nameWindow);
 
-        void MinimizeWindow(TypeWindow nameWindow);
+        void MinimizeWindow(WindowType nameWindow);
 
-        void MaximizeWindow(TypeWindow nameWindow);
+        void MaximizeWindow(WindowType nameWindow);
 
-        void RestoreWindow(TypeWindow nameWindow);
+        void RestoreWindow(WindowType nameWindow);
 
         void Shutdown();
     }

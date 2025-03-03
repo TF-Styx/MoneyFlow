@@ -10,7 +10,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             
         }
 
-        public void Update(object parameter, TypeParameter typeParameter = TypeParameter.None)
+        public void Update(object parameter, ParameterType typeParameter = ParameterType.None)
         {
             
         }

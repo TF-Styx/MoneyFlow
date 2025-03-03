@@ -7,8 +7,8 @@ namespace MoneyFlow.Application.Services.Abstraction
         Task<(AccountDTO AccountDTO, string Message)> CreateAsyncAccount(int? numberAccount, int idUser, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance);
         (AccountDTO AccountDTO, string Message) CreateAccount(int? numberAccount, int idUser, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance);
 
-        Task<List<AccountDTO>> GetAllAsyncAccount();
-        List<AccountDTO> GetAllAccount();
+        Task<List<AccountDTO>> GetAllAsyncAccount(int idUser);
+        List<AccountDTO> GetAllAccount(int idUser);
 
         Task<AccountDTO> GetAsyncAccount(int idAccount);
         AccountDTO GetAccount(int idAccount);

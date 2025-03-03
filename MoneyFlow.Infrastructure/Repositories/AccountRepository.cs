@@ -52,32 +52,32 @@ namespace MoneyFlow.Infrastructure.Repositories
                                     .FirstOrDefault(x => x.NumberAccount == numberAccount).IdAccount;
         }
 
-        public async Task<List<AccountDomain>> GetAllAsync()
+        public async Task<List<AccountDomain>> GetAllAsync(int idUser)
         {
             var accountList = new List<AccountDomain>();
             var banks = await _context.Banks.ToListAsync();
             var accountsType = await _context.AccountTypes.ToListAsync();
-            var accountEntity = await _context.Accounts.ToListAsync();
+            var accountEntity = await _context.Accounts.Where(x => x.IdUser == idUser).ToListAsync();
 
             foreach (var item in accountEntity)
             {
                 var bank = banks.FirstOrDefault(x => x.IdBank == item.IdBank);
                 var accountType = accountsType.FirstOrDefault(x => x.IdAccountType == item.IdAccountType);
 
-                accountList.Add(AccountDomain.Create(item.IdAccount, item.NumberAccount, 
-                                BankDomain.Create(bank.IdBank, bank.BankName).BankDomain, 
-                                AccountTypeDomain.Create(accountType.IdAccountType, accountType.AccountTypeName).AccountTypeDomain, 
+                accountList.Add(AccountDomain.Create(item.IdAccount, item.NumberAccount,
+                                BankDomain.Create(bank.IdBank, bank.BankName).BankDomain,
+                                AccountTypeDomain.Create(accountType.IdAccountType, accountType.AccountTypeName).AccountTypeDomain,
                                 item.Balance).AccountDomain);
             }
 
             return accountList;
         }
-        public List<AccountDomain> GetAll()
+        public List<AccountDomain> GetAll(int idUser)
         {
             var accountList = new List<AccountDomain>();
             var banks = _context.Banks.ToList();
             var accountsType = _context.AccountTypes.ToList();
-            var accountEntity = _context.Accounts.ToList();
+            var accountEntity = _context.Accounts.Where(x => x.IdUser == idUser).ToList();
 
             foreach (var item in accountEntity)
             {

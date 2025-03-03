@@ -23,10 +23,10 @@ namespace MoneyFlow.Domain.DomainModels
         {
             var message = string.Empty;
 
-            if (numberAccount > IntConstants.MAX_NUMBERACCOUNT_LENGHT)
-            {
-                return (null, "Превышена допустимая длина в «16» символов");
-            }
+            //if (numberAccount > IntConstants.MAX_NUMBERACCOUNT_LENGHT)
+            //{
+            //    return (null, "Превышена допустимая длина в «16» символов");
+            //}
 
             var account = new AccountDomain(idAccount, numberAccount, bankDomain, accountTypeDomain, balance);
 

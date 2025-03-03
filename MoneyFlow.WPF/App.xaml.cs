@@ -2,13 +2,13 @@
 using MoneyFlow.Application.Extension;
 using MoneyFlow.Infrastructure.Extension;
 using MoneyFlow.WPF.Enums;
+using MoneyFlow.WPF.Factory.PageFactories;
+using MoneyFlow.WPF.Factory.WindowFactories;
 using MoneyFlow.WPF.Interfaces;
 using MoneyFlow.WPF.Services;
 using MoneyFlow.WPF.ViewModels.PageViewModels;
 using MoneyFlow.WPF.ViewModels.WindowViewModels;
 using MoneyFlow.WPF.Views.Pages;
-using MoneyFlow.WPF.Views.Windows;
-using MoneyFlow.WPF.WindowFactories;
 using System.Windows;
 
 namespace MoneyFlow.WPF
@@ -39,7 +39,11 @@ namespace MoneyFlow.WPF
             ServiceProvider = services.BuildServiceProvider();
 
             var navigationWindows = ServiceProvider.GetService<INavigationWindows>();
-            navigationWindows.OpenWindow(TypeWindow.AuthWindow);
+            navigationWindows.OpenWindow(WindowType.AuthWindow);
+
+            // Пример дефолтной загрузки фрейма 
+            //var navigationPage = ServiceProvider.GetService<INavigationPages>();
+            //navigationPage.OpenPage(PageType.UserPage);
 
             // Остальная реализация взята из оригинального класса
             base.OnStartup(e);
@@ -51,6 +55,9 @@ namespace MoneyFlow.WPF
             services.AddTransient<IWindowFactory, AuthWindowFactory>();
             services.AddTransient<IWindowFactory, MainWindowFactory>();
             services.AddTransient<IWindowFactory, AddBaseInformationWindowFactory>();
+
+            services.AddTransient<IPageFactory, UserPageFactory>();
+            services.AddTransient<IPageFactory, BankPageFactory>();
 
             services.AddTransient(typeof(Lazy<>), typeof(LazyService<>));
 
@@ -67,6 +74,9 @@ namespace MoneyFlow.WPF
 
             services.AddSingleton<GenderPage>();
             services.AddSingleton<GenderPageVM>();
+
+            services.AddSingleton<UserPage>();
+            services.AddSingleton<UserPageVM>();
         }
 
         // Добавляем страницы и их VM в коллекцию сервисов 

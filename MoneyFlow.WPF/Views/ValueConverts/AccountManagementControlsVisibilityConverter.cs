@@ -9,7 +9,7 @@ namespace MoneyFlow.WPF.Views.ValueConverts
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is TypeAuthentication mode && parameter is string targetMode)
+            if (value is AuthenticationType mode && parameter is string targetMode)
             {
                 return mode.ToString() == targetMode ? Visibility.Visible : Visibility.Collapsed;
             }

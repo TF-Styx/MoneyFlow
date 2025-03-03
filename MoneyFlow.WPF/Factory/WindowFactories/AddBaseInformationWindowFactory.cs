@@ -4,23 +4,23 @@ using MoneyFlow.WPF.ViewModels.WindowViewModels;
 using MoneyFlow.WPF.Views.Windows;
 using System.Windows;
 
-namespace MoneyFlow.WPF.WindowFactories
+namespace MoneyFlow.WPF.Factory.WindowFactories
 {
-    internal class MainWindowFactory : IWindowFactory
+    internal class AddBaseInformationWindowFactory : IWindowFactory
     {
         private readonly Lazy<IServiceProvider> _serviceProvider;
 
-        public MainWindowFactory(Lazy<IServiceProvider> serviceProvider)
+        public AddBaseInformationWindowFactory(Lazy<IServiceProvider> serviceProvider)
         {
             _serviceProvider = serviceProvider;
         }
 
         public Window CreateWindow(object parameter = null)
         {
-            var viewModel = _serviceProvider.Value.GetRequiredService<MainWindowVM>();
+            var viewModel = _serviceProvider.Value.GetRequiredService<AddBaseInformationVM>();
             viewModel.Update(parameter);
 
-            return new MainWindow()
+            return new AddBaseInformationWindow()
             {
                 DataContext = viewModel,
             };

@@ -1,6 +1,6 @@
 ﻿namespace MoneyFlow.WPF.Enums
 {
-    internal enum TypeWindow
+    internal enum WindowType
     {
         AuthWindow,
         MainWindow,

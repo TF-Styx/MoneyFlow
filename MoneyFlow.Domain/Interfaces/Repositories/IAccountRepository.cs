@@ -7,8 +7,8 @@ namespace MoneyFlow.Domain.Interfaces.Repositories
         Task<int> CreateAsync(int? numberAccount, int idUser, BankDomain bankDomain, AccountTypeDomain accountTypeDomain, decimal? balance);
         int Create(int? numberAccount, int idUser, BankDomain bankDomain, AccountTypeDomain accountTypeDomain, decimal? balance);
 
-        Task<List<AccountDomain>> GetAllAsync();
-        List<AccountDomain> GetAll();
+        Task<List<AccountDomain>> GetAllAsync(int idUser);
+        List<AccountDomain> GetAll(int idUser);
 
         Task<AccountDomain> GetIdAsync(int idAccount);
         AccountDomain GetId(int idAccount);

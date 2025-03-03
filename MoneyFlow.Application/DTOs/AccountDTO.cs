@@ -23,8 +23,8 @@ namespace MoneyFlow.Application.DTOs
         public static (AccountDTO AccountDTO, string Message) Create(int idAccount, int? numberAccount, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance)
         {
             var message = string.Empty;
-
-            if (numberAccount > IntConstants.MAX_NUMBERACCOUNT_LENGHT)
+            
+            if (numberAccount.ToString().Length > IntConstants.MAX_NUMBERACCOUNT_LENGHT)
             {
                 return (null, "Превышена допустимая длина в «16» символов");
             }

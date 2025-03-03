@@ -7,7 +7,7 @@
         xmlns:windowviewmodels="clr-namespace:MoneyFlow.WPF.ViewModels.WindowViewModels" 
         d:DataContext="{d:DesignInstance Type=windowviewmodels:MainWindowVM}"
         mc:Ignorable="d"
-        Title="MainWindow" 
+        Title="MainWindow"
         Height="450" Width="800">
 
     <WindowChrome.WindowChrome>
@@ -18,31 +18,38 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="39"/>
-                <RowDefinition Height="20"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0" Background="Gray">
+                <!--#region КНОПКИ ОКНА -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button WindowChrome.IsHitTestVisibleInChrome="True" Command="{x:Static SystemCommands.MinimizeWindowCommand}" Style="{StaticResource MinimizeButtonStyle}"/>
                     <Button x:Name="MaximizeButton" Visibility="Visible" WindowChrome.IsHitTestVisibleInChrome="True" Command="{x:Static SystemCommands.MaximizeWindowCommand}" Style="{StaticResource MaximizeButtonStyle}"/>
                     <Button x:Name="RestoreButton" Visibility="Collapsed" WindowChrome.IsHitTestVisibleInChrome="True" Command="{x:Static SystemCommands.RestoreWindowCommand}" Style="{StaticResource RestoreButtonStyle}"/>
                     <Button WindowChrome.IsHitTestVisibleInChrome="True" Command="{x:Static SystemCommands.CloseWindowCommand}" Style="{StaticResource CloseButtonStyle}"/>
                 </StackPanel>
+                <!--#endregion-->
+                
+                <!--#region Меню -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Menu WindowChrome.IsHitTestVisibleInChrome="True" Grid.Row="0" Background="Transparent" Foreground="White" FontSize="15">
+                        <MenuItem Header="Пользователь" Background="Gray" Foreground="White">
+                            <MenuItem Header="Профиль" Command="{Binding OpenProfileUserPageCommand}"/>
+                            <MenuItem Header="Банки" Command="{Binding OpenBankPageCommand}"/>
+                            <MenuItem Header="Счета" Command="{Binding OpenAccountPageCommand}"/>
+                            <MenuItem Header="Категории / Подкатегории" Command="{Binding OpenCatAndSubPageCommand}"/>
+                            <MenuItem Header="Журнал финансов" Command="{Binding OpenFinancialRecordPageCommand}"/>
+                        </MenuItem>
+                        <MenuItem Header="Добавить">
+                            <MenuItem Header="Основная информация" Command="{Binding OpenAddBaseInformationWindowCommand}"/>
+                        </MenuItem>
+                    </Menu>
+                </StackPanel>
+                <!--#endregion-->
             </Grid>
 
-            <Grid Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="20"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Menu Grid.Row="0">
-                    <MenuItem Header="Добавить">
-                        <MenuItem Header="Основная информация" Command="{Binding OpenAddBaseInformationWindowCommand}"/>
-                    </MenuItem>
-                </Menu>
-            </Grid>
-
+            <Frame Grid.Row="1" x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
         </Grid>
     </Border>
 

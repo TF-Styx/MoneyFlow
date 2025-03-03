@@ -4,6 +4,6 @@ namespace MoneyFlow.WPF.Interfaces
 {
     internal interface IUpdatable
     {
-        void Update(object parameter, TypeParameter typeParameter = TypeParameter.None);
+        void Update(object parameter, ParameterType typeParameter = ParameterType.None);
     }
 }

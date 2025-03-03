@@ -1,6 +1,6 @@
 ﻿namespace MoneyFlow.WPF.Enums
 {
-    public enum TypeAuthentication
+    public enum AuthenticationType
     {
         Auth,
         Registration,

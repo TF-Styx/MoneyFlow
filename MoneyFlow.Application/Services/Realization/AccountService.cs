@@ -28,13 +28,13 @@ namespace MoneyFlow.Application.Services.Realization
             return _createAccountUseCase.CreateAccount(numberAccount, idUser, bankDTO, accountTypeDTO, balance);
         }
 
-        public async Task<List<AccountDTO>> GetAllAsyncAccount()
+        public async Task<List<AccountDTO>> GetAllAsyncAccount(int idUser)
         {
-            return await _getAccountUseCase.GetAllAsyncAccount();
+            return await _getAccountUseCase.GetAllAsyncAccount(idUser);
         }
-        public List<AccountDTO> GetAllAccount()
+        public List<AccountDTO> GetAllAccount(int idUser)
         {
-            return _getAccountUseCase.GetAllAccount();
+            return _getAccountUseCase.GetAllAccount(idUser);
         }
 
         public async Task<AccountDTO> GetAsyncAccount(int idAccount)

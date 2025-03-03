@@ -12,6 +12,11 @@ namespace MoneyFlow.Application.Mappers
             return BankDTO.Create(bank.IdBank, bank.BankName);
         }
 
+        public static UserBanksDTO ToDTO(this UserBanksDomain userBanks)
+        {
+            return UserBanksDTO.Create(userBanks.IdUser, userBanks.Banks).UserBanksDTO;
+        }
+
         public static List<BankDTO> ToListDTO(this IEnumerable<BankDomain> banks)
         {
             var list = new List<BankDTO>();
