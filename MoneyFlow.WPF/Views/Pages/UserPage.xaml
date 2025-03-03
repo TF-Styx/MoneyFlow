@@ -7,49 +7,255 @@
       xmlns:fa="http://schemas.fontawesome.com/icons/" 
       xmlns:pageviewmodels="clr-namespace:MoneyFlow.WPF.ViewModels.PageViewModels" 
       d:DataContext="{d:DesignInstance Type=pageviewmodels:UserPageVM}"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      mc:Ignorable="d"
       Title="UserPage"
+      d:Width="800" d:Height="auto"
       Background="White">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Border>
+        <Border MaxWidth="1900">
             <StackPanel>
-                <Border CornerRadius="0 20 0 20" BorderThickness="1" BorderBrush="Black" Background="White" Margin="10">
+                <!--#region Шапка профиля -->
+                <Border CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="10">
                     <Border.Effect>
                         <DropShadowEffect BlurRadius="10" Direction="300"/>
                     </Border.Effect>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10 10 0 10">
-                        <!--#region Аватар -->
-                        <Border BorderBrush="Black" BorderThickness="2" CornerRadius="10">
-                            <StackPanel>
-                                <Border BorderThickness="0 0 0 2" BorderBrush="Black">
-                                    <Image Source="{Binding SelectImage}" d:Source="/Res/Kotozila.jpg" Width="100" Height="100" Margin="5"/>
+                    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
+                        <DockPanel HorizontalAlignment="Left" VerticalAlignment="Stretch">
+                            <!--#region Аватар -->
+                            <DockPanel HorizontalAlignment="Left">
+                                <Border BorderBrush="Black" BorderThickness="1">
+                                    <StackPanel>
+                                        <Border BorderThickness="0 0 0 0" BorderBrush="Black"> <!--BorderThickness="0 0 0 2"-->
+                                            <Image Source="{Binding SelectImage}" Width="100" Height="100" Margin="5"/>
+                                        </Border>
+                                        <!--<WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 2 0 4">
+                                            <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Left" Command="{Binding SelectedImageCommand}">
+                                                <fa:ImageAwesome Icon="Regular_FileImage" Width="10" Foreground="#FF3053C2"/>
+                                            </Button>
+                                            <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Right" Margin="10 0 0 0" Command="{Binding ClearImageCommand}">
+                                                <fa:ImageAwesome Icon="Solid_TrashAlt" Width="10" Foreground="#FFDD3D3D"/>
+                                            </Button>
+                                        </WrapPanel>-->
+                                    </StackPanel>
                                 </Border>
-                                <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 2 0 4">
-                                    <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Left" Command="{Binding SelectedImageCommand}">
-                                        <fa:ImageAwesome Icon="Regular_FileImage" Width="10" Foreground="#FF3053C2"/>
-                                    </Button>
-                                    <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Right" Margin="10 0 0 0" Command="{Binding ClearImageCommand}">
-                                        <fa:ImageAwesome Icon="Solid_TrashAlt" Width="10" Foreground="#FFDD3D3D"/>
-                                    </Button>
-                                </WrapPanel>
+                            </DockPanel>
+                            <!--#endregion-->
+
+                            <!--#region Информация пользователя -->
+                            <DockPanel HorizontalAlignment="Right" Margin="50 0 0 0">
+                                <TextBlock Text="{Binding UserName}" d:Text="UserName" DockPanel.Dock="Top" FontSize="30"/>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
+                                    <TextBlock Text="{Binding City}" d:Text="City" Margin="0 0 20 0"/>
+                                    <TextBlock Text="{Binding DetailedInformation}" d:Text="DetailedInformation"/>
+                                </StackPanel>
+                            </DockPanel>
+                            <!--#endregion-->
+                        </DockPanel>
+
+                        <!--#region Действия пользователя -->
+                        <DockPanel>
+                            <StackPanel HorizontalAlignment="Right" DockPanel.Dock="Top">
+                                <Button Content="Редактировать профиль" Width="200" Height="30" FontSize="15"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <Menu HorizontalAlignment="Right" Background="Transparent" FontSize="15" Height="25" Margin="0 10 0 0">
+                                    <MenuItem Header="Пользователь↓" FontSize="15">
+                                        <MenuItem Header="Профиль" Command="{Binding OpenProfileUserPageCommand}"/>
+                                        <MenuItem Header="Банки" Command="{Binding OpenBankPageCommand}"/>
+                                        <MenuItem Header="Счета" Command="{Binding OpenAccountPageCommand}"/>
+                                        <MenuItem Header="Категории / Подкатегории" Command="{Binding OpenCatAndSubPageCommand}"/>
+                                        <MenuItem Header="Журнал финансов" Command="{Binding OpenFinancialRecordPageCommand}"/>
+                                    </MenuItem>
+                                </Menu>
+                            </StackPanel>
+
+                            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" DockPanel.Dock="Bottom">
+                                <Button Content="↑↓" Width="30" Height="30"/>
+                            </StackPanel>
+                        </DockPanel>
+                        <!--#endregion-->
+                    </DockPanel>
+                </Border>
+                <!--#endregion-->
+
+                <!--#region Уменьшенная шапка профиля -->
+                <Border CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="10">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="10" Direction="300"/>
+                    </Border.Effect>
+                    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
+                        <DockPanel HorizontalAlignment="Left" VerticalAlignment="Stretch">
+                            <!--#region Аватар -->
+                            <DockPanel HorizontalAlignment="Left">
+                                <Border BorderBrush="Black" BorderThickness="1">
+                                    <StackPanel>
+                                        <Border BorderThickness="0 0 0 0" BorderBrush="Black">
+                                            <!--BorderThickness="0 0 0 2"-->
+                                            <Image Source="{Binding SelectImage}" Width="30" Height="30" Margin="5"/>
+                                        </Border>
+                                        <!--<WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 2 0 4">
+                                            <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Left" Command="{Binding SelectedImageCommand}">
+                                                <fa:ImageAwesome Icon="Regular_FileImage" Width="10" Foreground="#FF3053C2"/>
+                                            </Button>
+                                            <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Right" Margin="10 0 0 0" Command="{Binding ClearImageCommand}">
+                                                <fa:ImageAwesome Icon="Solid_TrashAlt" Width="10" Foreground="#FFDD3D3D"/>
+                                            </Button>
+                                        </WrapPanel>-->
+                                    </StackPanel>
+                                </Border>
+                            </DockPanel>
+                            <!--#endregion-->
+
+                            <!--#region Информация пользователя -->
+                            <TextBlock Text="{Binding UserName}" d:Text="UserName" 
+                                       HorizontalAlignment="Right" VerticalAlignment="Center" 
+                                       Margin="50 0 0 0" FontSize="20"/>
+                            <!--#endregion-->
+                        </DockPanel>
+
+                        <!--#region Действия пользователя -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Top">
+                            <Menu Background="Transparent" FontSize="15" Height="25">
+                                <MenuItem Header="Пользователь↓" FontSize="15">
+                                    <MenuItem Header="Профиль" Command="{Binding OpenProfileUserPageCommand}"/>
+                                    <MenuItem Header="Банки" Command="{Binding OpenBankPageCommand}"/>
+                                    <MenuItem Header="Счета" Command="{Binding OpenAccountPageCommand}"/>
+                                    <MenuItem Header="Категории / Подкатегории" Command="{Binding OpenCatAndSubPageCommand}"/>
+                                    <MenuItem Header="Журнал финансов" Command="{Binding OpenFinancialRecordPageCommand}"/>
+                                </MenuItem>
+                            </Menu>
+                            <Button Content="↑↓" Width="30" Height="30"/>
+                        </StackPanel>
+                        <!--#endregion-->
+                    </DockPanel>
+                </Border>
+                <!--#endregion-->
+
+                <!--#region Общая информация || Счета -->
+                <Border CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="10">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="10" Direction="300"/>
+                    </Border.Effect>
+                    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <!--#region Общая информация -->
+                        <Border MinWidth="300" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White"
+                                HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="10" Direction="300"/>
+                            </Border.Effect>
+                            <StackPanel>
+                                <TextBlock Text="Общая информация" HorizontalAlignment="Center" FontSize="15"/>
+                                <Border>
+                                    <StackPanel Margin="10">
+                                        <DockPanel>
+                                            <TextBlock Text="Gender" Margin="0 0 20 0" Width="150"/>
+                                            <TextBlock Text="{Binding Gender}" d:Text="Man" Width="150"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock Text="TotalBalace" Margin="0 0 20 0" Width="150"/>
+                                            <TextBlock Text="{Binding TotalBalace}" d:Text="193592" Width="150"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock Text="BankCount" Margin="0 0 20 0" Width="150"/>
+                                            <TextBlock Text="{Binding BankCount}" d:Text="3" Width="150"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock Text="CategoryCount" Margin="0 0 20 0" Width="150"/>
+                                            <TextBlock Text="{Binding CategoryCount}" d:Text="15" Width="150"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock Text="SubcategoryCount" Margin="0 0 20 0" Width="150"/>
+                                            <TextBlock Text="{Binding SubcategoryCount}" d:Text="36" Width="150"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock Text="FinancialRecordCount" Margin="0 0 20 0" Width="150"/>
+                                            <TextBlock Text="{Binding FinancialRecordCount}" d:Text="206" Width="150"/>
+                                        </DockPanel>
+                                        <DockPanel>
+                                            <TextBlock Text="OperationCount" Margin="0 0 20 0" Width="150"/>
+                                            <TextBlock Text="{Binding OperationCount}" d:Text="476" Width="150"/>
+                                        </DockPanel>
+                                    </StackPanel>
+                                </Border>
                             </StackPanel>
                         </Border>
                         <!--#endregion-->
 
-                        <!--#region Общая информация -->
-                        <Border>
+                        <!--#region Счета -->
+                        <Border MinWidth="300" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White"
+                                HorizontalAlignment="Right" VerticalAlignment="Top">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="10" Direction="300"/>
+                            </Border.Effect>
                             <StackPanel>
-                                <DataGrid ItemsSource="{Binding Accounts}"/>
-                                <DataGrid ItemsSource="{Binding AccountTypes}"/>
-                                <DataGrid ItemsSource="{Binding Banks}"/>
+                                <TextBlock Text="Счета" HorizontalAlignment="Center" FontSize="15"/>
+                                <DataGrid AutoGenerateColumns="False"
+                                          IsReadOnly="True"
+                                          GridLinesVisibility="None"
+                                          HeadersVisibility="Column"
+                                          RowHeaderWidth="0"
+                                          SelectionMode="Single"
+                                          ItemsSource="{Binding Accounts}" Margin="10">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="IdAccount" Binding="{Binding IdAccount}"/>
+                                        <DataGridTextColumn Header="NumberAccount" Binding="{Binding NumberAccount}"/>
+                                        <DataGridTextColumn Header="Balance" Binding="{Binding Balance}"/>
+                                        <DataGridTextColumn Header="Bank" Binding="{Binding Bank.BankName}"/>
+                                        <DataGridTextColumn Header="AccountType" Binding="{Binding AccountType.AccountTypeName}"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                        </Border>
+                        <!--#endregion-->
+                    </DockPanel>
+                </Border>
+                <!--#endregion-->
+
+                <!--#region Банки пользователя || Типы счетов -->
+                <Border CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="10">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="10" Direction="300"/>
+                    </Border.Effect>
+                    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <!--#region Банки пользователя -->
+                        <Border MinWidth="300" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White"
+                                HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="10" Direction="300"/>
+                            </Border.Effect>
+                            <StackPanel>
+                                <TextBlock Text="Банки пользователя" HorizontalAlignment="Center" FontSize="15"/>
                                 <DataGrid ItemsSource="{Binding UserBanks.Banks}" FontSize="15"/>
                             </StackPanel>
                         </Border>
                         <!--#endregion-->
-                    </StackPanel>
+
+                        <!--#region Типы счетов -->
+                        <Border MinWidth="300" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White"
+                                HorizontalAlignment="Right" VerticalAlignment="Top">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="10" Direction="300"/>
+                            </Border.Effect>
+                            <StackPanel>
+                                <TextBlock Text="Типы счетов" HorizontalAlignment="Center" FontSize="15"/>
+                                <DataGrid ItemsSource="{Binding AccountTypes}" FontSize="15"/>
+                            </StackPanel>
+                        </Border>
+                        <!--#endregion-->
+                    </DockPanel>
                 </Border>
+                <!--#endregion-->
+
+                <!--#region Общая информация -->
+                <!--<Border>
+                    <StackPanel>
+                        <DataGrid ItemsSource="{Binding Accounts}"/>
+                        <DataGrid ItemsSource="{Binding AccountTypes}"/>
+                        <DataGrid ItemsSource="{Binding Banks}"/>
+                        <DataGrid ItemsSource="{Binding UserBanks.Banks}" FontSize="15"/>
+                    </StackPanel>
+                </Border>-->
+                <!--#endregion-->
             </StackPanel>
         </Border>
     </ScrollViewer>
