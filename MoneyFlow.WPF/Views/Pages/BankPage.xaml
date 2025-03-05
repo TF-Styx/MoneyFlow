@@ -93,8 +93,8 @@
 
             <!--#region Навигация -->
             <Button Grid.Column="2" Grid.Row="1" Content="Назад" Width="100" Height="25" 
-                        HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10"
-                        Command="{Binding OpenProfileUserPageCommand}"/>
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10"
+                    Command="{Binding OpenProfileUserPageCommand}"/>
             <!--#endregion-->
         </Grid>
     </Border>

@@ -37,6 +37,29 @@ namespace MoneyFlow.Application.Services.Realization
             return _getCategoryUseCase.GetAllCategory();
         }
 
+        public int GetIdCat(int idUser)
+        {
+            return _getCategoryUseCase.GetIdCat(idUser);
+        }
+
+        //public async Task<CategoryDTO> GetIdCatAsync(int idUser)
+        //{
+        //    return await _getCategoryUseCase.GetIdCatAsync(idUser);
+        //}
+        //public CategoryDTO GetIdCat(int idUser)
+        //{
+        //    return _getCategoryUseCase.GetIdCat(idUser);
+        //}
+
+        public async Task<List<CategoryDTO>> GetCatAsyncCategory(int idUser)
+        {
+            return await _getCategoryUseCase.GetCatAsyncCategory(idUser);
+        }
+        public List<CategoryDTO> GetCatCategory(int idUser)
+        {
+            return _getCategoryUseCase.GetCatCategory(idUser);
+        }
+
         public async Task<CategoryDTO> GetAsyncCategory(int idCategory)
         {
             return await _getCategoryUseCase.GetAsyncCategory(idCategory);

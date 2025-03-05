@@ -1,6 +1,7 @@
 ﻿using MoneyFlow.Application.DTOs;
 using MoneyFlow.Application.Mappers;
 using MoneyFlow.Application.UseCaseInterfaces.CategoryCaseInterfaces;
+using MoneyFlow.Domain.DomainModels;
 using MoneyFlow.Domain.Interfaces.Repositories;
 
 namespace MoneyFlow.Application.UseCases.CategoryCases
@@ -24,6 +25,53 @@ namespace MoneyFlow.Application.UseCases.CategoryCases
         public List<CategoryDTO> GetAllCategory()
         {
             var categories = _categoryRepository.GetAll();
+            var toDTO = categories.ToListDTO();
+
+            return toDTO;
+        }
+
+        public int GetIdCat(int idUser)
+        {
+            return _categoryRepository.GetIdCat(idUser);
+        }
+
+        //public async Task<CategoryDTO> GetIdCatAsync(int idUser)
+        //{
+        //    var cat = await _categoryRepository.GetIdCatAsync(idUser);
+
+        //    if (cat == null) { return null; }
+
+        //    var toDTO = cat.ToDTO();
+
+        //    return toDTO.CategoryDTO;
+        //}
+        //public CategoryDTO GetIdCat(int idUser)
+        //{
+        //    var cat = _categoryRepository.GetIdCat(idUser);
+
+        //    if (cat == null) { return null; }
+
+        //    var toDTO = cat.ToDTO();
+
+        //    return toDTO.CategoryDTO;
+        //}
+
+        public async Task<List<CategoryDTO>> GetCatAsyncCategory(int idUser)
+        {
+            var categories = await _categoryRepository.GetCatAsync(idUser);
+
+            if (idUser == null) { return null; }
+
+            var toDTO = categories.ToListDTO();
+
+            return toDTO;
+        }
+        public List<CategoryDTO> GetCatCategory(int idUser)
+        {
+            var categories = _categoryRepository.GetCat(idUser);
+
+            if (idUser == null) { return null; }
+
             var toDTO = categories.ToListDTO();
 
             return toDTO;

@@ -2,10 +2,11 @@
 {
     internal enum PageType
     {
-        UserPage,
-        BankPage,
         AccountPage,
         AccountTypePage,
+        BankPage,
+        CatAndSubPage,
         GenderPage,
+        UserPage,
     }
 }

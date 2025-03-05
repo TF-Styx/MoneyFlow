@@ -56,10 +56,11 @@ namespace MoneyFlow.WPF
             services.AddTransient<IWindowFactory, MainWindowFactory>();
             services.AddTransient<IWindowFactory, AddBaseInformationWindowFactory>();
 
-            services.AddTransient<IPageFactory, UserPageFactory>();
-            services.AddTransient<IPageFactory, BankPageFactory>();
             services.AddTransient<IPageFactory, AccountPageFactory>();
             services.AddTransient<IPageFactory, AccountTypePageFactory>();
+            services.AddTransient<IPageFactory, BankPageFactory>();
+            services.AddTransient<IPageFactory, UserPageFactory>();
+            services.AddTransient<IPageFactory, CatAndSubPageFactory>();
 
             services.AddTransient(typeof(Lazy<>), typeof(LazyService<>));
 
@@ -79,6 +80,9 @@ namespace MoneyFlow.WPF
 
             services.AddSingleton<BankPage>();
             services.AddSingleton<BankPageVM>();
+
+            services.AddSingleton<CatAndSubPage>();
+            services.AddSingleton<CatAndSubPageVM>();
 
             services.AddSingleton<GenderPage>();
             services.AddSingleton<GenderPageVM>();

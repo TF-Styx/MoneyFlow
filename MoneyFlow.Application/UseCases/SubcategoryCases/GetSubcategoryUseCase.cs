@@ -29,6 +29,22 @@ namespace MoneyFlow.Application.UseCases.SubcategoryCases
             return toDTO;
         }
 
+        public List<SubcategoryDTO> GetAllIdUserSub(int idUser)
+        {
+            var sub = _subcategoryRepository.GetAllIdUserSub(idUser);
+            var toDTO = sub.ToListDTO();
+
+            return toDTO;
+        }
+
+        public List<SubcategoryDTO> GetIdUserIdCategorySub(int idUser, int idCategory)
+        {
+            var sub = _subcategoryRepository.GetIdUserIdCategorySub(idUser, idCategory);
+            var toDTO = sub.ToListDTO();
+
+            return toDTO;
+        }
+
         public async Task<SubcategoryDTO> GetAsyncSubcategory(int idSubcategory)
         {
             var subcategories = await _subcategoryRepository.GetAsync(idSubcategory);

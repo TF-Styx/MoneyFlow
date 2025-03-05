@@ -87,6 +87,42 @@ namespace MoneyFlow.Infrastructure.Repositories
 
         // ------------------------------------------------------------------------------------------------------------------------------------------------
 
+        public List<SubcategoryDomain> GetAllIdUserSub(int idUser)
+        {
+            using (var context = _factory())
+            {
+                var list = new List<SubcategoryDomain>();
+                var entity = context.CatLinkSubs.Where(x => x.IdUser == idUser).Include(x => x.IdSubcategoryNavigation);
+
+                foreach (var item in entity)
+                {
+                    list.Add(SubcategoryDomain.Create(item.IdSubcategoryNavigation.IdSubcategory, item.IdSubcategoryNavigation.SubcategoryName, item.IdSubcategoryNavigation.Description, item.IdSubcategoryNavigation.Image).SubcategoryDomain);
+                }
+
+                return list;
+            }
+        }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
+        public List<SubcategoryDomain> GetIdUserIdCategorySub(int idUser, int idCategory)
+        {
+            using (var context = _factory())
+            {
+                var list = new List<SubcategoryDomain>();
+                var entity = context.CatLinkSubs.Where(x => x.IdUser == idUser && x.IdCategory == idCategory).Include(x => x.IdSubcategoryNavigation);
+
+                foreach (var item in entity)
+                {
+                    list.Add(SubcategoryDomain.Create(item.IdSubcategoryNavigation.IdSubcategory, item.IdSubcategoryNavigation.SubcategoryName, item.IdSubcategoryNavigation.Description, item.IdSubcategoryNavigation.Image).SubcategoryDomain);
+                }
+
+                return list;
+            }
+        }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<SubcategoryDomain> GetAsync(int idSubcategory)
         {
             using (var context = _factory())

@@ -14,6 +14,8 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         private readonly IAccountTypeService _accountTypeService;
         private readonly IBankService _bankService;
         private readonly IUserService _userService;
+        private readonly ICategoryService _categoryService;
+        private readonly ISubcategoryService _subcategoryService;
 
         private readonly INavigationPages _navigationPages;
 
@@ -22,13 +24,17 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                           IAccountTypeService accountTypeService, 
                           IBankService bankService, 
                           IUserService userService,
+                          ICategoryService categoryService,
+                          ISubcategoryService subcategoryService,
                           INavigationPages navigationPages)
         {
             _authorizationService = authorizationService;
             _accountService = accountService;
             _accountTypeService = accountTypeService;
             _bankService = bankService;
-            _userService = userService; 
+            _userService = userService;
+            _categoryService = categoryService;
+            _subcategoryService = subcategoryService;
 
             _navigationPages = navigationPages;
 
@@ -39,8 +45,11 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             //GetBank();
 
             GetAccount();
-            GetUserBanks();
             GetUserAccountTypes();
+            GetUserBanks();
+            GetCategory();
+
+            GetIdUserAllSubcategory();
         }
 
         public void Update(object parameter, ParameterType typeParameter = ParameterType.None)
@@ -108,6 +117,44 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 // ------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+        #region Банк пользователя
+
+        private UserBanksDTO _userBanks;
+        public UserBanksDTO UserBanks
+        {
+            get => _userBanks;
+            set
+            {
+                _userBanks = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private BankDTO _selectedUserBank;
+        public BankDTO SelectedUserBank
+        {
+            get => _selectedUserBank;
+            set
+            {
+                _selectedUserBank = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private async Task GetUserBanks()
+        {
+            UserBanks = await _bankService.GetByIdUserAsync(CurrentUser.IdUser);
+        }
+
+        private RelayCommand _userBankDoubleClickCommand;
+        public RelayCommand UserBankDoubleClickCommand => _userBankDoubleClickCommand ??= new RelayCommand(DoubleClick);
+
+        #endregion
+
+
+// ------------------------------------------------------------------------------------------------------------------------------------------------
+
+
         #region Тип счета пользователя
 
         private string _accountTypeName;
@@ -156,55 +203,95 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
         #endregion
 
-// ------------------------------------------------------------------------------------------------------------------------------------------------
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-        #region Банк пользователя
+        #region Категории пользователя
 
-        private UserBanksDTO _userBanks;
-        public UserBanksDTO UserBanks
+        private CategoryDTO _selectedCategory;
+        public CategoryDTO SelectedCategory
         {
-            get => _userBanks;
+            get => _selectedCategory;
             set
             {
-                _userBanks = value;
+                _selectedCategory = value;
+
+                GetIdUserIdCategorySubcategory();
+
                 OnPropertyChanged();
             }
         }
 
-        private BankDTO _selectedUserBank;
-        public BankDTO SelectedUserBank
+        public ObservableCollection<CategoryDTO> Categories { get; set; } = [];
+
+        private async void GetCategory()
         {
-            get => _selectedUserBank;
-            set
+            Categories.Clear();
+
+            var list = await _categoryService.GetCatAsyncCategory(CurrentUser.IdUser);
+
+            foreach (var item in list)
             {
-                _selectedUserBank = value;
-                OnPropertyChanged();
+                Categories.Add(item);
             }
         }
 
-        private async Task GetUserBanks()
+        private RelayCommand _allSubCommand;
+        public RelayCommand AllSubCommand
         {
-            UserBanks = await _bankService.GetByIdUserAsync(CurrentUser.IdUser);
+            get => _allSubCommand ??= new(obj =>
+            {
+                GetIdUserAllSubcategory();
+            });
         }
-
-        private RelayCommand _userBankDoubleClickCommand;
-        public RelayCommand UserBankDoubleClickCommand => _userBankDoubleClickCommand ??= new RelayCommand(DoubleClick);
 
         #endregion
 
 
-// ------------------------------------------------------------------------------------------------------------------------------------------------
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+        #region Подкатегории пользователя
+
+        public ObservableCollection<SubcategoryDTO> Subcategories { get; set; } = [];
+
+        private async void GetIdUserIdCategorySubcategory()
+        {
+            Subcategories.Clear();
+
+            var list = _subcategoryService.GetIdUserIdCategorySub(CurrentUser.IdUser, SelectedCategory.IdCategory);
+            //var list = _subcategoryService.GetAllIdUserSub(CurrentUser.IdUser);
+
+            foreach (var item in list)
+            {
+                Subcategories.Add(item);
+            }
+        }
+
+        private async void GetIdUserAllSubcategory()
+        {
+            Subcategories.Clear();
+
+            //var list = _subcategoryService.GetIdUserIdCategorySub(CurrentUser.IdUser, SelectedCategory.IdCategory);
+            var list = _subcategoryService.GetAllIdUserSub(CurrentUser.IdUser);
+
+            foreach (var item in list)
+            {
+                Subcategories.Add(item);
+            }
+        }
+
+        #endregion
+
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
 
 
         #region Навигация
 
         private void DoubleClick(object parameter)
         {
-            if (parameter is BankDTO bank)
-            {
-                _navigationPages.OpenPage(PageType.BankPage, bank);
-            }
             if (parameter is AccountDTO account)
             {
                 _navigationPages.OpenPage(PageType.AccountPage, account);
@@ -212,6 +299,10 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             if (parameter is AccountTypeDTO accountType)
             {
                 _navigationPages.OpenPage(PageType.AccountTypePage, accountType);
+            }
+            if (parameter is BankDTO bank)
+            {
+                _navigationPages.OpenPage(PageType.BankPage, bank);
             }
         }
 
@@ -241,6 +332,15 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             get => _openAccountTypePageCommand ??= new(obj =>
             {
                 _navigationPages.OpenPage(PageType.AccountTypePage);
+            });
+        }
+
+        private RelayCommand _openCatAndSubPageCommand;
+        public RelayCommand OpenCatAndSubPageCommand
+        {
+            get => _openCatAndSubPageCommand ??= new(obj =>
+            {
+                _navigationPages.OpenPage(PageType.CatAndSubPage);
             });
         }
 

@@ -91,6 +91,68 @@ namespace MoneyFlow.Infrastructure.Repositories
 
         // ------------------------------------------------------------------------------------------------------------------------------------------------
 
+        public int GetIdCat(int idUser)
+        {
+            using (var context = _factory())
+            {
+                return context.Categories.FirstOrDefault(x => x.IdUser == idUser).IdCategory;
+            }
+        }
+        
+        //public async Task<CategoryDomain> GetIdCatAsync(int idUser)
+        //{
+        //    using (var context = _factory())
+        //    {
+        //        var entity = context.Categories.FirstOrDefault(x => x.IdUser == idUser);
+        //        var domain = CategoryDomain.Create(entity.IdCategory, entity.CategoryName, entity.Description, entity.Color, entity.Image, entity.IdUser).CategoryDomain;
+
+        //        return domain;
+        //    }
+        //}
+        //public CategoryDomain GetIdCat(int idUser)
+        //{
+        //    using (var context = _factory())
+        //    {
+        //        var entity = context.Categories.FirstOrDefault(x => x.IdUser == idUser);
+        //        var domain = CategoryDomain.Create(entity.IdCategory, entity.CategoryName, entity.Description, entity.Color, entity.Image, entity.IdUser).CategoryDomain;
+
+        //        return domain;
+        //    }
+        //}
+
+        public async Task<List<CategoryDomain>> GetCatAsync(int idUser)
+        {
+            using (var context = _factory())
+            {
+                var list = new List<CategoryDomain>();
+                var entity = await context.Categories.Where(x => x.IdUser == idUser).ToListAsync();
+
+                foreach (var item in entity)
+                {
+                    list.Add(CategoryDomain.Create(item.IdCategory, item.CategoryName, item.Description, item.Color, item.Image, item.IdUser).CategoryDomain);
+                }
+
+                return list;
+            }
+        }
+        public List<CategoryDomain> GetCat(int idUser)
+        {
+            using (var context = _factory())
+            {
+                var list = new List<CategoryDomain>();
+                var entity = context.Categories.Where(x => x.IdUser == idUser).ToList();
+
+                foreach (var item in entity)
+                {
+                    list.Add(CategoryDomain.Create(item.IdCategory, item.CategoryName, item.Description, item.Color, item.Image, item.IdUser).CategoryDomain);
+                }
+
+                return list;
+            }
+        }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<CategoryDomain> GetAsync(int idCategory)
         {
             using (var context = _factory())

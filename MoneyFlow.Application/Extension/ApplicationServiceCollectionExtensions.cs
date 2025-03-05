@@ -71,13 +71,14 @@ namespace MoneyFlow.Application.Extension
             services.AddScoped<IGetUserUseCase,    GetUserUseCase>();
             services.AddScoped<IUpdateUserUseCase, UpdateUserUseCase>();
 
-            services.AddSingleton<IAccountService,          AccountService>();
-            services.AddSingleton<IAccountTypeService,      AccountTypeService>();
             services.AddSingleton<IAuthorizationService,    AuthorizationService>();
             services.AddSingleton<IRegistrationService,     RegistrationService>();
             services.AddSingleton<IRecoveryService,         RecoveryService>();
+            services.AddSingleton<IAccountService,          AccountService>();
+            services.AddSingleton<IAccountTypeService,      AccountTypeService>();
             services.AddSingleton<IBankService,             BankService>();
             services.AddSingleton<ICategoryService,         CategoryService>();
+            services.AddSingleton<ISubcategoryService,      SubcategoryService>();
             services.AddSingleton<IFinancialRecordService,  FinancialRecordService>();
             services.AddSingleton<IGenderService,           GenderService>();
             services.AddSingleton<ITransactionTypeService,  TransactionTypeService>();

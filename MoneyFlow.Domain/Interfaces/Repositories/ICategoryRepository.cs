@@ -10,6 +10,14 @@ namespace MoneyFlow.Domain.Interfaces.Repositories
         Task<List<CategoryDomain>> GetAllAsync();
         List<CategoryDomain> GetAll();
 
+        int GetIdCat(int idUser);
+
+        //Task<CategoryDomain> GetIdCatAsync(int idUser);
+        //CategoryDomain GetIdCat(int idUser);
+
+        Task<List<CategoryDomain>> GetCatAsync(int idUser);
+        List<CategoryDomain> GetCat(int idUser);
+
         Task<CategoryDomain> GetAsync(int idCategory);
         CategoryDomain Get(int idCategory);
 
