@@ -8,141 +8,177 @@ namespace MoneyFlow.Infrastructure.Repositories
 {
     public class UsersRepository : IUsersRepository
     {
-        private readonly ContextMF _context;
+        private readonly Func<ContextMF> _factory;
 
-        public UsersRepository(ContextMF context)
+        public UsersRepository(Func<ContextMF> factory)
         {
-            _context = context;
+            _factory = factory;
         }
 
         public async Task<int> CreateAsync(string userName, string login, string password)
         {
-            var userEntity = new User
+            using (var context = _factory())
             {
-                UserName = userName,
-                Login = login,
-                Password = password
-            };
+                var userEntity = new User
+                {
+                    UserName = userName,
+                    Login = login,
+                    Password = password
+                };
 
-            await _context.AddAsync(userEntity);
-            await _context.SaveChangesAsync();
+                await context.AddAsync(userEntity);
+                await context.SaveChangesAsync();
 
-            return _context.Users.FirstOrDefault(x => x.Login == login).IdUser;
+                return context.Users.FirstOrDefault(x => x.Login == login).IdUser;
+            }
         }
         public int Create(string userName, string login, string password)
         {
-            var userEntity = new User
+            using (var context = _factory())
             {
-                UserName = userName,
-                Login = login,
-                Password = password
-            };
+                var userEntity = new User
+                {
+                    UserName = userName,
+                    Login = login,
+                    Password = password
+                };
 
-            _context.Add(userEntity);
-            _context.SaveChanges();
+                context.Add(userEntity);
+                context.SaveChanges();
 
-            return _context.Users.FirstOrDefault(x => x.Login == login).IdUser;
+                return context.Users.FirstOrDefault(x => x.Login == login).IdUser;
+            }
         }
 
         public async Task<List<UserDomain>> GetAllAsync()
         {
-            var userList = new List<UserDomain>();
-            var userEntity = await _context.Users.ToListAsync();
-
-            foreach (var item in userEntity)
+            using (var context = _factory())
             {
-                userList.Add(UserDomain.Create(item.IdUser, item.UserName, item.Avatar, item.Login, item.Password, item.IdGender).UserDomain);
-            }
+                var userList = new List<UserDomain>();
+                var userEntity = await context.Users.ToListAsync();
 
-            return userList;
+                foreach (var item in userEntity)
+                {
+                    userList.Add(UserDomain.Create(item.IdUser, item.UserName, item.Avatar, item.Login, item.Password, item.IdGender).UserDomain);
+                }
+
+                return userList;
+            }
         }
         public List<UserDomain> GetAll()
         {
-            var userList = new List<UserDomain>();
-            var userEntity = _context.Users.ToList();
-
-            foreach (var item in userEntity)
+            using (var context = _factory())
             {
-                userList.Add(UserDomain.Create(item.IdUser, item.UserName, item.Avatar, item.Login, item.Password, item.IdGender).UserDomain);
-            }
+                var userList = new List<UserDomain>();
+                var userEntity = context.Users.ToList();
 
-            return userList;
+                foreach (var item in userEntity)
+                {
+                    userList.Add(UserDomain.Create(item.IdUser, item.UserName, item.Avatar, item.Login, item.Password, item.IdGender).UserDomain);
+                }
+
+                return userList;
+            }
         }
 
         public async Task<UserDomain> GetAsync(int idUser)
         {
-            var userEntity = await _context.Users.FirstOrDefaultAsync(x => x.IdUser == idUser);
-            var userDomain = UserDomain.Create(userEntity.IdUser, userEntity.UserName, userEntity.Avatar, userEntity.Login, userEntity.Password, userEntity.IdGender).UserDomain;
+            using (var context = _factory())
+            {
+                var userEntity = await context.Users.FirstOrDefaultAsync(x => x.IdUser == idUser);
+                var userDomain = UserDomain.Create(userEntity.IdUser, userEntity.UserName, userEntity.Avatar, userEntity.Login, userEntity.Password, userEntity.IdGender).UserDomain;
 
-            return userDomain;
+                return userDomain;
+            }
         }
         public UserDomain Get(int idUser)
         {
-            var userEntity = _context.Users.FirstOrDefault(x => x.IdUser == idUser);
-            var userDomain = UserDomain.Create(userEntity.IdUser, userEntity.UserName, userEntity.Avatar, userEntity.Login, userEntity.Password, userEntity.IdGender).UserDomain;
+            using (var context = _factory())
+            {
+                var userEntity = context.Users.FirstOrDefault(x => x.IdUser == idUser);
+                var userDomain = UserDomain.Create(userEntity.IdUser, userEntity.UserName, userEntity.Avatar, userEntity.Login, userEntity.Password, userEntity.IdGender).UserDomain;
 
-            return userDomain;
+                return userDomain;
+            }
         }
 
         public async Task<UserDomain> GetAsync(string login)
         {
-            var userEntity = await _context.Users.FirstOrDefaultAsync(x => x.Login == login);
+            using (var context = _factory())
+            {
+                var userEntity = await context.Users.FirstOrDefaultAsync(x => x.Login == login);
 
-            if (userEntity == null) { return null; }
+                if (userEntity == null) { return null; }
 
-            var userDomain = UserDomain.Create(userEntity.IdUser, userEntity.UserName, userEntity.Avatar, userEntity.Login, userEntity.Password, userEntity.IdGender).UserDomain;
+                var userDomain = UserDomain.Create(userEntity.IdUser, userEntity.UserName, userEntity.Avatar, userEntity.Login, userEntity.Password, userEntity.IdGender).UserDomain;
 
-            return userDomain;
+                return userDomain;
+            }
         }
         public UserDomain Get(string login)
         {
-            var userEntity = _context.Users.FirstOrDefault(x => x.Login == login);
+            using (var context = _factory())
+            {
+                var userEntity = context.Users.FirstOrDefault(x => x.Login == login);
 
-            if (userEntity == null) { return null; }
+                if (userEntity == null) { return null; }
 
-            var userDomain = UserDomain.Create(userEntity.IdUser, userEntity.UserName, userEntity.Avatar, userEntity.Login, userEntity.Password, userEntity.IdGender).UserDomain;
+                var userDomain = UserDomain.Create(userEntity.IdUser, userEntity.UserName, userEntity.Avatar, userEntity.Login, userEntity.Password, userEntity.IdGender).UserDomain;
 
-            return userDomain;
+                return userDomain;
+            }
         }
 
         public async Task<int> UpdateAsync(int idUser, string? userName, byte[]? avatar,
                                       string password, int? idGender)
         {
-            var entity = await _context.Users.FirstOrDefaultAsync(x => x.IdUser == idUser);
+            using (var context = _factory())
+            {
+                var entity = await context.Users.FirstOrDefaultAsync(x => x.IdUser == idUser);
 
-            entity.UserName = userName;
-            entity.Avatar = avatar;
-            entity.Password = password;
-            entity.IdGender = idGender;
+                entity.UserName = userName;
+                entity.Avatar = avatar;
+                entity.Password = password;
+                entity.IdGender = idGender;
 
-            _context.Users.Update(entity);
-            _context.SaveChanges();
+                context.Users.Update(entity);
+                context.SaveChanges();
 
-            return idUser;
+                return idUser;
+            }
         }
         public int Update(int idUser, string? userName, byte[]? avatar,
                                       string password, int? idGender)
         {
-            var entity = _context.Users.FirstOrDefault(x => x.IdUser == idUser);
+            using (var context = _factory())
+            {
+                var entity = context.Users.FirstOrDefault(x => x.IdUser == idUser);
 
-            entity.UserName = userName;
-            entity.Avatar = avatar;
-            entity.Password = password;
-            entity.IdGender = idGender;
+                entity.UserName = userName;
+                entity.Avatar = avatar;
+                entity.Password = password;
+                entity.IdGender = idGender;
 
-            _context.Users.Update(entity);
-            _context.SaveChanges();
+                context.Users.Update(entity);
+                context.SaveChanges();
 
-            return idUser;
+                return idUser;
+            }
         }
 
         public async Task DeleteAsync(int idUser)
         {
-            await _context.Users.Where(x => x.IdUser == idUser).ExecuteDeleteAsync();
+            using (var context = _factory())
+            {
+                await context.Users.Where(x => x.IdUser == idUser).ExecuteDeleteAsync();
+            }
         }
         public void Delete(int idUser)
         {
-            _context.Users.Where(x => x.IdUser == idUser).ExecuteDelete();
+            using (var context = _factory())
+            {
+                context.Users.Where(x => x.IdUser == idUser).ExecuteDelete();
+            }
         }
     }
 }

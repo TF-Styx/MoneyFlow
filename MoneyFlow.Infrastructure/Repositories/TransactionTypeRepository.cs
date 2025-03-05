@@ -8,133 +8,169 @@ namespace MoneyFlow.Infrastructure.Repositories
 {
     public class TransactionTypeRepository : ITransactionTypeRepository
     {
-        private readonly ContextMF _context;
+        private readonly Func<ContextMF> _factory;
 
-        public TransactionTypeRepository(ContextMF context)
+        public TransactionTypeRepository(Func<ContextMF> factory)
         {
-            _context = context;
+            _factory = factory;
         }
 
         public async Task<int> CreateAsync(string? transactionTypeName, string? description)
         {
-            var transactionTypeEntity = new TransactionType()
+            using (var context = _factory())
             {
-                TransactionTypeName = transactionTypeName,
-                Description = description
-            };
+                var transactionTypeEntity = new TransactionType()
+                {
+                    TransactionTypeName = transactionTypeName,
+                    Description = description
+                };
 
-            await _context.AddAsync(transactionTypeEntity);
-            await _context.SaveChangesAsync();
+                await context.AddAsync(transactionTypeEntity);
+                await context.SaveChangesAsync();
 
-            return _context.TransactionTypes.FirstOrDefault(x => x.TransactionTypeName == transactionTypeName).IdTransactionType;
+                return context.TransactionTypes.FirstOrDefault(x => x.TransactionTypeName == transactionTypeName).IdTransactionType;
+            }
         }
         public int Create(string? transactionTypeName, string? description)
         {
-            var transactionTypeEntity = new TransactionType()
+            using (var context = _factory())
             {
-                TransactionTypeName = transactionTypeName,
-                Description = description
-            };
+                var transactionTypeEntity = new TransactionType()
+                {
+                    TransactionTypeName = transactionTypeName,
+                    Description = description
+                };
 
-            _context.Add(transactionTypeEntity);
-            _context.SaveChanges();
+                context.Add(transactionTypeEntity);
+                context.SaveChanges();
 
-            return _context.TransactionTypes.FirstOrDefault(x => x.TransactionTypeName == transactionTypeName).IdTransactionType;
+                return context.TransactionTypes.FirstOrDefault(x => x.TransactionTypeName == transactionTypeName).IdTransactionType;
+            }
         }
 
         public async Task<List<TransactionTypeDomain>> GetAllAsync()
         {
-            var transactionTypeList = new List<TransactionTypeDomain>();
-            var transactionTypeEntity = await _context.TransactionTypes.ToListAsync();
-
-            foreach (var item in transactionTypeEntity)
+            using (var context = _factory())
             {
-                transactionTypeList.Add(TransactionTypeDomain.Create(item.IdTransactionType, item.TransactionTypeName, item.Description).TransactionTypeDomain);
-            }
+                var transactionTypeList = new List<TransactionTypeDomain>();
+                var transactionTypeEntity = await context.TransactionTypes.ToListAsync();
 
-            return transactionTypeList;
+                foreach (var item in transactionTypeEntity)
+                {
+                    transactionTypeList.Add(TransactionTypeDomain.Create(item.IdTransactionType, item.TransactionTypeName, item.Description).TransactionTypeDomain);
+                }
+
+                return transactionTypeList;
+            }
         }
         public List<TransactionTypeDomain> GetAll()
         {
-            var transactionTypeList = new List<TransactionTypeDomain>();
-            var transactionTypeEntity = _context.TransactionTypes.ToList();
-
-            foreach (var item in transactionTypeEntity)
+            using (var context = _factory())
             {
-                transactionTypeList.Add(TransactionTypeDomain.Create(item.IdTransactionType, item.TransactionTypeName, item.Description).TransactionTypeDomain);
-            }
+                var transactionTypeList = new List<TransactionTypeDomain>();
+                var transactionTypeEntity = context.TransactionTypes.ToList();
 
-            return transactionTypeList;
+                foreach (var item in transactionTypeEntity)
+                {
+                    transactionTypeList.Add(TransactionTypeDomain.Create(item.IdTransactionType, item.TransactionTypeName, item.Description).TransactionTypeDomain);
+                }
+
+                return transactionTypeList;
+            }
         }
 
         public async Task<TransactionTypeDomain> GetAsync(int idTransactionType)
         {
-            var transactionTypeEntity = await _context.TransactionTypes.FirstOrDefaultAsync(x => x.IdTransactionType == idTransactionType);
-            var transactionTypeDomain = TransactionTypeDomain.Create(transactionTypeEntity.IdTransactionType, transactionTypeEntity.TransactionTypeName, transactionTypeEntity.Description).TransactionTypeDomain;
+            using (var context = _factory())
+            {
+                var transactionTypeEntity = await context.TransactionTypes.FirstOrDefaultAsync(x => x.IdTransactionType == idTransactionType);
+                var transactionTypeDomain = TransactionTypeDomain.Create(transactionTypeEntity.IdTransactionType, transactionTypeEntity.TransactionTypeName, transactionTypeEntity.Description).TransactionTypeDomain;
 
-            return transactionTypeDomain;
+                return transactionTypeDomain;
+            }
         }
         public TransactionTypeDomain Get(int idTransactionType)
         {
-            var transactionTypeEntity = _context.TransactionTypes.FirstOrDefault(x => x.IdTransactionType == idTransactionType);
-            var transactionTypeDomain = TransactionTypeDomain.Create(transactionTypeEntity.IdTransactionType, transactionTypeEntity.TransactionTypeName, transactionTypeEntity.Description).TransactionTypeDomain;
+            using (var context = _factory())
+            {
+                var transactionTypeEntity = context.TransactionTypes.FirstOrDefault(x => x.IdTransactionType == idTransactionType);
+                var transactionTypeDomain = TransactionTypeDomain.Create(transactionTypeEntity.IdTransactionType, transactionTypeEntity.TransactionTypeName, transactionTypeEntity.Description).TransactionTypeDomain;
 
-            return transactionTypeDomain;
+                return transactionTypeDomain;
+            }
         }
 
         public async Task<TransactionTypeDomain> GetAsync(string transactionTypeName)
         {
-            var transactionTypeEntity = await _context.TransactionTypes.FirstOrDefaultAsync(x => x.TransactionTypeName == transactionTypeName);
+            using (var context = _factory())
+            {
+                var transactionTypeEntity = await context.TransactionTypes.FirstOrDefaultAsync(x => x.TransactionTypeName == transactionTypeName);
 
-            if (transactionTypeEntity == null) { return null; }
+                if (transactionTypeEntity == null) { return null; }
 
-            var transactionTypeDomain = TransactionTypeDomain.Create(transactionTypeEntity.IdTransactionType, transactionTypeEntity.TransactionTypeName, transactionTypeEntity.Description).TransactionTypeDomain;
+                var transactionTypeDomain = TransactionTypeDomain.Create(transactionTypeEntity.IdTransactionType, transactionTypeEntity.TransactionTypeName, transactionTypeEntity.Description).TransactionTypeDomain;
 
-            return transactionTypeDomain;
+                return transactionTypeDomain;
+            }
         }
         public TransactionTypeDomain Get(string transactionTypeName)
         {
-            var transactionTypeEntity = _context.TransactionTypes.FirstOrDefault(x => x.TransactionTypeName == transactionTypeName);
+            using (var context = _factory())
+            {
+                var transactionTypeEntity = context.TransactionTypes.FirstOrDefault(x => x.TransactionTypeName == transactionTypeName);
 
-            if (transactionTypeEntity == null) { return null; }
+                if (transactionTypeEntity == null) { return null; }
 
-            var transactionTypeDomain = TransactionTypeDomain.Create(transactionTypeEntity.IdTransactionType, transactionTypeEntity.TransactionTypeName, transactionTypeEntity.Description).TransactionTypeDomain;
+                var transactionTypeDomain = TransactionTypeDomain.Create(transactionTypeEntity.IdTransactionType, transactionTypeEntity.TransactionTypeName, transactionTypeEntity.Description).TransactionTypeDomain;
 
-            return transactionTypeDomain;
+                return transactionTypeDomain;
+            }
         }
 
         public async Task<int> UpdateAsync(int idTransactionType, string? transactionTypeName, string? description)
         {
-            var entity = await _context.TransactionTypes.FirstOrDefaultAsync(x => x.IdTransactionType == idTransactionType);
+            using (var context = _factory())
+            {
+                var entity = await context.TransactionTypes.FirstOrDefaultAsync(x => x.IdTransactionType == idTransactionType);
 
-            entity.TransactionTypeName = transactionTypeName;
-            entity.Description = description;
+                entity.TransactionTypeName = transactionTypeName;
+                entity.Description = description;
 
-            _context.TransactionTypes.Update(entity);
-            _context.SaveChanges();
+                context.TransactionTypes.Update(entity);
+                context.SaveChanges();
 
-            return idTransactionType;
+                return idTransactionType;
+            }
         }
         public int Update(int idTransactionType, string? transactionTypeName, string? description)
         {
-            var entity = _context.TransactionTypes.FirstOrDefault(x => x.IdTransactionType == idTransactionType);
+            using (var context = _factory())
+            {
+                var entity = context.TransactionTypes.FirstOrDefault(x => x.IdTransactionType == idTransactionType);
 
-            entity.TransactionTypeName = transactionTypeName;
-            entity.Description = description;
+                entity.TransactionTypeName = transactionTypeName;
+                entity.Description = description;
 
-            _context.TransactionTypes.Update(entity);
-            _context.SaveChanges();
+                context.TransactionTypes.Update(entity);
+                context.SaveChanges();
 
-            return idTransactionType;
+                return idTransactionType;
+            }
         }
 
         public async Task DeleteAsync(int idTransactionType)
         {
-            await _context.TransactionTypes.Where(x => x.IdTransactionType == idTransactionType).ExecuteDeleteAsync();
+            using (var context = _factory())
+            {
+                await context.TransactionTypes.Where(x => x.IdTransactionType == idTransactionType).ExecuteDeleteAsync();
+            }
         }
         public void Delete(int idTransactionType)
         {
-            _context.TransactionTypes.Where(x => x.IdTransactionType == idTransactionType).ExecuteDelete();
+            using (var context = _factory())
+            {
+                context.TransactionTypes.Where(x => x.IdTransactionType == idTransactionType).ExecuteDelete();
+            }
         }
     }
 }

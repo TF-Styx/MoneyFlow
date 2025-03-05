@@ -8,99 +8,121 @@ namespace MoneyFlow.Infrastructure.Repositories
 {
     public class AccountTypeRepository : IAccountTypeRepository
     {
-        private readonly ContextMF _context;
         private readonly Func<ContextMF> _factory;
 
-        public AccountTypeRepository(ContextMF context, Func<ContextMF> factory)
+        public AccountTypeRepository(Func<ContextMF> factory)
         {
-            _context = context;
             _factory = factory;
         }
 
         public async Task<int> CreateAsync(string accountTypeName)
         {
-            var accountTypeEntity = new AccountType
+            using (var context = _factory())
             {
-                AccountTypeName = accountTypeName,
-            };
+                var accountTypeEntity = new AccountType
+                {
+                    AccountTypeName = accountTypeName,
+                };
 
-            await _context.AddAsync(accountTypeEntity);
-            await _context.SaveChangesAsync();
+                await context.AddAsync(accountTypeEntity);
+                await context.SaveChangesAsync();
 
-            return _context.AccountTypes.FirstOrDefault(x => x.AccountTypeName == accountTypeName).IdAccountType;
+                return context.AccountTypes.FirstOrDefault(x => x.AccountTypeName == accountTypeName).IdAccountType;
+            }
         }
         public int Create(string accountTypeName)
         {
-            var accountTypeEntity = new AccountType
+            using (var context = _factory())
             {
-                AccountTypeName = accountTypeName
-            };
+                var accountTypeEntity = new AccountType
+                {
+                    AccountTypeName = accountTypeName
+                };
 
-            _context.AddAsync(accountTypeEntity);
-            _context.SaveChangesAsync();
+                context.AddAsync(accountTypeEntity);
+                context.SaveChangesAsync();
 
-            return _context.AccountTypes.FirstOrDefault(x => x.AccountTypeName == accountTypeName).IdAccountType;
+                return context.AccountTypes.FirstOrDefault(x => x.AccountTypeName == accountTypeName).IdAccountType;
+            }
         }
 
         public async Task<List<AccountTypeDomain>> GetAllAsync()
         {
-            var accountTypeList = new List<AccountTypeDomain>();
-            var accountTypeEntities = await _context.AccountTypes.ToListAsync();
-
-            foreach (var item in accountTypeEntities)
+            using (var context = _factory())
             {
-                accountTypeList.Add(AccountTypeDomain.Create(item.IdAccountType, item.AccountTypeName).AccountTypeDomain);
-            }
+                var accountTypeList = new List<AccountTypeDomain>();
+                var accountTypeEntities = await context.AccountTypes.ToListAsync();
 
-            return accountTypeList;
+                foreach (var item in accountTypeEntities)
+                {
+                    accountTypeList.Add(AccountTypeDomain.Create(item.IdAccountType, item.AccountTypeName).AccountTypeDomain);
+                }
+
+                return accountTypeList;
+            }
         }
         public List<AccountTypeDomain> GetAll()
         {
-            var accountTypeList = new List<AccountTypeDomain>();
-            var accountTypeEntities = _context.AccountTypes.ToList();
-
-            foreach (var item in accountTypeEntities)
+            using (var context = _factory())
             {
-                accountTypeList.Add(AccountTypeDomain.Create(item.IdAccountType, item.AccountTypeName).AccountTypeDomain);
-            }
+                var accountTypeList = new List<AccountTypeDomain>();
+                var accountTypeEntities = context.AccountTypes.ToList();
 
-            return accountTypeList;
+                foreach (var item in accountTypeEntities)
+                {
+                    accountTypeList.Add(AccountTypeDomain.Create(item.IdAccountType, item.AccountTypeName).AccountTypeDomain);
+                }
+
+                return accountTypeList;
+            }
         }
 
         public async Task<AccountTypeDomain> GetAsync(int idAccountType)
         {
-            var accountTypeEntity = await _context.AccountTypes.FirstOrDefaultAsync(x => x.IdAccountType == idAccountType);
-            var accountTypeDomain = AccountTypeDomain.Create(idAccountType, accountTypeEntity.AccountTypeName).AccountTypeDomain;
+            using (var context = _factory())
+            {
+                var accountTypeEntity = await context.AccountTypes.FirstOrDefaultAsync(x => x.IdAccountType == idAccountType);
+                var accountTypeDomain = AccountTypeDomain.Create(idAccountType, accountTypeEntity.AccountTypeName).AccountTypeDomain;
 
-            return accountTypeDomain;
+                return accountTypeDomain;
+            }
         }
         public AccountTypeDomain Get(int idAccountType)
         {
-            var accountTypeEntity = _context.AccountTypes.FirstOrDefault(x => x.IdAccountType == idAccountType);
-            var accountTypeDomain = AccountTypeDomain.Create(idAccountType, accountTypeEntity.AccountTypeName).AccountTypeDomain;
+            using (var context = _factory())
+            {
+                var accountTypeEntity = context.AccountTypes.FirstOrDefault(x => x.IdAccountType == idAccountType);
+                var accountTypeDomain = AccountTypeDomain.Create(idAccountType, accountTypeEntity.AccountTypeName).AccountTypeDomain;
 
-            return accountTypeDomain;
+                return accountTypeDomain;
+            }
         }
 
         public async Task<AccountTypeDomain> GetAsync(string accountTypeName)
         {
-            var accountTypeEntity = await _context.AccountTypes.FirstOrDefaultAsync(x => x.AccountTypeName == accountTypeName);
+            using (var context = _factory())
+            {
+                var accountTypeEntity = await context.AccountTypes.FirstOrDefaultAsync(x => x.AccountTypeName == accountTypeName);
 
-            if (accountTypeEntity == null) { return null; }
+                if (accountTypeEntity == null) { return null; }
 
-            var accountTypeDomain = AccountTypeDomain.Create(accountTypeEntity.IdAccountType, accountTypeName).AccountTypeDomain;
+                var accountTypeDomain = AccountTypeDomain.Create(accountTypeEntity.IdAccountType, accountTypeName).AccountTypeDomain;
 
-            return accountTypeDomain;
+                return accountTypeDomain;
+            }
         }
         public AccountTypeDomain Get(string accountTypeName)
         {
-            var accountTypeEntity = _context.AccountTypes.FirstOrDefault(x => x.AccountTypeName == accountTypeName);
+            using (var context = _factory())
+            {
+                var accountTypeEntity = context.AccountTypes.FirstOrDefault(x => x.AccountTypeName == accountTypeName);
 
-            if (accountTypeEntity == null) { return null; }
+                if (accountTypeEntity == null) { return null; }
 
-            var accountTypeDomain = AccountTypeDomain.Create(accountTypeEntity.IdAccountType, accountTypeName).AccountTypeDomain;
+                var accountTypeDomain = AccountTypeDomain.Create(accountTypeEntity.IdAccountType, accountTypeName).AccountTypeDomain;
 
-            return accountTypeDomain;
+                return accountTypeDomain;
+            }
         }
 
         public async Task<UserAccountTypesDomain> GetByIdUserAsync(int idUser)
@@ -142,32 +164,44 @@ namespace MoneyFlow.Infrastructure.Repositories
 
         public async Task<int> UpdateAsync(int idAccountType, string accountTypeName)
         {
-            var entity = await _context.AccountTypes.FirstOrDefaultAsync(x => x.IdAccountType == idAccountType);
-            entity.AccountTypeName = accountTypeName;
+            using (var context = _factory())
+            {
+                var entity = await context.AccountTypes.FirstOrDefaultAsync(x => x.IdAccountType == idAccountType);
+                entity.AccountTypeName = accountTypeName;
 
-            _context.AccountTypes.Update(entity);
-            _context.SaveChanges();
+                context.AccountTypes.Update(entity);
+                context.SaveChanges();
 
-            return idAccountType;
+                return idAccountType;
+            }
         }
         public int Update(int idAccountType, string accountTypeName)
         {
-            var entity = _context.AccountTypes.FirstOrDefault(x => x.IdAccountType == idAccountType);
-            entity.AccountTypeName = accountTypeName;
+            using (var context = _factory())
+            {
+                var entity = context.AccountTypes.FirstOrDefault(x => x.IdAccountType == idAccountType);
+                entity.AccountTypeName = accountTypeName;
 
-            _context.AccountTypes.Update(entity);
-            _context.SaveChanges();
+                context.AccountTypes.Update(entity);
+                context.SaveChanges();
 
-            return idAccountType;
+                return idAccountType;
+            }
         }
 
         public async Task DeleteAsync(int idAccountType)
         {
-            await _context.AccountTypes.Where(x => x.IdAccountType == idAccountType).ExecuteDeleteAsync();
+            using (var context = _factory())
+            {
+                await context.AccountTypes.Where(x => x.IdAccountType == idAccountType).ExecuteDeleteAsync();
+            }
         }
         public void Delete(int idAccountType)
         {
-            _context.AccountTypes.Where(x => x.IdAccountType == idAccountType).ExecuteDeleteAsync();
+            using (var context = _factory())
+            {
+                context.AccountTypes.Where(x => x.IdAccountType == idAccountType).ExecuteDeleteAsync();
+            }
         }
     }
 }

@@ -8,133 +8,169 @@ namespace MoneyFlow.Infrastructure.Repositories
 {
     public class GendersRepository : IGendersRepository
     {
-        private readonly ContextMF _context;
+        private readonly Func<ContextMF> _factory;
 
-        public GendersRepository(ContextMF context)
+        public GendersRepository(Func<ContextMF> factor)
         {
-            _context = context;
+            _factory = factor;
         }
 
         public async Task<int> CreateAsync(string genderName)
         {
-            var genderEntity = new Gender
+            using (var context = _factory())
             {
-                GenderName = genderName,
-            };
+                var genderEntity = new Gender
+                {
+                    GenderName = genderName,
+                };
 
-            await _context.AddAsync(genderEntity);
-            await _context.SaveChangesAsync();
+                await context.AddAsync(genderEntity);
+                await context.SaveChangesAsync();
 
-            return _context.Genders.FirstOrDefault(x => x.GenderName == genderName).IdGender;
+                return context.Genders.FirstOrDefault(x => x.GenderName == genderName).IdGender;
+            }
         }
         public int Create(string genderName)
         {
-            var genderEntity = new Gender
+            using (var context = _factory())
             {
-                GenderName = genderName,
-            };
+                var genderEntity = new Gender
+                {
+                    GenderName = genderName,
+                };
 
-            _context.Add(genderEntity);
-            _context.SaveChanges();
+                context.Add(genderEntity);
+                context.SaveChanges();
 
-            return _context.Genders.FirstOrDefault(x => x.GenderName == genderName).IdGender;
+                return context.Genders.FirstOrDefault(x => x.GenderName == genderName).IdGender;
+            }
         }
 
         public async Task<List<GenderDomain>> GetAllAsync()
         {
-            var genderList = new List<GenderDomain>();
-            var genderEntities = await _context.Genders.ToListAsync();
-
-            foreach (var item in genderEntities)
+            using (var context = _factory())
             {
-                genderList.Add(GenderDomain.Create(item.IdGender, item.GenderName).GenderDomain);
-            }
+                var genderList = new List<GenderDomain>();
+                var genderEntities = await context.Genders.ToListAsync();
 
-            return genderList;
+                foreach (var item in genderEntities)
+                {
+                    genderList.Add(GenderDomain.Create(item.IdGender, item.GenderName).GenderDomain);
+                }
+
+                return genderList;
+            }
         }
         public List<GenderDomain> GetAll()
         {
-            var genderList = new List<GenderDomain>();
-            var genderEntities = _context.Genders.ToList();
-
-            foreach (var item in genderEntities)
+            using (var context = _factory())
             {
-                genderList.Add(GenderDomain.Create(item.IdGender, item.GenderName).GenderDomain);
-            }
+                var genderList = new List<GenderDomain>();
+                var genderEntities = context.Genders.ToList();
 
-            return genderList;
+                foreach (var item in genderEntities)
+                {
+                    genderList.Add(GenderDomain.Create(item.IdGender, item.GenderName).GenderDomain);
+                }
+
+                return genderList;
+            }
         }
 
         public async Task<GenderDomain> GetAsync(int idGender)
         {
-            var genderEntity = await _context.Genders.FirstOrDefaultAsync(x => x.IdGender == idGender);
-            var genderDomain = GenderDomain.Create(genderEntity.IdGender, genderEntity.GenderName).GenderDomain;
+            using (var context = _factory())
+            {
+                var genderEntity = await context.Genders.FirstOrDefaultAsync(x => x.IdGender == idGender);
+                var genderDomain = GenderDomain.Create(genderEntity.IdGender, genderEntity.GenderName).GenderDomain;
 
-            return genderDomain;
+                return genderDomain;
+            }
         }
         public GenderDomain Get(int idGender)
         {
-            var genderEntity = _context.Genders.FirstOrDefault(x => x.IdGender == idGender);
-            var genderDomain = GenderDomain.Create(genderEntity.IdGender, genderEntity.GenderName).GenderDomain;
+            using (var context = _factory())
+            {
+                var genderEntity = context.Genders.FirstOrDefault(x => x.IdGender == idGender);
+                var genderDomain = GenderDomain.Create(genderEntity.IdGender, genderEntity.GenderName).GenderDomain;
 
-            return genderDomain;
+                return genderDomain;
+            }
         }
 
         public async Task<GenderDomain> GetAsync(string genderName)
         {
-            var genderEntity = await _context.Genders.FirstOrDefaultAsync(x => x.GenderName.ToLower() == genderName.ToLower());
-
-            if (genderEntity == null)
+            using (var context = _factory())
             {
-                return null;
+                var genderEntity = await context.Genders.FirstOrDefaultAsync(x => x.GenderName.ToLower() == genderName.ToLower());
+
+                if (genderEntity == null)
+                {
+                    return null;
+                }
+
+                var genderDomain = GenderDomain.Create(genderEntity.IdGender, genderEntity.GenderName).GenderDomain;
+
+                return genderDomain;
             }
-
-            var genderDomain = GenderDomain.Create(genderEntity.IdGender, genderEntity.GenderName).GenderDomain;
-
-            return genderDomain;
         }
         public GenderDomain Get(string genderName)
         {
-            var genderEntity = _context.Genders.FirstOrDefault(x => x.GenderName.ToLower() == genderName.ToLower());
-
-            if (genderEntity == null)
+            using (var context = _factory())
             {
-                return null;
+                var genderEntity = context.Genders.FirstOrDefault(x => x.GenderName.ToLower() == genderName.ToLower());
+
+                if (genderEntity == null)
+                {
+                    return null;
+                }
+
+                var genderDomain = GenderDomain.Create(genderEntity.IdGender, genderEntity.GenderName).GenderDomain;
+
+                return genderDomain;
             }
-
-            var genderDomain = GenderDomain.Create(genderEntity.IdGender, genderEntity.GenderName).GenderDomain;
-
-            return genderDomain;
         }
 
         public async Task<int> UpdateAsync(int idGender, string genderName)
         {
-            var entity = await _context.Genders.FirstOrDefaultAsync(x => x.IdGender == idGender);
-            entity.GenderName = genderName;
+            using (var context = _factory())
+            {
+                var entity = await context.Genders.FirstOrDefaultAsync(x => x.IdGender == idGender);
+                entity.GenderName = genderName;
 
-            _context.Update(entity);
-            _context.SaveChanges();
+                context.Update(entity);
+                context.SaveChanges();
 
-            return entity.IdGender;
+                return entity.IdGender;
+            }
         }
         public int Update(int idGender, string genderName)
         {
-            var entity = _context.Genders.FirstOrDefault(x => x.IdGender == idGender);
-            entity.GenderName = genderName;
+            using (var context = _factory())
+            {
+                var entity = context.Genders.FirstOrDefault(x => x.IdGender == idGender);
+                entity.GenderName = genderName;
 
-            _context.Update(entity);
-            _context.SaveChanges();
+                context.Update(entity);
+                context.SaveChanges();
 
-            return entity.IdGender;
+                return entity.IdGender;
+            }
         }
 
         public async Task DeleteAsync(int idGender)
         {
-            await _context.Genders.Where(x => x.IdGender == idGender).ExecuteDeleteAsync();
+            using (var context = _factory())
+            {
+                await context.Genders.Where(x => x.IdGender == idGender).ExecuteDeleteAsync();
+            }
         }
         public void Delete(int idGender)
         {
-            _context.Genders.Where(x => x.IdGender == idGender).ExecuteDelete();
+            using (var context = _factory())
+            {
+                context.Genders.Where(x => x.IdGender == idGender).ExecuteDelete();
+            }
         }
     }
 }

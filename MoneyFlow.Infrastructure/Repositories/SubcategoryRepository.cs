@@ -8,131 +8,167 @@ namespace MoneyFlow.Infrastructure.Repositories
 {
     public class SubcategoryRepository : ISubcategoryRepository
     {
-        private readonly ContextMF _context;
+        private readonly Func<ContextMF> _factory;
 
-        public SubcategoryRepository(ContextMF context)
+        public SubcategoryRepository(Func<ContextMF> factory)
         {
-            _context = context;
+            _factory = factory;
         }
 
         public async Task<int> CreateAsync(string? subcategoryName, string? description, byte[]? image)
         {
-            var entity = new Subcategory()
+            using (var context = _factory())
             {
-                SubcategoryName = subcategoryName,
-                Description = description,
-                Image = image,
-            };
+                var entity = new Subcategory()
+                {
+                    SubcategoryName = subcategoryName,
+                    Description = description,
+                    Image = image,
+                };
 
-            await _context.AddAsync(entity);
-            await _context.SaveChangesAsync();
+                await context.AddAsync(entity);
+                await context.SaveChangesAsync();
 
-            return _context.Subcategories.FirstOrDefault(x => x.SubcategoryName == subcategoryName).IdSubcategory;
+                return context.Subcategories.FirstOrDefault(x => x.SubcategoryName == subcategoryName).IdSubcategory;
+            }
         }
         public int Create(string? subcategoryName, string? description, byte[]? image)
         {
-            var entity = new Subcategory()
+            using (var context = _factory())
             {
-                SubcategoryName = subcategoryName,
-                Description = description,
-                Image = image,
-            };
+                var entity = new Subcategory()
+                {
+                    SubcategoryName = subcategoryName,
+                    Description = description,
+                    Image = image,
+                };
 
-            _context.Add(entity);
-            _context.SaveChanges();
+                context.Add(entity);
+                context.SaveChanges();
 
-            return _context.Subcategories.FirstOrDefault(x => x.SubcategoryName == subcategoryName).IdSubcategory;
+                return context.Subcategories.FirstOrDefault(x => x.SubcategoryName == subcategoryName).IdSubcategory;
+            }
         }
 
         public async Task<List<SubcategoryDomain>> GetAllAsync()
         {
-            var list = new List<SubcategoryDomain>();
-            var entity = await _context.Subcategories.ToListAsync();
-
-            foreach (var item in entity)
+            using (var context = _factory())
             {
-                list.Add(SubcategoryDomain.Create(item.IdSubcategory, item.SubcategoryName, item.Description, item.Image).SubcategoryDomain);
-            }
+                var list = new List<SubcategoryDomain>();
+                var entity = await context.Subcategories.ToListAsync();
 
-            return list;
+                foreach (var item in entity)
+                {
+                    list.Add(SubcategoryDomain.Create(item.IdSubcategory, item.SubcategoryName, item.Description, item.Image).SubcategoryDomain);
+                }
+
+                return list;
+            }
         }
         public List<SubcategoryDomain> GetAll()
         {
-            var list = new List<SubcategoryDomain>();
-            var entity = _context.Subcategories.ToList();
-
-            foreach (var item in entity)
+            using (var context = _factory())
             {
-                list.Add(SubcategoryDomain.Create(item.IdSubcategory, item.SubcategoryName, item.Description, item.Image).SubcategoryDomain);
-            }
+                var list = new List<SubcategoryDomain>();
+                var entity = context.Subcategories.ToList();
 
-            return list;
+                foreach (var item in entity)
+                {
+                    list.Add(SubcategoryDomain.Create(item.IdSubcategory, item.SubcategoryName, item.Description, item.Image).SubcategoryDomain);
+                }
+
+                return list;
+            }
         }
 
         public async Task<SubcategoryDomain> GetAsync(int idSubcategory)
         {
-            var entity = await _context.Subcategories.FirstOrDefaultAsync(x => x.IdSubcategory == idSubcategory);
-            var domain = SubcategoryDomain.Create(entity.IdSubcategory, entity.SubcategoryName, entity.Description, entity.Image).SubcategoryDomain;
+            using (var context = _factory())
+            {
+                var entity = await context.Subcategories.FirstOrDefaultAsync(x => x.IdSubcategory == idSubcategory);
+                var domain = SubcategoryDomain.Create(entity.IdSubcategory, entity.SubcategoryName, entity.Description, entity.Image).SubcategoryDomain;
 
-            return domain;
+                return domain;
+            }
         }
         public SubcategoryDomain Get(int idSubcategory)
         {
-            var entity = _context.Subcategories.FirstOrDefault(x => x.IdSubcategory == idSubcategory);
-            var domain = SubcategoryDomain.Create(entity.IdSubcategory, entity.SubcategoryName, entity.Description, entity.Image).SubcategoryDomain;
+            using (var context = _factory())
+            {
+                var entity = context.Subcategories.FirstOrDefault(x => x.IdSubcategory == idSubcategory);
+                var domain = SubcategoryDomain.Create(entity.IdSubcategory, entity.SubcategoryName, entity.Description, entity.Image).SubcategoryDomain;
 
-            return domain;
+                return domain;
+            }
         }
 
         public async Task<SubcategoryDomain> GetAsync(string subcategoryName)
         {
-            var entity = await _context.Subcategories.FirstOrDefaultAsync(x => x.SubcategoryName == subcategoryName);
-            var domain = SubcategoryDomain.Create(entity.IdSubcategory, entity.SubcategoryName, entity.Description, entity.Image).SubcategoryDomain;
+            using (var context = _factory())
+            {
+                var entity = await context.Subcategories.FirstOrDefaultAsync(x => x.SubcategoryName == subcategoryName);
+                var domain = SubcategoryDomain.Create(entity.IdSubcategory, entity.SubcategoryName, entity.Description, entity.Image).SubcategoryDomain;
 
-            return domain;
+                return domain;
+            }
         }
         public SubcategoryDomain Get(string subcategoryName)
         {
-            var entity = _context.Subcategories.FirstOrDefault(x => x.SubcategoryName == subcategoryName);
-            var domain = SubcategoryDomain.Create(entity.IdSubcategory, entity.SubcategoryName, entity.Description, entity.Image).SubcategoryDomain;
+            using (var context = _factory())
+            {
+                var entity = context.Subcategories.FirstOrDefault(x => x.SubcategoryName == subcategoryName);
+                var domain = SubcategoryDomain.Create(entity.IdSubcategory, entity.SubcategoryName, entity.Description, entity.Image).SubcategoryDomain;
 
-            return domain;
+                return domain;
+            }
         }
 
         public async Task<int> UpdateAsync(int idSubcategory, string? subcategoryName, string? description, byte[]? image)
         {
-            var entity = await _context.Subcategories.FirstOrDefaultAsync(x => x.IdSubcategory == idSubcategory);
+            using (var context = _factory())
+            {
+                var entity = await context.Subcategories.FirstOrDefaultAsync(x => x.IdSubcategory == idSubcategory);
 
-            entity.SubcategoryName = subcategoryName;
-            entity.Description = description;
-            entity.Image = image;
+                entity.SubcategoryName = subcategoryName;
+                entity.Description = description;
+                entity.Image = image;
 
-            _context.Subcategories.Update(entity);
-            _context.SaveChanges();
+                context.Subcategories.Update(entity);
+                context.SaveChanges();
 
-            return idSubcategory;
+                return idSubcategory;
+            }
         }
         public int Update(int idSubcategory, string? subcategoryName, string? description, byte[]? image)
         {
-            var entity = _context.Subcategories.FirstOrDefault(x => x.IdSubcategory == idSubcategory);
+            using (var context = _factory())
+            {
+                var entity = context.Subcategories.FirstOrDefault(x => x.IdSubcategory == idSubcategory);
 
-            entity.SubcategoryName = subcategoryName;
-            entity.Description = description;
-            entity.Image = image;
+                entity.SubcategoryName = subcategoryName;
+                entity.Description = description;
+                entity.Image = image;
 
-            _context.Subcategories.Update(entity);
-            _context.SaveChanges();
+                context.Subcategories.Update(entity);
+                context.SaveChanges();
 
-            return idSubcategory;
+                return idSubcategory;
+            }
         }
 
         public async Task DeleteAsync(int idSubcategory)
         {
-            await _context.Subcategories.Where(x => x.IdSubcategory == idSubcategory).ExecuteDeleteAsync();
+            using (var context = _factory())
+            {
+                await context.Subcategories.Where(x => x.IdSubcategory == idSubcategory).ExecuteDeleteAsync();
+            }
         }
         public void Delete(int idSubcategory)
         {
-            _context.Subcategories.Where(x => x.IdSubcategory == idSubcategory).ExecuteDelete();
+            using (var context = _factory())
+            {
+                context.Subcategories.Where(x => x.IdSubcategory == idSubcategory).ExecuteDelete();
+            }
         }
     }
 }
