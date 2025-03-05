@@ -15,6 +15,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             _factory = factory;
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<int> CreateAsync(int idUser, int idCategory, int idSubcategory)
         {
             using (var context = _factory())
@@ -54,6 +56,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             }
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public List<SubcategoryDomain> GetAllSubcategory(int idUser, int idCategory)
         {
             using (var context = _factory())
@@ -70,6 +74,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             }
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task DeleteAsync(int idUser, int idCategory, int idSubcategory)
         {
             using (var context = _factory())
@@ -77,5 +83,7 @@ namespace MoneyFlow.Infrastructure.Repositories
                 await context.CatLinkSubs.Where(x => x.IdUser == idUser && x.IdCategory == idCategory && x.IdSubcategory == idSubcategory).ExecuteDeleteAsync();
             }
         }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
     }
 }

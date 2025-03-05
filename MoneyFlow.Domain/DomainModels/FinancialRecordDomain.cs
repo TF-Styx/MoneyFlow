@@ -17,15 +17,15 @@ namespace MoneyFlow.Domain.DomainModels
             Date = date;
         }
 
-        public int IdFinancialRecord { get; set; }
-        public string? RecordName { get; set; }
-        public decimal? Amount { get; set; }
-        public string? Description { get; set; }
-        public int? IdTransactionType { get; set; }
-        public int? IdUser { get; set; }
-        public int? IdCategory { get; set; }
-        public int? IdAccount { get; set; }
-        public DateTime? Date { get; set; }
+        public int IdFinancialRecord { get; private set; }
+        public string? RecordName { get; private set; }
+        public decimal? Amount { get; private set; }
+        public string? Description { get; private set; }
+        public int? IdTransactionType { get; private set; }
+        public int? IdUser { get; private set; }
+        public int? IdCategory { get; private set; }
+        public int? IdAccount { get; private set; }
+        public DateTime? Date { get; private set; }
 
         public static (FinancialRecordDomain FinancialRecordDomain, string Message) Create(int idFinancialRecord, string? recordName, decimal? amount, string? description, int? idTransactionType, int? idUser, int? idCategory, int? idAccount, DateTime? date)
         {

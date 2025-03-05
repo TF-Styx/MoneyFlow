@@ -46,7 +46,7 @@
 
                             <!--#region Информация пользователя -->
                             <DockPanel HorizontalAlignment="Right" Margin="50 0 0 0">
-                                <TextBlock Text="{Binding UserName}" d:Text="UserName" DockPanel.Dock="Top" FontSize="30"/>
+                                <TextBlock Text="{Binding CurrentUser.UserName}" d:Text="UserName" DockPanel.Dock="Top" FontSize="30"/>
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
                                     <TextBlock Text="{Binding City}" d:Text="City" Margin="0 0 20 0"/>
                                     <TextBlock Text="{Binding DetailedInformation}" d:Text="DetailedInformation"/>
@@ -155,31 +155,27 @@
                                     <StackPanel Margin="10">
                                         <DockPanel>
                                             <TextBlock Text="Gender" Margin="0 0 20 0" Width="150"/>
-                                            <TextBlock Text="{Binding Gender}" d:Text="Man" Width="150"/>
+                                            <TextBlock Text="{Binding UserTotalInfo.GenderName}" d:Text="Man" Width="150"/>
                                         </DockPanel>
                                         <DockPanel>
                                             <TextBlock Text="TotalBalace" Margin="0 0 20 0" Width="150"/>
-                                            <TextBlock Text="{Binding TotalBalance}" d:Text="193592" Width="150"/>
+                                            <TextBlock Text="{Binding UserTotalInfo.TotalBalance}" d:Text="193592" Width="150"/>
                                         </DockPanel>
                                         <DockPanel>
                                             <TextBlock Text="BankCount" Margin="0 0 20 0" Width="150"/>
-                                            <TextBlock Text="{Binding BankCount}" d:Text="3" Width="150"/>
+                                            <TextBlock Text="{Binding UserTotalInfo.BankCount}" d:Text="3" Width="150"/>
                                         </DockPanel>
                                         <DockPanel>
                                             <TextBlock Text="CategoryCount" Margin="0 0 20 0" Width="150"/>
-                                            <TextBlock Text="{Binding CategoryCount}" d:Text="15" Width="150"/>
+                                            <TextBlock Text="{Binding UserTotalInfo.CategoryCount}" d:Text="15" Width="150"/>
                                         </DockPanel>
                                         <DockPanel>
                                             <TextBlock Text="SubcategoryCount" Margin="0 0 20 0" Width="150"/>
-                                            <TextBlock Text="{Binding SubcategoryCount}" d:Text="36" Width="150"/>
+                                            <TextBlock Text="{Binding UserTotalInfo.SubcategoryCount}" d:Text="36" Width="150"/>
                                         </DockPanel>
                                         <DockPanel>
                                             <TextBlock Text="FinancialRecordCount" Margin="0 0 20 0" Width="150"/>
-                                            <TextBlock Text="{Binding FinancialRecordCount}" d:Text="206" Width="150"/>
-                                        </DockPanel>
-                                        <DockPanel>
-                                            <TextBlock Text="OperationCount" Margin="0 0 20 0" Width="150"/>
-                                            <TextBlock Text="{Binding OperationCount}" d:Text="476" Width="150"/>
+                                            <TextBlock Text="{Binding UserTotalInfo.FinancialRecordCount}" d:Text="206" Width="150"/>
                                         </DockPanel>
                                     </StackPanel>
                                 </Border>

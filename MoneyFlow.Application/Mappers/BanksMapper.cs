@@ -1,5 +1,6 @@
 ﻿using MoneyFlow.Application.DTOs;
 using MoneyFlow.Domain.DomainModels;
+using System.Collections.ObjectModel;
 
 namespace MoneyFlow.Application.Mappers
 {
@@ -22,7 +23,20 @@ namespace MoneyFlow.Application.Mappers
 
         public static UserBanksDTO ToDTO(this UserBanksDomain userBanks)
         {
-            return UserBanksDTO.Create(userBanks.IdUser, userBanks.Banks.ToListDTO()).UserBanksDTO;
+            var obs = new ObservableCollection<BankDTO>();
+
+            foreach (var item in userBanks.Banks.ToListDTO())
+            {
+                obs.Add(item);
+            }
+
+            var dto = new UserBanksDTO()
+            {
+                IdUser = userBanks.IdUser,
+                Banks = obs,
+            };
+
+            return dto;
         }
 
         public static List<BankDTO> ToListDTO(this IEnumerable<BankDomain> banks)

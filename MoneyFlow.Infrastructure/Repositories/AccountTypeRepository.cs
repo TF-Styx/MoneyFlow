@@ -15,6 +15,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             _factory = factory;
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<int> CreateAsync(string accountTypeName)
         {
             using (var context = _factory())
@@ -45,6 +47,8 @@ namespace MoneyFlow.Infrastructure.Repositories
                 return context.AccountTypes.FirstOrDefault(x => x.AccountTypeName == accountTypeName).IdAccountType;
             }
         }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
 
         public async Task<List<AccountTypeDomain>> GetAllAsync()
         {
@@ -77,6 +81,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             }
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<AccountTypeDomain> GetAsync(int idAccountType)
         {
             using (var context = _factory())
@@ -97,6 +103,8 @@ namespace MoneyFlow.Infrastructure.Repositories
                 return accountTypeDomain;
             }
         }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
 
         public async Task<AccountTypeDomain> GetAsync(string accountTypeName)
         {
@@ -124,6 +132,8 @@ namespace MoneyFlow.Infrastructure.Repositories
                 return accountTypeDomain;
             }
         }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
 
         public async Task<UserAccountTypesDomain> GetByIdUserAsync(int idUser)
         {
@@ -162,6 +172,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             }
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<int> UpdateAsync(int idAccountType, string accountTypeName)
         {
             using (var context = _factory())
@@ -189,6 +201,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             }
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task DeleteAsync(int idAccountType)
         {
             using (var context = _factory())
@@ -203,5 +217,7 @@ namespace MoneyFlow.Infrastructure.Repositories
                 context.AccountTypes.Where(x => x.IdAccountType == idAccountType).ExecuteDeleteAsync();
             }
         }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
     }
 }

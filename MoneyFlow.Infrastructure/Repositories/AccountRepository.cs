@@ -15,6 +15,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             _factory = factory;
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<int> CreateAsync(int? numberAccount, int idUser, BankDomain bankDomain, AccountTypeDomain accountTypeDomain, decimal? balance)
         {
             using (var context = _factory())
@@ -57,6 +59,8 @@ namespace MoneyFlow.Infrastructure.Repositories
                                         .FirstOrDefault(x => x.NumberAccount == numberAccount).IdAccount;
             }
         }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
 
         public async Task<List<AccountDomain>> GetAllAsync(int idUser)
         {
@@ -105,6 +109,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             }
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<AccountDomain> GetIdAsync(int idAccount)
         {
             using (var context = _factory())
@@ -136,6 +142,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             }
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<AccountDomain> GetNumberAsync(int? numberAccount)
         {
             using (var context = _factory())
@@ -166,6 +174,8 @@ namespace MoneyFlow.Infrastructure.Repositories
                 return accountDomain;
             }
         }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
 
         public async Task<int> UpdateAsync(int idAccount, int? numberAccount, BankDomain bankDomain, AccountTypeDomain accountTypeDomain, decimal? balance)
         {
@@ -202,6 +212,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             }
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task DeleteAsync(int idAccounts)
         {
             using (var context = _factory())
@@ -216,5 +228,7 @@ namespace MoneyFlow.Infrastructure.Repositories
                 context.Accounts.Where(x => x.IdAccount == idAccounts).ExecuteDeleteAsync();
             }
         }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
     }
 }

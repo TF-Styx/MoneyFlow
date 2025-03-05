@@ -15,6 +15,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             _factory = factory;
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<int> CreateAsync(string? transactionTypeName, string? description)
         {
             using (var context = _factory())
@@ -48,6 +50,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             }
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<List<TransactionTypeDomain>> GetAllAsync()
         {
             using (var context = _factory())
@@ -79,6 +83,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             }
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<TransactionTypeDomain> GetAsync(int idTransactionType)
         {
             using (var context = _factory())
@@ -99,6 +105,8 @@ namespace MoneyFlow.Infrastructure.Repositories
                 return transactionTypeDomain;
             }
         }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
 
         public async Task<TransactionTypeDomain> GetAsync(string transactionTypeName)
         {
@@ -126,6 +134,8 @@ namespace MoneyFlow.Infrastructure.Repositories
                 return transactionTypeDomain;
             }
         }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
 
         public async Task<int> UpdateAsync(int idTransactionType, string? transactionTypeName, string? description)
         {
@@ -158,6 +168,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             }
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task DeleteAsync(int idTransactionType)
         {
             using (var context = _factory())
@@ -172,5 +184,7 @@ namespace MoneyFlow.Infrastructure.Repositories
                 context.TransactionTypes.Where(x => x.IdTransactionType == idTransactionType).ExecuteDelete();
             }
         }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
     }
 }

@@ -14,12 +14,12 @@ namespace MoneyFlow.Domain.DomainModels
             Login = login;
         }
 
-        public int IdUser { get; set; }
-        public string? UserName { get; set; }
-        public byte[]? Avatar { get; set; }
-        public string Login { get; set; } = null!;
-        public string Password { get; set; } = null!;
-        public int? IdGender { get; set; }
+        public int IdUser { get; private set; }
+        public string? UserName { get; private set; }
+        public byte[]? Avatar { get; private set; }
+        public string Login { get; private set; } = null!;
+        public string Password { get; private set; } = null!;
+        public int? IdGender { get; private set; }
 
         public static (UserDomain UserDomain, string Message) Create(int idUser, string? userName, byte[]? avatar, string login, string password, int? idGender)
         {

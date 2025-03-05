@@ -14,12 +14,12 @@ namespace MoneyFlow.Domain.DomainModels
             IdUser = idUser;
         }
 
-        public int IdCategory { get; set; }
-        public string? CategoryName { get; set; }
-        public string? Description { get; set; }
-        public string? Color { get; set; }
-        public byte[]? Image { get; set; }
-        public int IdUser { get; set; }
+        public int IdCategory { get; private set; }
+        public string? CategoryName { get; private set; }
+        public string? Description { get; private set; }
+        public string? Color { get; private set; }
+        public byte[]? Image { get; private set; }
+        public int IdUser { get; private set; }
 
         public static (CategoryDomain CategoryDomain, string Message) Create(int idCategory, string? categoryName, string? description, string? color, byte[]? image, int idUser)
         {

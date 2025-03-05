@@ -15,6 +15,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             _factory = factor;
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<int> CreateAsync(string genderName)
         {
             using (var context = _factory())
@@ -45,6 +47,8 @@ namespace MoneyFlow.Infrastructure.Repositories
                 return context.Genders.FirstOrDefault(x => x.GenderName == genderName).IdGender;
             }
         }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
 
         public async Task<List<GenderDomain>> GetAllAsync()
         {
@@ -77,6 +81,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             }
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<GenderDomain> GetAsync(int idGender)
         {
             using (var context = _factory())
@@ -97,6 +103,8 @@ namespace MoneyFlow.Infrastructure.Repositories
                 return genderDomain;
             }
         }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
 
         public async Task<GenderDomain> GetAsync(string genderName)
         {
@@ -131,6 +139,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             }
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<int> UpdateAsync(int idGender, string genderName)
         {
             using (var context = _factory())
@@ -158,6 +168,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             }
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task DeleteAsync(int idGender)
         {
             using (var context = _factory())
@@ -172,5 +184,7 @@ namespace MoneyFlow.Infrastructure.Repositories
                 context.Genders.Where(x => x.IdGender == idGender).ExecuteDelete();
             }
         }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
     }
 }

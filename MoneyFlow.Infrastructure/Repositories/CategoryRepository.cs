@@ -15,6 +15,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             _factory = factory;
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<int> CreateAsync(string? categoryName, string? description, string? color, byte[]? image, int idUser)
         {
             using (var context = _factory())
@@ -54,6 +56,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             }
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<List<CategoryDomain>> GetAllAsync()
         {
             using (var context = _factory())
@@ -85,6 +89,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             }
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<CategoryDomain> GetAsync(int idCategory)
         {
             using (var context = _factory())
@@ -106,6 +112,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             }
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<CategoryDomain> GetAsync(string categoryName)
         {
             using (var context = _factory())
@@ -126,6 +134,8 @@ namespace MoneyFlow.Infrastructure.Repositories
                 return domain;
             }
         }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
 
         public async Task<int> UpdateAsync(int idCategory, string? categoryName, string? description, string? color, byte[]? image, int idUser)
         {
@@ -164,6 +174,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             }
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task DeleteAsync(int idCategory)
         {
             using (var context = _factory())
@@ -178,5 +190,7 @@ namespace MoneyFlow.Infrastructure.Repositories
                 context.Categories.Where(x => x.IdCategory == idCategory).ExecuteDelete();
             }
         }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
     }
 }

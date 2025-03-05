@@ -15,6 +15,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             _factory = factory;
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<int> CreateAsync(string bankName)
         {
             using (var context = _factory())
@@ -45,6 +47,8 @@ namespace MoneyFlow.Infrastructure.Repositories
                 return context.Banks.FirstOrDefault(x => x.BankName == bankName).IdBank;
             }
         }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
 
         public async Task<List<BankDomain>> GetAllAsync()
         {
@@ -77,6 +81,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             }
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<BankDomain> GetAsync(int idBank)
         {
             using (var context = _factory())
@@ -97,6 +103,8 @@ namespace MoneyFlow.Infrastructure.Repositories
                 return bankDomain;
             }
         }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
 
         public async Task<BankDomain> GetAsync(string bankName)
         {
@@ -125,6 +133,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             }
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<UserBanksDomain> GetByIdUserAsync(int idUser)
         {
             using (var context = _factory())
@@ -138,11 +148,7 @@ namespace MoneyFlow.Infrastructure.Repositories
                     bankDomain.Add(BankDomain.Create(item.IdBank, item.BankName).BankDomain);
                 }
 
-                var domain = new UserBanksDomain()
-                {
-                    IdUser = idUser,
-                    Banks = bankDomain
-                };
+                var domain = UserBanksDomain.Create(idUser, bankDomain).UserBanksDomain;
 
                 return domain;
             }
@@ -160,15 +166,13 @@ namespace MoneyFlow.Infrastructure.Repositories
                     bankDomain.Add(BankDomain.Create(item.IdBank, item.BankName).BankDomain);
                 }
 
-                var domain = new UserBanksDomain()
-                {
-                    IdUser = idUser,
-                    Banks = bankDomain
-                };
+                var domain = UserBanksDomain.Create(idUser, bankDomain).UserBanksDomain;
 
                 return domain;
             }
         }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
 
         public async Task<int> UpdateAsync(int idBank, string bankName)
         {
@@ -197,6 +201,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             }
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task DeleteAsync(int idBank)
         {
             using (var context = _factory())
@@ -211,5 +217,7 @@ namespace MoneyFlow.Infrastructure.Repositories
                 context.Banks.Where(x => x.IdBank == idBank).ExecuteDelete();
             }
         }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
     }
 }

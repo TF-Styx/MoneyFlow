@@ -12,9 +12,8 @@
             }
         }
 
-        public int IdUser {  get; set; }
-        //public int IdAccount {  get; set; }
-        public List<AccountTypeDomain> AccountTypes { get; set; } = [];
+        public int IdUser {  get; private set; }
+        public List<AccountTypeDomain> AccountTypes { get; private set; } = [];
 
         public static (UserAccountTypesDomain UserAccountTypesDomain, string Message) Create(int idUser, List<AccountTypeDomain> accountTypes)
         {

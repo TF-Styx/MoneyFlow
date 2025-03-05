@@ -11,9 +11,9 @@ namespace MoneyFlow.Domain.DomainModels
             Description = description;
         }
 
-        public int IdTransactionType { get; set; }
-        public string? TransactionTypeName { get; set; }
-        public string? Description { get; set; }
+        public int IdTransactionType { get; private set; }
+        public string? TransactionTypeName { get; private set; }
+        public string? Description { get; private set; }
 
         public static (TransactionTypeDomain TransactionTypeDomain, string Message) Create(int idTransactionType, string? transactionTypeName, string? description)
         {

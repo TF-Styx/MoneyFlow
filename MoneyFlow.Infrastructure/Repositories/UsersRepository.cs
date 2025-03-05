@@ -15,6 +15,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             _factory = factory;
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<int> CreateAsync(string userName, string login, string password)
         {
             using (var context = _factory())
@@ -50,12 +52,14 @@ namespace MoneyFlow.Infrastructure.Repositories
             }
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<List<UserDomain>> GetAllAsync()
         {
             using (var context = _factory())
             {
                 var userList = new List<UserDomain>();
-                var userEntity = await context.Users.ToListAsync();
+                var userEntity = await context.Users.Include(x => x.IdGenderNavigation).ToListAsync();
 
                 foreach (var item in userEntity)
                 {
@@ -70,7 +74,7 @@ namespace MoneyFlow.Infrastructure.Repositories
             using (var context = _factory())
             {
                 var userList = new List<UserDomain>();
-                var userEntity = context.Users.ToList();
+                var userEntity = context.Users.Include(x => x.IdGenderNavigation).ToList();
 
                 foreach (var item in userEntity)
                 {
@@ -81,11 +85,13 @@ namespace MoneyFlow.Infrastructure.Repositories
             }
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<UserDomain> GetAsync(int idUser)
         {
             using (var context = _factory())
             {
-                var userEntity = await context.Users.FirstOrDefaultAsync(x => x.IdUser == idUser);
+                var userEntity = await context.Users.Include(x => x.IdGenderNavigation).FirstOrDefaultAsync(x => x.IdUser == idUser);
                 var userDomain = UserDomain.Create(userEntity.IdUser, userEntity.UserName, userEntity.Avatar, userEntity.Login, userEntity.Password, userEntity.IdGender).UserDomain;
 
                 return userDomain;
@@ -95,18 +101,20 @@ namespace MoneyFlow.Infrastructure.Repositories
         {
             using (var context = _factory())
             {
-                var userEntity = context.Users.FirstOrDefault(x => x.IdUser == idUser);
+                var userEntity = context.Users.Include(x => x.IdGenderNavigation).FirstOrDefault(x => x.IdUser == idUser);
                 var userDomain = UserDomain.Create(userEntity.IdUser, userEntity.UserName, userEntity.Avatar, userEntity.Login, userEntity.Password, userEntity.IdGender).UserDomain;
 
                 return userDomain;
             }
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<UserDomain> GetAsync(string login)
         {
             using (var context = _factory())
             {
-                var userEntity = await context.Users.FirstOrDefaultAsync(x => x.Login == login);
+                var userEntity = await context.Users.Include(x => x.IdGenderNavigation).FirstOrDefaultAsync(x => x.Login == login);
 
                 if (userEntity == null) { return null; }
 
@@ -119,7 +127,7 @@ namespace MoneyFlow.Infrastructure.Repositories
         {
             using (var context = _factory())
             {
-                var userEntity = context.Users.FirstOrDefault(x => x.Login == login);
+                var userEntity = context.Users.Include(x => x.IdGenderNavigation).FirstOrDefault(x => x.Login == login);
 
                 if (userEntity == null) { return null; }
 
@@ -128,6 +136,33 @@ namespace MoneyFlow.Infrastructure.Repositories
                 return userDomain;
             }
         }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
+        public UserTotalInfoDomain GetTotalUserInfo(int idUser)
+        {
+            using (var context = _factory())
+            {
+                var gender = context.Users.Include(x => x.IdGenderNavigation).FirstOrDefault(x => x.IdUser == idUser).IdGenderNavigation.GenderName;
+                var totalBalance = context.Accounts.Where(x => x.IdUser == idUser).Sum(x => x.Balance);
+
+                var banksId = context.Accounts.Where(x => x.IdUser == idUser).Select(x => x.IdBank).Distinct().ToList();
+                var bankCount = context.Banks.Where(x => banksId.Contains(x.IdBank)).Count();
+
+                var catCount = context.Categories.Where(x => x.IdUser == idUser).Count();
+
+                var subcatCount = context.CatLinkSubs.Where(x => x.IdUser == idUser).Select(x => x.IdSubcategory).Count();
+
+                var financialRecordCount = context.FinancialRecords.Where(x => x.IdUser == idUser).Count();
+
+
+                var domain = UserTotalInfoDomain.Create(gender, totalBalance, bankCount, catCount, subcatCount, financialRecordCount).UserTotalInfoDomain;
+
+                return domain;
+            }
+        }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
 
         public async Task<int> UpdateAsync(int idUser, string? userName, byte[]? avatar,
                                       string password, int? idGender)
@@ -166,6 +201,8 @@ namespace MoneyFlow.Infrastructure.Repositories
             }
         }
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task DeleteAsync(int idUser)
         {
             using (var context = _factory())
@@ -180,5 +217,7 @@ namespace MoneyFlow.Infrastructure.Repositories
                 context.Users.Where(x => x.IdUser == idUser).ExecuteDelete();
             }
         }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
     }
 }

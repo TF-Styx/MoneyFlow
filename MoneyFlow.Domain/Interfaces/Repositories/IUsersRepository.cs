@@ -15,6 +15,8 @@ namespace MoneyFlow.Domain.Interfaces.Repositories
         Task<UserDomain> GetAsync(string login);
         UserDomain Get(string login);
 
+        UserTotalInfoDomain GetTotalUserInfo(int idUser);
+
         Task<int> UpdateAsync(int idUser, string? userName, byte[]? avatar, string password, int? idGender);
         int Update(int idUser, string? userName, byte[]? avatar, string password, int? idGender);
 

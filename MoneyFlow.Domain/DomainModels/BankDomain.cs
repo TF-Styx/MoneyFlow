@@ -10,8 +10,8 @@ namespace MoneyFlow.Domain.DomainModels
             BankName = bankName;
         }
 
-        public int IdBank { get; set; }
-        public string? BankName { get; set; }
+        public int IdBank { get; private set; }
+        public string? BankName { get; private set; }
 
         public static (BankDomain BankDomain, string Message) Create(int idBank, string? bankName)
         {

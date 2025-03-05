@@ -10,8 +10,8 @@ namespace MoneyFlow.Domain.DomainModels
             AccountTypeName = accountTypeName;
         }
 
-        public int IdAccountType { get; set; }
-        public string? AccountTypeName { get; set; }
+        public int IdAccountType { get; private set; }
+        public string? AccountTypeName { get; private set; }
 
         public static (AccountTypeDomain AccountTypeDomain, string Message) Create(int idAccountType, string? accountTypeName)
         {

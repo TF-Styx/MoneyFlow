@@ -12,5 +12,7 @@ namespace MoneyFlow.Application.UseCaseInterfaces.UserCaseInterfaces
 
         Task<UserDTO> GetAsyncUser(string login); 
         UserDTO GetUser(string login);
+
+        UserTotalInfoDTO GetUserTotalInfo(int idUser);
     }
 }

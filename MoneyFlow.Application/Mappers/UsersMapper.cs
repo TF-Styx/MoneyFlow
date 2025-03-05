@@ -27,6 +27,25 @@ namespace MoneyFlow.Application.Mappers
             return (dto, message);
         }
 
+        public static (UserTotalInfoDTO UserTotalInfoDTO, string Message) ToDTO(this UserTotalInfoDomain userTotalInfo)
+        {
+            string message = string.Empty;
+
+            if (userTotalInfo == null) { return (null, "Нет данных!!"); }
+
+            var dto = new UserTotalInfoDTO()
+            {
+                GenderName = userTotalInfo.GenderName,
+                TotalBalance = userTotalInfo.TotalBalance,
+                BankCount = userTotalInfo.BankCount,
+                CategoryCount = userTotalInfo.CategoryCount,
+                SubcategoryCount = userTotalInfo.SubcategoryCount,
+                FinancialRecordCount = userTotalInfo.FinancialRecordCount,
+            };
+
+            return (dto, message);
+        }
+
         public static List<UserDTO> ToListDTO(this IEnumerable<UserDomain> users)
         {
             var list = new List<UserDTO>();

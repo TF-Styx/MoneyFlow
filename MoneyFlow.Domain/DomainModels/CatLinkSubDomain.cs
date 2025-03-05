@@ -2,8 +2,8 @@
 {
     public class CatLinkSubDomain
     {
-        public int IdUser { get; set; }
-        public int IdCategory { get; set; }
-        public int IdSubcategory { get; set; }
+        public int IdUser { get; private set; }
+        public int IdCategory { get; private set; }
+        public int IdSubcategory { get; private set; }
     }
 }

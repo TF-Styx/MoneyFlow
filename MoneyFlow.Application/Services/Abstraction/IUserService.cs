@@ -16,6 +16,8 @@ namespace MoneyFlow.Application.Services.Abstraction
         Task<UserDTO> GetAsyncUser(string login);
         UserDTO GetUser(string login);
 
+        UserTotalInfoDTO GetUserInfo(int idUser);
+
         Task<int> UpdateAsyncUser(int idUser, string? userName, byte[]? avatar, string password, int? idGender);
         int UpdateUser(int idUser, string? userName, byte[]? avatar, string password, int? idGender);
 

@@ -70,5 +70,16 @@ namespace MoneyFlow.Application.UseCases.UserCases
 
             return userDTO.UserDTO;
         }
+
+        public UserTotalInfoDTO GetUserTotalInfo(int idUser)
+        {
+            var user = _usersRepository.GetTotalUserInfo(idUser);
+
+            if (user == null) { return null; }
+
+            var userInfoDTO = user.ToDTO();
+
+            return userInfoDTO.UserTotalInfoDTO;
+        }
     }
 }

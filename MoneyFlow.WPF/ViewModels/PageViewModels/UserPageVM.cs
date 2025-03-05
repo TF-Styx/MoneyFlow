@@ -13,7 +13,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         private readonly IAccountService _accountService;
         private readonly IAccountTypeService _accountTypeService;
         private readonly IBankService _bankService;
-        private readonly IGenderService _genderService;
+        private readonly IUserService _userService;
 
         private readonly INavigationPages _navigationPages;
 
@@ -21,18 +21,19 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                           IAccountService accountService, 
                           IAccountTypeService accountTypeService, 
                           IBankService bankService, 
-                          IGenderService genderService, 
+                          IUserService userService,
                           INavigationPages navigationPages)
         {
             _authorizationService = authorizationService;
             _accountService = accountService;
-            _bankService = bankService;
-            _genderService = genderService;
             _accountTypeService = accountTypeService;
+            _bankService = bankService;
+            _userService = userService; 
 
             _navigationPages = navigationPages;
 
             CurrentUser = _authorizationService.CurrentUser;
+            UserTotalInfo = _userService.GetUserInfo(CurrentUser.IdUser);
 
             //GetAccountType();
             //GetBank();
@@ -58,89 +59,16 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             }
         }
 
-
-// ------------------------------------------------------------------------------------------------------------------------------------------------
-
-        #region Общая информация
-
-        private string _gender;
-        public string Gender
+        private UserTotalInfoDTO _userTotalInfo;
+        public UserTotalInfoDTO UserTotalInfo
         {
-            get => _gender;
+            get => _userTotalInfo;
             set
             {
-                _gender = value;
+                _userTotalInfo = value;
                 OnPropertyChanged();
             }
         }
-
-        private decimal _totalBalance;
-        public decimal TotalBalance
-        {
-            get => _totalBalance;
-            set
-            {
-                _totalBalance = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private int _bankCount;
-        public int BankCount
-        {
-            get => _bankCount;
-            set
-            {
-                _bankCount = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private int _categoryCount;
-        public int CategoryCount
-        {
-            get => _categoryCount;
-            set
-            {
-                _categoryCount = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private int _subCategoryCount;
-        public int SubCategoryCount
-        {
-            get => _subCategoryCount;
-            set
-            {
-                _subCategoryCount = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private int _financialRecordCount;
-        public int FinancialRecordCount
-        {
-            get => _financialRecordCount;
-            set
-            {
-                _financialRecordCount = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private int _operationCount;
-        public int OperationCount
-        {
-            get => _operationCount;
-            set
-            {
-                _operationCount = value;
-                OnPropertyChanged();
-            }
-        }
-
-        #endregion
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------
 
