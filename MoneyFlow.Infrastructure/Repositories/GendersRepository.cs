@@ -47,11 +47,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             foreach (var item in genderEntities)
             {
-                genderList.Add(new GenderDomain()
-                {
-                    IdGender = item.IdGender,
-                    GenderName = item.GenderName,
-                });
+                genderList.Add(GenderDomain.Create(item.IdGender, item.GenderName).GenderDomain);
             }
 
             return genderList;
@@ -63,11 +59,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             foreach (var item in genderEntities)
             {
-                genderList.Add(new GenderDomain()
-                {
-                    IdGender = item.IdGender,
-                    GenderName = item.GenderName,
-                });
+                genderList.Add(GenderDomain.Create(item.IdGender, item.GenderName).GenderDomain);
             }
 
             return genderList;
@@ -76,22 +68,14 @@ namespace MoneyFlow.Infrastructure.Repositories
         public async Task<GenderDomain> GetAsync(int idGender)
         {
             var genderEntity = await _context.Genders.FirstOrDefaultAsync(x => x.IdGender == idGender);
-            var genderDomain = new GenderDomain()
-            {
-                IdGender = genderEntity.IdGender,
-                GenderName = genderEntity.GenderName,
-            };
+            var genderDomain = GenderDomain.Create(genderEntity.IdGender, genderEntity.GenderName).GenderDomain;
 
             return genderDomain;
         }
         public GenderDomain Get(int idGender)
         {
             var genderEntity = _context.Genders.FirstOrDefault(x => x.IdGender == idGender);
-            var genderDomain = new GenderDomain()
-            {
-                IdGender = genderEntity.IdGender,
-                GenderName = genderEntity.GenderName,
-            };
+            var genderDomain = GenderDomain.Create(genderEntity.IdGender, genderEntity.GenderName).GenderDomain;
 
             return genderDomain;
         }
@@ -105,11 +89,7 @@ namespace MoneyFlow.Infrastructure.Repositories
                 return null;
             }
 
-            var genderDomain = new GenderDomain()
-            {
-                IdGender = genderEntity.IdGender,
-                GenderName = genderEntity.GenderName,
-            };
+            var genderDomain = GenderDomain.Create(genderEntity.IdGender, genderEntity.GenderName).GenderDomain;
 
             return genderDomain;
         }
@@ -122,11 +102,7 @@ namespace MoneyFlow.Infrastructure.Repositories
                 return null;
             }
 
-            var genderDomain = new GenderDomain()
-            {
-                IdGender = genderEntity.IdGender,
-                GenderName = genderEntity.GenderName,
-            };
+            var genderDomain = GenderDomain.Create(genderEntity.IdGender, genderEntity.GenderName).GenderDomain;
 
             return genderDomain;
         }

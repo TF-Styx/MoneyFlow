@@ -1,5 +1,6 @@
 ﻿using MoneyFlow.Application.DTOs;
 using MoneyFlow.Domain.DomainModels;
+using System.Collections.ObjectModel;
 
 namespace MoneyFlow.Application.Mappers
 {
@@ -7,9 +8,35 @@ namespace MoneyFlow.Application.Mappers
     {
         public static (AccountTypeDTO AccountTypeDTO, string Message) ToDTO(this AccountTypeDomain accountType)
         {
+            string message = string.Empty;
+
             if (accountType == null) { return (null, "Тип счета не найден!!"); }
 
-            return AccountTypeDTO.Create(accountType.IdAccountType, accountType.AccountTypeName);
+            var dto = new AccountTypeDTO()
+            {
+                IdAccountType = accountType.IdAccountType,
+                AccountTypeName = accountType.AccountTypeName,
+            };
+
+            return (dto, message);
+        }
+
+        public static UserAccountTypesDTO ToDTO(this UserAccountTypesDomain userAccountTypes)
+        {
+            var accountTypeList = new ObservableCollection<AccountTypeDTO>();
+
+            foreach (var item in userAccountTypes.AccountTypes.ToListDTO())
+            {
+                accountTypeList.Add(item);
+            }
+
+            var dto = new UserAccountTypesDTO()
+            {
+                IdUser = userAccountTypes.IdUser,
+                AccountTypes = accountTypeList
+            };
+
+            return dto;
         }
 
         public static List<AccountTypeDTO> ToListDTO(this IEnumerable<AccountTypeDomain> accountsType)

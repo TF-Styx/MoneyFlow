@@ -7,12 +7,24 @@ namespace MoneyFlow.Application.Mappers
     {
         public static (UserDTO UserDTO, string Message) ToDTO(this UserDomain user)
         {
+            string message = string.Empty;
+
             if (user == null)
             {
                 return (null, "Данного пользователя нет!!");
             }
-            return UserDTO.Create(user.IdUser, user.UserName, user.Avatar,
-                user.Login, user.Password, user.IdGender);
+            
+            var dto = new UserDTO()
+            {
+                IdUser = user.IdUser,
+                UserName = user.UserName,
+                Avatar = user.Avatar,
+                Login = user.Login,
+                Password = user.Password,
+                IdGender = user.IdGender,
+            };
+
+            return (dto, message);
         }
 
         public static List<UserDTO> ToListDTO(this IEnumerable<UserDomain> users)

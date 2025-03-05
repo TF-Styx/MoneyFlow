@@ -24,6 +24,8 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
             _authorizationService = authorizationService;
             _registrationService = registrationService;
             _recoveryService = recoveryService;
+
+            Auth();
         }
 
         public void Update(object parameter, ParameterType typeParameter = ParameterType.None)

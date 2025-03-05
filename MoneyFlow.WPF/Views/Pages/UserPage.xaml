@@ -6,6 +6,7 @@
       xmlns:local="clr-namespace:MoneyFlow.WPF.Views.Pages" 
       xmlns:fa="http://schemas.fontawesome.com/icons/" 
       xmlns:pageviewmodels="clr-namespace:MoneyFlow.WPF.ViewModels.PageViewModels" 
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
       d:DataContext="{d:DesignInstance Type=pageviewmodels:UserPageVM}"
       mc:Ignorable="d"
       Title="UserPage"
@@ -13,7 +14,7 @@
       Background="White">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Border MaxWidth="1900">
+        <Border MaxWidth="1920">
             <StackPanel>
                 <!--#region Шапка профиля -->
                 <Border CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="10">
@@ -26,7 +27,8 @@
                             <DockPanel HorizontalAlignment="Left">
                                 <Border BorderBrush="Black" BorderThickness="1">
                                     <StackPanel>
-                                        <Border BorderThickness="0 0 0 0" BorderBrush="Black"> <!--BorderThickness="0 0 0 2"-->
+                                        <Border BorderThickness="0 0 0 0" BorderBrush="Black">
+                                            <!--BorderThickness="0 0 0 2"-->
                                             <Image Source="{Binding SelectImage}" Width="100" Height="100" Margin="5"/>
                                         </Border>
                                         <!--<WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 2 0 4">
@@ -58,12 +60,13 @@
                             <StackPanel HorizontalAlignment="Right" DockPanel.Dock="Top">
                                 <Button Content="Редактировать профиль" Width="200" Height="30" FontSize="15"
                                     HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <Menu HorizontalAlignment="Right" Background="Transparent" FontSize="15" Height="25" Margin="0 10 0 0">
-                                    <MenuItem Header="Пользователь↓" FontSize="15">
-                                        <MenuItem Header="Профиль" Command="{Binding OpenProfileUserPageCommand}"/>
+                                <Menu HorizontalAlignment="Right" Background="Transparent" FontSize="15" Margin="0 10 0 0">
+                                    <MenuItem Header="Пользователь↓">
                                         <MenuItem Header="Банки" Command="{Binding OpenBankPageCommand}"/>
                                         <MenuItem Header="Счета" Command="{Binding OpenAccountPageCommand}"/>
+                                        <MenuItem Header="Тпы счетов" Command="{Binding OpenAccountTypePageCommand}"/>
                                         <MenuItem Header="Категории / Подкатегории" Command="{Binding OpenCatAndSubPageCommand}"/>
+                                        <Separator/>
                                         <MenuItem Header="Журнал финансов" Command="{Binding OpenFinancialRecordPageCommand}"/>
                                     </MenuItem>
                                 </Menu>
@@ -79,41 +82,41 @@
                 <!--#endregion-->
 
                 <!--#region Уменьшенная шапка профиля -->
-                <Border CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="10">
+                <!--<Border CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="10">
                     <Border.Effect>
                         <DropShadowEffect BlurRadius="10" Direction="300"/>
                     </Border.Effect>
                     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
                         <DockPanel HorizontalAlignment="Left" VerticalAlignment="Stretch">
-                            <!--#region Аватар -->
+                            --><!--#region Аватар --><!--
                             <DockPanel HorizontalAlignment="Left">
                                 <Border BorderBrush="Black" BorderThickness="1">
                                     <StackPanel>
                                         <Border BorderThickness="0 0 0 0" BorderBrush="Black">
-                                            <!--BorderThickness="0 0 0 2"-->
+                                            --><!--BorderThickness="0 0 0 2"--><!--
                                             <Image Source="{Binding SelectImage}" Width="30" Height="30" Margin="5"/>
                                         </Border>
-                                        <!--<WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 2 0 4">
+                                        --><!--<WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 2 0 4">
                                             <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Left" Command="{Binding SelectedImageCommand}">
                                                 <fa:ImageAwesome Icon="Regular_FileImage" Width="10" Foreground="#FF3053C2"/>
                                             </Button>
                                             <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Right" Margin="10 0 0 0" Command="{Binding ClearImageCommand}">
                                                 <fa:ImageAwesome Icon="Solid_TrashAlt" Width="10" Foreground="#FFDD3D3D"/>
                                             </Button>
-                                        </WrapPanel>-->
+                                        </WrapPanel>--><!--
                                     </StackPanel>
                                 </Border>
                             </DockPanel>
-                            <!--#endregion-->
+                            --><!--#endregion-->
 
-                            <!--#region Информация пользователя -->
+                            <!--#region Информация пользователя --><!--
                             <TextBlock Text="{Binding UserName}" d:Text="UserName" 
                                        HorizontalAlignment="Right" VerticalAlignment="Center" 
                                        Margin="50 0 0 0" FontSize="20"/>
-                            <!--#endregion-->
+                            --><!--#endregion--><!--
                         </DockPanel>
 
-                        <!--#region Действия пользователя -->
+                        --><!--#region Действия пользователя --><!--
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Top">
                             <Menu Background="Transparent" FontSize="15" Height="25">
                                 <MenuItem Header="Пользователь↓" FontSize="15">
@@ -126,20 +129,23 @@
                             </Menu>
                             <Button Content="↑↓" Width="30" Height="30"/>
                         </StackPanel>
-                        <!--#endregion-->
+                        --><!--#endregion--><!--
                     </DockPanel>
-                </Border>
+                </Border>-->
                 <!--#endregion-->
 
                 <!--#region Общая информация || Счета -->
-                <Border CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="10">
+                <Border MaxHeight="200"  CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="10">
                     <Border.Effect>
                         <DropShadowEffect BlurRadius="10" Direction="300"/>
                     </Border.Effect>
-                    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
                         <!--#region Общая информация -->
-                        <Border MinWidth="300" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White"
-                                HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Border Grid.Column="0" MaxHeight="200" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="0 0 5 0">
                             <Border.Effect>
                                 <DropShadowEffect BlurRadius="10" Direction="300"/>
                             </Border.Effect>
@@ -153,7 +159,7 @@
                                         </DockPanel>
                                         <DockPanel>
                                             <TextBlock Text="TotalBalace" Margin="0 0 20 0" Width="150"/>
-                                            <TextBlock Text="{Binding TotalBalace}" d:Text="193592" Width="150"/>
+                                            <TextBlock Text="{Binding TotalBalance}" d:Text="193592" Width="150"/>
                                         </DockPanel>
                                         <DockPanel>
                                             <TextBlock Text="BankCount" Margin="0 0 20 0" Width="150"/>
@@ -182,8 +188,7 @@
                         <!--#endregion-->
 
                         <!--#region Счета -->
-                        <Border MinWidth="300" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White"
-                                HorizontalAlignment="Right" VerticalAlignment="Top">
+                        <Border Grid.Column="1" MaxHeight="200" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="5 0 0 0">
                             <Border.Effect>
                                 <DropShadowEffect BlurRadius="10" Direction="300"/>
                             </Border.Effect>
@@ -195,69 +200,115 @@
                                           HeadersVisibility="Column"
                                           RowHeaderWidth="0"
                                           SelectionMode="Single"
-                                          ItemsSource="{Binding Accounts}" Margin="10">
+                                          ItemsSource="{Binding Accounts}" 
+                                          d:ItemsSource="{d:SampleData ItemCount=15}"
+                                          SelectedItem="{Binding SelectedAccount}"
+                                          Margin="10">
+                                    <!--#region DoubleClick -->
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseDoubleClick">
+                                            <i:InvokeCommandAction Command="{Binding AccountDoubleClickCommand}" CommandParameter="{Binding SelectedAccount}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <!--#endregion-->
+                                    
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Header="IdAccount" Binding="{Binding IdAccount}"/>
-                                        <DataGridTextColumn Header="NumberAccount" Binding="{Binding NumberAccount}"/>
-                                        <DataGridTextColumn Header="Balance" Binding="{Binding Balance}"/>
-                                        <DataGridTextColumn Header="Bank" Binding="{Binding Bank.BankName}"/>
-                                        <DataGridTextColumn Header="AccountType" Binding="{Binding AccountType.AccountTypeName}"/>
+                                        <DataGridTextColumn Header="NumberAccount" Binding="{Binding NumberAccount}" Width="*"/>
+                                        <DataGridTextColumn Header="Balance" Binding="{Binding Balance}" Width="*"/>
+                                        <DataGridTextColumn Header="Bank" Binding="{Binding Bank.BankName}" Width="*"/>
+                                        <DataGridTextColumn Header="AccountType" Binding="{Binding AccountType.AccountTypeName}" Width="*"/>
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </StackPanel>
                         </Border>
                         <!--#endregion-->
-                    </DockPanel>
+                    </Grid>
                 </Border>
                 <!--#endregion-->
 
                 <!--#region Банки пользователя || Типы счетов -->
-                <Border CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="10">
+                <Border MaxHeight="200" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="10">
                     <Border.Effect>
                         <DropShadowEffect BlurRadius="10" Direction="300"/>
                     </Border.Effect>
-                    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
                         <!--#region Банки пользователя -->
-                        <Border MinWidth="300" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White"
-                                HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Border Grid.Column="0" MaxHeight="200" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="0 0 5 0">
                             <Border.Effect>
                                 <DropShadowEffect BlurRadius="10" Direction="300"/>
                             </Border.Effect>
                             <StackPanel>
                                 <TextBlock Text="Банки пользователя" HorizontalAlignment="Center" FontSize="15"/>
-                                <DataGrid ItemsSource="{Binding UserBanks.Banks}" FontSize="15"/>
+                                <DataGrid AutoGenerateColumns="False" 
+                                          IsReadOnly="True"
+                                          GridLinesVisibility="None"
+                                          HeadersVisibility="Column"
+                                          RowHeaderWidth="0"
+                                          SelectionMode="Single" 
+                                          ItemsSource="{Binding UserBanks.Banks}" 
+                                          d:ItemsSource="{d:SampleData ItemCount=15}"
+                                          SelectedItem="{Binding SelectedUserBank}"
+                                          Margin="10">
+                                    <!--#region DoubleClick -->
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseDoubleClick">
+                                            <i:InvokeCommandAction Command="{Binding UserBankDoubleClickCommand}" CommandParameter="{Binding SelectedUserBank}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <!--#endregion-->
+                                    
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="IdBank" Binding="{Binding IdBank}"/>
+                                        <DataGridTextColumn Header="BankName" Binding="{Binding BankName}" Width="*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
                             </StackPanel>
                         </Border>
                         <!--#endregion-->
 
                         <!--#region Типы счетов -->
-                        <Border MinWidth="300" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White"
-                                HorizontalAlignment="Right" VerticalAlignment="Top">
+                        <Border Grid.Column="1" MaxHeight="200" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="5 0 0 0">
                             <Border.Effect>
                                 <DropShadowEffect BlurRadius="10" Direction="300"/>
                             </Border.Effect>
                             <StackPanel>
-                                <TextBlock Text="Типы счетов" HorizontalAlignment="Center" FontSize="15"/>
-                                <DataGrid ItemsSource="{Binding AccountTypes}" FontSize="15"/>
+                                <TextBlock Text="Тип счета пользователя" HorizontalAlignment="Center" FontSize="15"/>
+                                <DataGrid AutoGenerateColumns="False" 
+                                          IsReadOnly="True"
+                                          GridLinesVisibility="None"
+                                          HeadersVisibility="Column"
+                                          RowHeaderWidth="0"
+                                          SelectionMode="Single" 
+                                          ItemsSource="{Binding UserAccountTypes.AccountTypes}" 
+                                          d:ItemsSource="{d:SampleData ItemCount=15}"
+                                          SelectedItem="{Binding SelectedUserAccountType}"
+                                          Margin="10">
+                                    <!--#region DoubleClick -->
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseDoubleClick">
+                                            <i:InvokeCommandAction Command="{Binding UserAccountTypeDoubleClickCommand}" CommandParameter="{Binding SelectedUserAccountType}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <!--#endregion-->
+                                    
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="IdAccountType" Binding="{Binding IdAccountType}"/>
+                                        <DataGridTextColumn Header="AccountTypeName" Binding="{Binding AccountTypeName}" Width="*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
                             </StackPanel>
                         </Border>
                         <!--#endregion-->
-                    </DockPanel>
+                    </Grid>
                 </Border>
-                <!--#endregion-->
-
-                <!--#region Общая информация -->
-                <!--<Border>
-                    <StackPanel>
-                        <DataGrid ItemsSource="{Binding Accounts}"/>
-                        <DataGrid ItemsSource="{Binding AccountTypes}"/>
-                        <DataGrid ItemsSource="{Binding Banks}"/>
-                        <DataGrid ItemsSource="{Binding UserBanks.Banks}" FontSize="15"/>
-                    </StackPanel>
-                </Border>-->
                 <!--#endregion-->
             </StackPanel>
         </Border>
     </ScrollViewer>
-        
+
 </Page>

@@ -61,18 +61,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             foreach (var item in entity)
             {
-                list.Add(new FinancialRecordDomain()
-                {
-                    IdFinancialRecord = item.IdFinancialRecord,
-                    RecordName = item.RecordName,
-                    Amount = item.Ammount,
-                    Description = item.Description,
-                    IdTransactionType = item.IdTransactionType,
-                    IdUser = item.IdUser,
-                    IdCategory = item.IdCategory,
-                    IdAccount = item.IdAccount,
-                    Date = item.Date
-                });
+                list.Add(FinancialRecordDomain.Create(item.IdFinancialRecord, item.RecordName, item.Ammount, item.Description, item.IdTransactionType, item.IdUser, item.IdCategory, item.IdAccount, item.Date).FinancialRecordDomain);
             }
 
             return list;
@@ -84,18 +73,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             foreach (var item in entity)
             {
-                list.Add(new FinancialRecordDomain()
-                {
-                    IdFinancialRecord = item.IdFinancialRecord,
-                    RecordName = item.RecordName,
-                    Amount = item.Ammount,
-                    Description = item.Description,
-                    IdTransactionType = item.IdTransactionType,
-                    IdUser = item.IdUser,
-                    IdCategory = item.IdCategory,
-                    IdAccount = item.IdAccount,
-                    Date = item.Date
-                });
+                list.Add(FinancialRecordDomain.Create(item.IdFinancialRecord, item.RecordName, item.Ammount, item.Description, item.IdTransactionType, item.IdUser, item.IdCategory, item.IdAccount, item.Date).FinancialRecordDomain);
             }
 
             return list;
@@ -104,36 +82,14 @@ namespace MoneyFlow.Infrastructure.Repositories
         public async Task<FinancialRecordDomain> GetAsync(int idFinancialRecord)
         {
             var entity = await _context.FinancialRecords.FirstOrDefaultAsync(x => x.IdFinancialRecord == idFinancialRecord);
-            var domain = new FinancialRecordDomain()
-            {
-                IdFinancialRecord = entity.IdFinancialRecord,
-                RecordName = entity.RecordName,
-                Amount = entity.Ammount,
-                Description = entity.Description,
-                IdTransactionType = entity.IdTransactionType,
-                IdUser = entity.IdUser,
-                IdCategory = entity.IdCategory,
-                IdAccount = entity.IdAccount,
-                Date = entity.Date
-            };
+            var domain = FinancialRecordDomain.Create(entity.IdFinancialRecord, entity.RecordName, entity.Ammount, entity.Description, entity.IdTransactionType, entity.IdUser, entity.IdCategory, entity.IdAccount, entity.Date).FinancialRecordDomain;
 
             return domain;
         }
         public FinancialRecordDomain Get(int idFinancialRecord)
         {
             var entity = _context.FinancialRecords.FirstOrDefault(x => x.IdFinancialRecord == idFinancialRecord);
-            var domain = new FinancialRecordDomain()
-            {
-                IdFinancialRecord = entity.IdFinancialRecord,
-                RecordName = entity.RecordName,
-                Amount = entity.Ammount,
-                Description = entity.Description,
-                IdTransactionType = entity.IdTransactionType,
-                IdUser = entity.IdUser,
-                IdCategory = entity.IdCategory,
-                IdAccount = entity.IdAccount,
-                Date = entity.Date
-            };
+            var domain = FinancialRecordDomain.Create(entity.IdFinancialRecord, entity.RecordName, entity.Ammount, entity.Description, entity.IdTransactionType, entity.IdUser, entity.IdCategory, entity.IdAccount, entity.Date).FinancialRecordDomain;
 
             return domain;
         }
@@ -141,36 +97,14 @@ namespace MoneyFlow.Infrastructure.Repositories
         public async Task<FinancialRecordDomain> GetAsync(string recordName)
         {
             var entity = await _context.FinancialRecords.FirstOrDefaultAsync(x => x.RecordName == recordName);
-            var domain = new FinancialRecordDomain()
-            {
-                IdFinancialRecord = entity.IdFinancialRecord,
-                RecordName = entity.RecordName,
-                Amount = entity.Ammount,
-                Description = entity.Description,
-                IdTransactionType = entity.IdTransactionType,
-                IdUser = entity.IdUser,
-                IdCategory = entity.IdCategory,
-                IdAccount = entity.IdAccount,
-                Date = entity.Date
-            };
+            var domain = FinancialRecordDomain.Create(entity.IdFinancialRecord, entity.RecordName, entity.Ammount, entity.Description, entity.IdTransactionType, entity.IdUser, entity.IdCategory, entity.IdAccount, entity.Date).FinancialRecordDomain;
 
             return domain;
         }
         public FinancialRecordDomain Get(string recordName)
         {
             var entity = _context.FinancialRecords.FirstOrDefault(x => x.RecordName == recordName);
-            var domain = new FinancialRecordDomain()
-            {
-                IdFinancialRecord = entity.IdFinancialRecord,
-                RecordName = entity.RecordName,
-                Amount = entity.Ammount,
-                Description = entity.Description,
-                IdTransactionType = entity.IdTransactionType,
-                IdUser = entity.IdUser,
-                IdCategory = entity.IdCategory,
-                IdAccount = entity.IdAccount,
-                Date = entity.Date
-            };
+            var domain = FinancialRecordDomain.Create(entity.IdFinancialRecord, entity.RecordName, entity.Ammount, entity.Description, entity.IdTransactionType, entity.IdUser, entity.IdCategory, entity.IdAccount, entity.Date).FinancialRecordDomain;
 
             return domain;
         }

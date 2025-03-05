@@ -7,15 +7,23 @@ namespace MoneyFlow.Application.Mappers
     {
         public static (AccountDTO AccountDTO, string Message) ToDTO(this AccountDomain account)
         {
+            string message = string.Empty;
+
             if (account == null)
             {
                 return (null, "Данного счета нет!!");
             }
-            return AccountDTO.Create(account.IdAccount, 
-                                     account.NumberAccount, 
-                                     account.Bank.ToDTO().BankDTO, 
-                                     account.AccountType.ToDTO().AccountTypeDTO, 
-                                     account.Balance);
+
+            var dto = new AccountDTO()
+            {
+                IdAccount = account.IdAccount,
+                NumberAccount = account.NumberAccount,
+                Bank = account.Bank.ToDTO().BankDTO,
+                AccountType = account.AccountType.ToDTO().AccountTypeDTO,
+                Balance = account.Balance
+            };
+
+            return (dto, message);
         }
 
         public static List<AccountDTO> ToListDTO(this IEnumerable<AccountDomain> accounts)

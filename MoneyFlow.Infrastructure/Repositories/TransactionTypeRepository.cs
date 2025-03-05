@@ -49,12 +49,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             foreach (var item in transactionTypeEntity)
             {
-                transactionTypeList.Add(new TransactionTypeDomain()
-                {
-                    IdTransactionType = item.IdTransactionType,
-                    TransactionTypeName = item.TransactionTypeName,
-                    Description = item.Description,
-                });
+                transactionTypeList.Add(TransactionTypeDomain.Create(item.IdTransactionType, item.TransactionTypeName, item.Description).TransactionTypeDomain);
             }
 
             return transactionTypeList;
@@ -66,12 +61,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             foreach (var item in transactionTypeEntity)
             {
-                transactionTypeList.Add(new TransactionTypeDomain()
-                {
-                    IdTransactionType = item.IdTransactionType,
-                    TransactionTypeName = item.TransactionTypeName,
-                    Description = item.Description,
-                });
+                transactionTypeList.Add(TransactionTypeDomain.Create(item.IdTransactionType, item.TransactionTypeName, item.Description).TransactionTypeDomain);
             }
 
             return transactionTypeList;
@@ -80,24 +70,14 @@ namespace MoneyFlow.Infrastructure.Repositories
         public async Task<TransactionTypeDomain> GetAsync(int idTransactionType)
         {
             var transactionTypeEntity = await _context.TransactionTypes.FirstOrDefaultAsync(x => x.IdTransactionType == idTransactionType);
-            var transactionTypeDomain = new TransactionTypeDomain()
-            {
-                IdTransactionType = transactionTypeEntity.IdTransactionType,
-                TransactionTypeName = transactionTypeEntity.TransactionTypeName,
-                Description = transactionTypeEntity.Description,
-            };
+            var transactionTypeDomain = TransactionTypeDomain.Create(transactionTypeEntity.IdTransactionType, transactionTypeEntity.TransactionTypeName, transactionTypeEntity.Description).TransactionTypeDomain;
 
             return transactionTypeDomain;
         }
         public TransactionTypeDomain Get(int idTransactionType)
         {
             var transactionTypeEntity = _context.TransactionTypes.FirstOrDefault(x => x.IdTransactionType == idTransactionType);
-            var transactionTypeDomain = new TransactionTypeDomain()
-            {
-                IdTransactionType = transactionTypeEntity.IdTransactionType,
-                TransactionTypeName = transactionTypeEntity.TransactionTypeName,
-                Description = transactionTypeEntity.Description,
-            };
+            var transactionTypeDomain = TransactionTypeDomain.Create(transactionTypeEntity.IdTransactionType, transactionTypeEntity.TransactionTypeName, transactionTypeEntity.Description).TransactionTypeDomain;
 
             return transactionTypeDomain;
         }
@@ -108,12 +88,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             if (transactionTypeEntity == null) { return null; }
 
-            var transactionTypeDomain = new TransactionTypeDomain()
-            {
-                IdTransactionType = transactionTypeEntity.IdTransactionType,
-                TransactionTypeName = transactionTypeEntity.TransactionTypeName,
-                Description = transactionTypeEntity.Description,
-            };
+            var transactionTypeDomain = TransactionTypeDomain.Create(transactionTypeEntity.IdTransactionType, transactionTypeEntity.TransactionTypeName, transactionTypeEntity.Description).TransactionTypeDomain;
 
             return transactionTypeDomain;
         }
@@ -123,12 +98,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             if (transactionTypeEntity == null) { return null; }
 
-            var transactionTypeDomain = new TransactionTypeDomain()
-            {
-                IdTransactionType = transactionTypeEntity.IdTransactionType,
-                TransactionTypeName = transactionTypeEntity.TransactionTypeName,
-                Description = transactionTypeEntity.Description,
-            };
+            var transactionTypeDomain = TransactionTypeDomain.Create(transactionTypeEntity.IdTransactionType, transactionTypeEntity.TransactionTypeName, transactionTypeEntity.Description).TransactionTypeDomain;
 
             return transactionTypeDomain;
         }

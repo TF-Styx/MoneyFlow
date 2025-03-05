@@ -1,11 +1,11 @@
-﻿using MoneyFlow.Domain.DomainModels;
+﻿using MoneyFlow.Application.DTOs.BaseDTOs;
 using System.Collections.ObjectModel;
 
 namespace MoneyFlow.Application.DTOs
 {
-    public class UserBanksDTO
+    public class UserBanksDTO : BaseDTO<UserBanksDTO>
     {
-        private UserBanksDTO(int idUser, IEnumerable<BankDomain> banks)
+        private UserBanksDTO(int idUser, IEnumerable<BankDTO> banks)
         {
             IdUser = idUser;
 
@@ -16,9 +16,9 @@ namespace MoneyFlow.Application.DTOs
         }
 
         public int IdUser { get; set; }
-        public ObservableCollection<BankDomain> Banks { get; set; } = [];
+        public ObservableCollection<BankDTO> Banks { get; set; } = [];
 
-        public static (UserBanksDTO UserBanksDTO, string Message) Create(int idUser, List<BankDomain> banks)
+        public static (UserBanksDTO UserBanksDTO, string Message) Create(int idUser, List<BankDTO> banks)
         {
             var message = string.Empty;
             var userBanks = new UserBanksDTO(idUser, banks);

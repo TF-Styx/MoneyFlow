@@ -12,5 +12,8 @@ namespace MoneyFlow.Application.UseCaseInterfaces.AccountTypeCaseInterfaces
 
         Task<AccountTypeDTO> GetAsyncAccountType(string accountTypeName);
         AccountTypeDTO GetAccountType(string accountTypeName);
+
+        Task<UserAccountTypesDTO> GetByIdUserAsync(int idUser);
+        UserAccountTypesDTO GetByIdUser(int idUser);
     }
 }

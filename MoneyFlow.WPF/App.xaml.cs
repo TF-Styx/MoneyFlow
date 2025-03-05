@@ -58,6 +58,8 @@ namespace MoneyFlow.WPF
 
             services.AddTransient<IPageFactory, UserPageFactory>();
             services.AddTransient<IPageFactory, BankPageFactory>();
+            services.AddTransient<IPageFactory, AccountPageFactory>();
+            services.AddTransient<IPageFactory, AccountTypePageFactory>();
 
             services.AddTransient(typeof(Lazy<>), typeof(LazyService<>));
 
@@ -69,6 +71,12 @@ namespace MoneyFlow.WPF
         // Добавляем страницы и их VM в коллекцию сервисов 
         private void ConfigurePage(ServiceCollection services)
         {
+            services.AddSingleton<AccountPage>();
+            services.AddSingleton<AccountPageVM>();
+
+            services.AddSingleton<AccountTypePage>();
+            services.AddSingleton<AccountTypePageVM>();
+
             services.AddSingleton<BankPage>();
             services.AddSingleton<BankPageVM>();
 

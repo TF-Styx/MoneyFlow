@@ -1,6 +1,7 @@
 ﻿using MoneyFlow.Application.DTOs;
 using MoneyFlow.Application.Mappers;
 using MoneyFlow.Application.UseCaseInterfaces.GenderCaseInterfaces;
+using MoneyFlow.Domain.DomainModels;
 using MoneyFlow.Domain.Interfaces.Repositories;
 
 namespace MoneyFlow.Application.UseCases.GenderCases
@@ -14,16 +15,13 @@ namespace MoneyFlow.Application.UseCases.GenderCases
             _genderRepository = genderRepository;
         }
 
-        public async Task<(GenderDTO GenderDTO, string Message)> CreateAsyncGender(string genderName)
+        public async Task<(GenderDTO GenderDTO, string Message)> CreateAsyncGender(string genderName) // Передача данных для создания записи в БД
         {
-            string message = string.Empty;
+            var (CreatedGenderDomain, Message) = GenderDomain.Create(0, genderName); // Проверка валидность данных, путем создания DomainModel
 
-            if (string.IsNullOrWhiteSpace(genderName))
-            {
-                return (null, "Вы не указали наименование пола!!");
-            }
+            if (CreatedGenderDomain is null) { return (null, Message); }
 
-            var existGender = await _genderRepository.GetAsync(genderName);
+            var existGender = await _genderRepository.GetAsync(CreatedGenderDomain.GenderName);
 
             if (existGender != null)
             {
@@ -33,18 +31,15 @@ namespace MoneyFlow.Application.UseCases.GenderCases
             var idGender = await _genderRepository.CreateAsync(genderName);
             var genderDomain = await _genderRepository.GetAsync(idGender);
 
-            return (genderDomain.ToDTO().GenderDTO, message);
+            return (genderDomain.ToDTO().GenderDTO, Message);
         }
         public (GenderDTO GenderDTO, string Message) CreateGender(string genderName)
         {
-            string message = string.Empty;
+            var (CreatedGenderDomain, Message) = GenderDomain.Create(0, genderName); // Проверка валидность данных, путем создания DomainModel
 
-            if (string.IsNullOrWhiteSpace(genderName))
-            {
-                return (null, "Вы не указали наименование пола!!");
-            }
+            if (CreatedGenderDomain is null) { return (null, Message); }
 
-            var existGender = _genderRepository.Get(genderName);
+            var existGender = _genderRepository.Get(CreatedGenderDomain.GenderName);
 
             if (existGender != null)
             {
@@ -54,7 +49,7 @@ namespace MoneyFlow.Application.UseCases.GenderCases
             var idGender = _genderRepository.Create(genderName);
             var genderDomain = _genderRepository.Get(idGender);
 
-            return (genderDomain.ToDTO().GenderDTO, message);
+            return (genderDomain.ToDTO().GenderDTO, Message);
         }
     }
 }

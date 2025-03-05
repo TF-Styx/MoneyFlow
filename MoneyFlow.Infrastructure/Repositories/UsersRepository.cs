@@ -51,15 +51,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             foreach (var item in userEntity)
             {
-                userList.Add(new UserDomain()
-                {
-                    IdUser = item.IdUser,
-                    UserName = item.UserName,
-                    Avatar = item.Avatar,
-                    Login = item.Login,
-                    Password = item.Password,
-                    IdGender = item.IdGender,
-                });
+                userList.Add(UserDomain.Create(item.IdUser, item.UserName, item.Avatar, item.Login, item.Password, item.IdGender).UserDomain);
             }
 
             return userList;
@@ -71,15 +63,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             foreach (var item in userEntity)
             {
-                userList.Add(new UserDomain()
-                {
-                    IdUser = item.IdUser,
-                    UserName = item.UserName,
-                    Avatar = item.Avatar,
-                    Login = item.Login,
-                    Password = item.Password,
-                    IdGender = item.IdGender,
-                });
+                userList.Add(UserDomain.Create(item.IdUser, item.UserName, item.Avatar, item.Login, item.Password, item.IdGender).UserDomain);
             }
 
             return userList;
@@ -88,30 +72,14 @@ namespace MoneyFlow.Infrastructure.Repositories
         public async Task<UserDomain> GetAsync(int idUser)
         {
             var userEntity = await _context.Users.FirstOrDefaultAsync(x => x.IdUser == idUser);
-            var userDomain = new UserDomain()
-            {
-                IdUser = userEntity.IdUser,
-                UserName = userEntity.UserName,
-                Avatar = userEntity.Avatar,
-                Login = userEntity.Login,
-                Password = userEntity.Password,
-                IdGender = userEntity.IdGender,
-            };
+            var userDomain = UserDomain.Create(userEntity.IdUser, userEntity.UserName, userEntity.Avatar, userEntity.Login, userEntity.Password, userEntity.IdGender).UserDomain;
 
             return userDomain;
         }
         public UserDomain Get(int idUser)
         {
             var userEntity = _context.Users.FirstOrDefault(x => x.IdUser == idUser);
-            var userDomain = new UserDomain()
-            {
-                IdUser = userEntity.IdUser,
-                UserName = userEntity.UserName,
-                Avatar = userEntity.Avatar,
-                Login = userEntity.Login,
-                Password = userEntity.Password,
-                IdGender = userEntity.IdGender,
-            };
+            var userDomain = UserDomain.Create(userEntity.IdUser, userEntity.UserName, userEntity.Avatar, userEntity.Login, userEntity.Password, userEntity.IdGender).UserDomain;
 
             return userDomain;
         }
@@ -122,15 +90,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             if (userEntity == null) { return null; }
 
-            var userDomain = new UserDomain()
-            {
-                IdUser = userEntity.IdUser,
-                UserName = userEntity.UserName,
-                Avatar = userEntity.Avatar,
-                Login = userEntity.Login,
-                Password = userEntity.Password,
-                IdGender = userEntity.IdGender,
-            };
+            var userDomain = UserDomain.Create(userEntity.IdUser, userEntity.UserName, userEntity.Avatar, userEntity.Login, userEntity.Password, userEntity.IdGender).UserDomain;
 
             return userDomain;
         }
@@ -140,15 +100,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             if (userEntity == null) { return null; }
 
-            var userDomain = new UserDomain()
-            {
-                IdUser = userEntity.IdUser,
-                UserName = userEntity.UserName,
-                Avatar = userEntity.Avatar,
-                Login = userEntity.Login,
-                Password = userEntity.Password,
-                IdGender = userEntity.IdGender,
-            };
+            var userDomain = UserDomain.Create(userEntity.IdUser, userEntity.UserName, userEntity.Avatar, userEntity.Login, userEntity.Password, userEntity.IdGender).UserDomain;
 
             return userDomain;
         }

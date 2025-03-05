@@ -4,6 +4,8 @@
     {
         UserPage,
         BankPage,
+        AccountPage,
+        AccountTypePage,
         GenderPage,
     }
 }

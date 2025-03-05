@@ -17,6 +17,11 @@ namespace MoneyFlow.Domain.DomainModels
         {
             var message = string.Empty;
 
+            if (string.IsNullOrWhiteSpace(accountTypeName))
+            {
+                return (null, "Вы не заполнили поля!!");
+            }
+
             if (accountTypeName.Length > IntConstants.MAX_ACCOUNT_TYPE_NAME_LENGHT)
             {
                 return (null, "Превышена допустимая длина в «255» символов");

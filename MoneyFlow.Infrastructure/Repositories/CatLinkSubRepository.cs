@@ -55,13 +55,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             foreach (var item in entity)
             {
-                list.Add(new SubcategoryDomain()
-                {
-                    IdSubcategory = item.IdSubcategoryNavigation.IdSubcategory,
-                    SubcategoryName = item.IdSubcategoryNavigation.SubcategoryName,
-                    Description = item.IdSubcategoryNavigation.Description,
-                    Image = item.IdSubcategoryNavigation.Image,
-                });
+                list.Add(SubcategoryDomain.Create(item.IdSubcategoryNavigation.IdSubcategory, item.IdSubcategoryNavigation.SubcategoryName, item.IdSubcategoryNavigation.Description, item.IdSubcategoryNavigation.Image).SubcategoryDomain);
             }
 
             return list;

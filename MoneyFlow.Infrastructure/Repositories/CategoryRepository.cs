@@ -55,15 +55,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             foreach (var item in entity)
             {
-                list.Add(new CategoryDomain()
-                {
-                    IdCategory = item.IdCategory,
-                    CategoryName = item.CategoryName,
-                    Description = item.Description,
-                    Color = item.Color,
-                    Image = item.Image,
-                    IdUser = item.IdUser
-                });
+                list.Add(CategoryDomain.Create(item.IdCategory, item.CategoryName, item.Description, item.Color, item.Image, item.IdUser).CategoryDomain);
             }
 
             return list;
@@ -75,15 +67,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             foreach (var item in entity)
             {
-                list.Add(new CategoryDomain()
-                {
-                    IdCategory = item.IdCategory,
-                    CategoryName = item.CategoryName,
-                    Description = item.Description,
-                    Color = item.Color,
-                    Image = item.Image,
-                    IdUser = item.IdUser
-                });
+                list.Add(CategoryDomain.Create(item.IdCategory, item.CategoryName, item.Description, item.Color, item.Image, item.IdUser).CategoryDomain);
             }
 
             return list;
@@ -92,30 +76,14 @@ namespace MoneyFlow.Infrastructure.Repositories
         public async Task<CategoryDomain> GetAsync(int idCategory)
         {
             var entity = await _context.Categories.FirstOrDefaultAsync(x => x.IdCategory == idCategory);
-            var domain = new CategoryDomain()
-            {
-                IdCategory = entity.IdCategory,
-                CategoryName = entity.CategoryName,
-                Description = entity.Description,
-                Color = entity.Color,
-                Image = entity.Image,
-                IdUser = entity.IdUser
-            };
+            var domain = CategoryDomain.Create(entity.IdCategory, entity.CategoryName, entity.Description, entity.Color, entity.Image, entity.IdUser).CategoryDomain;
 
             return domain;
         }
         public CategoryDomain Get(int idCategory)
         {
             var entity = _context.Categories.FirstOrDefault(x => x.IdCategory == idCategory);
-            var domain = new CategoryDomain()
-            {
-                IdCategory = entity.IdCategory,
-                CategoryName = entity.CategoryName,
-                Description = entity.Description,
-                Color = entity.Color,
-                Image = entity.Image,
-                IdUser = entity.IdUser
-            };
+            var domain = CategoryDomain.Create(entity.IdCategory, entity.CategoryName, entity.Description, entity.Color, entity.Image, entity.IdUser).CategoryDomain;
 
             return domain;
         }
@@ -123,30 +91,14 @@ namespace MoneyFlow.Infrastructure.Repositories
         public async Task<CategoryDomain> GetAsync(string categoryName)
         {
             var entity = await _context.Categories.FirstOrDefaultAsync(x => x.CategoryName == categoryName);
-            var domain = new CategoryDomain()
-            {
-                IdCategory = entity.IdCategory,
-                CategoryName = entity.CategoryName,
-                Description = entity.Description,
-                Color = entity.Color,
-                Image = entity.Image,
-                IdUser = entity.IdUser
-            };
+            var domain = CategoryDomain.Create(entity.IdCategory, entity.CategoryName, entity.Description, entity.Color, entity.Image, entity.IdUser).CategoryDomain;
 
             return domain;
         }
         public CategoryDomain Get(string categoryName)
         {
             var entity = _context.Categories.FirstOrDefault(x => x.CategoryName == categoryName);
-            var domain = new CategoryDomain()
-            {
-                IdCategory = entity.IdCategory,
-                CategoryName = entity.CategoryName,
-                Description = entity.Description,
-                Color = entity.Color,
-                Image = entity.Image,
-                IdUser = entity.IdUser
-            };
+            var domain = CategoryDomain.Create(entity.IdCategory, entity.CategoryName, entity.Description, entity.Color, entity.Image, entity.IdUser).CategoryDomain;
 
             return domain;
         }

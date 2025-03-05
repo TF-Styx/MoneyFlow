@@ -11,7 +11,8 @@
         mc:Ignorable="d"
         Title="AuthWindow"
         MinWidth="300" MinHeight="320"
-        MaxWidth="300" MaxHeight="485">
+        MaxWidth="300" MaxHeight="485"
+        WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <converter:AccountManagementControlsVisibilityConverter x:Key="AccountManagementControlsVisibilityConverter"/>

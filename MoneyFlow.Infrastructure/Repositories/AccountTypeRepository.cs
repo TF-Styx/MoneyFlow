@@ -9,10 +9,12 @@ namespace MoneyFlow.Infrastructure.Repositories
     public class AccountTypeRepository : IAccountTypeRepository
     {
         private readonly ContextMF _context;
+        private readonly Func<ContextMF> _factory;
 
-        public AccountTypeRepository(ContextMF context)
+        public AccountTypeRepository(ContextMF context, Func<ContextMF> factory)
         {
             _context = context;
+            _factory = factory;
         }
 
         public async Task<int> CreateAsync(string accountTypeName)
@@ -99,6 +101,43 @@ namespace MoneyFlow.Infrastructure.Repositories
             var accountTypeDomain = AccountTypeDomain.Create(accountTypeEntity.IdAccountType, accountTypeName).AccountTypeDomain;
 
             return accountTypeDomain;
+        }
+
+        public async Task<UserAccountTypesDomain> GetByIdUserAsync(int idUser)
+        {
+            using (var context = _factory())
+            {
+                var accountId = await context.Accounts.Where(x => x.IdUser == idUser).Select(x => x.IdAccountType).Distinct().ToListAsync();
+                var userAccountTypes = await context.AccountTypes.Where(x => accountId.Contains(x.IdAccountType)).ToListAsync();
+                var accountTypeDomain = new List<AccountTypeDomain>();
+
+                foreach (var item in userAccountTypes)
+                {
+                    accountTypeDomain.Add(AccountTypeDomain.Create(item.IdAccountType, item.AccountTypeName).AccountTypeDomain);
+                }
+
+                var domain = UserAccountTypesDomain.Create(idUser, accountTypeDomain).UserAccountTypesDomain;
+
+                return domain;
+            }
+        }
+        public UserAccountTypesDomain GetByIdUser(int idUser)
+        {
+            using (var context = _factory())
+            {
+                var accountId = context.Accounts.Where(x => x.IdUser == idUser).Select(x => x.IdAccountType).Distinct().ToList();
+                var userAccountTypes = context.AccountTypes.Where(x => accountId.Contains(x.IdAccountType)).ToList();
+                var accountTypeDomain = new List<AccountTypeDomain>();
+
+                foreach (var item in userAccountTypes)
+                {
+                    accountTypeDomain.Add(AccountTypeDomain.Create(item.IdAccountType, item.AccountTypeName).AccountTypeDomain);
+                }
+
+                var domain = UserAccountTypesDomain.Create(idUser, accountTypeDomain).UserAccountTypesDomain;
+
+                return domain;
+            }
         }
 
         public async Task<int> UpdateAsync(int idAccountType, string accountTypeName)

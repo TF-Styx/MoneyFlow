@@ -7,8 +7,24 @@ namespace MoneyFlow.Application.Mappers
     {
         public static (FinancialRecordDTO FinancialRecordDTO, string Message) ToDTO(this FinancialRecordDomain financialRecord)
         {
+            string message = string.Empty;
+
             if (financialRecord == null) { return (null, "Данной финансовой записи нет!!"); }
-            return FinancialRecordDTO.Create(financialRecord.IdFinancialRecord, financialRecord.RecordName, financialRecord.Amount, financialRecord.Description, financialRecord.IdTransactionType, financialRecord.IdUser, financialRecord.IdCategory, financialRecord.IdAccount, financialRecord.Date);
+
+            var dto = new FinancialRecordDTO()
+            {
+                IdFinancialRecord = financialRecord.IdFinancialRecord,
+                RecordName = financialRecord.RecordName,
+                Amount = financialRecord.Amount,
+                Description = financialRecord.Description,
+                IdTransactionType = financialRecord.IdTransactionType,
+                IdUser = financialRecord.IdUser,
+                IdCategory = financialRecord.IdCategory,
+                IdAccount = financialRecord.IdAccount,
+                Date = financialRecord.Date,
+            };
+
+            return (dto, message);
         }
 
         public static List<FinancialRecordDTO> ToListDTO(this IEnumerable<FinancialRecordDomain> financialRecords)

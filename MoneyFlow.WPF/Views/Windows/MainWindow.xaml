@@ -8,7 +8,8 @@
         d:DataContext="{d:DesignInstance Type=windowviewmodels:MainWindowVM}"
         mc:Ignorable="d"
         Title="MainWindow"
-        Height="450" Width="800">
+        Height="450" Width="800"
+        WindowStartupLocation="CenterScreen">
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="34"/>
@@ -33,12 +34,14 @@
                 
                 <!--#region Меню -->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                    <Menu WindowChrome.IsHitTestVisibleInChrome="True" Grid.Row="0" Background="Transparent" Foreground="White" FontSize="15">
-                        <MenuItem Header="Пользователь" Background="Gray" Foreground="White">
+                    <Menu WindowChrome.IsHitTestVisibleInChrome="True" Grid.Row="0" VerticalAlignment="Center" Background="Transparent" FontSize="15">
+                        <MenuItem Header="Пользователь">
                             <MenuItem Header="Профиль" Command="{Binding OpenProfileUserPageCommand}"/>
                             <MenuItem Header="Банки" Command="{Binding OpenBankPageCommand}"/>
                             <MenuItem Header="Счета" Command="{Binding OpenAccountPageCommand}"/>
+                            <MenuItem Header="Тпы счетов" Command="{Binding OpenAccountTypePageCommand}"/>
                             <MenuItem Header="Категории / Подкатегории" Command="{Binding OpenCatAndSubPageCommand}"/>
+                            <Separator/>
                             <MenuItem Header="Журнал финансов" Command="{Binding OpenFinancialRecordPageCommand}"/>
                         </MenuItem>
                         <MenuItem Header="Добавить">

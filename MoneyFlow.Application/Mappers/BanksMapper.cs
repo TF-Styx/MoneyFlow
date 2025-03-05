@@ -7,14 +7,22 @@ namespace MoneyFlow.Application.Mappers
     {
         public static (BankDTO BankDTO, string Message) ToDTO(this BankDomain bank)
         {
+            string message = string.Empty;
+
             if (bank == null) { return (null, "Банк не найден!!"); }
 
-            return BankDTO.Create(bank.IdBank, bank.BankName);
+            var dto = new BankDTO()
+            {
+                IdBank = bank.IdBank,
+                BankName = bank.BankName,
+            };
+
+            return (dto, message);
         }
 
         public static UserBanksDTO ToDTO(this UserBanksDomain userBanks)
         {
-            return UserBanksDTO.Create(userBanks.IdUser, userBanks.Banks).UserBanksDTO;
+            return UserBanksDTO.Create(userBanks.IdUser, userBanks.Banks.ToListDTO()).UserBanksDTO;
         }
 
         public static List<BankDTO> ToListDTO(this IEnumerable<BankDomain> banks)

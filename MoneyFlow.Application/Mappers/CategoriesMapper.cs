@@ -7,9 +7,21 @@ namespace MoneyFlow.Application.Mappers
     {
         public static (CategoryDTO CategoryDTO, string Message) ToDTO(this CategoryDomain category)
         {
+            string message = string.Empty;
+
             if (category == null) { return (null, "Данной категории не найдено!!"); }
 
-            return CategoryDTO.Create(category.IdCategory, category.CategoryName, category.Description, category.Color, category.Image, category.IdUser);
+            var dto = new CategoryDTO()
+            {
+                IdCategory = category.IdCategory,
+                CategoryName = category.CategoryName,
+                Description = category.Description,
+                Color = category.Color,
+                Image = category.Image,
+                IdUser = category.IdUser,
+            };
+
+            return (dto, message);
         }
 
         public static List<CategoryDTO> ToListDTO(this IEnumerable<CategoryDomain> categories)

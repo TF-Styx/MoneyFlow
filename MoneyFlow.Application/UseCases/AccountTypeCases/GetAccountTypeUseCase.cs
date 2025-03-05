@@ -70,5 +70,26 @@ namespace MoneyFlow.Application.UseCases.AccountTypeCases
 
             return accountsTypeDTO.AccountTypeDTO;
         }
+
+        public async Task<UserAccountTypesDTO> GetByIdUserAsync(int idUser)
+        {
+            var userAccountTypes = await _accountTypeRepository.GetByIdUserAsync(idUser);
+
+            if (userAccountTypes == null) { return null; }
+
+            var userAccountTypesDTO = userAccountTypes.ToDTO();
+
+            return userAccountTypesDTO;
+        }
+        public UserAccountTypesDTO GetByIdUser(int idUser)
+        {
+            var userAccountTypes = _accountTypeRepository.GetByIdUser(idUser);
+
+            if (userAccountTypes == null) { return null; }
+
+            var userAccountTypesDTO = userAccountTypes.ToDTO();
+
+            return userAccountTypesDTO;
+        }
     }
 }

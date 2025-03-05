@@ -1,6 +1,7 @@
 ﻿using MoneyFlow.Application.DTOs;
 using MoneyFlow.Application.Mappers;
 using MoneyFlow.Application.UseCaseInterfaces.TransactionTypeCaseInterfaces;
+using MoneyFlow.Domain.DomainModels;
 using MoneyFlow.Domain.Interfaces.Repositories;
 
 namespace MoneyFlow.Application.UseCases.TransactionTypeCases
@@ -16,9 +17,7 @@ namespace MoneyFlow.Application.UseCases.TransactionTypeCases
 
         public async Task<(TransactionTypeDTO TransactionTypeDTO, string Message)> CreateAsyncTransactionType(string? transactionTypeName, string? description)
         {
-            string message = string.Empty;
-
-            if (string.IsNullOrWhiteSpace(transactionTypeName)) { return (null, "Вы не заполнили поля!!"); }
+            var (CreateTransactionTypeDomain, Message) = TransactionTypeDomain.Create(0, transactionTypeName, description);
 
             var existTransactionType = await _transactionTypeRepository.GetAsync(transactionTypeName);
 
@@ -27,13 +26,11 @@ namespace MoneyFlow.Application.UseCases.TransactionTypeCases
             var idTransactionType = await _transactionTypeRepository.CreateAsync(transactionTypeName, description);
             var transactionTypeDomain = await _transactionTypeRepository.GetAsync(idTransactionType);
 
-            return (transactionTypeDomain.ToDTO().TransactionTypeDTO, message);
+            return (transactionTypeDomain.ToDTO().TransactionTypeDTO, Message);
         }
         public (TransactionTypeDTO TransactionTypeDTO, string Message) CreateTransactionType(string? transactionTypeName, string? description)
         {
-            string message = string.Empty;
-
-            if (string.IsNullOrWhiteSpace(transactionTypeName)) { return (null, "Вы не заполнили поля!!"); }
+            var (CreateTransactionTypeDomain, Message) = TransactionTypeDomain.Create(0, transactionTypeName, description);
 
             var existTransactionType = _transactionTypeRepository.Get(transactionTypeName);
 
@@ -42,7 +39,7 @@ namespace MoneyFlow.Application.UseCases.TransactionTypeCases
             var idTransactionType = _transactionTypeRepository.Create(transactionTypeName, description);
             var transactionTypeDomain = _transactionTypeRepository.Get(idTransactionType);
 
-            return (transactionTypeDomain.ToDTO().TransactionTypeDTO, message);
+            return (transactionTypeDomain.ToDTO().TransactionTypeDTO, Message);
         }
 
     }

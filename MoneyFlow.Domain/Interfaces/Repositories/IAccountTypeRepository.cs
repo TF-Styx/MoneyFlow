@@ -16,6 +16,9 @@ namespace MoneyFlow.Domain.Interfaces.Repositories
         Task<AccountTypeDomain> GetAsync(string accountTypeName);
         AccountTypeDomain Get(string accountTypeName);
 
+        Task<UserAccountTypesDomain> GetByIdUserAsync(int idUser);
+        UserAccountTypesDomain GetByIdUser(int idUser);
+
         Task<int> UpdateAsync(int idAccountType, string accountTypeName);
         int Update(int idAccountType, string accountTypeName);
 

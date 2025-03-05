@@ -7,9 +7,18 @@ namespace MoneyFlow.Application.Mappers
     {
         public static (TransactionTypeDTO TransactionTypeDTO, string Message) ToDTO(this TransactionTypeDomain transactionType)
         {
+            string message = string.Empty;
+
             if (transactionType == null) { return (null, "Тип транзакции не найден!!"); }
 
-            return TransactionTypeDTO.Create(transactionType.IdTransactionType, transactionType.TransactionTypeName, transactionType.Description);
+            var dto = new TransactionTypeDTO()
+            {
+                IdTransactionType = transactionType.IdTransactionType,
+                TransactionTypeName = transactionType.TransactionTypeName,
+                Description = transactionType.Description
+            };
+
+            return (dto, message);
         }
 
         public static List<TransactionTypeDTO> ToListDTO(this IEnumerable<TransactionTypeDomain> transactionTypes)

@@ -55,6 +55,15 @@ namespace MoneyFlow.Application.Services.Realization
             return _getAccountTypeUseCase.GetAccountType(accountTypeName);
         }
 
+        public async Task<UserAccountTypesDTO> GetByIdUserAsync(int idUser)
+        {
+            return await _getAccountTypeUseCase.GetByIdUserAsync(idUser);
+        }
+        public UserAccountTypesDTO GetByIdUser(int idUser)
+        {
+            return _getAccountTypeUseCase.GetByIdUser(idUser);
+        }
+
         public async Task<int> UpdateAsyncAccountType(int idAccountType, string accountTypeName)
         {
             return await _updateAccountTypeUseCase.UpdateAsyncAccountType(idAccountType, accountTypeName);

@@ -7,11 +7,20 @@ namespace MoneyFlow.Application.Mappers
     {
         public static (GenderDTO GenderDTO, string Message) ToDTO(this GenderDomain gender)
         {
+            string message = string.Empty;
+
             if (gender == null)
             {
                 return (null, "Пол ноль");
             }
-            return GenderDTO.Create(gender.IdGender, gender.GenderName);
+
+            var dto = new GenderDTO()
+            {
+                IdGender = gender.IdGender,
+                GenderName = gender.GenderName
+            };
+
+            return (dto, message);
         }
 
         public static List<GenderDTO> ToListDTO(this IEnumerable<GenderDomain> genders)

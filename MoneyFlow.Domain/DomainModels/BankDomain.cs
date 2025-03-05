@@ -17,10 +17,9 @@ namespace MoneyFlow.Domain.DomainModels
         {
             var message = string.Empty;
 
-            if (bankName.Length > IntConstants.MAX_BANK_NAME_LENGHT)
-            {
-                return (null, "Превышена длина слова в «255» символов");
-            }
+            if (string.IsNullOrWhiteSpace(bankName)) { return (null, "вы не заполнили поля!!"); }
+
+            if (bankName.Length > IntConstants.MAX_BANK_NAME_LENGHT) { return (null, "Превышена длина слова в «255» символов!!"); }
 
             var bank = new BankDomain(idBank, bankName);
 

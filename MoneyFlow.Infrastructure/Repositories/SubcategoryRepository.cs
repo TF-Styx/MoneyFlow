@@ -51,13 +51,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             foreach (var item in entity)
             {
-                list.Add(new SubcategoryDomain()
-                {
-                    IdSubcategory = item.IdSubcategory,
-                    SubcategoryName = item.SubcategoryName,
-                    Description = item.Description,
-                    Image = item.Image
-                });
+                list.Add(SubcategoryDomain.Create(item.IdSubcategory, item.SubcategoryName, item.Description, item.Image).SubcategoryDomain);
             }
 
             return list;
@@ -69,13 +63,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
             foreach (var item in entity)
             {
-                list.Add(new SubcategoryDomain()
-                {
-                    IdSubcategory = item.IdSubcategory,
-                    SubcategoryName = item.SubcategoryName,
-                    Description = item.Description,
-                    Image = item.Image
-                });
+                list.Add(SubcategoryDomain.Create(item.IdSubcategory, item.SubcategoryName, item.Description, item.Image).SubcategoryDomain);
             }
 
             return list;
@@ -84,26 +72,14 @@ namespace MoneyFlow.Infrastructure.Repositories
         public async Task<SubcategoryDomain> GetAsync(int idSubcategory)
         {
             var entity = await _context.Subcategories.FirstOrDefaultAsync(x => x.IdSubcategory == idSubcategory);
-            var domain = new SubcategoryDomain()
-            {
-                IdSubcategory = entity.IdSubcategory,
-                SubcategoryName = entity.SubcategoryName,
-                Description = entity.Description,
-                Image = entity.Image,
-            };
+            var domain = SubcategoryDomain.Create(entity.IdSubcategory, entity.SubcategoryName, entity.Description, entity.Image).SubcategoryDomain;
 
             return domain;
         }
         public SubcategoryDomain Get(int idSubcategory)
         {
             var entity = _context.Subcategories.FirstOrDefault(x => x.IdSubcategory == idSubcategory);
-            var domain = new SubcategoryDomain()
-            {
-                IdSubcategory = entity.IdSubcategory,
-                SubcategoryName = entity.SubcategoryName,
-                Description = entity.Description,
-                Image = entity.Image,
-            };
+            var domain = SubcategoryDomain.Create(entity.IdSubcategory, entity.SubcategoryName, entity.Description, entity.Image).SubcategoryDomain;
 
             return domain;
         }
@@ -111,26 +87,14 @@ namespace MoneyFlow.Infrastructure.Repositories
         public async Task<SubcategoryDomain> GetAsync(string subcategoryName)
         {
             var entity = await _context.Subcategories.FirstOrDefaultAsync(x => x.SubcategoryName == subcategoryName);
-            var domain = new SubcategoryDomain()
-            {
-                IdSubcategory = entity.IdSubcategory,
-                SubcategoryName = entity.SubcategoryName,
-                Description = entity.Description,
-                Image = entity.Image,
-            };
+            var domain = SubcategoryDomain.Create(entity.IdSubcategory, entity.SubcategoryName, entity.Description, entity.Image).SubcategoryDomain;
 
             return domain;
         }
         public SubcategoryDomain Get(string subcategoryName)
         {
             var entity = _context.Subcategories.FirstOrDefault(x => x.SubcategoryName == subcategoryName);
-            var domain = new SubcategoryDomain()
-            {
-                IdSubcategory = entity.IdSubcategory,
-                SubcategoryName = entity.SubcategoryName,
-                Description = entity.Description,
-                Image = entity.Image,
-            };
+            var domain = SubcategoryDomain.Create(entity.IdSubcategory, entity.SubcategoryName, entity.Description, entity.Image).SubcategoryDomain;
 
             return domain;
         }

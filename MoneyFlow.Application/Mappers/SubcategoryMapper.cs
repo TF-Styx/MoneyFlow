@@ -7,9 +7,19 @@ namespace MoneyFlow.Application.Mappers
     {
         public static (SubcategoryDTO SubcategoryDTO, string Message) ToDTO(this SubcategoryDomain subcategory)
         {
+            string message = string.Empty;
+
             if (subcategory == null) { return (null, "Данной под категории не найдено!!"); }
 
-            return SubcategoryDTO.Create(subcategory.IdSubcategory, subcategory.SubcategoryName, subcategory.Description, subcategory.Image);
+            var dto = new SubcategoryDTO()
+            {
+                IdSubcategory = subcategory.IdSubcategory,
+                SubcategoryName = subcategory.SubcategoryName,
+                Description = subcategory.Description,
+                Image = subcategory.Image,
+            };
+
+            return (dto, message);
         }
 
         public static List<SubcategoryDTO> ToListDTO(this IEnumerable<SubcategoryDomain> subcategories)

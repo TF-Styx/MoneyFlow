@@ -16,6 +16,9 @@ namespace MoneyFlow.Application.Services.Abstraction
         Task<AccountTypeDTO> GetAsyncAccountType(string accountTypeName);
         AccountTypeDTO GetAccountType(string accountTypeName);
 
+        Task<UserAccountTypesDTO> GetByIdUserAsync(int idUser);
+        UserAccountTypesDTO GetByIdUser(int idUser);
+
         Task<int> UpdateAsyncAccountType(int idAccountType, string accountTypeName);
         int UpdateAccountType(int idAccountType, string accountTypeName);
 
