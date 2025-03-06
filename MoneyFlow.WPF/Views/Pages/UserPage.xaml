@@ -188,35 +188,37 @@
                             <Border.Effect>
                                 <DropShadowEffect BlurRadius="10" Direction="300"/>
                             </Border.Effect>
-                            <StackPanel>
-                                <TextBlock Text="Счета" HorizontalAlignment="Center" FontSize="15"/>
-                                <DataGrid AutoGenerateColumns="False"
-                                          IsReadOnly="True"
-                                          GridLinesVisibility="None"
-                                          HeadersVisibility="Column"
-                                          RowHeaderWidth="0"
-                                          SelectionMode="Single"
-                                          ItemsSource="{Binding Accounts}" 
-                                          d:ItemsSource="{d:SampleData ItemCount=15}"
-                                          SelectedItem="{Binding SelectedAccount}"
-                                          Margin="10">
-                                    <!--#region DoubleClick -->
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="MouseDoubleClick">
-                                            <i:InvokeCommandAction Command="{Binding AccountDoubleClickCommand}" CommandParameter="{Binding SelectedAccount}" />
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-                                    <!--#endregion-->
-                                    
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="IdAccount" Binding="{Binding IdAccount}"/>
-                                        <DataGridTextColumn Header="NumberAccount" Binding="{Binding NumberAccount}" Width="*"/>
-                                        <DataGridTextColumn Header="Balance" Binding="{Binding Balance}" Width="*"/>
-                                        <DataGridTextColumn Header="Bank" Binding="{Binding Bank.BankName}" Width="*"/>
-                                        <DataGridTextColumn Header="AccountType" Binding="{Binding AccountType.AccountTypeName}" Width="*"/>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                            </StackPanel>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel>
+                                    <TextBlock Text="Счета" HorizontalAlignment="Center" FontSize="15"/>
+                                    <DataGrid AutoGenerateColumns="False"
+                                              IsReadOnly="True"
+                                              GridLinesVisibility="None"
+                                              HeadersVisibility="Column"
+                                              RowHeaderWidth="0"
+                                              SelectionMode="Single"
+                                              ItemsSource="{Binding Accounts}" 
+                                              d:ItemsSource="{d:SampleData ItemCount=15}"
+                                              SelectedItem="{Binding SelectedAccount}"
+                                              Margin="10">
+                                        <!--#region DoubleClick -->
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="MouseDoubleClick">
+                                                <i:InvokeCommandAction Command="{Binding AccountDoubleClickCommand}" CommandParameter="{Binding SelectedAccount}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <!--#endregion-->
+
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="IdAccount" Binding="{Binding IdAccount}"/>
+                                            <DataGridTextColumn Header="NumberAccount" Binding="{Binding NumberAccount}" Width="*"/>
+                                            <DataGridTextColumn Header="Balance" Binding="{Binding Balance}" Width="*"/>
+                                            <DataGridTextColumn Header="Bank" Binding="{Binding Bank.BankName}" Width="*"/>
+                                            <DataGridTextColumn Header="AccountType" Binding="{Binding AccountType.AccountTypeName}" Width="*"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </StackPanel>
+                            </ScrollViewer>
                         </Border>
                         <!--#endregion-->
                     </Grid>
@@ -238,32 +240,34 @@
                             <Border.Effect>
                                 <DropShadowEffect BlurRadius="10" Direction="300"/>
                             </Border.Effect>
-                            <StackPanel>
-                                <TextBlock Text="Банки пользователя" HorizontalAlignment="Center" FontSize="15"/>
-                                <DataGrid AutoGenerateColumns="False" 
-                                          IsReadOnly="True"
-                                          GridLinesVisibility="None"
-                                          HeadersVisibility="Column"
-                                          RowHeaderWidth="0"
-                                          SelectionMode="Single" 
-                                          ItemsSource="{Binding UserBanks.Banks}" 
-                                          d:ItemsSource="{d:SampleData ItemCount=15}"
-                                          SelectedItem="{Binding SelectedUserBank}"
-                                          Margin="10">
-                                    <!--#region DoubleClick -->
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="MouseDoubleClick">
-                                            <i:InvokeCommandAction Command="{Binding UserBankDoubleClickCommand}" CommandParameter="{Binding SelectedUserBank}" />
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-                                    <!--#endregion-->
-                                    
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="IdBank" Binding="{Binding IdBank}"/>
-                                        <DataGridTextColumn Header="BankName" Binding="{Binding BankName}" Width="*"/>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                            </StackPanel>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel>
+                                    <TextBlock Text="Банки пользователя" HorizontalAlignment="Center" FontSize="15"/>
+                                    <DataGrid AutoGenerateColumns="False" 
+                                              IsReadOnly="True"
+                                              GridLinesVisibility="None"
+                                              HeadersVisibility="Column"
+                                              RowHeaderWidth="0"
+                                              SelectionMode="Single" 
+                                              ItemsSource="{Binding UserBanks.Banks}" 
+                                              d:ItemsSource="{d:SampleData ItemCount=15}"
+                                              SelectedItem="{Binding SelectedUserBank}"
+                                              Margin="10">
+                                        <!--#region DoubleClick -->
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="MouseDoubleClick">
+                                                <i:InvokeCommandAction Command="{Binding UserBankDoubleClickCommand}" CommandParameter="{Binding SelectedUserBank}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <!--#endregion-->
+
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="IdBank" Binding="{Binding IdBank}"/>
+                                            <DataGridTextColumn Header="BankName" Binding="{Binding BankName}" Width="*"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </StackPanel>
+                            </ScrollViewer>
                         </Border>
                         <!--#endregion-->
 
@@ -272,32 +276,34 @@
                             <Border.Effect>
                                 <DropShadowEffect BlurRadius="10" Direction="300"/>
                             </Border.Effect>
-                            <StackPanel>
-                                <TextBlock Text="Тип счета пользователя" HorizontalAlignment="Center" FontSize="15"/>
-                                <DataGrid AutoGenerateColumns="False" 
-                                          IsReadOnly="True"
-                                          GridLinesVisibility="None"
-                                          HeadersVisibility="Column"
-                                          RowHeaderWidth="0"
-                                          SelectionMode="Single" 
-                                          ItemsSource="{Binding UserAccountTypes.AccountTypes}" 
-                                          d:ItemsSource="{d:SampleData ItemCount=15}"
-                                          SelectedItem="{Binding SelectedUserAccountType}"
-                                          Margin="10">
-                                    <!--#region DoubleClick -->
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="MouseDoubleClick">
-                                            <i:InvokeCommandAction Command="{Binding UserAccountTypeDoubleClickCommand}" CommandParameter="{Binding SelectedUserAccountType}" />
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-                                    <!--#endregion-->
-                                    
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="IdAccountType" Binding="{Binding IdAccountType}"/>
-                                        <DataGridTextColumn Header="AccountTypeName" Binding="{Binding AccountTypeName}" Width="*"/>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                            </StackPanel>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel>
+                                    <TextBlock Text="Тип счета пользователя" HorizontalAlignment="Center" FontSize="15"/>
+                                    <DataGrid AutoGenerateColumns="False" 
+                                              IsReadOnly="True"
+                                              GridLinesVisibility="None"
+                                              HeadersVisibility="Column"
+                                              RowHeaderWidth="0"
+                                              SelectionMode="Single" 
+                                              ItemsSource="{Binding UserAccountTypes.AccountTypes}" 
+                                              d:ItemsSource="{d:SampleData ItemCount=15}"
+                                              SelectedItem="{Binding SelectedUserAccountType}"
+                                              Margin="10">
+                                        <!--#region DoubleClick -->
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="MouseDoubleClick">
+                                                <i:InvokeCommandAction Command="{Binding UserAccountTypeDoubleClickCommand}" CommandParameter="{Binding SelectedUserAccountType}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <!--#endregion-->
+
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="IdAccountType" Binding="{Binding IdAccountType}"/>
+                                            <DataGridTextColumn Header="AccountTypeName" Binding="{Binding AccountTypeName}" Width="*"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </StackPanel>
+                            </ScrollViewer>
                         </Border>
                         <!--#endregion-->
                     </Grid>
@@ -319,34 +325,37 @@
                             <Border.Effect>
                                 <DropShadowEffect BlurRadius="10" Direction="300"/>
                             </Border.Effect>
-                            <StackPanel>
-                                <TextBlock Text="Категории" HorizontalAlignment="Center" FontSize="15"/>
-                                <Button Content="Сбросить выделение" HorizontalAlignment="Center" Margin="2"
-                                        Command="{Binding AllSubCommand}"/>
-                                <DataGrid AutoGenerateColumns="False" 
-                                          IsReadOnly="True"
-                                          GridLinesVisibility="None"
-                                          HeadersVisibility="Column"
-                                          RowHeaderWidth="0"
-                                          SelectionMode="Single" 
-                                          ItemsSource="{Binding Categories}" 
-                                          d:ItemsSource="{d:SampleData ItemCount=15}"
-                                          SelectedItem="{Binding SelectedCategory}"
-                                          Margin="10">
-                                    <!--#region DoubleClick -->
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="MouseDoubleClick">
-                                            <i:InvokeCommandAction Command="{Binding UserCategoryDoubleClickCommand}" CommandParameter="{Binding SelectedCategory}" />
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-                                    <!--#endregion-->
-                                    
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="IdCategory" Binding="{Binding IdCategory}"/>
-                                        <DataGridTextColumn Header="CategoryName" Binding="{Binding CategoryName}" Width="*"/>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                            </StackPanel>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel>
+                                    <TextBlock Text="Категории" HorizontalAlignment="Center" FontSize="15"/>
+                                    <Button Content="Сбросить выделение" HorizontalAlignment="Center" Margin="2"
+                                            Command="{Binding AllSubCommand}"/>
+                                    <DataGrid AutoGenerateColumns="False" 
+                                              IsReadOnly="True"
+                                              GridLinesVisibility="None"
+                                              HeadersVisibility="Column"
+                                              RowHeaderWidth="0"
+                                              SelectionMode="Single" 
+                                              ItemsSource="{Binding Categories}" 
+                                              d:ItemsSource="{d:SampleData ItemCount=15}"
+                                              SelectedItem="{Binding SelectedCategory}"
+                                              Margin="10">
+                                        <!--#region DoubleClick -->
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="MouseDoubleClick">
+                                                <i:InvokeCommandAction Command="{Binding UserCategoryDoubleClickCommand}" CommandParameter="{Binding SelectedCategory}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <!--#endregion-->
+
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="IdCategory" Binding="{Binding IdCategory}"/>
+                                            <DataGridTextColumn Header="CategoryName" Binding="{Binding CategoryName}" Width="*"/>
+                                            <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </StackPanel>
+                            </ScrollViewer>
                         </Border>
                         <!--#endregion-->
 
@@ -355,32 +364,35 @@
                             <Border.Effect>
                                 <DropShadowEffect BlurRadius="10" Direction="300"/>
                             </Border.Effect>
-                            <StackPanel>
-                                <TextBlock Text="Подкатегории" HorizontalAlignment="Center" FontSize="15"/>
-                                <DataGrid AutoGenerateColumns="False" 
-                                          IsReadOnly="True"
-                                          GridLinesVisibility="None"
-                                          HeadersVisibility="Column"
-                                          RowHeaderWidth="0"
-                                          SelectionMode="Single" 
-                                          ItemsSource="{Binding Subcategories}" 
-                                          d:ItemsSource="{d:SampleData ItemCount=15}"
-                                          SelectedItem="{Binding SelectedSubcategory}"
-                                          Margin="10">
-                                    <!--#region DoubleClick -->
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="MouseDoubleClick">
-                                            <i:InvokeCommandAction Command="{Binding UserSubcategoryTypeDoubleClickCommand}" CommandParameter="{Binding SelectedSubcategory}" />
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-                                    <!--#endregion-->
-                                    
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="IdAccountType" Binding="{Binding IdSubcategory}"/>
-                                        <DataGridTextColumn Header="AccountTypeName" Binding="{Binding SubcategoryName}" Width="*"/>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                            </StackPanel>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel>
+                                    <TextBlock Text="Подкатегории" HorizontalAlignment="Center" FontSize="15"/>
+                                    <DataGrid AutoGenerateColumns="False" 
+                                              IsReadOnly="True"
+                                              GridLinesVisibility="None"
+                                              HeadersVisibility="Column"
+                                              RowHeaderWidth="0"
+                                              SelectionMode="Single" 
+                                              ItemsSource="{Binding Subcategories}" 
+                                              d:ItemsSource="{d:SampleData ItemCount=15}"
+                                              SelectedItem="{Binding SelectedSubcategory}"
+                                              Margin="10">
+                                        <!--#region DoubleClick -->
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="MouseDoubleClick">
+                                                <i:InvokeCommandAction Command="{Binding UserSubcategoryTypeDoubleClickCommand}" CommandParameter="{Binding SelectedSubcategory}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <!--#endregion-->
+
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="IdAccountType" Binding="{Binding IdSubcategory}"/>
+                                            <DataGridTextColumn Header="AccountTypeName" Binding="{Binding SubcategoryName}" Width="*"/>
+                                            <DataGridTextColumn Header="Decription" Binding="{Binding Description}" Width="*"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </StackPanel>
+                            </ScrollViewer>
                         </Border>
                         <!--#endregion-->
                     </Grid>

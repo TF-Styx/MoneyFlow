@@ -11,6 +11,7 @@ namespace MoneyFlow.Application.Services.Abstraction
         List<CategoryDTO> GetAllCategory();
 
         int GetIdCat(int idUser);
+        int GetIdSubCat(int idUser, int idSub);
 
         //Task<CategoryDTO> GetIdCatAsync(int idUser);
         //CategoryDTO GetIdCat(int idUser);
@@ -24,8 +25,8 @@ namespace MoneyFlow.Application.Services.Abstraction
         Task<CategoryDTO> GetAsyncCategory(string categoryName);
         CategoryDTO GetCategory(string categoryName);
 
-        Task<int> UpdateAsync(int idCategory, string? categoryName, string? description, string? color, byte[]? image, int idUser);
-        int Update(int idCategory, string? categoryName, string? description, string? color, byte[]? image, int idUser);
+        Task<int> UpdateAsyncCategory(int idCategory, string? categoryName, string? description, string? color, byte[]? image, int idUser);
+        int UpdateCategory(int idCategory, string? categoryName, string? description, string? color, byte[]? image, int idUser);
 
         Task DeleteAsyncCategory(int idCategory);
         void DeleteCategory(int idCategory);

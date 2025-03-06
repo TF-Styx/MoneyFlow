@@ -48,7 +48,6 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             GetUserAccountTypes();
             GetUserBanks();
             GetCategory();
-
             GetIdUserAllSubcategory();
         }
 
@@ -246,6 +245,9 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             });
         }
 
+        private RelayCommand _userCategoryDoubleClickCommand;
+        public RelayCommand UserCategoryDoubleClickCommand => _userCategoryDoubleClickCommand ??= new RelayCommand(DoubleClick);
+
         #endregion
 
 
@@ -254,8 +256,22 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
         #region Подкатегории пользователя
 
+        private SubcategoryDTO _selectedSubcategory;
+        public SubcategoryDTO SelectedSubcategory
+        {
+            get => _selectedSubcategory;
+            set
+            {
+                _selectedSubcategory = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ObservableCollection<SubcategoryDTO> Subcategories { get; set; } = [];
 
+        /// <summary>
+        /// Заполняет список с учетом пользователя и категории
+        /// </summary>
         private async void GetIdUserIdCategorySubcategory()
         {
             Subcategories.Clear();
@@ -269,6 +285,9 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             }
         }
 
+        /// <summary>
+        /// Заполняет список всеми подкатегориями пользователя
+        /// </summary>
         private async void GetIdUserAllSubcategory()
         {
             Subcategories.Clear();
@@ -281,6 +300,9 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                 Subcategories.Add(item);
             }
         }
+
+        private RelayCommand _userSubcategoryTypeDoubleClickCommand;
+        public RelayCommand UserSubcategoryTypeDoubleClickCommand => _userSubcategoryTypeDoubleClickCommand ??= new RelayCommand(DoubleClick);
 
         #endregion
 
@@ -303,6 +325,14 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             if (parameter is BankDTO bank)
             {
                 _navigationPages.OpenPage(PageType.BankPage, bank);
+            }
+            if (parameter is CategoryDTO category)
+            {
+                _navigationPages.OpenPage(PageType.CatAndSubPage, category);
+            }
+            if (parameter is SubcategoryDTO subcategory)
+            {
+                _navigationPages.OpenPage(PageType.CatAndSubPage, subcategory);
             }
         }
 

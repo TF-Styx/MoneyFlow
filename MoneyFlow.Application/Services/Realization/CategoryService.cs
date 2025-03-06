@@ -41,6 +41,10 @@ namespace MoneyFlow.Application.Services.Realization
         {
             return _getCategoryUseCase.GetIdCat(idUser);
         }
+        public int GetIdSubCat(int idUser, int idSub)
+        {
+            return _getCategoryUseCase.GetIdSubCat(idUser, idSub);
+        }
 
         //public async Task<CategoryDTO> GetIdCatAsync(int idUser)
         //{
@@ -78,11 +82,11 @@ namespace MoneyFlow.Application.Services.Realization
             return _getCategoryUseCase.GetCategory(categoryName);
         }
 
-        public async Task<int> UpdateAsync(int idCategory, string? categoryName, string? description, string? color, byte[]? image, int idUser)
+        public async Task<int> UpdateAsyncCategory(int idCategory, string? categoryName, string? description, string? color, byte[]? image, int idUser)
         {
             return await _updateCategoryUseCase.UpdateAsyncCategory(idCategory, categoryName, description, color, image, idUser);
         }
-        public int Update(int idCategory, string? categoryName, string? description, string? color, byte[]? image, int idUser)
+        public int UpdateCategory(int idCategory, string? categoryName, string? description, string? color, byte[]? image, int idUser)
         {
             return _updateCategoryUseCase.UpdateCategory(idCategory, categoryName, description, color, image, idUser);
         }

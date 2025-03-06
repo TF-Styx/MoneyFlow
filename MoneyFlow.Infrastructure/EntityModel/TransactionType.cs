@@ -7,7 +7,7 @@ public partial class TransactionType
 {
     public int IdTransactionType { get; set; }
 
-    public string? TransactionTypeName { get; set; }
+    public string TransactionTypeName { get; set; } = null!;
 
     public string? Description { get; set; }
 

@@ -8,6 +8,7 @@ namespace MoneyFlow.Application.UseCaseInterfaces.CategoryCaseInterfaces
         List<CategoryDTO> GetAllCategory();
 
         int GetIdCat(int idUser);
+        int GetIdSubCat(int idUser, int idSub);
 
         //Task<CategoryDTO> GetIdCatAsync(int idUser);
         //CategoryDTO GetIdCat(int idUser);

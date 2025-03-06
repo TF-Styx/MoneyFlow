@@ -1,7 +1,6 @@
 ﻿using MoneyFlow.Application.DTOs;
 using MoneyFlow.Application.Mappers;
 using MoneyFlow.Application.UseCaseInterfaces.CategoryCaseInterfaces;
-using MoneyFlow.Domain.DomainModels;
 using MoneyFlow.Domain.Interfaces.Repositories;
 
 namespace MoneyFlow.Application.UseCases.CategoryCases
@@ -33,6 +32,10 @@ namespace MoneyFlow.Application.UseCases.CategoryCases
         public int GetIdCat(int idUser)
         {
             return _categoryRepository.GetIdCat(idUser);
+        }
+        public int GetIdSubCat(int idUser, int idSub)
+        {
+            return _categoryRepository.GetIdSubCat(idUser, idSub);
         }
 
         //public async Task<CategoryDTO> GetIdCatAsync(int idUser)

@@ -11,9 +11,9 @@ namespace MoneyFlow.Domain.DomainModels
         }
 
         public int IdGender { get; private set; }
-        public string? GenderName { get; private set; }
+        public string GenderName { get; private set; }
 
-        public static (GenderDomain GenderDomain, string Message) Create(int idGender, string genderName)
+        public static (GenderDomain? GenderDomain, string? Message) Create(int idGender, string genderName)
         {
             var message = string.Empty;
 

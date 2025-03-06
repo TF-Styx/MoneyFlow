@@ -154,6 +154,11 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
 
             foreach (var item in list)
             {
+                if (item == null)
+                {
+                    continue;
+                }
+
                 Genders.Add(item);
             }
         }

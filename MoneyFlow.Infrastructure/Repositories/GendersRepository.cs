@@ -3,6 +3,7 @@ using MoneyFlow.Domain.DomainModels;
 using MoneyFlow.Domain.Interfaces.Repositories;
 using MoneyFlow.Infrastructure.Context;
 using MoneyFlow.Infrastructure.EntityModel;
+using System.Diagnostics;
 
 namespace MoneyFlow.Infrastructure.Repositories
 {
@@ -29,7 +30,9 @@ namespace MoneyFlow.Infrastructure.Repositories
                 await context.AddAsync(genderEntity);
                 await context.SaveChangesAsync();
 
-                return context.Genders.FirstOrDefault(x => x.GenderName == genderName).IdGender;
+                var idGender = await context.Genders.Where(x => x.GenderName == genderName).Select(x => x.IdGender).FirstOrDefaultAsync();
+
+                return idGender;
             }
         }
         public int Create(string genderName)
@@ -44,7 +47,10 @@ namespace MoneyFlow.Infrastructure.Repositories
                 context.Add(genderEntity);
                 context.SaveChanges();
 
-                return context.Genders.FirstOrDefault(x => x.GenderName == genderName).IdGender;
+                //var idGender = context.Genders.FirstOrDefault(x => x.GenderName == genderName).IdGender;
+                var idGender = context.Genders.Where(x => x.GenderName == genderName).Select(x => x.IdGender).FirstOrDefault();
+
+                return idGender;
             }
         }
 
@@ -59,7 +65,21 @@ namespace MoneyFlow.Infrastructure.Repositories
 
                 foreach (var item in genderEntities)
                 {
-                    genderList.Add(GenderDomain.Create(item.IdGender, item.GenderName).GenderDomain);
+                    if (item == null)
+                    {
+                        Debug.WriteLine("<-- Не удалось получить Gender -->");
+                        continue;
+                    }
+
+                    var (genderDomain, message) = GenderDomain.Create(item.IdGender, item.GenderName);
+
+                    if (genderDomain == null)
+                    {
+                        Debug.WriteLine($"<-- Не удалось создать GenderDomain при получении из БД с Id {item.IdGender}. Ошибка:{message} -->");
+                        continue;
+                    }
+
+                    genderList.Add(genderDomain);
                 }
 
                 return genderList;
@@ -74,7 +94,21 @@ namespace MoneyFlow.Infrastructure.Repositories
 
                 foreach (var item in genderEntities)
                 {
-                    genderList.Add(GenderDomain.Create(item.IdGender, item.GenderName).GenderDomain);
+                    if (item == null)
+                    {
+                        Debug.WriteLine("<-- Не удалось получить Gender -->");
+                        continue;
+                    }
+
+                    var genderDomain = GenderDomain.Create(item.IdGender, item.GenderName);
+
+                    if (genderDomain.GenderDomain == null)
+                    {
+                        Debug.WriteLine($"<-- Не удалось создать GenderDomain при получении из БД с Id {item.IdGender}. Ошибка:{genderDomain.Message} -->");
+                        continue;
+                    }
+
+                    genderList.Add(genderDomain.GenderDomain);
                 }
 
                 return genderList;
@@ -88,9 +122,15 @@ namespace MoneyFlow.Infrastructure.Repositories
             using (var context = _factory())
             {
                 var genderEntity = await context.Genders.FirstOrDefaultAsync(x => x.IdGender == idGender);
-                var genderDomain = GenderDomain.Create(genderEntity.IdGender, genderEntity.GenderName).GenderDomain;
+                var genderDomain = GenderDomain.Create(genderEntity.IdGender, genderEntity.GenderName);
 
-                return genderDomain;
+                if (genderDomain.GenderDomain == null)
+                {
+                    Debug.WriteLine($"<-- Не удалось создать GenderDomain с таким IdGender {idGender} -->");
+                    return null;
+                }
+
+                return genderDomain.GenderDomain;
             }
         }
         public GenderDomain Get(int idGender)
@@ -98,44 +138,56 @@ namespace MoneyFlow.Infrastructure.Repositories
             using (var context = _factory())
             {
                 var genderEntity = context.Genders.FirstOrDefault(x => x.IdGender == idGender);
-                var genderDomain = GenderDomain.Create(genderEntity.IdGender, genderEntity.GenderName).GenderDomain;
+                var genderDomain = GenderDomain.Create(genderEntity.IdGender, genderEntity.GenderName);
 
-                return genderDomain;
+                if (genderDomain.GenderDomain == null)
+                {
+                    Debug.WriteLine($"<-- Не удалось создать GenderDomain с таким IdGender {idGender} -->");
+                    return null;
+                }
+
+                return genderDomain.GenderDomain;
             }
         }
 
         // ------------------------------------------------------------------------------------------------------------------------------------------------
 
-        public async Task<GenderDomain> GetAsync(string genderName)
+        public async Task<GenderDomain?> GetAsync(string genderName)
         {
             using (var context = _factory())
             {
                 var genderEntity = await context.Genders.FirstOrDefaultAsync(x => x.GenderName.ToLower() == genderName.ToLower());
 
-                if (genderEntity == null)
+                if (genderEntity == null) { return null; }
+
+                var genderDomain = GenderDomain.Create(genderEntity.IdGender, genderEntity.GenderName);
+
+                if (genderDomain.GenderDomain == null)
                 {
+                    Console.WriteLine($"Не удалось создать GenderDomain с таким GenderName {genderName}");
                     return null;
                 }
 
-                var genderDomain = GenderDomain.Create(genderEntity.IdGender, genderEntity.GenderName).GenderDomain;
-
-                return genderDomain;
+                return genderDomain.GenderDomain;
             }
         }
-        public GenderDomain Get(string genderName)
+        public GenderDomain? Get(string genderName)
         {
             using (var context = _factory())
             {
                 var genderEntity = context.Genders.FirstOrDefault(x => x.GenderName.ToLower() == genderName.ToLower());
 
-                if (genderEntity == null)
+                if (genderEntity == null) { return null; }
+
+                var genderDomain = GenderDomain.Create(genderEntity.IdGender, genderEntity.GenderName);
+
+                if (genderDomain.GenderDomain == null) 
                 {
-                    return null;
+                    Debug.WriteLine($"Не удалось создать GenderDomain с таким GenderName {genderName}");
+                    return null; 
                 }
 
-                var genderDomain = GenderDomain.Create(genderEntity.IdGender, genderEntity.GenderName).GenderDomain;
-
-                return genderDomain;
+                return genderDomain.GenderDomain;
             }
         }
 
@@ -146,6 +198,9 @@ namespace MoneyFlow.Infrastructure.Repositories
             using (var context = _factory())
             {
                 var entity = await context.Genders.FirstOrDefaultAsync(x => x.IdGender == idGender);
+
+                if (entity == null) { return -1; }
+
                 entity.GenderName = genderName;
 
                 context.Update(entity);
@@ -159,6 +214,9 @@ namespace MoneyFlow.Infrastructure.Repositories
             using (var context = _factory())
             {
                 var entity = context.Genders.FirstOrDefault(x => x.IdGender == idGender);
+
+                if (entity == null) { return -1; }
+
                 entity.GenderName = genderName;
 
                 context.Update(entity);

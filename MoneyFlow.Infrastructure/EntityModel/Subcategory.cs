@@ -7,7 +7,7 @@ public partial class Subcategory
 {
     public int IdSubcategory { get; set; }
 
-    public string? SubcategoryName { get; set; }
+    public string SubcategoryName { get; set; } = null!;
 
     public string? Description { get; set; }
 

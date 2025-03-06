@@ -98,6 +98,16 @@ namespace MoneyFlow.Infrastructure.Repositories
                 return context.Categories.FirstOrDefault(x => x.IdUser == idUser).IdCategory;
             }
         }
+        public int GetIdSubCat(int idUser, int idSub)
+        {
+            using (var context = _factory())
+            {
+                var idCategory = context.Categories.FirstOrDefault(x => x.IdUser == idUser).IdCategory;
+                var idSubcategory = context.CatLinkSubs.FirstOrDefault(x => x.IdCategory == idCategory).IdSubcategory;
+
+                return idSubcategory;
+            }
+        }
         
         //public async Task<CategoryDomain> GetIdCatAsync(int idUser)
         //{

@@ -61,27 +61,25 @@
                     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
                         <!--#region Поля -->
                         <StackPanel DockPanel.Dock="Top">
-                            <DockPanel Margin="0 0 0 2.5">
-                                <TextBlock Text="NumberAccount"/>
-                                <TextBox Text="{Binding NumberAccount}" d:Text="NumberAccount" HorizontalAlignment="Right" Width="100"/>
+                            <DockPanel Margin="0 0 0 5">
+                                <TextBlock Text="NumberAccount" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                                <TextBox Text="{Binding NumberAccount}" d:Text="NumberAccount"/>
                             </DockPanel>
-                            <DockPanel Margin="0 2.5 0 2.5">
-                                <TextBlock Text="Balance"/>
-                                <TextBox Text="{Binding Balance}" d:Text="12345" HorizontalAlignment="Right" Width="100"/>
+                            <DockPanel Margin="0 5 0 5">
+                                <TextBlock Text="Balance" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                                <TextBox Text="{Binding Balance}" d:Text="12345"/>
                             </DockPanel>
-                            <DockPanel Margin="0 2.5 0 2.5">
-                                <TextBlock Text="BankName"/>
+                            <DockPanel Margin="0 5 0 5">
+                                <TextBlock Text="BankName" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
                                 <ComboBox ItemsSource="{Binding Banks}"
                                           SelectedItem="{Binding SelectedBank}"
-                                          DisplayMemberPath="BankName"
-                                          HorizontalAlignment="Right" Width="100"/>
+                                          DisplayMemberPath="BankName"/>
                             </DockPanel>
-                            <DockPanel Margin="0 2.5 0 2.5">
-                                <TextBlock Text="AccountType"/>
+                            <DockPanel Margin="0 5 0 0">
+                                <TextBlock Text="AccountType" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
                                 <ComboBox ItemsSource="{Binding AccountTypes}" 
                                           SelectedItem="{Binding SelectedAccountType}" 
-                                          DisplayMemberPath="AccountTypeName"
-                                          HorizontalAlignment="Right" Width="100"/>
+                                          DisplayMemberPath="AccountTypeName"/>
                             </DockPanel>
                         </StackPanel>
                         <!--#endregion-->
@@ -100,7 +98,7 @@
 
             <!--#region Навигация -->
             <Button Grid.Column="1" Grid.Row="1" Content="Назад" Width="100" Height="25" 
-                        HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10"
+                        HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10"
                         Command="{Binding OpenProfileUserPageCommand}"/>
             <!--#endregion-->
         </Grid>

@@ -13,8 +13,8 @@ namespace MoneyFlow.Domain.Interfaces.Repositories
         Task<GenderDomain> GetAsync(int idGender);
         GenderDomain Get(int idGender);
 
-        Task<GenderDomain> GetAsync(string genderName);
-        GenderDomain Get(string genderName);
+        Task<GenderDomain?> GetAsync(string genderName);
+        GenderDomain? Get(string genderName);
 
         Task<int> UpdateAsync(int idGender, string genderName);
         int Update(int idGender, string genderName);

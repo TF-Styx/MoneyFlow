@@ -11,6 +11,7 @@ namespace MoneyFlow.Domain.Interfaces.Repositories
         List<CategoryDomain> GetAll();
 
         int GetIdCat(int idUser);
+        int GetIdSubCat(int idUser, int idSub);
 
         //Task<CategoryDomain> GetIdCatAsync(int idUser);
         //CategoryDomain GetIdCat(int idUser);
