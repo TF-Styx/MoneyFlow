@@ -9,6 +9,8 @@ namespace MoneyFlow.Domain.Interfaces.Repositories
 
         List<SubcategoryDomain> GetAllSubcategory(int idUser, int idCategory);
 
-        Task DeleteAsync(int idUser, int idCategory, int idSubcategory);
+        Task<int> DeleteAsync(int idUser, int idSubcategory);
+
+        Task<(int IdCategory, List<int> IdSubcategories)> DeleteAsyncSubcategory(int idUser, int idCategory);
     }
 }

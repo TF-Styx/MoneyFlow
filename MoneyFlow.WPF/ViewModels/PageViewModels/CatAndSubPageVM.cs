@@ -1,5 +1,6 @@
 ﻿using MoneyFlow.Application.DTOs;
 using MoneyFlow.Application.Services.Abstraction;
+using MoneyFlow.Application.UseCaseInterfaces.CatLinkSubCaseInterfaces;
 using MoneyFlow.WPF.Commands;
 using MoneyFlow.WPF.Enums;
 using MoneyFlow.WPF.Interfaces;
@@ -14,16 +15,26 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         private readonly ICategoryService _categoryService;
         private readonly ISubcategoryService _subcategoryService;
 
+        private readonly ICreateCatLinkSubUseCase _createCatLinkSubUseCase;
+        private readonly IDeleteCatLinkSubUseCase _deleteCatLinkSubUseCase;
+
         private readonly INavigationPages _navigationPages;
 
         public CatAndSubPageVM(IAuthorizationService authorizationService,
                               ICategoryService categoryService,
                               ISubcategoryService subcategoryService,
+
+                              ICreateCatLinkSubUseCase createCatLinkSubUseCase,
+                              IDeleteCatLinkSubUseCase deleteCatLinkSubUseCase,
+
                               INavigationPages navigationPages)
         {
             _authorizationService = authorizationService;
             _categoryService = categoryService;
             _subcategoryService = subcategoryService;
+
+            _createCatLinkSubUseCase = createCatLinkSubUseCase;
+            _deleteCatLinkSubUseCase = deleteCatLinkSubUseCase;
 
             _navigationPages = navigationPages;
 
@@ -61,7 +72,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                 //SelectedColorCat = value.Color;
                 SelectImageSub = subcategory.Image;
 
-                GetIdUserIdCategorySubcategory();
+                GetSubcategoryByIdCategory();
             }
         }
 
@@ -146,7 +157,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                 //SelectedColorCat = null;
                 SelectImageSub = null;
 
-                GetIdUserIdCategorySubcategory();
+                GetSubcategoryByIdCategory();
 
                 OnPropertyChanged();
             }
@@ -340,7 +351,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                     //SelectedColorCat = value.Color;
                     SelectImageSub = value.Image;
 
-                    GetIdUserIdCategorySubcategory();
+                    GetSubcategoryByIdCategory();
                 }
 
                 SubcategoryName = value.SubcategoryName;
@@ -361,7 +372,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         /// <summary>
         /// Заполняет список с учетом пользователя и категории
         /// </summary>
-        private async void GetIdUserIdCategorySubcategory()
+        private async void GetSubcategoryByIdCategory()
         {
             Subcategories.Clear();
 
@@ -403,7 +414,12 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                     return;
                 }
 
+                var idCatLinkSub = await _createCatLinkSubUseCase.CreateAsyncCatLinkSub(CurrentUser.IdUser, SelectedCategory.IdCategory, newSub.SubcategoryDTO.IdSubcategory);
+
                 Subcategories.Add(newSub.SubcategoryDTO);
+
+                GetSubcategoryByIdCategory();
+
             });
         }
 
@@ -419,7 +435,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                         DescriptionSub,
                         SelectImageSub
                     );
-                var createCatLinlSub = await _subcategoryService.
+                //var createCatLinlSub = await _subcategoryService.
 
                 var updateSubcategory = Subcategories
                     .FirstOrDefault(x => x.IdSubcategory == SelectedSubcategory.IdSubcategory)

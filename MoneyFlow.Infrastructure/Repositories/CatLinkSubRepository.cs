@@ -76,11 +76,27 @@ namespace MoneyFlow.Infrastructure.Repositories
 
         // ------------------------------------------------------------------------------------------------------------------------------------------------
 
-        public async Task DeleteAsync(int idUser, int idCategory, int idSubcategory)
+        public async Task<int> DeleteAsync(int idUser, int idSubcategory)
         {
             using (var context = _factory())
             {
-                await context.CatLinkSubs.Where(x => x.IdUser == idUser && x.IdCategory == idCategory && x.IdSubcategory == idSubcategory).ExecuteDeleteAsync();
+                var delete = await context.CatLinkSubs.FirstOrDefaultAsync(x => x.IdUser == idUser && x.IdSubcategory == idSubcategory);
+
+                context.CatLinkSubs.Remove(delete);
+                context.SaveChanges();
+
+                return idSubcategory;
+            }
+        }
+
+        public async Task<(int IdCategory, List<int> IdSubcategories)> DeleteAsyncSubcategory(int idUser, int idCategory)
+        {
+            using (var context = _factory())
+            {
+                var idSubcategories = await context.CatLinkSubs.Where(x => x.IdUser == idUser && x.IdCategory == idCategory).Select(x => x.IdSubcategory).ToListAsync();
+                await context.CatLinkSubs.Where(x => x.IdUser == idUser && x.IdCategory == idCategory).ExecuteDeleteAsync();
+
+                return (idCategory, idSubcategories);
             }
         }
 

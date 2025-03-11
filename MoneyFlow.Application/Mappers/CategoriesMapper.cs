@@ -1,5 +1,6 @@
 ﻿using MoneyFlow.Application.DTOs;
 using MoneyFlow.Domain.DomainModels;
+using System.Collections.ObjectModel;
 
 namespace MoneyFlow.Application.Mappers
 {

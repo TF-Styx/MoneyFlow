@@ -5,6 +5,7 @@ using MoneyFlow.Application.UseCaseInterfaces.AccountCaseInterface;
 using MoneyFlow.Application.UseCaseInterfaces.AccountTypeCaseInterfaces;
 using MoneyFlow.Application.UseCaseInterfaces.BankCaseInterfaces;
 using MoneyFlow.Application.UseCaseInterfaces.CategoryCaseInterfaces;
+using MoneyFlow.Application.UseCaseInterfaces.CatLinkSubCaseInterfaces;
 using MoneyFlow.Application.UseCaseInterfaces.FinancialRecordCaseInterfaces;
 using MoneyFlow.Application.UseCaseInterfaces.GenderCaseInterfaces;
 using MoneyFlow.Application.UseCaseInterfaces.SubcategoryCaseInterfaces;
@@ -14,6 +15,7 @@ using MoneyFlow.Application.UseCases.AccountCases;
 using MoneyFlow.Application.UseCases.AccountTypeCases;
 using MoneyFlow.Application.UseCases.BankCases;
 using MoneyFlow.Application.UseCases.CategoryCases;
+using MoneyFlow.Application.UseCases.CatLinkSubCases;
 using MoneyFlow.Application.UseCases.FinancialRecordCases;
 using MoneyFlow.Application.UseCases.GenderCases;
 using MoneyFlow.Application.UseCases.SubcategoryCases;
@@ -40,6 +42,9 @@ namespace MoneyFlow.Application.Extension
             services.AddScoped<IDeleteBankUseCase, DeleteBankUseCase>();
             services.AddScoped<IGetBankUseCase,    GetBankUseCase>();
             services.AddScoped<IUpdateBankUseCase, UpdateBankUseCase>();
+
+            services.AddScoped<ICreateCatLinkSubUseCase, CreateCatLinkSubUseCase>();
+            services.AddScoped<IDeleteCatLinkSubUseCase, DeleteCatLinkSubUseCase>();
 
             services.AddScoped<ICreateCategoryUseCase, CreateCategoryUseCase>();
             services.AddScoped<IDeleteCategoryUseCase, DeleteCategoryUseCase>();

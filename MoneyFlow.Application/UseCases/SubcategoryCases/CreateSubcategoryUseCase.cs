@@ -9,12 +9,10 @@ namespace MoneyFlow.Application.UseCases.SubcategoryCases
     public class CreateSubcategoryUseCase : ICreateSubcategoryUseCase
     {
         private readonly ISubcategoryRepository _subcategoryRepository;
-        private readonly ICatLinkSubRepository _catLinkSubRepository;
 
-        public CreateSubcategoryUseCase(ISubcategoryRepository subcategoryRepository, ICatLinkSubRepository catLinkSubRepository)
+        public CreateSubcategoryUseCase(ISubcategoryRepository subcategoryRepository)
         {
             _subcategoryRepository = subcategoryRepository;
-            _catLinkSubRepository = catLinkSubRepository;
         }
 
         public async Task<(SubcategoryDTO SubcategoryDTO, string Message)> CreateAsyncSubcategory(string? subcategoryName, string? description, byte[]? image)
@@ -43,13 +41,5 @@ namespace MoneyFlow.Application.UseCases.SubcategoryCases
 
             return (domain.ToDTO().SubcategoryDTO, Message);
         }
-
-        // TODO : Додумать
-        //public async Task<(CategoryDTO CategoryDTO, SubcategoryDTO SubcategoryDTO, string Message)> CreateAsyncCatLinkSub(int idUser, int idCategory, int idSubcategory)
-        //{
-        //    var catLinSub = CatLinkSubDomain.Create(idUser, idCategory, idSubcategory);
-
-        //    var id = await _catLinkSubRepository.CreateAsync(idUser, idCategory, idSubcategory);
-        //}
     }
 }
