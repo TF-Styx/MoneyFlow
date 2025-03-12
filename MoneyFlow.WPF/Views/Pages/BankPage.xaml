@@ -28,24 +28,27 @@
                 <Border.Effect>
                     <DropShadowEffect BlurRadius="10" Direction="300"/>
                 </Border.Effect>
-                <StackPanel>
-                    <TextBlock Text="Банки пользователя" HorizontalAlignment="Center" FontSize="15"/>
-                    <DataGrid AutoGenerateColumns="False" 
+                <Grid>
+                    <DockPanel>
+                        <TextBlock Text="Банки пользователя" DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="15"/>
+                        <DataGrid AutoGenerateColumns="False" 
                                   IsReadOnly="True" 
                                   GridLinesVisibility="None" 
                                   HeadersVisibility="Column" 
                                   RowHeaderWidth="0" 
                                   SelectionMode="Single" 
+                                  VerticalAlignment="Top"
                                   ItemsSource="{Binding UserBanks.Banks}" 
                                   d:ItemsSource="{d:SampleData ItemCount=15}" 
                                   SelectedItem="{Binding SelectedUserBank}"
                                   Margin="10">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="IdBank" Binding="{Binding IdBank}"/>
-                            <DataGridTextColumn Header="BankName" Binding="{Binding BankName}" Width="*"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </StackPanel>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="IdBank" Binding="{Binding IdBank}"/>
+                                <DataGridTextColumn Header="BankName" Binding="{Binding BankName}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </Grid>
             </Border>
             <!--#endregion-->
 
@@ -70,24 +73,27 @@
                 <Border.Effect>
                     <DropShadowEffect BlurRadius="10" Direction="300"/>
                 </Border.Effect>
-                <StackPanel>
-                    <TextBlock Text="Банки" HorizontalAlignment="Center" FontSize="15"/>
-                    <DataGrid AutoGenerateColumns="False" 
+                <Grid>
+                    <DockPanel>
+                        <TextBlock Text="Банки" DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="15"/>
+                        <DataGrid AutoGenerateColumns="False" 
                                   IsReadOnly="True" 
                                   GridLinesVisibility="None" 
                                   HeadersVisibility="Column" 
                                   RowHeaderWidth="0" 
                                   SelectionMode="Single" 
+                                  VerticalAlignment="Top"
                                   ItemsSource="{Binding Banks}" 
                                   d:ItemsSource="{d:SampleData ItemCount=15}" 
                                   SelectedItem="{Binding SelectedBank}"
                                   Margin="10">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="IdBank" Binding="{Binding IdBank}"/>
-                            <DataGridTextColumn Header="BankName" Binding="{Binding BankName}" Width="*"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </StackPanel>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="IdBank" Binding="{Binding IdBank}"/>
+                                <DataGridTextColumn Header="BankName" Binding="{Binding BankName}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </Grid>
             </Border>
             <!--#endregion-->
 

@@ -15,28 +15,28 @@ namespace MoneyFlow.Application.UseCases.SubcategoryCases
             _subcategoryRepository = subcategoryRepository;
         }
 
-        public async Task<(SubcategoryDTO SubcategoryDTO, string Message)> CreateAsyncSubcategory(string? subcategoryName, string? description, byte[]? image)
+        public async Task<(SubcategoryDTO SubcategoryDTO, string Message)> CreateAsyncSubcategory(string? subcategoryName, string? description, byte[]? image, int idUser)
         {
-            var (CreateSubcategoryDomain, Message) = SubcategoryDomain.Create(0, subcategoryName, null, null);
+            var (CreateSubcategoryDomain, Message) = SubcategoryDomain.Create(0, subcategoryName, null, null, idUser);
 
             //var exist = await _subcategoryRepository.GetAsync(subcategoryName);
 
             //if (exist != null) { return (null, "Подкатегория с таким именем уже есть!!"); }
 
-            var id = await _subcategoryRepository.CreateAsync(subcategoryName, description, image);
+            var id = await _subcategoryRepository.CreateAsync(subcategoryName, description, image, idUser);
             var domain = await _subcategoryRepository.GetAsync(id);
 
             return (domain.ToDTO().SubcategoryDTO, Message);
         }
-        public (SubcategoryDTO SubcategoryDTO, string Message) CreateSubcategory(string? subcategoryName, string? description, byte[]? image)
+        public (SubcategoryDTO SubcategoryDTO, string Message) CreateSubcategory(string? subcategoryName, string? description, byte[]? image, int idUser)
         {
-            var (CreateSubcategoryDomain, Message) = SubcategoryDomain.Create(0, subcategoryName, null, null);
+            var (CreateSubcategoryDomain, Message) = SubcategoryDomain.Create(0, subcategoryName, null, null, idUser);
 
             //var exist = _subcategoryRepository.Get(subcategoryName);
 
             //if (exist != null) { return (null, "Подкатегория с таким именем уде есть!!"); }
 
-            var id = _subcategoryRepository.Create(subcategoryName, description, image);
+            var id = _subcategoryRepository.Create(subcategoryName, description, image, idUser);
             var domain = _subcategoryRepository.Get(id);
 
             return (domain.ToDTO().SubcategoryDTO, Message);

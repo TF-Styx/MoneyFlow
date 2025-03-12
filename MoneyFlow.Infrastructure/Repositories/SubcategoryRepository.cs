@@ -17,7 +17,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
         // ------------------------------------------------------------------------------------------------------------------------------------------------
 
-        public async Task<int> CreateAsync(string? subcategoryName, string? description, byte[]? image)
+        public async Task<int> CreateAsync(string? subcategoryName, string? description, byte[]? image, int idUser)
         {
             using (var context = _factory())
             {
@@ -26,30 +26,18 @@ namespace MoneyFlow.Infrastructure.Repositories
                     SubcategoryName = subcategoryName,
                     Description = description,
                     Image = image,
+                    IdUser = idUser
                 };
 
                 await context.AddAsync(entity);
                 await context.SaveChangesAsync();
 
-                return context.Subcategories.FirstOrDefault(x => x.SubcategoryName == subcategoryName).IdSubcategory;
+                return await context.Subcategories.Where(x => x.IdUser == idUser).OrderByDescending(x => x.IdSubcategory).Select(x => x.IdSubcategory).FirstOrDefaultAsync();
             }
         }
-        public int Create(string? subcategoryName, string? description, byte[]? image)
+        public int Create(string? subcategoryName, string? description, byte[]? image, int idUser)
         {
-            using (var context = _factory())
-            {
-                var entity = new Subcategory()
-                {
-                    SubcategoryName = subcategoryName,
-                    Description = description,
-                    Image = image,
-                };
-
-                context.Add(entity);
-                context.SaveChanges();
-
-                return context.Subcategories.FirstOrDefault(x => x.SubcategoryName == subcategoryName).IdSubcategory;
-            }
+            return Task.Run(() => CreateAsync(subcategoryName, description, image, idUser)).Result;
         }
 
         // ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -63,7 +51,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
                 foreach (var item in entity)
                 {
-                    list.Add(SubcategoryDomain.Create(item.IdSubcategory, item.SubcategoryName, item.Description, item.Image).SubcategoryDomain);
+                    list.Add(SubcategoryDomain.Create(item.IdSubcategory, item.SubcategoryName, item.Description, item.Image, item.IdUser).SubcategoryDomain);
                 }
 
                 return list;
@@ -78,7 +66,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
                 foreach (var item in entity)
                 {
-                    list.Add(SubcategoryDomain.Create(item.IdSubcategory, item.SubcategoryName, item.Description, item.Image).SubcategoryDomain);
+                    list.Add(SubcategoryDomain.Create(item.IdSubcategory, item.SubcategoryName, item.Description, item.Image, item.IdUser).SubcategoryDomain);
                 }
 
                 return list;
@@ -96,7 +84,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
                 foreach (var item in entity)
                 {
-                    list.Add(SubcategoryDomain.Create(item.IdSubcategoryNavigation.IdSubcategory, item.IdSubcategoryNavigation.SubcategoryName, item.IdSubcategoryNavigation.Description, item.IdSubcategoryNavigation.Image).SubcategoryDomain);
+                    list.Add(SubcategoryDomain.Create(item.IdSubcategoryNavigation.IdSubcategory, item.IdSubcategoryNavigation.SubcategoryName, item.IdSubcategoryNavigation.Description, item.IdSubcategoryNavigation.Image, item.IdUser).SubcategoryDomain);
                 }
 
                 return list;
@@ -114,12 +102,13 @@ namespace MoneyFlow.Infrastructure.Repositories
 
                 foreach (var item in entity)
                 {
-                    list.Add(SubcategoryDomain.Create(item.IdSubcategoryNavigation.IdSubcategory, item.IdSubcategoryNavigation.SubcategoryName, item.IdSubcategoryNavigation.Description, item.IdSubcategoryNavigation.Image).SubcategoryDomain);
+                    list.Add(SubcategoryDomain.Create(item.IdSubcategoryNavigation.IdSubcategory, item.IdSubcategoryNavigation.SubcategoryName, item.IdSubcategoryNavigation.Description, item.IdSubcategoryNavigation.Image, item.IdUser).SubcategoryDomain);
                 }
 
                 return list;
             }
         }
+        
 
         // ------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -128,7 +117,7 @@ namespace MoneyFlow.Infrastructure.Repositories
             using (var context = _factory())
             {
                 var entity = await context.Subcategories.FirstOrDefaultAsync(x => x.IdSubcategory == idSubcategory);
-                var domain = SubcategoryDomain.Create(entity.IdSubcategory, entity.SubcategoryName, entity.Description, entity.Image).SubcategoryDomain;
+                var domain = SubcategoryDomain.Create(entity.IdSubcategory, entity.SubcategoryName, entity.Description, entity.Image, entity.IdUser).SubcategoryDomain;
 
                 return domain;
             }
@@ -138,7 +127,7 @@ namespace MoneyFlow.Infrastructure.Repositories
             using (var context = _factory())
             {
                 var entity = context.Subcategories.FirstOrDefault(x => x.IdSubcategory == idSubcategory);
-                var domain = SubcategoryDomain.Create(entity.IdSubcategory, entity.SubcategoryName, entity.Description, entity.Image).SubcategoryDomain;
+                var domain = SubcategoryDomain.Create(entity.IdSubcategory, entity.SubcategoryName, entity.Description, entity.Image, entity.IdUser).SubcategoryDomain;
 
                 return domain;
             }
@@ -151,7 +140,7 @@ namespace MoneyFlow.Infrastructure.Repositories
             using (var context = _factory())
             {
                 var entity = await context.Subcategories.FirstOrDefaultAsync(x => x.SubcategoryName == subcategoryName);
-                var domain = SubcategoryDomain.Create(entity.IdSubcategory, entity.SubcategoryName, entity.Description, entity.Image).SubcategoryDomain;
+                var domain = SubcategoryDomain.Create(entity.IdSubcategory, entity.SubcategoryName, entity.Description, entity.Image, entity.IdUser).SubcategoryDomain;
 
                 return domain;
             }
@@ -161,7 +150,7 @@ namespace MoneyFlow.Infrastructure.Repositories
             using (var context = _factory())
             {
                 var entity = context.Subcategories.FirstOrDefault(x => x.SubcategoryName == subcategoryName);
-                var domain = SubcategoryDomain.Create(entity.IdSubcategory, entity.SubcategoryName, entity.Description, entity.Image).SubcategoryDomain;
+                var domain = SubcategoryDomain.Create(entity.IdSubcategory, entity.SubcategoryName, entity.Description, entity.Image, entity.IdUser).SubcategoryDomain;
 
                 return domain;
             }

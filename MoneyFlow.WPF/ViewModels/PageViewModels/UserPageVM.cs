@@ -1,5 +1,6 @@
 ﻿using MoneyFlow.Application.DTOs;
 using MoneyFlow.Application.Services.Abstraction;
+using MoneyFlow.Application.UseCaseInterfaces.FinancialRecordViewingInterfaces;
 using MoneyFlow.WPF.Commands;
 using MoneyFlow.WPF.Enums;
 using MoneyFlow.WPF.Interfaces;
@@ -16,6 +17,8 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         private readonly IUserService _userService;
         private readonly ICategoryService _categoryService;
         private readonly ISubcategoryService _subcategoryService;
+        private readonly IFinancialRecordService _financialRecordService;
+        private readonly IGetFinancialRecordViewingUseCase _getFinancialRecordViewingUseCase;
 
         private readonly INavigationPages _navigationPages;
 
@@ -26,6 +29,8 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                           IUserService userService,
                           ICategoryService categoryService,
                           ISubcategoryService subcategoryService,
+                          IFinancialRecordService financialRecordService, 
+                          IGetFinancialRecordViewingUseCase getFinancialRecordViewingUseCase,
                           INavigationPages navigationPages)
         {
             _authorizationService = authorizationService;
@@ -35,6 +40,8 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             _userService = userService;
             _categoryService = categoryService;
             _subcategoryService = subcategoryService;
+            _financialRecordService = financialRecordService;
+            _getFinancialRecordViewingUseCase = getFinancialRecordViewingUseCase;
 
             _navigationPages = navigationPages;
 
@@ -49,6 +56,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             GetUserBanks();
             GetCategory();
             GetIdUserAllSubcategory();
+            GetFinancialRecord();
         }
 
         public void Update(object parameter, ParameterType typeParameter = ParameterType.None)
@@ -78,7 +86,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             }
         }
 
-// ------------------------------------------------------------------------------------------------------------------------------------------------
+        // ---------------------------------------------------------------------------------------------------------------------------------
 
 
         #region Счета пользователя
@@ -113,7 +121,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         #endregion
 
 
-// ------------------------------------------------------------------------------------------------------------------------------------------------
+        // ---------------------------------------------------------------------------------------------------------------------------------
 
 
         #region Банк пользователя
@@ -151,7 +159,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         #endregion
 
 
-// ------------------------------------------------------------------------------------------------------------------------------------------------
+        // ---------------------------------------------------------------------------------------------------------------------------------
 
 
         #region Тип счета пользователя
@@ -203,7 +211,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         #endregion
 
 
-        // ------------------------------------------------------------------------------------------------------------------------------------------------
+        // ---------------------------------------------------------------------------------------------------------------------------------
 
 
         #region Категории пользователя
@@ -251,7 +259,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         #endregion
 
 
-        // ------------------------------------------------------------------------------------------------------------------------------------------------
+        // ---------------------------------------------------------------------------------------------------------------------------------
 
 
         #region Подкатегории пользователя
@@ -301,13 +309,49 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             }
         }
 
-        private RelayCommand _userSubcategoryTypeDoubleClickCommand;
-        public RelayCommand UserSubcategoryTypeDoubleClickCommand => _userSubcategoryTypeDoubleClickCommand ??= new RelayCommand(DoubleClick);
+        ////private RelayCommand _userSubcategoryTypeDoubleClickCommand;
+        //public RelayCommand UserSubcategoryTypeDoubleClickCommand => _userSubcategoryTypeDoubleClickCommand ??= new RelayCommand(DoubleClick);
 
         #endregion
 
 
-        // ------------------------------------------------------------------------------------------------------------------------------------------------
+        // ---------------------------------------------------------------------------------------------------------------------------------
+
+
+        #region Финансовые записи пользователя
+
+        private FinancialRecordViewingDTO _selectedFinancialRecord;
+        public FinancialRecordViewingDTO SelectedFinancialRecord
+        {
+            get => _selectedFinancialRecord;
+            set
+            {
+                _selectedFinancialRecord = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<FinancialRecordViewingDTO> FinancialRecords { get; set; } = [];
+
+        public async void GetFinancialRecord()
+        {
+            FinancialRecords.Clear();
+
+            var list = await _getFinancialRecordViewingUseCase.GetAllAsyncFinancialRecordViewing(CurrentUser.IdUser);
+
+            foreach (var item in list)
+            {
+                FinancialRecords.Add(item);
+            }
+        }
+
+        private RelayCommand _userFinancialRecordDoubleClickCommand;
+        public RelayCommand UserFinancialRecordDoubleClickCommand => _userFinancialRecordDoubleClickCommand ??= new RelayCommand(DoubleClick);
+
+        #endregion
+
+
+        // ---------------------------------------------------------------------------------------------------------------------------------
 
 
         #region Навигация
@@ -330,9 +374,13 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             {
                 _navigationPages.OpenPage(PageType.CatAndSubPage, category);
             }
-            if (parameter is SubcategoryDTO subcategory)
+            //if (parameter is SubcategoryDTO subcategory)
+            //{
+            //    _navigationPages.OpenPage(PageType.CatAndSubPage, subcategory);
+            //}
+            if (parameter is FinancialRecordViewingDTO financialRecordViewing)
             {
-                _navigationPages.OpenPage(PageType.CatAndSubPage, subcategory);
+                _navigationPages.OpenPage(PageType.FinancialRecordPage, financialRecordViewing);
             }
         }
 
@@ -371,6 +419,15 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             get => _openCatAndSubPageCommand ??= new(obj =>
             {
                 _navigationPages.OpenPage(PageType.CatAndSubPage);
+            });
+        }
+
+        private RelayCommand _openFinancialRecordPageCommand;
+        public RelayCommand OpenFinancialRecordPageCommand
+        {
+            get => _openFinancialRecordPageCommand ??= new(obj =>
+            {
+                _navigationPages.OpenPage(PageType.FinancialRecordPage);
             });
         }
 

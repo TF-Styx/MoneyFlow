@@ -4,8 +4,8 @@ namespace MoneyFlow.Domain.Interfaces.Repositories
 {
     public interface ISubcategoryRepository
     {
-        Task<int> CreateAsync(string? subcategoryName, string? description, byte[]? image);
-        int Create(string? subcategoryName, string? description, byte[]? image);
+        Task<int> CreateAsync(string? subcategoryName, string? description, byte[]? image, int idUser);
+        int Create(string? subcategoryName, string? description, byte[]? image, int idUser);
 
         Task<List<SubcategoryDomain>> GetAllAsync();
         List<SubcategoryDomain> GetAll();

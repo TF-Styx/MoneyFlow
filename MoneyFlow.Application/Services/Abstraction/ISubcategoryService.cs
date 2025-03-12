@@ -4,8 +4,8 @@ namespace MoneyFlow.Application.Services.Abstraction
 {
     public interface ISubcategoryService
     {
-        Task<(SubcategoryDTO SubcategoryDTO, string Message)> CreateAsyncSubcategory(string? subcategoryName, string? description, byte[]? image);
-        (SubcategoryDTO SubcategoryDTO, string Message) CreateSubcategory(string? subcategoryName, string? description, byte[]? image);
+        Task<(SubcategoryDTO SubcategoryDTO, string Message)> CreateAsyncSubcategory(string? subcategoryName, string? description, byte[]? image, int idUser);
+        (SubcategoryDTO SubcategoryDTO, string Message) CreateSubcategory(string? subcategoryName, string? description, byte[]? image, int idUser);
 
         Task DeleteAsyncSubcategory(int idSubcategory);
         void DeleteSubcategory(int idSubcategory);

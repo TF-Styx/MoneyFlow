@@ -406,7 +406,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         {
             get => _subcategoryAddCommand ??= new(async obj =>
             {
-                var newSub = await _subcategoryService.CreateAsyncSubcategory(SubcategoryName, DescriptionSub, SelectImageSub);
+                var newSub = await _subcategoryService.CreateAsyncSubcategory(SubcategoryName, DescriptionSub, SelectImageSub, CurrentUser.IdUser);
 
                 if (newSub.Message != string.Empty)
                 {
@@ -420,6 +420,10 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
                 GetSubcategoryByIdCategory();
 
+                SubcategoryName = string.Empty;
+                DescriptionSub = string.Empty;
+                //SelectedColorCat = null;
+                SelectImageSub = null;
             });
         }
 

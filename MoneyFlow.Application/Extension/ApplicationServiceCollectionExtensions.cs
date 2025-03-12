@@ -7,6 +7,7 @@ using MoneyFlow.Application.UseCaseInterfaces.BankCaseInterfaces;
 using MoneyFlow.Application.UseCaseInterfaces.CategoryCaseInterfaces;
 using MoneyFlow.Application.UseCaseInterfaces.CatLinkSubCaseInterfaces;
 using MoneyFlow.Application.UseCaseInterfaces.FinancialRecordCaseInterfaces;
+using MoneyFlow.Application.UseCaseInterfaces.FinancialRecordViewingInterfaces;
 using MoneyFlow.Application.UseCaseInterfaces.GenderCaseInterfaces;
 using MoneyFlow.Application.UseCaseInterfaces.SubcategoryCaseInterfaces;
 using MoneyFlow.Application.UseCaseInterfaces.TransactionTypeCaseInterfaces;
@@ -17,6 +18,7 @@ using MoneyFlow.Application.UseCases.BankCases;
 using MoneyFlow.Application.UseCases.CategoryCases;
 using MoneyFlow.Application.UseCases.CatLinkSubCases;
 using MoneyFlow.Application.UseCases.FinancialRecordCases;
+using MoneyFlow.Application.UseCases.FinancialRecordViewingCases;
 using MoneyFlow.Application.UseCases.GenderCases;
 using MoneyFlow.Application.UseCases.SubcategoryCases;
 using MoneyFlow.Application.UseCases.TransactionTypeCases;
@@ -55,6 +57,8 @@ namespace MoneyFlow.Application.Extension
             services.AddScoped<IDeleteFinancialRecordUseCase, DeleteFinancialRecordUseCase>();
             services.AddScoped<IGetFinancialRecordUseCase,    GetFinancialRecordUseCase>();
             services.AddScoped<IUpdateFinancialRecordUseCase, UpdateFinancialRecordUseCase>();
+
+            services.AddScoped<IGetFinancialRecordViewingUseCase, GetFinancialRecordViewingUseCase>();
 
             services.AddScoped<ICreateGenderUseCase, CreateGenderUseCase>();
             services.AddScoped<IDeleteGenderUseCase, DeleteGenderUseCase>();

@@ -28,24 +28,27 @@
                 <Border.Effect>
                     <DropShadowEffect BlurRadius="10" Direction="300"/>
                 </Border.Effect>
-                <StackPanel>
-                    <TextBlock Text="Типы счетов пользователя" HorizontalAlignment="Center" FontSize="15"/>
-                    <DataGrid AutoGenerateColumns="False" 
-                              IsReadOnly="True" 
-                              GridLinesVisibility="None" 
-                              HeadersVisibility="Column" 
-                              RowHeaderWidth="0" 
-                              SelectionMode="Single" 
-                              ItemsSource="{Binding UserAccountTypes.AccountTypes}" 
-                              d:ItemsSource="{d:SampleData ItemCount=15}" 
-                              SelectedItem="{Binding SelectedUserAccountType}"
-                              Margin="10">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="IdAccountType" Binding="{Binding IdAccountType}"/>
-                            <DataGridTextColumn Header="AccountTypeName" Binding="{Binding AccountTypeName}" Width="*"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </StackPanel>
+                <Grid>
+                    <DockPanel>
+                        <TextBlock Text="Типы счетов пользователя" DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="15"/>
+                        <DataGrid AutoGenerateColumns="False" 
+                                  IsReadOnly="True" 
+                                  GridLinesVisibility="None" 
+                                  HeadersVisibility="Column" 
+                                  RowHeaderWidth="0" 
+                                  SelectionMode="Single" 
+                                  VerticalAlignment="Top"
+                                  ItemsSource="{Binding UserAccountTypes.AccountTypes}" 
+                                  d:ItemsSource="{d:SampleData ItemCount=15}" 
+                                  SelectedItem="{Binding SelectedUserAccountType}"
+                                  Margin="10">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="IdAccountType" Binding="{Binding IdAccountType}"/>
+                                <DataGridTextColumn Header="AccountTypeName" Binding="{Binding AccountTypeName}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </Grid>
             </Border>
             <!--#endregion-->
 
@@ -69,24 +72,27 @@
                 <Border.Effect>
                     <DropShadowEffect BlurRadius="10" Direction="300"/>
                 </Border.Effect>
-                <StackPanel>
-                    <TextBlock Text="Типы счетов" HorizontalAlignment="Center" FontSize="15"/>
-                    <DataGrid AutoGenerateColumns="False" 
-                              IsReadOnly="True" 
-                              GridLinesVisibility="None" 
-                              HeadersVisibility="Column" 
-                              RowHeaderWidth="0" 
-                              SelectionMode="Single" 
-                              ItemsSource="{Binding AccountTypes}" 
-                              d:ItemsSource="{d:SampleData ItemCount=15}" 
-                              SelectedItem="{Binding SelectedAccountType}"
-                              Margin="10">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="IdAccountType" Binding="{Binding IdAccountType}"/>
-                            <DataGridTextColumn Header="AccountTypeName" Binding="{Binding AccountTypeName}" Width="*"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </StackPanel>
+                <Grid>
+                    <DockPanel>
+                        <TextBlock Text="Типы счетов" DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="15"/>
+                        <DataGrid AutoGenerateColumns="False" 
+                                  IsReadOnly="True" 
+                                  GridLinesVisibility="None" 
+                                  HeadersVisibility="Column" 
+                                  RowHeaderWidth="0" 
+                                  SelectionMode="Single" 
+                                  VerticalAlignment="Top"
+                                  ItemsSource="{Binding AccountTypes}" 
+                                  d:ItemsSource="{d:SampleData ItemCount=15}" 
+                                  SelectedItem="{Binding SelectedAccountType}"
+                                  Margin="10">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="IdAccountType" Binding="{Binding IdAccountType}"/>
+                                <DataGridTextColumn Header="AccountTypeName" Binding="{Binding AccountTypeName}" Width="*"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </Grid>
             </Border>
             <!--#endregion-->
 

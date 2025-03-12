@@ -14,16 +14,16 @@ namespace MoneyFlow.Application.UseCases.FinancialRecordCases
             _financialRecordRepository = financialRecordRepository;
         }
 
-        public async Task<List<FinancialRecordDTO>> GetAllAsyncFinancialRecord()
+        public async Task<List<FinancialRecordDTO>> GetAllAsyncFinancialRecord(int idUser)
         {
-            var financialRecords = await _financialRecordRepository.GetAllAsync();
+            var financialRecords = await _financialRecordRepository.GetAllAsync(idUser);
             var financialRecordsDTO = financialRecords.ToListDTO();
 
             return financialRecordsDTO;
         }
-        public List<FinancialRecordDTO> GetAllFinancialRecord()
+        public List<FinancialRecordDTO> GetAllFinancialRecord(int idUser)
         {
-            var financialRecords = _financialRecordRepository.GetAll();
+            var financialRecords = _financialRecordRepository.GetAll(idUser);
             var financialRecordsDTO = financialRecords.ToListDTO();
 
             return financialRecordsDTO;

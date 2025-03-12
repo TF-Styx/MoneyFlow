@@ -6,6 +6,7 @@
         AccountTypePage,
         BankPage,
         CatAndSubPage,
+        FinancialRecordPage,
         GenderPage,
         UserPage,
     }

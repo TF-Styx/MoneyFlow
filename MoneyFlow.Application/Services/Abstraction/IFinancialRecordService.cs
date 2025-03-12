@@ -7,8 +7,8 @@ namespace MoneyFlow.Application.Services.Abstraction
         Task<(FinancialRecordDTO FinancialRecordDTO, string Message)> CreateAsyncFinancialRecord(string? recordName, decimal? amount, string? description, int? idTransactionType, int? idUser, int? idCategory, int? idAccount, DateTime? date);
         (FinancialRecordDTO FinancialRecordDTO, string Message) CreateFinancialRecord(string? recordName, decimal? amount, string? description, int? idTransactionType, int? idUser, int? idCategory, int? idAccount, DateTime? date);
 
-        Task<List<FinancialRecordDTO>> GetAllAsyncFinancialRecord();
-        List<FinancialRecordDTO> GetAllFinancialRecord();
+        Task<List<FinancialRecordDTO>> GetAllAsyncFinancialRecord(int idUser);
+        List<FinancialRecordDTO> GetAllFinancialRecord(int idUser);
 
         Task<FinancialRecordDTO> GetAsyncFinancialRecord(int idFinancialRecord);
         FinancialRecordDTO GetFinancialRecord(int idFinancialRecord);

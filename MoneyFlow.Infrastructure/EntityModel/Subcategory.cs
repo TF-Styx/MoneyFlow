@@ -13,5 +13,7 @@ public partial class Subcategory
 
     public byte[]? Image { get; set; }
 
+    public int IdUser { get; set; }
+
     public virtual ICollection<CatLinkSub> CatLinkSubs { get; set; } = new List<CatLinkSub>();
 }

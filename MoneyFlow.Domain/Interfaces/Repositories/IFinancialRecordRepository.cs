@@ -7,9 +7,15 @@ namespace MoneyFlow.Domain.Interfaces.Repositories
         Task<int> CreateAsync(string? recordName, decimal? amount, string? description, int? idTransactionType, int? idUser, int? idCategory, int? idAccount, DateTime? date);
         int Create(string? recordName, decimal? amount, string? description, int? idTransactionType, int? idUser, int? idCategory, int? idAccount, DateTime? date);
 
-        Task<List<FinancialRecordDomain>> GetAllAsync();
-        List<FinancialRecordDomain> GetAll();
-        
+        Task<List<FinancialRecordDomain>> GetAllAsync(int idUser);
+        List<FinancialRecordDomain> GetAll(int idUser);
+
+        Task<List<FinancialRecordViewingDomain>> GetAllViewingAsync(int idUser);
+        List<FinancialRecordViewingDomain> GetAllViewing(int idUser);
+
+        Task<FinancialRecordViewingDomain> GetByIdAsync(int idUser, int idFinancialRecord, int idCategory, int idSubcategory);
+        FinancialRecordViewingDomain GetById(int idUser, int idFinancialRecord, int idCategory, int idSubcategory);
+
         Task<FinancialRecordDomain> GetAsync(int idFinancialRecord);
         FinancialRecordDomain Get(int idFinancialRecord);
         

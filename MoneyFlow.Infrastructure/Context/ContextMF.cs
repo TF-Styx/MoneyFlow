@@ -191,6 +191,7 @@ public partial class ContextMF : DbContext
 
             entity.Property(e => e.IdSubcategory).HasColumnName("id_subcategory");
             entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.IdUser).HasColumnName("id_user");
             entity.Property(e => e.Image).HasColumnName("image");
             entity.Property(e => e.SubcategoryName)
                 .HasMaxLength(50)

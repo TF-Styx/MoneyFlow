@@ -28,13 +28,13 @@ namespace MoneyFlow.Application.Services.Realization
             return _createFinancialRecordUseCase.CreateFinancialRecord(recordName, amount, description, idTransactionType, idUser, idCategory, idAccount, date);
         }
 
-        public async Task<List<FinancialRecordDTO>> GetAllAsyncFinancialRecord()
+        public async Task<List<FinancialRecordDTO>> GetAllAsyncFinancialRecord(int idUser)
         {
-            return await _getFinancialRecordUseCase.GetAllAsyncFinancialRecord();
+            return await _getFinancialRecordUseCase.GetAllAsyncFinancialRecord(idUser);
         }
-        public List<FinancialRecordDTO> GetAllFinancialRecord()
+        public List<FinancialRecordDTO> GetAllFinancialRecord(int idUser)
         {
-            return _getFinancialRecordUseCase.GetAllFinancialRecord();
+            return _getFinancialRecordUseCase.GetAllFinancialRecord(idUser);
         }
 
         public async Task<FinancialRecordDTO> GetAsyncFinancialRecord(int idFinancialRecord)

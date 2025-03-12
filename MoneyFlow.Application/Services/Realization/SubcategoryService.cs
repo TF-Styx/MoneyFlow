@@ -19,13 +19,13 @@ namespace MoneyFlow.Application.Services.Realization
             _updateSubcategoryUseCase = updateSubcategoryUseCase;
         }
 
-        public async Task<(SubcategoryDTO SubcategoryDTO, string Message)> CreateAsyncSubcategory(string? subcategoryName, string? description, byte[]? image)
+        public async Task<(SubcategoryDTO SubcategoryDTO, string Message)> CreateAsyncSubcategory(string? subcategoryName, string? description, byte[]? image, int idUser)
         {
-            return await _createSubcategoryUseCase.CreateAsyncSubcategory(subcategoryName, description, image);
+            return await _createSubcategoryUseCase.CreateAsyncSubcategory(subcategoryName, description, image, idUser);
         }
-        public (SubcategoryDTO SubcategoryDTO, string Message) CreateSubcategory(string? subcategoryName, string? description, byte[]? image)
+        public (SubcategoryDTO SubcategoryDTO, string Message) CreateSubcategory(string? subcategoryName, string? description, byte[]? image, int idUser)
         {
-            return _createSubcategoryUseCase.CreateSubcategory(subcategoryName, description, image);
+            return _createSubcategoryUseCase.CreateSubcategory(subcategoryName, description, image, idUser);
         }
 
         public async Task<List<SubcategoryDTO>> GetAllAsyncSubcategory()
