@@ -4,6 +4,7 @@ using MoneyFlow.WPF.Commands;
 using MoneyFlow.WPF.Enums;
 using MoneyFlow.WPF.Interfaces;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace MoneyFlow.WPF.ViewModels.PageViewModels
 {
@@ -35,6 +36,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             GetBank();
             GetAccountType();
         }
+
         public void Update(object parameter, ParameterType typeParameter = ParameterType.None)
         {
             if (parameter is AccountDTO account)
@@ -60,8 +62,8 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
         #region Счета пользователя
 
-        private decimal? _numberAccount;
-        public decimal? NumberAccount
+        private int? _numberAccount;
+        public int? NumberAccount
         {
             get => _numberAccount;
             set
@@ -90,6 +92,8 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             {
                 _selectedAccount = value;
 
+                if (value == null) { return; }
+
                 NumberAccount = value.NumberAccount;
                 Balance = value.Balance;
                 SelectedBank = Banks.FirstOrDefault(x => x.IdBank == value.Bank.IdBank);
@@ -113,6 +117,9 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         }
 
         #endregion
+
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
 
 
         #region Банки
@@ -144,6 +151,9 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         #endregion
 
 
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
+
         #region Тип счета
 
         private AccountTypeDTO _selectedAccountType;
@@ -171,6 +181,88 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         }
 
         #endregion
+
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+        #region Команды
+
+        private RelayCommand _accountAddCommand;
+        public RelayCommand AccountAddCommand
+        {
+            get => _accountAddCommand ??= new(async obj =>
+            {
+                var newAccount = await _accountService.CreateAsyncAccount(NumberAccount, CurrentUser.IdUser, SelectedBank, SelectedAccountType, Balance);
+
+                if (newAccount.Message != string.Empty)
+                {
+                    MessageBox.Show(newAccount.Message);
+                    return;
+                }
+
+                Accounts.Add(newAccount.AccountDTO);
+
+                _navigationPages.TransitObject(PageType.UserPage, newAccount.AccountDTO, ParameterType.Add);
+            });
+        }
+
+        private RelayCommand _accountUpdateCommand;
+        public RelayCommand AccountUpdateCommand
+        {
+            get => _accountUpdateCommand ??= new(async obj =>
+            {
+                var idUpdateAccount = await _accountService.UpdateAsyncAccount
+                    (
+                        SelectedAccount.IdAccount,
+                        NumberAccount,
+                        SelectedBank,
+                        SelectedAccountType,
+                        Balance
+                    );
+
+                var updateAccount = Accounts
+                    .FirstOrDefault(x => x.IdAccount == SelectedAccount.IdAccount)
+                        .SetProperty(x =>
+                        {
+                            x.IdAccount = idUpdateAccount;
+                            x.NumberAccount = NumberAccount;
+                            x.Bank = SelectedBank;
+                            x.AccountType = SelectedAccountType;
+                            x.Balance = Balance;
+                        });
+
+                var index = Accounts.IndexOf(updateAccount);
+
+                Accounts.RemoveAt(index);
+                Accounts.Insert(index, updateAccount);
+
+                _navigationPages.TransitObject(PageType.UserPage, updateAccount, ParameterType.Update);
+            });
+        }
+
+        private RelayCommand _accountDeleteCommand;
+        public RelayCommand AccountDeleteCommand
+        {
+            get => _accountDeleteCommand ??= new(async obj =>
+            {
+                await _accountService.DeleteAsyncAccount(SelectedAccount.IdAccount);
+
+                _navigationPages.TransitObject(PageType.UserPage, SelectedAccount, ParameterType.Delete);
+
+                NumberAccount = 0;
+                SelectedBank = null;
+                SelectedAccountType = null;
+                Balance = 0;
+                
+                Accounts.Remove(SelectedAccount);
+            });
+        }
+
+        #endregion
+
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
 
 
         #region Навигация

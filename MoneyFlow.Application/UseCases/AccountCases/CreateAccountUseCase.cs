@@ -26,9 +26,9 @@ namespace MoneyFlow.Application.UseCases.AccountCases
                 return (null, "Вы не заполнили поля!!");
             }
 
-            var existAccount = await _accountRepository.GetNumberAsync(numberAccount);
+            //var existAccount = await _accountRepository.GetNumberAsync(numberAccount);
 
-            if (existAccount != null) { return (null, "Пользователь с таким логином уже есть!!"); }
+            //if (existAccount != null) { return (null, "Пользователь с таким логином уже есть!!"); }
 
             var idAccount = await _accountRepository.CreateAsync(numberAccount, idUser, bankDTO.ToDomain().BankDomain, accountTypeDTO.ToDomain().AccountTypeDomain, balance);
             var accountDomain = await _accountRepository.GetIdAsync(idAccount);

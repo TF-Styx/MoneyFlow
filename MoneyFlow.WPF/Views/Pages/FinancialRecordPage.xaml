@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MoneyFlow.WPF.Views.Pages" 
       xmlns:pageviewmodels="clr-namespace:MoneyFlow.WPF.ViewModels.PageViewModels" 
+      xmlns:fa="http://schemas.fontawesome.com/icons/"
       d:DataContext="{d:DesignInstance Type=pageviewmodels:FinancialRecordPageVM}"
       mc:Ignorable="d" 
       d:DesignHeight="750" d:DesignWidth="1000"
@@ -29,7 +30,14 @@
                 </Border.Effect>
                 <Grid>
                     <DockPanel>
-                        <TextBlock Text="Финансовые записи пользователя" DockPanel.Dock="Top" HorizontalAlignment="Center" FontSize="15"/>
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Center">
+                            <TextBlock Text="Финансовые записи" DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15"/>
+                            <Button DockPanel.Dock="Top" HorizontalAlignment="Right" VerticalAlignment="Top" 
+                                    Background="Transparent" BorderThickness="0" 
+                                    Width="25" Height="25" Margin="20 0 0 0">
+                                <fa:ImageAwesome Icon="Solid_Filter" Foreground="Gray"/>
+                            </Button>
+                        </StackPanel>
                         <DataGrid AutoGenerateColumns="False"
                                   IsReadOnly="True"
                                   GridLinesVisibility="None"
@@ -87,7 +95,7 @@
 
             <!--#region Информация о финансовой записе -->
             <ScrollViewer Grid.Column="1">
-                <Border CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="10">
+                <Border CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="5 10 10 5">
                     <Border.Effect>
                         <DropShadowEffect BlurRadius="10" Direction="300"/>
                     </Border.Effect>
@@ -135,7 +143,7 @@
                             </StackPanel>
                             <!--#endregion-->
 
-                            <!--#region Кнопки управления счетами -->
+                            <!--#region Кнопки управления финансовыми записями -->
                             <StackPanel VerticalAlignment="Bottom">
                                 <Button Content="Добавить финаносвую запись" Command="{Binding FinancialRecordAddCommand}" Height="30" Margin="0 10 0 5"/>
                                 <Button Content="Изменить финаносвую запись" Command="{Binding FinancialRecordUpdateCommand}" Height="30" Margin="0 5 0 5"/>

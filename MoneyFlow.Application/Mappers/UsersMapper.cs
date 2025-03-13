@@ -37,6 +37,7 @@ namespace MoneyFlow.Application.Mappers
             {
                 GenderName = userTotalInfo.GenderName,
                 TotalBalance = userTotalInfo.TotalBalance,
+                AccountCount = userTotalInfo.AccountCount,
                 BankCount = userTotalInfo.BankCount,
                 CategoryCount = userTotalInfo.CategoryCount,
                 SubcategoryCount = userTotalInfo.SubcategoryCount,

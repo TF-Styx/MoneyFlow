@@ -87,6 +87,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             }
         }
 
+
         // ------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -201,6 +202,14 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             });
         }
 
+        #endregion
+
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+        #region Команды Категорий
+
         private RelayCommand _categoryAddCommand;
         public RelayCommand CategoryAddCommand
         {
@@ -225,11 +234,11 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             {
                 var idUpdateCat = await _categoryService.UpdateAsyncCategory
                     (
-                        SelectedCategory.IdCategory, 
-                        CategoryName, 
-                        DescriptionCat, 
-                        SelectedColorCat, 
-                        SelectImageCat, 
+                        SelectedCategory.IdCategory,
+                        CategoryName,
+                        DescriptionCat,
+                        SelectedColorCat,
+                        SelectImageCat,
                         CurrentUser.IdUser
                     );
 
@@ -243,7 +252,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                             x.Color = SelectedColorCat;
                             x.Image = SelectImageCat;
                             x.IdUser = CurrentUser.IdUser;
-                        });  
+                        });
 
                 var index = Categories.IndexOf(updateCategory);
 
@@ -401,6 +410,14 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             }
         }
 
+        #endregion
+
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+        #region Команды Подкатегорий
+
         private RelayCommand _subcategoryAddCommand;
         public RelayCommand SubcategoryAddCommand
         {
@@ -435,7 +452,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                 var idUpdateSub = await _subcategoryService.UpdateAsyncSubcategory
                     (
                         SelectedSubcategory.IdSubcategory,
-                        SubcategoryName, 
+                        SubcategoryName,
                         DescriptionSub,
                         SelectImageSub
                     );

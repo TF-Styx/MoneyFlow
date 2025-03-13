@@ -7,5 +7,8 @@
         /// </summary>
         None,
 
+        Add,
+        Update,
+        Delete,
     }
 }

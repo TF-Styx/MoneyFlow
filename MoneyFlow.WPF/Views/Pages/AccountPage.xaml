@@ -89,9 +89,9 @@
 
                         <!--#region Кнопки управления счетами -->
                         <StackPanel VerticalAlignment="Bottom">
-                            <Button Content="Добавить счёт" Height="30" Margin="0 10 0 5"/>
-                            <Button Content="Изменить счёт" Height="30" Margin="0 5 0 5"/>
-                            <Button Content="Удалить счёт" Height="30" Margin="0 5 0 0"/>
+                            <Button Content="Добавить счёт" Command="{Binding AccountAddCommand}" Height="30" Margin="0 10 0 5"/>
+                            <Button Content="Изменить счёт" Command="{Binding AccountUpdateCommand}" Height="30" Margin="0 5 0 5"/>
+                            <Button Content="Удалить счёт" Command="{Binding AccountDeleteCommand}" Height="30" Margin="0 5 0 0"/>
                         </StackPanel>
                         <!--#endregion-->
                     </DockPanel>

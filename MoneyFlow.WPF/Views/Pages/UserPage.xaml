@@ -163,6 +163,10 @@
                                             <TextBlock Text="{Binding UserTotalInfo.TotalBalance}" d:Text="193592" Width="150"/>
                                         </DockPanel>
                                         <DockPanel>
+                                            <TextBlock Text="AccountCount" Margin="0 0 20 0" Width="150"/>
+                                            <TextBlock Text="{Binding UserTotalInfo.AccountCount}" d:Text="7" Width="150"/>
+                                        </DockPanel>
+                                        <DockPanel>
                                             <TextBlock Text="BankCount" Margin="0 0 20 0" Width="150"/>
                                             <TextBlock Text="{Binding UserTotalInfo.BankCount}" d:Text="3" Width="150"/>
                                         </DockPanel>
@@ -425,7 +429,14 @@
                     </Border.Effect>
                     <Grid>
                         <DockPanel>
-                            <TextBlock Text="Финансовые записи" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Center">
+                                <TextBlock Text="Финансовые записи" DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15"/>
+                                <Button DockPanel.Dock="Top" HorizontalAlignment="Right" VerticalAlignment="Top" 
+                                        Background="Transparent" BorderThickness="0" 
+                                        Width="25" Height="25" Margin="20 0 0 0">
+                                    <fa:ImageAwesome Icon="Solid_Filter" Foreground="Gray"/>
+                                </Button>
+                            </StackPanel>
                             <DataGrid AutoGenerateColumns="False" 
                                               IsReadOnly="True"
                                               GridLinesVisibility="None"

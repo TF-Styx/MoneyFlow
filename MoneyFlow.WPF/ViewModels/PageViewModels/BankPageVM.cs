@@ -33,6 +33,23 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             {
                 BankName = bank.BankName;
             }
+
+            if (parameter is BankDTO bankAdd && typeParameter is ParameterType.Add)
+            {
+                Banks.Add(bankAdd);
+            }
+            if (parameter is BankDTO bankUpdate && typeParameter is ParameterType.Update)
+            {
+                var itemForDelete = Banks.FirstOrDefault(x => x.IdBank == bankUpdate.IdBank);
+                var index = Banks.IndexOf(itemForDelete);
+
+                Banks.Remove(itemForDelete);
+                Banks.Insert(index, itemForDelete);
+            }
+            if (parameter is BankDTO bankDelete && typeParameter is ParameterType.Delete)
+            {
+                Banks.Remove(Banks.FirstOrDefault(x => x.IdBank == bankDelete.IdBank));
+            }
         }
 
         private UserDTO _currentUser;
@@ -86,6 +103,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         {
             UserBanks = await _bankService.GetByIdUserAsync(CurrentUser.IdUser);
         }
+
 
         private BankDTO _selectedBank;
         public BankDTO SelectedBank

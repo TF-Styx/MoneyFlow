@@ -61,7 +61,57 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
         public void Update(object parameter, ParameterType typeParameter = ParameterType.None)
         {
-            
+            #region Обновление данных счетов
+
+            if (parameter is AccountDTO accountAdd && typeParameter is ParameterType.Add)
+            {
+                Accounts.Add(accountAdd);
+            }
+            if (parameter is AccountDTO accountUpdate && typeParameter is ParameterType.Update)
+            {
+                var itemForDelete = Accounts.FirstOrDefault(x => x.IdAccount == accountUpdate.IdAccount);
+                var index = Accounts.IndexOf(itemForDelete);
+
+                Accounts.Remove(itemForDelete);
+                Accounts.Insert(index, accountUpdate);
+            }
+            if (parameter is AccountDTO accountDelete && typeParameter is ParameterType.Delete)
+            {
+                Accounts.Remove(Accounts.FirstOrDefault(x => x.IdAccount == accountDelete.IdAccount));
+            }
+
+            #endregion
+
+            // -----------------------------------------------------------------------------------------------------------------------------
+
+            #region Обновление финаносых записей
+
+            if (parameter is FinancialRecordViewingDTO financialRecordAdd && typeParameter is ParameterType.Add)
+            {
+                FinancialRecords.Add(financialRecordAdd);
+            }
+            if (parameter is FinancialRecordViewingDTO financialRecordUpdate && typeParameter is ParameterType.Update)
+            {
+                var itemForDelete = FinancialRecords.FirstOrDefault(x => x.IdFinancialRecord == financialRecordUpdate.IdFinancialRecord);
+                var index = FinancialRecords.IndexOf(itemForDelete);
+
+                FinancialRecords.Remove(itemForDelete);
+                FinancialRecords.Insert(index, itemForDelete);
+            }
+            if (parameter is FinancialRecordViewingDTO financialRecordDelete && typeParameter is ParameterType.Delete)
+            {
+                FinancialRecords.Remove(FinancialRecords.FirstOrDefault(x => x.IdFinancialRecord == financialRecordDelete.IdFinancialRecord));
+            }
+
+            #endregion
+
+            // -----------------------------------------------------------------------------------------------------------------------------
+
+            #region Обновление данных пользователя
+
+            UserTotalInfo = _userService.GetUserInfo(CurrentUser.IdUser);
+
+            #endregion
         }
 
         private UserDTO _currentUser;

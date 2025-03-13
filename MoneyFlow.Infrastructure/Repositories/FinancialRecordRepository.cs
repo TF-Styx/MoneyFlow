@@ -157,9 +157,29 @@ namespace MoneyFlow.Infrastructure.Repositories
         {
             using (var context = _factory())
             {
-                var subcategorys = await context.CatLinkSubs.Where(x => x.IdUser == idUser && x.IdCategory == idCategory && x.IdSubcategory == idSubcategory).Select(x => x.IdSubcategoryNavigation.SubcategoryName).ToListAsync();
-                var entity = await context.FinancialRecords.FirstOrDefaultAsync(x => x.IdFinancialRecord == idFinancialRecord);
-                var domain = FinancialRecordViewingDomain.Create(entity.IdFinancialRecord, entity.RecordName, entity.Ammount, entity.Description, entity.IdTransactionTypeNavigation.TransactionTypeName, idUser, entity.IdCategoryNavigation.CategoryName, subcategorys, entity.IdAccountNavigation.NumberAccount, entity.Date).FinancialRecordViewingDomain;
+                var subcategorys = await context.CatLinkSubs.Where(x => x.IdUser == idUser && x.IdCategory == idCategory && x.IdSubcategory == idSubcategory)
+                                                            .Select(x => x.IdSubcategoryNavigation.SubcategoryName).ToListAsync();
+
+                var entity = await context.FinancialRecords
+                    .Include(x => x.IdTransactionTypeNavigation)
+                    .Include(x => x.IdUserNavigation)
+                    .Include(x => x.IdAccountNavigation)
+                    .Include(x => x.IdCategoryNavigation)
+                        .FirstOrDefaultAsync(x => x.IdFinancialRecord == idFinancialRecord);
+
+                var domain = FinancialRecordViewingDomain.Create
+                    (
+                        entity.IdFinancialRecord,
+                        entity.RecordName,
+                        entity.Ammount,
+                        entity.Description,
+                        entity.IdTransactionTypeNavigation.TransactionTypeName,
+                        idUser,
+                        entity.IdCategoryNavigation.CategoryName,
+                        subcategorys,
+                        entity.IdAccountNavigation.NumberAccount,
+                        entity.Date
+                    ).FinancialRecordViewingDomain;
 
                 return domain;
             }
@@ -168,9 +188,29 @@ namespace MoneyFlow.Infrastructure.Repositories
         {
             using (var context = _factory())
             {
-                var subcategorys = context.CatLinkSubs.Where(x => x.IdUser == idUser && x.IdCategory == idCategory && x.IdSubcategory == idSubcategory).Select(x => x.IdSubcategoryNavigation.SubcategoryName).ToList();
-                var entity = context.FinancialRecords.FirstOrDefault(x => x.IdFinancialRecord == idFinancialRecord);
-                var domain = FinancialRecordViewingDomain.Create(entity.IdFinancialRecord, entity.RecordName, entity.Ammount, entity.Description, entity.IdTransactionTypeNavigation.TransactionTypeName, idUser, entity.IdCategoryNavigation.CategoryName, subcategorys, entity.IdAccountNavigation.NumberAccount, entity.Date).FinancialRecordViewingDomain;
+                var subcategorys = context.CatLinkSubs.Where(x => x.IdUser == idUser && x.IdCategory == idCategory && x.IdSubcategory == idSubcategory)
+                                                      .Select(x => x.IdSubcategoryNavigation.SubcategoryName).ToList();
+
+                var entity = context.FinancialRecords
+                    .Include(x => x.IdTransactionTypeNavigation)
+                    .Include(x => x.IdUserNavigation)
+                    .Include(x => x.IdAccountNavigation)
+                    .Include(x => x.IdCategoryNavigation)
+                        .FirstOrDefault(x => x.IdFinancialRecord == idFinancialRecord);
+
+                var domain = FinancialRecordViewingDomain.Create
+                    (
+                        entity.IdFinancialRecord, 
+                        entity.RecordName, 
+                        entity.Ammount, 
+                        entity.Description, 
+                        entity.IdTransactionTypeNavigation.TransactionTypeName, 
+                        idUser, 
+                        entity.IdCategoryNavigation.CategoryName, 
+                        subcategorys, 
+                        entity.IdAccountNavigation.NumberAccount, 
+                        entity.Date
+                    ).FinancialRecordViewingDomain;
 
                 return domain;
             }

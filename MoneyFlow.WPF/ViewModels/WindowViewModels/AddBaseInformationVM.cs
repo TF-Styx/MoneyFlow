@@ -1,12 +1,9 @@
 ﻿using MoneyFlow.Application.DTOs;
 using MoneyFlow.Application.Services.Abstraction;
-using MoneyFlow.Application.UseCaseInterfaces.BankCaseInterfaces;
-using MoneyFlow.Application.UseCaseInterfaces.GenderCaseInterfaces;
 using MoneyFlow.WPF.Commands;
 using MoneyFlow.WPF.Enums;
 using MoneyFlow.WPF.Interfaces;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows;
 
 namespace MoneyFlow.WPF.ViewModels.WindowViewModels
@@ -16,31 +13,21 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
         private readonly IBankService _bankService;
         private readonly IGenderService _genderService;
 
-        //private readonly ICreateBankUseCase _createBankUseCase;
-        //private readonly IDeleteBankUseCase _deleteBankUseCase;
-        //private readonly IGetBankUseCase    _getBankUseCase;
-        //private readonly IUpdateBankUseCase _updateBankUseCase;
+        private readonly INavigationPages _navigationPages;
 
-        //private readonly ICreateGenderUseCase _createGenderUseCase;
-        //private readonly IDeleteGenderUseCase _deleteGenderUseCase;
-        //private readonly IGetGenderUseCase    _getGenderUseCase;
-        //private readonly IUpdateGenderUseCase _updateGenderUseCase;
-
-        //ICreateBankUseCase createBankUseCase, IDeleteBankUseCase deleteBankUseCase, IGetBankUseCase getBankUseCase, IUpdateBankUseCase updateBankUseCase,
-        //ICreateGenderUseCase createGenderUseCase, IDeleteGenderUseCase deleteGenderUseCase, IGetGenderUseCase getGenderUseCase, IUpdateGenderUseCase updateGenderUseCase
-        public AddBaseInformationVM(IBankService bankService, IGenderService genderService)
+        public AddBaseInformationVM(IBankService bankService, IGenderService genderService, INavigationPages navigationPages)
         {
             _bankService = bankService;
             _genderService = genderService;
             GetBanks();
             GetGenders();
+            _navigationPages = navigationPages;
         }
 
         public void Update(object parameter, ParameterType typeParameter = ParameterType.None)
         {
             
         }
-
 
 
         #region Банк || string:BankName || Observable:Banks || BankDTO:SeletedBank
@@ -78,6 +65,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
             set
             {
                 _selectedBank = value;
+
                 if (value == null) { BankName = string.Empty; return; }
 
                 BankName = value.BankName;
@@ -98,7 +86,10 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
                     MessageBox.Show(newBank.Message);
                     return;
                 }
+
                 Banks.Add(newBank.BankDTO);
+
+                _navigationPages.TransitObject(PageType.BankPage, newBank.BankDTO, ParameterType.Add);
             });
         }
 
@@ -114,6 +105,8 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
 
                 Banks.RemoveAt(index);
                 Banks.Insert(index, updatableBank);
+
+                _navigationPages.TransitObject(PageType.BankPage, updatableBank, ParameterType.Update);
             });
         }
 
@@ -123,6 +116,11 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
             get => _bankDeleteCommand ??= new(async obj =>
             {
                 await _bankService.DeleteAsyncBank(SelectedBank.IdBank);
+
+                _navigationPages.TransitObject(PageType.BankPage, SelectedBank, ParameterType.Delete);
+
+                BankName = string.Empty;
+
                 Banks.Remove(SelectedBank);
             });
         }
@@ -170,6 +168,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
             set
             {
                 _selectedGender = value;
+
                 if (value == null) { GenderName = string.Empty; return; }
 
                 GenderName = value.GenderName;
@@ -190,6 +189,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
                     MessageBox.Show(newGender.Message);
                     return;
                 }
+
                 Genders.Add(newGender.GenderDTO);
             });
         }

@@ -146,6 +146,8 @@ namespace MoneyFlow.Infrastructure.Repositories
                 var gender = context.Users.Include(x => x.IdGenderNavigation).FirstOrDefault(x => x.IdUser == idUser).IdGenderNavigation.GenderName;
                 var totalBalance = context.Accounts.Where(x => x.IdUser == idUser).Sum(x => x.Balance);
 
+                var accountCount = context.Accounts.Where(x => x.IdUser == idUser).Count();
+
                 var banksId = context.Accounts.Where(x => x.IdUser == idUser).Select(x => x.IdBank).Distinct().ToList();
                 var bankCount = context.Banks.Where(x => banksId.Contains(x.IdBank)).Count();
 
@@ -156,7 +158,7 @@ namespace MoneyFlow.Infrastructure.Repositories
                 var financialRecordCount = context.FinancialRecords.Where(x => x.IdUser == idUser).Count();
 
 
-                var domain = UserTotalInfoDomain.Create(gender, totalBalance, bankCount, catCount, subcatCount, financialRecordCount).UserTotalInfoDomain;
+                var domain = UserTotalInfoDomain.Create(gender, totalBalance, accountCount, bankCount, catCount, subcatCount, financialRecordCount).UserTotalInfoDomain;
 
                 return domain;
             }

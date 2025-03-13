@@ -33,7 +33,13 @@ namespace MoneyFlow.WPF.Services
 
         public void TransitObject(PageType pageName, object parameter = null, ParameterType parameterType = ParameterType.None)
         {
-            throw new NotImplementedException();
+            if (_page.TryGetValue(pageName, out var pageExist))
+            {
+                if (pageExist.DataContext is IUpdatable viewModel)
+                {
+                    viewModel.Update(parameter, parameterType);
+                }
+            }
         }
 
         private void Open(PageType pageName, object parameter = null, ParameterType parameterType = ParameterType.None)

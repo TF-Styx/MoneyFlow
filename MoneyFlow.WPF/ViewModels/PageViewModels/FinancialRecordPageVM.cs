@@ -68,6 +68,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
         // ------------------------------------------------------------------------------------------------------------------------------------------------
 
+        #region Поля финансовой записи
 
         private string _recordName;
         public string RecordName
@@ -171,6 +172,8 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             }
         }
 
+        #endregion
+
 
         private FinancialRecordViewingDTO _selectedFinancialRecord;
         public FinancialRecordViewingDTO SelectedFinancialRecord
@@ -180,13 +183,17 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             {
                 _selectedFinancialRecord = value;
 
+                if (value == null) { return; }
+
                 GetFinancialRecordById(value.IdFinancialRecord);
 
                 OnPropertyChanged();
             }
         }
 
+
         private FinancialRecordDTO _currentSelectedFinancialRecord;
+
 
         private async void GetFinancialRecordById(int idFinancialRecord)
         {
@@ -317,7 +324,9 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
         // ------------------------------------------------------------------------------------------------------------------------------------------------
 
-        // TODO : Не работает обновление списка
+        #region Команды
+
+        
         private RelayCommand _financialRecordAddCommand;
         public RelayCommand FinancialRecordAddCommand
         {
@@ -334,6 +343,8 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                 var record = _getFinancialRecordViewingUseCase.GetById(CurrentUser.IdUser, newRecord.FinancialRecordDTO.IdFinancialRecord, SelectedCategory.IdCategory, SelectedSubcategory.IdSubcategory);
 
                 FinancialRecords.Add(record);
+
+                _navigationPages.TransitObject(PageType.UserPage, record, ParameterType.Add);
             });
         }
 
@@ -374,6 +385,8 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
                 FinancialRecords.RemoveAt(index);
                 FinancialRecords.Insert(index, updateFinancialRecord);
+
+                _navigationPages.TransitObject(PageType.UserPage, updateFinancialRecord, ParameterType.Update);
             });
         }
 
@@ -384,7 +397,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             {
                 await _financialRecordService.DeleteAsyncFinancialRecord(SelectedFinancialRecord.IdFinancialRecord);
 
-                FinancialRecords.Remove(SelectedFinancialRecord);
+                _navigationPages.TransitObject(PageType.UserPage, SelectedFinancialRecord, ParameterType.Delete);
 
                 RecordName = string.Empty;
                 Amount = 0;
@@ -393,7 +406,28 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                 SelectedCategory = null;
                 SelectedAccount = null;
                 Date = DateTime.Now;
+
+                FinancialRecords.Remove(SelectedFinancialRecord);
             });
         }
+
+        #endregion
+
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+        #region Навигация
+
+        private RelayCommand _openProfileUserPageCommand;
+        public RelayCommand OpenProfileUserPageCommand
+        {
+            get => _openProfileUserPageCommand ??= new(obj =>
+            {
+                _navigationPages.OpenPage(PageType.UserPage);
+            });
+        }
+
+        #endregion
     }
 }
