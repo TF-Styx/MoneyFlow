@@ -9,7 +9,7 @@
       xmlns:pageviewmodels="clr-namespace:MoneyFlow.WPF.ViewModels.PageViewModels" 
       d:DataContext="{d:DesignInstance Type=pageviewmodels:CatAndSubPageVM}"
       mc:Ignorable="d" 
-      d:DesignHeight="700" d:DesignWidth="1100"
+      d:Width="1100" d:Height="auto" 
       Title="CatAndSubPage"
       Background="White">
 
@@ -149,8 +149,8 @@
                                                   DisplayMemberPath="BankName"/>
                                     </DockPanel>
                                     <DockPanel Margin="0 5 0 0">
-                                        <TextBlock Text="Image" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
-                                        <!--#region Аватар -->
+                                        <TextBlock Text="Image Category" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                                        <!--#region Категория -->
                                         <DockPanel HorizontalAlignment="Center">
                                             <Border BorderBrush="Black" BorderThickness="1">
                                                 <StackPanel>
@@ -209,15 +209,9 @@
                                         <TextBlock Text="Description" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
                                         <TextBox Text="{Binding DescriptionSub}" d:Text="Что-то очень заумное" TextWrapping="Wrap" Height="200"/>
                                     </DockPanel>
-                                    <DockPanel Margin="0 5 0 5">
-                                        <TextBlock Text="Color" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
-                                        <ComboBox ItemsSource="{Binding ColorSub}"
-                                          SelectedItem="{Binding SelectedColorSub}"
-                                          DisplayMemberPath="BankName"/>
-                                    </DockPanel>
                                     <DockPanel Margin="0 5 0 0">
-                                        <TextBlock Text="Image" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
-                                        <!--#region Аватар -->
+                                        <TextBlock Text="Image Subcategory" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                                        <!--#region Подкатегория -->
                                         <DockPanel HorizontalAlignment="Center">
                                             <Border BorderBrush="Black" BorderThickness="1">
                                                 <StackPanel>

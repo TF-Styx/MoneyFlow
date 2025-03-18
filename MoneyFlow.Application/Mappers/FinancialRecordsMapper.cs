@@ -79,5 +79,23 @@ namespace MoneyFlow.Application.Mappers
             }
             return list;
         }
+
+        public static FinancialRecordFilterDomain ToDomain(this FinancialRecordFilterDTO filter)
+        {
+            return new FinancialRecordFilterDomain()
+            {
+                AmountStart = filter.AmountStart,
+                AmountEnd = filter.AmountEnd,
+                IsConsiderAmount = filter.IsConsiderAmount,
+
+                IdTransactionType = filter.IdTransactionType,
+                IdCategory = filter.IdCategory,
+                IdAccount = filter.IdAccount,
+
+                DateStart = filter.DateStart,
+                DateEnd = filter.DateEnd,
+                IsConsiderDate = filter.IsConsiderDate,
+            };
+        }
     }
 }

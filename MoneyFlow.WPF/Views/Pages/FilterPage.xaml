@@ -1,0 +1,106 @@
+﻿<Page x:Class="MoneyFlow.WPF.Views.Pages.FilterPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MoneyFlow.WPF.Views.Pages"
+      mc:Ignorable="d" 
+      d:Height="auto" d:Width="auto"
+      Title="FilterPage">
+
+    <Border Width="320" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="5 10 5 5">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="10" Direction="300"/>
+        </Border.Effect>
+        <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <DockPanel DockPanel.Dock="Top">
+                <TextBlock Text="Фильтрация" HorizontalAlignment="Center" DockPanel.Dock="Top" FontSize="15"/>
+                <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
+                    <StackPanel DockPanel.Dock="Top">
+                        <DockPanel Margin="0 0 0 20">
+                            <DockPanel DockPanel.Dock="Left" VerticalAlignment="Center">
+                                <TextBlock Text="Amount" DockPanel.Dock="Top"/>
+                                <DockPanel Margin="0 5 0 0">
+                                    <TextBlock Text="Consider"/>
+                                    <CheckBox IsChecked="{Binding IsConsiderAmount}" VerticalAlignment="Center" Margin="5 0 0 0"/>
+                                </DockPanel>
+                            </DockPanel>
+                            <DockPanel HorizontalAlignment="Right">
+                                <DockPanel DockPanel.Dock="Top">
+                                    <TextBlock Text="От" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                                    <TextBox Text="{Binding AmountStartFilter}" 
+                                     HorizontalAlignment="Right"
+                                     Width="150" Height="25"  Margin="5 0 0 0"/>
+                                </DockPanel>
+                                <DockPanel  Margin="0 20 0 0">
+                                    <TextBlock Text="До" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                                    <TextBox Text="{Binding AmountEndFilter}" 
+                                     HorizontalAlignment="Right"
+                                     Width="150" Height="25" Margin="5 0 0 0"/>
+                                </DockPanel>
+                            </DockPanel>
+                        </DockPanel>
+                        <DockPanel Margin="0 0 0 10">
+                            <TextBlock Text="TransactionType" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                            <ComboBox ItemsSource="{Binding TransactionTypes}" 
+                                  SelectedItem="{Binding SelectedTransactionType}"
+                                  DisplayMemberPath="TransactionTypeName"
+                                  HorizontalAlignment="Right"
+                                  Width="150" Height="25"/>
+                        </DockPanel>
+                        <DockPanel Margin="0 0 0 10">
+                            <TextBlock Text="Category" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                            <ComboBox ItemsSource="{Binding CategoriesFilter}" 
+                                  SelectedItem="{Binding SelectedCategoryFilter}"
+                                  DisplayMemberPath="CategoryName"
+                                  HorizontalAlignment="Right"
+                                  Width="150" Height="25"/>
+                        </DockPanel>
+                        <DockPanel Margin="0 0 0 20">
+                            <TextBlock Text="Account" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                            <ComboBox ItemsSource="{Binding AccountsFilter}" 
+                                  SelectedItem="{Binding SelectedAccountFilter}"
+                                  DisplayMemberPath="CNumberAccount"
+                                  HorizontalAlignment="Right"
+                                  Width="150" Height="25"/>
+                        </DockPanel>
+                        <DockPanel Margin="0 0 0 20">
+                            <DockPanel DockPanel.Dock="Left" VerticalAlignment="Center">
+                                <TextBlock Text="Date" DockPanel.Dock="Top"/>
+                                <DockPanel Margin="0 5 0 0">
+                                    <TextBlock Text="Consider"/>
+                                    <CheckBox IsChecked="{Binding IsConsiderDate}" VerticalAlignment="Center" Margin="5 0 0 0"/>
+                                </DockPanel>
+                            </DockPanel>
+                            <DockPanel HorizontalAlignment="Right">
+                                <DockPanel DockPanel.Dock="Top">
+                                    <TextBlock Text="От" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                                    <DatePicker SelectedDate="{Binding DateStartFilter}" 
+                                         HorizontalAlignment="Right"
+                                         Width="150" Height="25"  Margin="5 0 0 0"/>
+                                </DockPanel>
+                                <DockPanel  Margin="0 20 0 0">
+                                    <TextBlock Text="До" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                                    <DatePicker SelectedDate="{Binding DateEndFilter}" 
+                                         HorizontalAlignment="Right"
+                                         Width="150" Height="25" Margin="5 0 0 0"/>
+                                </DockPanel>
+                            </DockPanel>
+                        </DockPanel>
+                        <DockPanel Margin="0 0 0 20">
+                            <TextBlock Text="Sorting" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                            <ComboBox 
+                                  DisplayMemberPath="CNumberAccount"
+                                  HorizontalAlignment="Right"
+                                  Width="150" Height="25"/>
+                        </DockPanel>
+
+                        <Button Content=" Применить" FontSize="15" Command="{Binding ApplyCommand}"/>
+                        <Button Content=" Сбросить фильтр" FontSize="15" Margin="0 10 0 0" Command="{Binding DropCommand}"/>
+                    </StackPanel>
+                </DockPanel>
+            </DockPanel>
+        </DockPanel>
+    </Border>
+    
+</Page>

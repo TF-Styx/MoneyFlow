@@ -431,23 +431,125 @@
                         <DockPanel>
                             <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Center">
                                 <TextBlock Text="Финансовые записи" DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15"/>
-                                <Button DockPanel.Dock="Top" HorizontalAlignment="Right" VerticalAlignment="Top" 
+                                <Button x:Name="btnFilter" DockPanel.Dock="Top" HorizontalAlignment="Right" VerticalAlignment="Top" 
                                         Background="Transparent" BorderThickness="0" 
-                                        Width="25" Height="25" Margin="20 0 0 0">
-                                    <fa:ImageAwesome Icon="Solid_Filter" Foreground="Gray"/>
+                                        Width="25" Height="25" Margin="20 0 0 0"
+                                        Command="{Binding OpenPopupFilterCommand}">
+                                    <StackPanel>
+                                        <fa:ImageAwesome Icon="Solid_Filter" Foreground="Gray"/>
+                                        <Popup IsOpen="{Binding IsOpenPopupFilter}" 
+                                               PlacementTarget="{Binding ElementName=btnFilter}"
+                                               Placement="Right" StaysOpen="False" AllowsTransparency="True">
+                                            <Border Width="320" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="5 10 5 5">
+                                                <Border.Effect>
+                                                    <DropShadowEffect BlurRadius="10" Direction="300"/>
+                                                </Border.Effect>
+                                                <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                                    <DockPanel DockPanel.Dock="Top">
+                                                        <TextBlock Text="Фильтрация" HorizontalAlignment="Center" DockPanel.Dock="Top" FontSize="15"/>
+                                                        <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
+                                                            <StackPanel DockPanel.Dock="Top">
+                                                                <DockPanel Margin="0 0 0 20">
+                                                                    <DockPanel DockPanel.Dock="Left" VerticalAlignment="Center">
+                                                                        <TextBlock Text="Amount" DockPanel.Dock="Top"/>
+                                                                        <DockPanel Margin="0 5 0 0">
+                                                                            <TextBlock Text="Consider"/>
+                                                                            <CheckBox IsChecked="{Binding IsConsiderAmount}" VerticalAlignment="Center" Margin="5 0 0 0"/>
+                                                                        </DockPanel>
+                                                                    </DockPanel>
+                                                                    <DockPanel HorizontalAlignment="Right">
+                                                                        <DockPanel DockPanel.Dock="Top">
+                                                                            <TextBlock Text="От" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                                                                            <TextBox Text="{Binding AmountStartFilter}" 
+                                                                                     HorizontalAlignment="Right"
+                                                                                     Width="150" Height="25"  Margin="5 0 0 0"/>
+                                                                        </DockPanel>
+                                                                        <DockPanel  Margin="0 20 0 0">
+                                                                            <TextBlock Text="До" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                                                                            <TextBox Text="{Binding AmountEndFilter}" 
+                                                                                     HorizontalAlignment="Right"
+                                                                                     Width="150" Height="25" Margin="5 0 0 0"/>
+                                                                        </DockPanel>
+                                                                    </DockPanel>
+                                                                </DockPanel>
+                                                                <DockPanel Margin="0 0 0 10">
+                                                                    <TextBlock Text="TransactionType" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                                                                    <ComboBox ItemsSource="{Binding TransactionTypesFilter}" 
+                                                                              SelectedItem="{Binding SelectedTransactionTypeFilter}"
+                                                                              DisplayMemberPath="TransactionTypeName"
+                                                                              HorizontalAlignment="Right"
+                                                                              Width="150" Height="25"/>
+                                                                </DockPanel>
+                                                                <DockPanel Margin="0 0 0 10">
+                                                                    <TextBlock Text="Category" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                                                                    <ComboBox ItemsSource="{Binding CategoriesFilter}" 
+                                                                              SelectedItem="{Binding SelectedCategoryFilter}"
+                                                                              DisplayMemberPath="CategoryName"
+                                                                              HorizontalAlignment="Right"
+                                                                              Width="150" Height="25"/>
+                                                                </DockPanel>
+                                                                <DockPanel Margin="0 0 0 20">
+                                                                    <TextBlock Text="Account" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                                                                    <ComboBox ItemsSource="{Binding AccountsFilter}" 
+                                                                              SelectedItem="{Binding SelectedAccountFilter}"
+                                                                              DisplayMemberPath="NumberAccount"
+                                                                              HorizontalAlignment="Right"
+                                                                              Width="150" Height="25"/>
+                                                                </DockPanel>
+                                                                <DockPanel Margin="0 0 0 20">
+                                                                    <DockPanel DockPanel.Dock="Left" VerticalAlignment="Center">
+                                                                        <TextBlock Text="Amount" DockPanel.Dock="Top"/>
+                                                                        <DockPanel Margin="0 5 0 0">
+                                                                            <TextBlock Text="Consider"/>
+                                                                            <CheckBox IsChecked="{Binding IsConsiderDate}" VerticalAlignment="Center" Margin="5 0 0 0"/>
+                                                                        </DockPanel>
+                                                                    </DockPanel>
+                                                                    <DockPanel HorizontalAlignment="Right">
+                                                                        <DockPanel DockPanel.Dock="Top">
+                                                                            <TextBlock Text="От" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                                                                            <DatePicker SelectedDate="{Binding DateStartFilter}" 
+                                                                                        HorizontalAlignment="Right"
+                                                                                        Width="150" Height="25"  Margin="5 0 0 0"/>
+                                                                        </DockPanel>
+                                                                        <DockPanel  Margin="0 20 0 0">
+                                                                            <TextBlock Text="До" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                                                                            <DatePicker SelectedDate="{Binding DateEndFilter}" 
+                                                                                        HorizontalAlignment="Right"
+                                                                                        Width="150" Height="25" Margin="5 0 0 0"/>
+                                                                        </DockPanel>
+                                                                    </DockPanel>
+                                                                </DockPanel>
+                                                                <DockPanel Margin="0 0 0 10">
+                                                                    <TextBlock Text="Sorting" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                                                                    <ComboBox ItemsSource="{Binding Accounts}" 
+                                                                              SelectedItem="{Binding SelectedAccount}"
+                                                                              DisplayMemberPath="CNumberAccount"
+                                                                              HorizontalAlignment="Right"
+                                                                              Width="150" Height="25"/>
+                                                                </DockPanel>
+
+                                                                <Button Content=" Применить" FontSize="15" Command="{Binding ApplyCommand}"/>
+                                                                <Button Content=" Сбросить фильтр" FontSize="15" Margin="0 10 0 0" Command="{Binding DropCommand}"/>
+                                                            </StackPanel>
+                                                        </DockPanel>
+                                                    </DockPanel>
+                                                </DockPanel>
+                                            </Border>
+                                        </Popup>
+                                    </StackPanel>
                                 </Button>
                             </StackPanel>
                             <DataGrid AutoGenerateColumns="False" 
-                                              IsReadOnly="True"
-                                              GridLinesVisibility="None"
-                                              HeadersVisibility="Column"
-                                              RowHeaderWidth="0"
-                                              SelectionMode="Single" 
-                                              VerticalAlignment="Top"
-                                              ItemsSource="{Binding FinancialRecords}" 
-                                              d:ItemsSource="{d:SampleData ItemCount=15}"
-                                              SelectedItem="{Binding SelectedFinancialRecord}"
-                                              Margin="10">
+                                      IsReadOnly="True"
+                                      GridLinesVisibility="None"
+                                      HeadersVisibility="Column"
+                                      RowHeaderWidth="0"
+                                      SelectionMode="Single" 
+                                      VerticalAlignment="Top"
+                                      ItemsSource="{Binding FinancialRecords}" 
+                                      d:ItemsSource="{d:SampleData ItemCount=15}"
+                                      SelectedItem="{Binding SelectedFinancialRecord}"
+                                      Margin="10">
                                 <!--#region DoubleClick -->
                                 <i:Interaction.Triggers>
                                     <i:EventTrigger EventName="MouseDoubleClick">
@@ -485,14 +587,15 @@
                                             <DataTemplate>
                                                 <DockPanel HorizontalAlignment="Center">
                                                     <TextBlock Text="{Binding CategoryName}" DockPanel.Dock="Top"/>
-                                                    <TextBlock Text="{Binding SubcategoryName}"/>
+                                                    <TextBlock Text="{Binding SubcategoryName.Count}" DockPanel.Dock="Top"/>
+                                                    <!--<ListView ItemsSource="{Binding SubcategoryName}"/>-->
                                                 </DockPanel>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
 
                                     <DataGridTextColumn Header="AccountNumber" Binding="{Binding AccountNumber}" Width="*"/>
-                                    <DataGridTextColumn Header="Date" Binding="{Binding Date}" Width="*"/>
+                                    <DataGridTextColumn Header="Date" Binding="{Binding Date, Converter={StaticResource DateConverter}}" Width="*"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </DockPanel>

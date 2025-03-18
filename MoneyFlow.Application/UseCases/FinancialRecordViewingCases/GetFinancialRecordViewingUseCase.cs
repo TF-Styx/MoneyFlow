@@ -14,9 +14,9 @@ namespace MoneyFlow.Application.UseCases.FinancialRecordViewingCases
             _financialRecordRepository = financialRecordRepository;
         }
 
-        public async Task<List<FinancialRecordViewingDTO>> GetAllAsyncFinancialRecordViewing(int idUser)
+        public async Task<List<FinancialRecordViewingDTO>> GetAllAsyncFinancialRecordViewing(int idUser, FinancialRecordFilterDTO filter)
         {
-            var financialRecords = await _financialRecordRepository.GetAllViewingAsync(idUser);
+            var financialRecords = await _financialRecordRepository.GetAllViewingAsync(idUser, filter.ToDomain());
             var financialRecordsDTO = financialRecords.ToListDTO();
 
             return financialRecordsDTO;

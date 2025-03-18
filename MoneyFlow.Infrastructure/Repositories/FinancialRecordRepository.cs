@@ -3,7 +3,6 @@ using MoneyFlow.Domain.DomainModels;
 using MoneyFlow.Domain.Interfaces.Repositories;
 using MoneyFlow.Infrastructure.Context;
 using MoneyFlow.Infrastructure.EntityModel;
-using System.Diagnostics;
 
 namespace MoneyFlow.Infrastructure.Repositories
 {
@@ -106,7 +105,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
         // ------------------------------------------------------------------------------------------------------------------------------------------------
 
-        public async Task<List<FinancialRecordViewingDomain>> GetAllViewingAsync(int idUser)
+        public async Task<List<FinancialRecordViewingDomain>> GetAllViewingAsync1(int idUser)
         {
             using (var context = _factory())
             {
@@ -126,7 +125,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
                 foreach (var item in entities)
                 {
-                    var idSubcategories = catLinkSubs.Where(x => x.IdCategory == item.IdCategory).Select(x => x.IdSubcategory).ToList();
+                    var idSubcategories = catLinkSubs.Where(x => x.IdCategory == item.IdCategory).Select(x => x.IdSubcategoryNavigation.IdSubcategory).ToList();
                     var subcategoriesName = subcategories.Where(x => idSubcategories.Contains(x.IdSubcategory)).Select(x => x.SubcategoryName).ToList();
 
                     list.Add(FinancialRecordViewingDomain
@@ -139,7 +138,7 @@ namespace MoneyFlow.Infrastructure.Repositories
                                 item.IdTransactionTypeNavigation.TransactionTypeName, 
                                 item.IdUser, 
                                 item.IdCategoryNavigation.CategoryName, 
-                                subcategoriesName, 
+                                subcategoriesName, // TODO : Разобраться с выводом подкатегорий
                                 item.IdAccountNavigation.NumberAccount, 
                                 item.Date
                             ).FinancialRecordViewingDomain);
@@ -150,10 +149,10 @@ namespace MoneyFlow.Infrastructure.Repositories
         }
         public List<FinancialRecordViewingDomain> GetAllViewing(int idUser)
         {
-            return Task.Run(() => GetAllViewingAsync(idUser)).Result;
+            return Task.Run(() => GetAllViewingAsync1(idUser)).Result;
         }
 
-        public async Task<FinancialRecordViewingDomain> GetByIdAsync(int idUser, int idFinancialRecord, int idCategory, int idSubcategory)
+        public async Task<FinancialRecordViewingDomain> GetByIdAsync(int idUser, int idFinancialRecord, int? idCategory, int idSubcategory)
         {
             using (var context = _factory())
             {
@@ -184,7 +183,7 @@ namespace MoneyFlow.Infrastructure.Repositories
                 return domain;
             }
         }
-        public FinancialRecordViewingDomain GetById(int idUser, int idFinancialRecord, int idCategory, int idSubcategory)
+        public FinancialRecordViewingDomain GetById(int idUser, int idFinancialRecord, int? idCategory, int idSubcategory)
         {
             using (var context = _factory())
             {
@@ -213,6 +212,113 @@ namespace MoneyFlow.Infrastructure.Repositories
                     ).FinancialRecordViewingDomain;
 
                 return domain;
+            }
+        }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
+        public async Task<List<FinancialRecordViewingDomain>> GetAllViewingAsync(int idUser, FinancialRecordFilterDomain filter)
+        {
+            using (var context = _factory())
+            {
+                var query = context.FinancialRecords
+                    .Include(x => x.IdTransactionTypeNavigation)
+                    .Include(x => x.IdCategoryNavigation)
+                    .Include(x => x.IdAccountNavigation)
+                    .AsQueryable();
+
+                if (filter.IsConsiderAmount == true)
+                    query = query.Where(x => x.Ammount >= filter.AmountStart && x.Ammount <= filter.AmountEnd);
+
+                if (filter.IdTransactionType.HasValue)
+                    query = query.Where(x => x.IdTransactionType == filter.IdTransactionType.Value);
+                if (filter.IdCategory.HasValue)
+                    query = query.Where(x => x.IdCategory == filter.IdCategory.Value);
+                if (filter.IdAccount.HasValue)
+                    query = query.Where(x => x.IdAccount == filter.IdAccount.Value);
+
+                if (filter.IsConsiderDate == true)
+                    query = query.Where(x => x.Date >= filter.DateStart && x.Date <= filter.DateEnd);
+
+                //query = query.OrderByDescending(x => x.IdFinancialRecord);
+
+                var list = new List<FinancialRecordViewingDomain>();
+
+                foreach (var item in await query.ToListAsync())
+                {
+                    list.Add(FinancialRecordViewingDomain.Create
+                    (
+                        item.IdFinancialRecord,
+                        item.RecordName,
+                        item.Ammount,
+                        item.Description,
+                        item.IdTransactionTypeNavigation.TransactionTypeName,
+                        idUser,
+                        item.IdCategoryNavigation.CategoryName,
+                        new List<string>(),
+                        item.IdAccountNavigation.NumberAccount,
+                        item.Date
+                    ).FinancialRecordViewingDomain);
+                }
+
+                return list;
+
+                var records = query
+                    .Where(x => x.IdUser == idUser)
+                    .Select(x => FinancialRecordViewingDomain.Create
+                    (
+                        x.IdFinancialRecord, 
+                        x.RecordName,
+                        x.Ammount,
+                        x.Description,
+                        x.IdTransactionTypeNavigation.TransactionTypeName,
+                        idUser,
+                        x.IdCategoryNavigation.CategoryName,
+                        new List<string>(),
+                        x.IdAccountNavigation.NumberAccount,
+                        x.Date
+                    ).FinancialRecordViewingDomain).ToList();
+
+
+
+
+
+                var list1 = new List<FinancialRecordViewingDomain>();
+
+                var entities = await context.FinancialRecords
+                    .Where(x => x.IdUser == idUser)
+                        .Include(x => x.IdTransactionTypeNavigation)
+                        .Include(x => x.IdCategoryNavigation)
+                        .Include(x => x.IdAccountNavigation)
+                            .ToListAsync();
+
+                //Debug.WriteLine($"Количество записей {entities.Count}");
+
+                var subcategories = await context.Subcategories.Where(x => x.IdUser == idUser).ToListAsync();
+                var catLinkSubs = await context.CatLinkSubs.Where(x => x.IdUser == idUser).ToListAsync();
+
+                foreach (var item in entities)
+                {
+                    var idSubcategories = catLinkSubs.Where(x => x.IdCategory == item.IdCategory).Select(x => x.IdSubcategoryNavigation.IdSubcategory).ToList();
+                    var subcategoriesName = subcategories.Where(x => idSubcategories.Contains(x.IdSubcategory)).Select(x => x.SubcategoryName).ToList();
+
+                    list.Add(FinancialRecordViewingDomain
+                            .Create
+                            (
+                                item.IdFinancialRecord,
+                                item.RecordName,
+                                item.Ammount,
+                                item.Description,
+                                item.IdTransactionTypeNavigation.TransactionTypeName,
+                                item.IdUser,
+                                item.IdCategoryNavigation.CategoryName,
+                                subcategoriesName, // TODO : Разобраться с выводом подкатегорий
+                                item.IdAccountNavigation.NumberAccount,
+                                item.Date
+                            ).FinancialRecordViewingDomain);
+                }
+
+                return list;
             }
         }
 

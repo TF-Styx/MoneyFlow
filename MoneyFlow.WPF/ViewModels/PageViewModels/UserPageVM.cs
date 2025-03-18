@@ -17,6 +17,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         private readonly IUserService _userService;
         private readonly ICategoryService _categoryService;
         private readonly ISubcategoryService _subcategoryService;
+        private readonly ITransactionTypeService _transactionTypeService;
         private readonly IFinancialRecordService _financialRecordService;
         private readonly IGetFinancialRecordViewingUseCase _getFinancialRecordViewingUseCase;
 
@@ -29,6 +30,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                           IUserService userService,
                           ICategoryService categoryService,
                           ISubcategoryService subcategoryService,
+                          ITransactionTypeService transactionTypeService,
                           IFinancialRecordService financialRecordService, 
                           IGetFinancialRecordViewingUseCase getFinancialRecordViewingUseCase,
                           INavigationPages navigationPages)
@@ -40,6 +42,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             _userService = userService;
             _categoryService = categoryService;
             _subcategoryService = subcategoryService;
+            _transactionTypeService = transactionTypeService;
             _financialRecordService = financialRecordService;
             _getFinancialRecordViewingUseCase = getFinancialRecordViewingUseCase;
 
@@ -56,6 +59,15 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             GetUserBanks();
             GetCategory();
             GetIdUserAllSubcategory();
+
+            GetTransactionTypeFilter();
+            GetCategoryFilter();
+            GetAccountFilter();
+
+            var (Start, End) = DefaultDate();
+            DateStartFilter = Start;
+            DateEndFilter = End;
+
             GetFinancialRecord();
         }
 
@@ -383,11 +395,26 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
         public ObservableCollection<FinancialRecordViewingDTO> FinancialRecords { get; set; } = [];
 
-        public async void GetFinancialRecord()
+        public async Task GetFinancialRecord()
         {
             FinancialRecords.Clear();
 
-            var list = await _getFinancialRecordViewingUseCase.GetAllAsyncFinancialRecordViewing(CurrentUser.IdUser);
+            var filter = new FinancialRecordFilterDTO()
+            {
+                AmountStart = AmountStartFilter,
+                AmountEnd = AmountEndFilter,
+                IsConsiderAmount = IsConsiderAmount,
+
+                IdTransactionType = SelectedTransactionTypeFilter?.IdTransactionType == 0 ? null : SelectedTransactionTypeFilter?.IdTransactionType,
+                IdCategory = SelectedCategoryFilter?.IdCategory == 0 ? null : SelectedCategoryFilter?.IdCategory,
+                IdAccount = SelectedAccountFilter?.IdAccount == 0 ? null : SelectedAccountFilter?.IdAccount,
+
+                DateStart = DateStartFilter,
+                DateEnd = DateEndFilter,
+                IsConsiderDate = IsConsiderDate,
+            };
+
+            var list = await _getFinancialRecordViewingUseCase.GetAllAsyncFinancialRecordViewing(CurrentUser.IdUser, filter);
 
             foreach (var item in list)
             {
@@ -434,7 +461,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             }
         }
 
-// ------------------------------------------------------------------------------------------------------------------------------------------------
+        // ---------------------------------------------------------------------------------------------------------------------------------
 
         private RelayCommand _openBankPageCommand;
         public RelayCommand OpenBankPageCommand
@@ -479,6 +506,243 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             {
                 _navigationPages.OpenPage(PageType.FinancialRecordPage);
             });
+        }
+
+        #endregion
+
+
+        // ---------------------------------------------------------------------------------------------------------------------------------
+
+
+        #region Фильтрация
+
+        private bool _isOpenPopupFilter;
+        public bool IsOpenPopupFilter
+        {
+            get => _isOpenPopupFilter;
+            set
+            {
+                _isOpenPopupFilter = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private RelayCommand _openPopupFilterCommand;
+        public RelayCommand OpenPopupFilterCommand { get => _openPopupFilterCommand ??= new(async obj => { IsOpenPopupFilter = true; }); }
+
+        // ---------------------------------------------------------------------------------------------------------------------------------
+
+        #region Поля фильрации
+
+        private decimal? _amountStartFilter;
+        public decimal? AmountStartFilter
+        {
+            get => _amountStartFilter;
+            set
+            {
+                _amountStartFilter = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private decimal? _amountEndFilter;
+        public decimal? AmountEndFilter
+        {
+            get => _amountEndFilter;
+            set
+            {
+                _amountEndFilter = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isConsiderAmount;
+        public bool IsConsiderAmount
+        {
+            get => _isConsiderAmount;
+            set
+            {
+                _isConsiderAmount = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        private TransactionTypeDTO? _selectedTransactionTypeFilter;
+        public TransactionTypeDTO? SelectedTransactionTypeFilter
+        {
+            get => _selectedTransactionTypeFilter;
+            set
+            {
+                _selectedTransactionTypeFilter = value;
+
+                if (value == null) { return; }
+
+                OnPropertyChanged();
+            }
+        }
+
+        private CategoryDTO? _selectedCategoryFilter;
+        public CategoryDTO? SelectedCategoryFilter
+        {
+            get => _selectedCategoryFilter;
+            set
+            {
+                _selectedCategoryFilter = value;
+
+                if (value == null) { return; }
+
+                OnPropertyChanged();
+            }
+        }
+
+        private AccountDTO? _selectedAccountFilter;
+        public AccountDTO? SelectedAccountFilter
+        {
+            get => _selectedAccountFilter;
+            set
+            {
+                _selectedAccountFilter = value;
+
+                if (value == null) { return; }
+
+                OnPropertyChanged();
+            }
+        }
+
+
+        private DateTime? _dateStartFilter;
+        public DateTime? DateStartFilter
+        {
+            get => _dateStartFilter;
+            set
+            {
+                _dateStartFilter = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private DateTime? _dateEndFilter;
+        public DateTime? DateEndFilter
+        {
+            get => _dateEndFilter;
+            set
+            {
+                _dateEndFilter = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isConsiderDate = true;
+        public bool IsConsiderDate
+        {
+            get => _isConsiderDate;
+            set
+            {
+                _isConsiderDate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private (DateTime Start, DateTime End) DefaultDate()
+        {
+            var start = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            var end = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1).AddDays(-1);
+
+            return (start, end);
+        }
+
+        #endregion
+
+        // ---------------------------------------------------------------------------------------------------------------------------------
+
+        public ObservableCollection<TransactionTypeDTO> TransactionTypesFilter { get; set; } = [];
+        public async Task GetTransactionTypeFilter()
+        {
+            TransactionTypesFilter.Clear();
+
+            var list = await _transactionTypeService.GetAllAsyncTransactionType();
+
+            foreach (var item in list)
+            {
+                TransactionTypesFilter.Add(item);
+            }
+
+            TransactionTypesFilter.Insert(0, new TransactionTypeDTO()
+            {
+                IdTransactionType = 0,
+                TransactionTypeName = "<<Не выбрано!!>>",
+            });
+
+            SelectedTransactionTypeFilter = TransactionTypesFilter.FirstOrDefault();
+        }
+
+        public ObservableCollection<CategoryDTO> CategoriesFilter { get; set; } = [];
+        public async Task GetCategoryFilter()
+        {
+            CategoriesFilter.Clear();
+
+            var list = await _categoryService.GetCatAsyncCategory(CurrentUser.IdUser);
+
+            foreach (var item in list)
+            {
+                CategoriesFilter.Add(item);
+            }
+
+            CategoriesFilter.Insert(0, new CategoryDTO()
+            {
+                IdCategory = 0,
+                CategoryName = "<<Не выбрано!!>>",
+            });
+
+            SelectedCategoryFilter = CategoriesFilter.FirstOrDefault();
+        }
+
+        public ObservableCollection<AccountDTO> AccountsFilter { get; set; } = [];
+        public async Task GetAccountFilter()
+        {
+            AccountsFilter.Clear();
+
+            var list = await _accountService.GetAllAsyncAccount(CurrentUser.IdUser);
+
+            foreach (var item in list)
+            {
+                AccountsFilter.Add(item);
+            }
+
+            AccountsFilter.Insert(0, new AccountDTO()
+            {
+                IdAccount = 0,
+                NumberAccount = 0,
+            });
+
+            SelectedAccountFilter = AccountsFilter.FirstOrDefault();
+        }
+
+        // ---------------------------------------------------------------------------------------------------------------------------------
+
+        private RelayCommand _applyCommand;
+        public RelayCommand ApplyCommand { get => _applyCommand ??= new(async obj => { await GetFinancialRecord(); }); }
+
+        private RelayCommand _dropCommand;
+        public RelayCommand DropCommand 
+        { 
+            get => _dropCommand ??= new(obj => 
+            {
+                IsConsiderAmount = false;
+
+                SelectedTransactionTypeFilter = TransactionTypesFilter.FirstOrDefault();
+                SelectedCategoryFilter = CategoriesFilter.FirstOrDefault();
+                SelectedAccountFilter = AccountsFilter.FirstOrDefault();
+
+                var (Start, End) = DefaultDate();
+                DateStartFilter = Start;
+                DateEndFilter = End;
+
+                IsConsiderDate = false;
+
+                GetFinancialRecord();
+            }); 
         }
 
         #endregion

@@ -1,5 +1,4 @@
 ﻿using MoneyFlow.Application.DTOs.BaseDTOs;
-using MoneyFlow.Shared.Constants;
 
 namespace MoneyFlow.Application.DTOs
 {

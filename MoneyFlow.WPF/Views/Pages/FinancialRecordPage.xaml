@@ -8,7 +8,7 @@
       xmlns:fa="http://schemas.fontawesome.com/icons/"
       d:DataContext="{d:DesignInstance Type=pageviewmodels:FinancialRecordPageVM}"
       mc:Ignorable="d" 
-      d:DesignHeight="750" d:DesignWidth="1000"
+      d:Width="1000" d:Height="auto"
       Title="FinancialRecordPage"
       Background="White">
 
@@ -78,14 +78,14 @@
                                         <DataTemplate>
                                             <DockPanel HorizontalAlignment="Center">
                                                 <TextBlock Text="{Binding CategoryName}" DockPanel.Dock="Top"/>
-                                                <TextBlock Text="{Binding SubcategoryName}"/>
+                                                <TextBlock Text="{Binding SubcategoryName.Count}"/>
                                             </DockPanel>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
 
                                 <DataGridTextColumn Header="AccountNumber" Binding="{Binding AccountNumber}" Width="*"/>
-                                <DataGridTextColumn Header="Date" Binding="{Binding Date}" Width="*"/>
+                                <DataGridTextColumn Header="Date" Binding="{Binding Date, Converter={StaticResource DateConverter}}" Width="*"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </DockPanel>
@@ -125,10 +125,56 @@
                                       DisplayMemberPath="CategoryName"/>
                                 </DockPanel>
                                 <DockPanel Margin="0 5 0 0">
+                                    <TextBlock Text="Image Category" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                                    <!--#region Категория -->
+                                    <DockPanel HorizontalAlignment="Center">
+                                        <Border BorderBrush="Black" BorderThickness="1">
+                                            <StackPanel>
+                                                <Border BorderThickness="0 0 0 1" BorderBrush="Black">
+                                                    <!--BorderThickness="0 0 0 2"-->
+                                                    <Image Source="{Binding SelectImageCat}" MinWidth="100" MinHeight="100" Margin="5"/>
+                                                </Border>
+                                                <!--<WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 2 0 4">
+                                                    <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Left" Command="{Binding SelectedImageCatCommand}">
+                                                        <fa:ImageAwesome Icon="Regular_FileImage" Width="10" Foreground="#FF3053C2"/>
+                                                    </Button>
+                                                    <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Right" Margin="10 0 0 0" Command="{Binding ClearImageCatCommand}">
+                                                        <fa:ImageAwesome Icon="Solid_TrashAlt" Width="10" Foreground="#FFDD3D3D"/>
+                                                    </Button>
+                                                </WrapPanel>-->
+                                            </StackPanel>
+                                        </Border>
+                                    </DockPanel>
+                                    <!--#endregion-->
+                                </DockPanel>
+                                <DockPanel Margin="0 5 0 0">
                                     <TextBlock Text="Subcategories" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
                                     <ComboBox ItemsSource="{Binding Subcategories}" 
                                       SelectedItem="{Binding SelectedSubcategory}" 
                                       DisplayMemberPath="SubcategoryName"/>
+                                </DockPanel>
+                                <DockPanel Margin="0 5 0 0">
+                                    <TextBlock Text="Image Subcategory" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                                    <!--#region Подкатегория -->
+                                    <DockPanel HorizontalAlignment="Center">
+                                        <Border BorderBrush="Black" BorderThickness="1">
+                                            <StackPanel>
+                                                <Border BorderThickness="0 0 0 1" BorderBrush="Black">
+                                                    <!--BorderThickness="0 0 0 2"-->
+                                                    <Image Source="{Binding SelectImageSub}" MinWidth="100" MinHeight="100" Margin="5"/>
+                                                </Border>
+                                                <!--<WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 2 0 4">
+                                                    <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Left" Command="{Binding SelectedImageSubCommand}">
+                                                        <fa:ImageAwesome Icon="Regular_FileImage" Width="10" Foreground="#FF3053C2"/>
+                                                    </Button>
+                                                    <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Right" Margin="10 0 0 0" Command="{Binding ClearImageSubCommand}">
+                                                        <fa:ImageAwesome Icon="Solid_TrashAlt" Width="10" Foreground="#FFDD3D3D"/>
+                                                    </Button>
+                                                </WrapPanel>-->
+                                            </StackPanel>
+                                        </Border>
+                                    </DockPanel>
+                                    <!--#endregion-->
                                 </DockPanel>
                                 <DockPanel Margin="0 5 0 0">
                                     <TextBlock Text="Accounts" DockPanel.Dock="Top" HorizontalAlignment="Center"/>

@@ -1,8 +1,10 @@
-﻿using MoneyFlow.Application.DTOs;
+﻿using Microsoft.Win32;
+using MoneyFlow.Application.DTOs;
 using MoneyFlow.Application.Services.Abstraction;
 using MoneyFlow.Application.UseCaseInterfaces.CatLinkSubCaseInterfaces;
 using MoneyFlow.WPF.Commands;
 using MoneyFlow.WPF.Enums;
+using MoneyFlow.WPF.Helpers;
 using MoneyFlow.WPF.Interfaces;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -69,7 +71,6 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
                 SubcategoryName = subcategory.SubcategoryName;
                 DescriptionSub = subcategory.Description;
-                //SelectedColorCat = value.Color;
                 SelectImageSub = subcategory.Image;
 
                 GetSubcategoryByIdCategory();
@@ -209,6 +210,18 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
 
         #region Команды Категорий
+
+        private RelayCommand _selectedImageCatCommand;
+        public RelayCommand SelectedImageCatCommand
+        {
+            get => _selectedImageCatCommand ??= new(async obj => { SelectedCategoryImage(); });
+        }
+
+        private RelayCommand _clearImageCatCommand;
+        public RelayCommand ClearImageCatCommand
+        {
+            get => _clearImageCatCommand ??= new(async obj => { SelectImageCat = null; });
+        }
 
         private RelayCommand _categoryAddCommand;
         public RelayCommand CategoryAddCommand
@@ -418,6 +431,18 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
         #region Команды Подкатегорий
 
+        private RelayCommand _selectedImageSubCommand;
+        public RelayCommand SelectedImageSubCommand
+        {
+            get => _selectedImageSubCommand ??= new(async obj => { SelectedSubcategoryImage(); });
+        }
+
+        private RelayCommand _clearImageSubCommand;
+        public RelayCommand ClearImageSubCommand
+        {
+            get => _clearImageSubCommand ??= new(async obj => { SelectImageSub = null; });
+        }
+
         private RelayCommand _subcategoryAddCommand;
         public RelayCommand SubcategoryAddCommand
         {
@@ -509,6 +534,42 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             {
                 _navigationPages.OpenPage(PageType.UserPage);
             });
+        }
+
+        #endregion
+
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+        #region Добавление картинок
+
+        public async void SelectedCategoryImage()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog()
+            {
+                Multiselect = false,
+                Filter = "Выберите (*.jpg; *.jpeg; *.png)|*.jpg; *.jpeg; *.png",
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                SelectImageCat = await ImageHelper.ImageByteArray(openFileDialog.FileName);
+            }
+        }
+
+        public async void SelectedSubcategoryImage()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog()
+            {
+                Multiselect = false,
+                Filter = "Выберите (*.jpg; *.jpeg; *.png)|*.jpg; *.jpeg; *.png",
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                SelectImageSub = await ImageHelper.ImageByteArray(openFileDialog.FileName);
+            }
         }
 
         #endregion
