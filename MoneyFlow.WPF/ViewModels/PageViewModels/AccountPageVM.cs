@@ -41,6 +41,8 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         {
             if (parameter is AccountDTO account)
             {
+                SelectedAccount = account;
+
                 NumberAccount = account.NumberAccount;
                 Balance = account.Balance;
                 SelectedBank = Banks.FirstOrDefault(x => x.IdBank == account.Bank.IdBank);

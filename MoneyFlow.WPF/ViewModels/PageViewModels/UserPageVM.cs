@@ -100,15 +100,66 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
             if (parameter is FinancialRecordViewingDTO financialRecordAdd && typeParameter is ParameterType.Add)
             {
+                //if (financialRecordAdd.Date <= DateStartFilter && financialRecordAdd.Date >= DateEndFilter)
+                //{
+                //    return;
+                //}
+                //else
+                //{
+                //    FinancialRecords.Add(financialRecordAdd);
+                //}
+
                 FinancialRecords.Add(financialRecordAdd);
+                GetFinancialRecord();
             }
-            if (parameter is FinancialRecordViewingDTO financialRecordUpdate && typeParameter is ParameterType.Update)
+            if (parameter is ValueTuple<FinancialRecordViewingDTO, int> cartage && typeParameter is ParameterType.Update)
             {
-                var itemForDelete = FinancialRecords.FirstOrDefault(x => x.IdFinancialRecord == financialRecordUpdate.IdFinancialRecord);
+                var itemForDelete = FinancialRecords.FirstOrDefault(x => x.IdFinancialRecord == cartage.Item1.IdFinancialRecord);
                 var index = FinancialRecords.IndexOf(itemForDelete);
 
-                FinancialRecords.Remove(itemForDelete);
-                FinancialRecords.Insert(index, itemForDelete);
+                if (itemForDelete != null)
+                {
+                    FinancialRecords.Remove(itemForDelete);
+                    FinancialRecords.Insert(index, cartage.Item1);
+
+                    var accountDTO = _accountService.GetAccount(cartage.Item1.AccountNumber);
+
+                    var account = Accounts.FirstOrDefault(x => x.IdAccount == accountDTO.IdAccount);
+                    var indexAccount = Accounts.IndexOf(account);
+
+                    if (cartage.Item2 == 1)
+                    {
+                        UserTotalInfo.TotalBalance += cartage.Item1.Amount;
+                    }
+                    else if (cartage.Item2 == 2)
+                    {
+                        UserTotalInfo.TotalBalance -= cartage.Item1.Amount;
+                    }
+
+                    Accounts.Remove(account);
+                    Accounts.Insert(indexAccount, accountDTO);
+                }
+                else 
+                {
+                    var accountDTO = _accountService.GetAccount(cartage.Item1.AccountNumber);
+
+                    var account = Accounts.FirstOrDefault(x => x.IdAccount == accountDTO.IdAccount);
+                    var indexAccount = Accounts.IndexOf(account);
+
+                    if (cartage.Item2 == 1)
+                    {
+                        UserTotalInfo.TotalBalance += cartage.Item1.Amount;
+                    }
+                    else if (cartage.Item2 == 2)
+                    {
+                        UserTotalInfo.TotalBalance -= cartage.Item1.Amount;
+                    }
+
+                    Accounts.Remove(account);
+                    Accounts.Insert(indexAccount, accountDTO);
+
+                    return; 
+                }
             }
             if (parameter is FinancialRecordViewingDTO financialRecordDelete && typeParameter is ParameterType.Delete)
             {

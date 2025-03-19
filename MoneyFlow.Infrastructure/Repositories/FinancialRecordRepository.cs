@@ -33,6 +33,17 @@ namespace MoneyFlow.Infrastructure.Repositories
                     Date = date
                 };
 
+                var account = await context.Accounts.FindAsync(idAccount);
+
+                if (idTransactionType == 2)
+                {
+                    account.Balance -= amount;
+                }
+                else if (idTransactionType == 1)
+                {
+                    account.Balance += amount;
+                }
+
                 await context.AddAsync(entity);
                 await context.SaveChangesAsync();
 
@@ -156,7 +167,7 @@ namespace MoneyFlow.Infrastructure.Repositories
         {
             using (var context = _factory())
             {
-                var subcategorys = await context.CatLinkSubs.Where(x => x.IdUser == idUser && x.IdCategory == idCategory && x.IdSubcategory == idSubcategory)
+                var subcategories = await context.CatLinkSubs.Where(x => x.IdUser == idUser && x.IdCategory == idCategory && x.IdSubcategory == idSubcategory)
                                                             .Select(x => x.IdSubcategoryNavigation.SubcategoryName).ToListAsync();
 
                 var entity = await context.FinancialRecords
@@ -175,7 +186,7 @@ namespace MoneyFlow.Infrastructure.Repositories
                         entity.IdTransactionTypeNavigation.TransactionTypeName,
                         idUser,
                         entity.IdCategoryNavigation.CategoryName,
-                        subcategorys,
+                        subcategories,
                         entity.IdAccountNavigation.NumberAccount,
                         entity.Date
                     ).FinancialRecordViewingDomain;
@@ -214,6 +225,35 @@ namespace MoneyFlow.Infrastructure.Repositories
                 return domain;
             }
         }
+
+        //public async Task<FinancialRecordViewingDomain> GetById(int idFinancialRecord)
+        //{
+        //    using (var context = _factory())
+        //    {
+        //        var entity = await context.FinancialRecords
+        //            .Include(x => x.IdTransactionTypeNavigation)
+        //            .Include(x => x.IdUserNavigation)
+        //            .Include(x => x.IdAccountNavigation)
+        //            .Include(x => x.IdCategoryNavigation)
+        //                .FirstOrDefaultAsync(x => x.IdFinancialRecord == idFinancialRecord);
+
+        //        var domain = FinancialRecordViewingDomain.Create
+        //            (
+        //                entity.IdFinancialRecord,
+        //                entity.RecordName,
+        //                entity.Ammount,
+        //                entity.Description,
+        //                entity.IdTransactionTypeNavigation.TransactionTypeName,
+        //                entity.IdUser,
+        //                entity.IdCategoryNavigation.CategoryName,
+        //                entity.c,
+        //                entity.IdAccountNavigation.NumberAccount,
+        //                entity.Date
+        //            ).FinancialRecordViewingDomain;
+
+        //        return domain;
+        //    }
+        //}
 
         // ------------------------------------------------------------------------------------------------------------------------------------------------
 

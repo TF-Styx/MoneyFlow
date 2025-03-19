@@ -43,5 +43,10 @@ namespace MoneyFlow.Application.UseCases.FinancialRecordViewingCases
 
             return financialRecordDTO;
         }
+
+        //public async Task<FinancialRecordViewingDTO> GetById(int idFinancialRecord)
+        //{
+        //    var finanacialRecord = await _financialRecordRepository
+        //}
     }
 }

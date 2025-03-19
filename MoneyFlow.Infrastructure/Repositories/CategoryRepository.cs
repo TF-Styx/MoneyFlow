@@ -186,6 +186,18 @@ namespace MoneyFlow.Infrastructure.Repositories
 
         // ------------------------------------------------------------------------------------------------------------------------------------------------
 
+        public async Task<int?> GetById(int idFinancialRecord)
+        {
+            using (var context = _factory())
+            {
+                var entity = await context.FinancialRecords.FirstOrDefaultAsync(x => x.IdFinancialRecord == idFinancialRecord);
+
+                return entity.IdCategory;
+            }
+        }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<CategoryDomain> GetAsync(string categoryName)
         {
             using (var context = _factory())

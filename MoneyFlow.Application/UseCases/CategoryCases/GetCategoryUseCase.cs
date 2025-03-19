@@ -101,6 +101,11 @@ namespace MoneyFlow.Application.UseCases.CategoryCases
             return toDTO.CategoryDTO;
         }
 
+        public async Task<int?> GetById(int idFinancialRecord)
+        {
+            return await _categoryRepository.GetById(idFinancialRecord);
+        }
+
         public async Task<CategoryDTO> GetAsyncCategory(string categoryName)
         {
             var categories = await _categoryRepository.GetAsync(categoryName);

@@ -6,6 +6,7 @@ using MoneyFlow.WPF.Commands;
 using MoneyFlow.WPF.Enums;
 using MoneyFlow.WPF.Interfaces;
 using System.Collections.ObjectModel;
+using System.Drawing.Imaging.Effects;
 using System.Windows;
 
 namespace MoneyFlow.WPF.ViewModels.PageViewModels
@@ -43,24 +44,39 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
             CurrentUser = _authorizationService.CurrentUser;
 
-            GetFinancialRecord();
-
             GetTransactionType();
             GetCategory();
             GetAccount();
+
+            GetTransactionTypeFilter();
+            GetCategoryFilter();
+            GetAccountFilter();
+
+            var (Start, End) = DefaultDate();
+            DateStartFilter = Start;
+            DateEndFilter = End;
+
+            GetFinancialRecord();
         }
 
-        public void Update(object parameter, ParameterType typeParameter = ParameterType.None)
+        public async void Update(object parameter, ParameterType typeParameter = ParameterType.None)
         {
-            if (parameter is FinancialRecordDTO financialRecord)
+            if (parameter is FinancialRecordViewingDTO financialRecord)
             {
-                RecordName = financialRecord.RecordName;
-                Amount = financialRecord.Amount;
-                Description = financialRecord.Description;
-                SelectedTransactionType = TransactionTypes.FirstOrDefault(x => x.IdTransactionType == financialRecord.IdTransactionType);
-                SelectedCategory = Categories.FirstOrDefault(x => x.IdCategory == financialRecord.IdCategory);
+                SelectedFinancialRecord = financialRecord;
 
-                SelectedAccount = Accounts.FirstOrDefault(x => x.IdAccount == financialRecord.IdAccount);
+                RecordName = SelectedFinancialRecord.RecordName;
+                Amount = SelectedFinancialRecord.Amount;
+                Description = SelectedFinancialRecord.Description;
+
+                SelectedTransactionType = TransactionTypes.FirstOrDefault(x => x.TransactionTypeName == SelectedFinancialRecord.TransactionTypeName);
+
+                var idCategory = await _categoryService.GetById(SelectedFinancialRecord.IdFinancialRecord);
+                SelectedCategory = Categories.FirstOrDefault(x => x.IdCategory == idCategory);
+                SelectImageCat = SelectedCategory?.Image;
+
+                SelectedAccount = Accounts.FirstOrDefault(x => x.NumberAccount == SelectedFinancialRecord.AccountNumber);
+
                 Date = financialRecord.Date;
             }
         }
@@ -151,6 +167,9 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             set
             {
                 _selectImageCat = value;
+
+                if (value == null) { return; }
+
                 OnPropertyChanged();
             }
         }
@@ -176,6 +195,9 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             set
             {
                 _selectImageSub = value;
+
+                if (value == null) { return; }
+
                 OnPropertyChanged();
             }
         }
@@ -194,13 +216,16 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             }
         }
 
-        private DateTime? _date;
+        private DateTime? _date = DateTime.Now;
         public DateTime? Date
         {
             get => _date;
             set
             {
                 _date = value;
+
+                if (value == null) { return; }
+
                 OnPropertyChanged();
             }
         }
@@ -231,6 +256,8 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         private async void GetFinancialRecordById(int idFinancialRecord)
         {
             _currentSelectedFinancialRecord = await _financialRecordService.GetAsyncFinancialRecord(idFinancialRecord);
+            
+            
 
             RecordName = _currentSelectedFinancialRecord.RecordName;
             Amount = _currentSelectedFinancialRecord.Amount;
@@ -357,9 +384,9 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                 AmountEnd = AmountEndFilter,
                 IsConsiderAmount = IsConsiderAmount,
 
-                IdTransactionType = SelectedTransactionTypeFilter?.IdTransactionType,
-                IdCategory = SelectedCategoryFilter?.IdCategory,
-                IdAccount = SelectedAccountFilter?.IdAccount,
+                IdTransactionType = SelectedTransactionTypeFilter?.IdTransactionType == 0 ? null : SelectedTransactionTypeFilter?.IdTransactionType,
+                IdCategory = SelectedCategoryFilter?.IdCategory == 0 ? null : SelectedCategoryFilter?.IdCategory,
+                IdAccount = SelectedAccountFilter?.IdAccount == 0 ? null : SelectedAccountFilter?.IdAccount,
 
                 DateStart = DateStartFilter,
                 DateEnd = DateEndFilter,
@@ -399,7 +426,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
                 FinancialRecords.Add(record);
 
-                _navigationPages.TransitObject(PageType.UserPage, record, ParameterType.Add);
+                _navigationPages.TransitObject(PageType.UserPage, (record, SelectedTransactionType.IdTransactionType), ParameterType.Add);
             });
         }
 
@@ -608,7 +635,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             }
         }
 
-        private bool _isConsiderDate;
+        private bool _isConsiderDate = true;
         public bool IsConsiderDate
         {
             get => _isConsiderDate;
@@ -617,6 +644,14 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                 _isConsiderDate = value;
                 OnPropertyChanged();
             }
+        }
+
+        private (DateTime Start, DateTime End) DefaultDate()
+        {
+            var start = new DateTime(DateTime.Now.Year, 1, 1);
+            var end = new DateTime(DateTime.Now.Year, 12, 31);
+
+            return (start, end);
         }
 
         #endregion
@@ -690,6 +725,27 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
         private RelayCommand _applyCommand;
         public RelayCommand ApplyCommand { get => _applyCommand ??= new(async obj => { await GetFinancialRecord(); }); }
+
+        private RelayCommand _dropCommand;
+        public RelayCommand DropCommand
+        {
+            get => _dropCommand ??= new(obj =>
+            {
+                IsConsiderAmount = false;
+
+                SelectedTransactionTypeFilter = TransactionTypesFilter.FirstOrDefault();
+                SelectedCategoryFilter = CategoriesFilter.FirstOrDefault();
+                SelectedAccountFilter = AccountsFilter.FirstOrDefault();
+
+                var (Start, End) = DefaultDate();
+                DateStartFilter = Start;
+                DateEndFilter = End;
+
+                IsConsiderDate = false;
+
+                GetFinancialRecord();
+            });
+        }
 
         #endregion
     }

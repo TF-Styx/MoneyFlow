@@ -22,6 +22,8 @@ namespace MoneyFlow.Domain.Interfaces.Repositories
         Task<CategoryDomain> GetAsync(int idCategory);
         CategoryDomain Get(int idCategory);
 
+        Task<int?> GetById(int idFinancialRecord);
+
         Task<CategoryDomain> GetAsync(string categoryName);
         CategoryDomain Get(string categoryName);
 
