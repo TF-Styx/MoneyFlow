@@ -21,38 +21,38 @@ namespace MoneyFlow.Application.Services.Realization
 
         public async Task<(AccountTypeDTO AccountTypeDTO, string Message)> CreateAsyncAccountType(string accountTypeName)
         {
-            return await _createAccountTypeUseCase.CreateAsyncAccountType(accountTypeName);
+            return await _createAccountTypeUseCase.CreateAsync(accountTypeName);
         }
         public (AccountTypeDTO AccountTypeDTO, string Message) CreateAccountType(string accountTypeName)
         {
-            return _createAccountTypeUseCase.CreateAccountType(accountTypeName);
+            return _createAccountTypeUseCase.Create(accountTypeName);
         }
 
-        public async Task<List<AccountTypeDTO>> GetAllAsyncAccountType()
+        public async Task<List<AccountTypeDTO>> GetAllAsync()
         {
-            return await _getAccountTypeUseCase.GetAllAsyncAccountType();
+            return await _getAccountTypeUseCase.GetAllAsync();
         }
-        public List<AccountTypeDTO> GetAllAccountType()
+        public List<AccountTypeDTO> GetAll()
         {
-            return _getAccountTypeUseCase.GetAllAccountType();
-        }
-
-        public async Task<AccountTypeDTO> GetAsyncAccountType(int idAccountType)
-        {
-            return await _getAccountTypeUseCase.GetAsyncAccountType(idAccountType);
-        }
-        public AccountTypeDTO GetAccountType(int idAccountType)
-        {
-            return _getAccountTypeUseCase.GetAccountType(idAccountType);
+            return _getAccountTypeUseCase.GetAll();
         }
 
-        public async Task<AccountTypeDTO> GetAsyncAccountType(string accountTypeName)
+        public async Task<AccountTypeDTO> GetAsync(int idAccountType)
         {
-            return await _getAccountTypeUseCase.GetAsyncAccountType(accountTypeName);
+            return await _getAccountTypeUseCase.GetAsync(idAccountType);
         }
-        public AccountTypeDTO GetAccountType(string accountTypeName)
+        public AccountTypeDTO Get(int idAccountType)
         {
-            return _getAccountTypeUseCase.GetAccountType(accountTypeName);
+            return _getAccountTypeUseCase.Get(idAccountType);
+        }
+
+        public async Task<AccountTypeDTO> GetAsync(string accountTypeName)
+        {
+            return await _getAccountTypeUseCase.GetAsync(accountTypeName);
+        }
+        public AccountTypeDTO Get(string accountTypeName)
+        {
+            return _getAccountTypeUseCase.Get(accountTypeName);
         }
 
         public async Task<UserAccountTypesDTO> GetByIdUserAsync(int idUser)
@@ -64,22 +64,22 @@ namespace MoneyFlow.Application.Services.Realization
             return _getAccountTypeUseCase.GetByIdUser(idUser);
         }
 
-        public async Task<int> UpdateAsyncAccountType(int idAccountType, string accountTypeName)
+        public async Task<int> UpdateAsync(int idAccountType, string accountTypeName)
         {
-            return await _updateAccountTypeUseCase.UpdateAsyncAccountType(idAccountType, accountTypeName);
+            return await _updateAccountTypeUseCase.UpdateAsync(idAccountType, accountTypeName);
         }
-        public int UpdateAccountType(int idAccountType, string accountTypeName)
+        public int Update(int idAccountType, string accountTypeName)
         {
-            return _updateAccountTypeUseCase.UpdateAccountType(idAccountType, accountTypeName);
+            return _updateAccountTypeUseCase.Update(idAccountType, accountTypeName);
         }
 
-        public async Task DeleteAsyncAccountType(int idAccountType)
+        public async Task DeleteAsync(int idAccountType)
         {
-            await _deleteAccountTypeUseCase.DeleteAsyncAccountType(idAccountType);
+            await _deleteAccountTypeUseCase.DeleteAsync(idAccountType);
         }
-        public void DeleteBank(int idAccountType)
+        public void Delete(int idAccountType)
         {
-            _deleteAccountTypeUseCase.DeleteAccountType(idAccountType);
+            _deleteAccountTypeUseCase.Delete(idAccountType);
         }
     }
 }

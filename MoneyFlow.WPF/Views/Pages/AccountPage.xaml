@@ -42,7 +42,7 @@
                                   SelectedItem="{Binding SelectedAccount}"
                                   Margin="10">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Id" Binding="{Binding IdAccount}" Width="20"/>
+                                <DataGridTextColumn Binding="{Binding Index}" Width="auto"/>
                                 <DataGridTextColumn Header="NumberAccount" Binding="{Binding NumberAccount}" Width="*"/>
                                 <DataGridTextColumn Header="Balance" Binding="{Binding Balance}" Width="*"/>
                                 <DataGridTextColumn Header="Bank" Binding="{Binding Bank.BankName}" Width="*"/>

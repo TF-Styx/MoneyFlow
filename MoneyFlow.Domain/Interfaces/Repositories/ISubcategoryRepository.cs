@@ -16,7 +16,9 @@ namespace MoneyFlow.Domain.Interfaces.Repositories
 
         Task<SubcategoryDomain> GetAsync(int idSubcategory);
         SubcategoryDomain Get(int idSubcategory);
-        
+
+        Task<int?> GetById(int idFinancialRecord);
+
         Task<SubcategoryDomain> GetAsync(string subcategoryName);
         SubcategoryDomain Get(string subcategoryName);
 

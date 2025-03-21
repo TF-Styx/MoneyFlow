@@ -7,5 +7,7 @@ namespace MoneyFlow.Application.DTOs
     {
         public int IdAccountType { get; set; }
         public string? AccountTypeName { get; set; }
+
+        public int Index { get; set; }
     }
 }

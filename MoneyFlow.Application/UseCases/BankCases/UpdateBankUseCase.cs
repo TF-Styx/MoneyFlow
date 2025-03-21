@@ -12,7 +12,7 @@ namespace MoneyFlow.Application.UseCases.BankCases
             _banksRepository = banksRepository;
         }
 
-        public async Task<int> UpdateAsyncBank(int idBank, string bankName)
+        public async Task<int> UpdateAsync(int idBank, string bankName)
         {
             if (string.IsNullOrWhiteSpace(bankName))
             {
@@ -28,7 +28,7 @@ namespace MoneyFlow.Application.UseCases.BankCases
 
             return await _banksRepository.UpdateAsync(idBank, bankName);
         }
-        public int UpdateBank(int idBank, string bankName)
+        public int Update(int idBank, string bankName)
         {
             if (string.IsNullOrWhiteSpace(bankName))
             {

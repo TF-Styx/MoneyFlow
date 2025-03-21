@@ -14,16 +14,16 @@ namespace MoneyFlow.Application.UseCases.FinancialRecordViewingCases
             _financialRecordRepository = financialRecordRepository;
         }
 
-        public async Task<List<FinancialRecordViewingDTO>> GetAllAsyncFinancialRecordViewing(int idUser, FinancialRecordFilterDTO filter)
+        public async Task<List<FinancialRecordViewingDTO>> GetAllViewingAsync(int idUser, FinancialRecordFilterDTO filter)
         {
             var financialRecords = await _financialRecordRepository.GetAllViewingAsync(idUser, filter.ToDomain());
             var financialRecordsDTO = financialRecords.ToListDTO();
 
             return financialRecordsDTO;
         }
-        public List<FinancialRecordViewingDTO> GetAllFinancialRecordViewing(int idUser)
+        public List<FinancialRecordViewingDTO> GetAllViewing(int idUser, FinancialRecordFilterDTO filter)
         {
-            var financialRecords = _financialRecordRepository.GetAllViewing(idUser);
+            var financialRecords = _financialRecordRepository.GetAllViewing(idUser, filter.ToDomain());
             var financialRecordsDTO = financialRecords.ToListDTO();
 
             return financialRecordsDTO;
@@ -43,10 +43,5 @@ namespace MoneyFlow.Application.UseCases.FinancialRecordViewingCases
 
             return financialRecordDTO;
         }
-
-        //public async Task<FinancialRecordViewingDTO> GetById(int idFinancialRecord)
-        //{
-        //    var finanacialRecord = await _financialRecordRepository
-        //}
     }
 }

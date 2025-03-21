@@ -2,7 +2,7 @@
 {
     public interface IDeleteBankUseCase
     {
-        Task DeleteAsyncBank(int idBank);
-        void DeleteBank(int idBank);
+        Task DeleteAsync(int idBank);
+        void Delete(int idBank);
     }
 }

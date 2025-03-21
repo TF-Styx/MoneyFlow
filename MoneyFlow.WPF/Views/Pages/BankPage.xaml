@@ -43,7 +43,7 @@
                                   SelectedItem="{Binding SelectedUserBank}"
                                   Margin="10">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="IdBank" Binding="{Binding IdBank}"/>
+                                <DataGridTextColumn Binding="{Binding Index}" Width="auto"/>
                                 <DataGridTextColumn Header="BankName" Binding="{Binding BankName}" Width="*"/>
                             </DataGrid.Columns>
                         </DataGrid>
@@ -88,7 +88,7 @@
                                   SelectedItem="{Binding SelectedBank}"
                                   Margin="10">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="IdBank" Binding="{Binding IdBank}"/>
+                                <DataGridTextColumn Binding="{Binding Index}" Width="auto"/>
                                 <DataGridTextColumn Header="BankName" Binding="{Binding BankName}" Width="*"/>
                             </DataGrid.Columns>
                         </DataGrid>

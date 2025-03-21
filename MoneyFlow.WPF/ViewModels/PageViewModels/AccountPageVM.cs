@@ -110,11 +110,13 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         {
             Accounts.Clear();
 
-            var list = await _accountService.GetAllAsyncAccount(CurrentUser.IdUser);
+            var list = await _accountService.GetAllAsync(CurrentUser.IdUser);
 
             foreach (var item in list)
             {
                 Accounts.Add(item);
+                var index = Accounts.IndexOf(item);
+                item.Index = index + 1;
             }
         }
 
@@ -142,7 +144,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         {
             Banks.Clear();
 
-            var list = _bankService.GetAllBank();
+            var list = _bankService.GetAll();
 
             foreach (var item in list)
             {
@@ -174,7 +176,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         {
             AccountTypes.Clear();
 
-            var list = _accountTypeService.GetAllAccountType();
+            var list = _accountTypeService.GetAll();
 
             foreach (var item in list)
             {
@@ -195,7 +197,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         {
             get => _accountAddCommand ??= new(async obj =>
             {
-                var newAccount = await _accountService.CreateAsyncAccount(NumberAccount, CurrentUser.IdUser, SelectedBank, SelectedAccountType, Balance);
+                var newAccount = await _accountService.CreateAsync(NumberAccount, CurrentUser.IdUser, SelectedBank, SelectedAccountType, Balance);
 
                 if (newAccount.Message != string.Empty)
                 {
@@ -205,7 +207,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
                 Accounts.Add(newAccount.AccountDTO);
 
-                _navigationPages.TransitObject(PageType.UserPage, newAccount.AccountDTO, ParameterType.Add);
+                _navigationPages.TransitObject(PageType.UserPage, (newAccount.AccountDTO, SelectedBank), ParameterType.Add);
             });
         }
 
@@ -214,7 +216,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         {
             get => _accountUpdateCommand ??= new(async obj =>
             {
-                var idUpdateAccount = await _accountService.UpdateAsyncAccount
+                var idUpdateAccount = await _accountService.UpdateAsync
                     (
                         SelectedAccount.IdAccount,
                         NumberAccount,
@@ -239,7 +241,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                 Accounts.RemoveAt(index);
                 Accounts.Insert(index, updateAccount);
 
-                _navigationPages.TransitObject(PageType.UserPage, updateAccount, ParameterType.Update);
+                _navigationPages.TransitObject(PageType.UserPage, (updateAccount, SelectedBank), ParameterType.Update);
             });
         }
 
@@ -248,9 +250,9 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         {
             get => _accountDeleteCommand ??= new(async obj =>
             {
-                await _accountService.DeleteAsyncAccount(SelectedAccount.IdAccount);
+                await _accountService.DeleteAsync(SelectedAccount.IdAccount);
 
-                _navigationPages.TransitObject(PageType.UserPage, SelectedAccount, ParameterType.Delete);
+                _navigationPages.TransitObject(PageType.UserPage, (SelectedAccount, SelectedBank), ParameterType.Delete);
 
                 NumberAccount = 0;
                 SelectedBank = null;

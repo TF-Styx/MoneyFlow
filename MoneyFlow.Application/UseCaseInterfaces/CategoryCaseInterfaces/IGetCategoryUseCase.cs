@@ -4,10 +4,10 @@ namespace MoneyFlow.Application.UseCaseInterfaces.CategoryCaseInterfaces
 {
     public interface IGetCategoryUseCase
     {
-        Task<List<CategoryDTO>> GetAllAsyncCategory();
+        Task<List<CategoryDTO>> GetAllAsync();
         List<CategoryDTO> GetAllCategory();
 
-        int GetIdCat(int idUser);
+        int GetIdCatByIdUser(int idUser);
         int GetIdSubCat(int idUser, int idSub);
 
         //Task<CategoryDTO> GetIdCatAsync(int idUser);

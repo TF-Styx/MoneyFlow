@@ -4,8 +4,8 @@ namespace MoneyFlow.Application.UseCaseInterfaces.FinancialRecordViewingInterfac
 {
     public interface IGetFinancialRecordViewingUseCase
     {
-        Task<List<FinancialRecordViewingDTO>> GetAllAsyncFinancialRecordViewing(int idUser, FinancialRecordFilterDTO filter);
-        List<FinancialRecordViewingDTO> GetAllFinancialRecordViewing(int idUser);
+        Task<List<FinancialRecordViewingDTO>> GetAllViewingAsync(int idUser, FinancialRecordFilterDTO filter);
+        List<FinancialRecordViewingDTO> GetAllViewing(int idUser, FinancialRecordFilterDTO filter);
 
         Task<FinancialRecordViewingDTO> GetByIdAsync(int idUser, int idFinancialRecord, int idCategory, int idSubcategory);
         FinancialRecordViewingDTO GetById(int idUser, int idFinancialRecord, int idCategory, int idSubcategory);

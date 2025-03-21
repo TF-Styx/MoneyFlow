@@ -4,22 +4,22 @@ namespace MoneyFlow.Application.Services.Abstraction
 {
     public interface IAccountService
     {
-        Task<(AccountDTO AccountDTO, string Message)> CreateAsyncAccount(int? numberAccount, int idUser, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance);
-        (AccountDTO AccountDTO, string Message) CreateAccount(int? numberAccount, int idUser, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance);
+        Task<(AccountDTO AccountDTO, string Message)> CreateAsync(int? numberAccount, int idUser, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance);
+        (AccountDTO AccountDTO, string Message) Create(int? numberAccount, int idUser, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance);
 
-        Task<List<AccountDTO>> GetAllAsyncAccount(int idUser);
-        List<AccountDTO> GetAllAccount(int idUser);
+        Task<List<AccountDTO>> GetAllAsync(int idUser);
+        List<AccountDTO> GetAll(int idUser);
 
-        Task<AccountDTO> GetAsyncAccount(int idAccount);
+        Task<AccountDTO> GetAsync(int idAccount);
         AccountDTO GetAccount(int idAccount);
         
-        Task<AccountDTO> GetAsyncAccount(int? numberAccount);
-        AccountDTO GetAccount(int? numberAccount);
+        Task<AccountDTO> GetAsync(int? numberAccount);
+        AccountDTO Get(int? numberAccount);
 
-        Task<int> UpdateAsyncAccount(int idAccount, int? numberAccount, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance);
-        int UpdateAccount(int idAccount, int? numberAccount, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance);
+        Task<int> UpdateAsync(int idAccount, int? numberAccount, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance);
+        int Update(int idAccount, int? numberAccount, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance);
 
-        Task DeleteAsyncAccount(int idAccount);
-        void DeleteAccount(int idAccount);
+        Task DeleteAsync(int idAccount);
+        void Delete(int idAccount);
     }
 }

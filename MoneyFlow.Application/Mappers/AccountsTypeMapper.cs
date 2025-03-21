@@ -28,6 +28,8 @@ namespace MoneyFlow.Application.Mappers
             foreach (var item in userAccountTypes.AccountTypes.ToListDTO())
             {
                 accountTypeList.Add(item);
+                var index = accountTypeList.IndexOf(item);
+                item.Index = index + 1;
             }
 
             var dto = new UserAccountTypesDTO()

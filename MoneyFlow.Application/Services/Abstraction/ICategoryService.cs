@@ -4,13 +4,13 @@ namespace MoneyFlow.Application.Services.Abstraction
 {
     public interface ICategoryService
     {
-        Task<(CategoryDTO CategoryDTO, string Message)> CreateAsyncCategory(string? categoryName, string? description, string? color, byte[]? image, int idUser);
-        (CategoryDTO CategoryDTO, string Message) CreateCategory(string? categoryName, string? description, string? color, byte[]? image, int idUser);
+        Task<(CategoryDTO CategoryDTO, string Message)> CreateAsync(string? categoryName, string? description, string? color, byte[]? image, int idUser);
+        (CategoryDTO CategoryDTO, string Message) Create(string? categoryName, string? description, string? color, byte[]? image, int idUser);
 
-        Task<List<CategoryDTO>> GetAllAsyncCategory();
+        Task<List<CategoryDTO>> GetAllAsync();
         List<CategoryDTO> GetAllCategory();
 
-        int GetIdCat(int idUser);
+        int GetIdCatByIdUser(int idUser);
         int GetIdSubCat(int idUser, int idSub);
 
         //Task<CategoryDTO> GetIdCatAsync(int idUser);

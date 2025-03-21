@@ -12,7 +12,7 @@ namespace MoneyFlow.Application.UseCases.AccountTypeCases
             _accountTypeRepository = accountTypeRepository;
         }
 
-        public async Task<int> UpdateAsyncAccountType(int idAccountType, string accountTypeName)
+        public async Task<int> UpdateAsync(int idAccountType, string accountTypeName)
         {
             if (string.IsNullOrWhiteSpace(accountTypeName))
             {
@@ -28,7 +28,7 @@ namespace MoneyFlow.Application.UseCases.AccountTypeCases
 
             return await _accountTypeRepository.UpdateAsync(idAccountType, accountTypeName);
         }
-        public int UpdateAccountType(int idAccountType, string accountTypeName)
+        public int Update(int idAccountType, string accountTypeName)
         {
             if (string.IsNullOrWhiteSpace(accountTypeName))
             {

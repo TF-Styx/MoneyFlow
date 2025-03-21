@@ -9,5 +9,7 @@ namespace MoneyFlow.Application.DTOs
         public BankDTO Bank { get; set; }
         public AccountTypeDTO AccountType { get; set; }
         public decimal? Balance { get; set; }
+
+        public int Index { get; set; }
     }
 }

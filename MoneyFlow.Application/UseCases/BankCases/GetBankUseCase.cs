@@ -14,14 +14,14 @@ namespace MoneyFlow.Application.UseCases.BankCases
             _banksRepository = banksRepository;
         }
 
-        public async Task<List<BankDTO>> GetAllAsyncBank()
+        public async Task<List<BankDTO>> GetAllAsync()
         {
             var banks = await _banksRepository.GetAllAsync();
             var banksDTO = banks.ToListDTO();
 
             return banksDTO;
         }
-        public List<BankDTO> GetAllBank()
+        public List<BankDTO> GetAll()
         {
             var banks = _banksRepository.GetAll();
             var banksDTO = banks.ToListDTO();
@@ -29,7 +29,7 @@ namespace MoneyFlow.Application.UseCases.BankCases
             return banksDTO;
         }
 
-        public async Task<BankDTO> GetAsyncBank(int idBank)
+        public async Task<BankDTO> GetAsync(int idBank)
         {
             var bank = await _banksRepository.GetAsync(idBank);
 
@@ -39,7 +39,7 @@ namespace MoneyFlow.Application.UseCases.BankCases
 
             return bankDTO.BankDTO;
         }
-        public BankDTO GetBank(int idBank)
+        public BankDTO Get(int idBank)
         {
             var bank = _banksRepository.Get(idBank);
 
@@ -50,7 +50,7 @@ namespace MoneyFlow.Application.UseCases.BankCases
             return bankDTO.BankDTO;
         }
 
-        public async Task<BankDTO> GetAsyncBank(string nameBank)
+        public async Task<BankDTO> GetAsync(string nameBank)
         {
             var bank = await _banksRepository.GetAsync(nameBank);
 
@@ -60,7 +60,7 @@ namespace MoneyFlow.Application.UseCases.BankCases
 
             return bankDTO.BankDTO;
         }
-        public BankDTO GetBank(string nameBank)
+        public BankDTO Get(string nameBank)
         {
             var bank = _banksRepository.Get(nameBank);
 

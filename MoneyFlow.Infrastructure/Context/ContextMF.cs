@@ -152,6 +152,7 @@ public partial class ContextMF : DbContext
             entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.IdAccount).HasColumnName("id_account");
             entity.Property(e => e.IdCategory).HasColumnName("id_category");
+            entity.Property(e => e.IdSubcategory).HasColumnName("id_subcategory");
             entity.Property(e => e.IdTransactionType).HasColumnName("id_transaction_type");
             entity.Property(e => e.IdUser).HasColumnName("id_user");
             entity.Property(e => e.RecordName)
@@ -165,6 +166,10 @@ public partial class ContextMF : DbContext
             entity.HasOne(d => d.IdCategoryNavigation).WithMany(p => p.FinancialRecords)
                 .HasForeignKey(d => d.IdCategory)
                 .HasConstraintName("FK_FInancial_records_Categories1");
+
+            entity.HasOne(d => d.IdSubcategoryNavigation).WithMany(p => p.FinancialRecords)
+                .HasForeignKey(d => d.IdSubcategory)
+                .HasConstraintName("FK_FInancial_records_Subcategories");
 
             entity.HasOne(d => d.IdTransactionTypeNavigation).WithMany(p => p.FinancialRecords)
                 .HasForeignKey(d => d.IdTransactionType)

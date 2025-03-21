@@ -56,6 +56,11 @@ namespace MoneyFlow.Application.Services.Realization
             return _getSubcategoryUseCase.GetSubcategory(idSubcategory);
         }
 
+        public async Task<int?> GetById(int idFinancialRecord)
+        {
+            return await _getSubcategoryUseCase.GetById(idFinancialRecord);
+        }
+
         public async Task<SubcategoryDTO> GetAsyncSubcategory(string subcategoryName)
         {
             return await _getSubcategoryUseCase.GetAsyncSubcategory(subcategoryName);

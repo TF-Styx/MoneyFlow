@@ -124,11 +124,13 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         {
             Banks.Clear();
 
-            var list = await _bankService.GetAllAsyncBank();
+            var list = await _bankService.GetAllAsync();
 
             foreach (var item in list)
             {
                 Banks.Add(item);
+                var index = Banks.IndexOf(item);
+                item.Index = index + 1;
             }
         }
 

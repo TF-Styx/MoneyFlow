@@ -12,11 +12,11 @@ namespace MoneyFlow.Application.UseCases.AccountTypeCases
             _accountTypeRepository = accountTypeRepository;
         }
 
-        public async Task DeleteAsyncAccountType(int idAccountType)
+        public async Task DeleteAsync(int idAccountType)
         {
             await _accountTypeRepository.DeleteAsync(idAccountType); // TODO : Сделать проверку на существование элемента
         }
-        public void DeleteAccountType(int idAccountType)
+        public void Delete(int idAccountType)
         {
             _accountTypeRepository.Delete(idAccountType); // TODO : Сделать проверку на существование элемента
         }

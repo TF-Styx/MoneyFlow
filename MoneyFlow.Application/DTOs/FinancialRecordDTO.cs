@@ -12,6 +12,7 @@ namespace MoneyFlow.Application.DTOs
         public int? IdTransactionType { get; set; }
         public int? IdUser { get; set; }
         public int? IdCategory { get; set; }
+        public int? IdSubcategory { get; set; }
         public int? IdAccount { get; set; }
         public DateTime? Date { get; set; }
     }

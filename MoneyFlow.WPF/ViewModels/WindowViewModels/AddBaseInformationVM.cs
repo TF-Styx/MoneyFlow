@@ -50,7 +50,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
         {
             Banks.Clear();
 
-            var list = await _bankService.GetAllAsyncBank();
+            var list = await _bankService.GetAllAsync();
 
             foreach (var item in list)
             {
@@ -80,7 +80,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
         {
             get => _bankAddCommand ??= new(async obj =>
             {
-                var newBank = await _bankService.CreateAsyncBank(BankName);
+                var newBank = await _bankService.CreateAsync(BankName);
                 if (newBank.Message != string.Empty)
                 {
                     MessageBox.Show(newBank.Message);
@@ -98,7 +98,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
         {
             get => _bankUpdateCommand ??= new(async obj =>
             {
-                var idUpdatableBank = await _bankService.UpdateAsyncBank(SelectedBank.IdBank, BankName);
+                var idUpdatableBank = await _bankService.UpdateAsync(SelectedBank.IdBank, BankName);
                 var updatableBank = Banks.FirstOrDefault(x => x.IdBank == SelectedBank.IdBank)
                                          .SetProperty(x => { x.IdBank = idUpdatableBank; x.BankName = BankName; });
                 var index = Banks.IndexOf(updatableBank);
@@ -115,7 +115,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
         {
             get => _bankDeleteCommand ??= new(async obj =>
             {
-                await _bankService.DeleteAsyncBank(SelectedBank.IdBank);
+                await _bankService.DeleteAsync(SelectedBank.IdBank);
 
                 _navigationPages.TransitObject(PageType.BankPage, SelectedBank, ParameterType.Delete);
 

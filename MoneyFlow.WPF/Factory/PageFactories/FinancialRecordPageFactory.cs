@@ -19,7 +19,10 @@ namespace MoneyFlow.WPF.Factory.PageFactories
         {
             var viewModel = _serviceProvider.Value.GetRequiredService<FinancialRecordPageVM>();
             var page = new FinancialRecordPage() { DataContext = viewModel, };
-            viewModel.Update(parameter);
+            page.Loaded += (sender, args) =>
+            {
+                viewModel.Update(parameter);
+            };
 
             return page;
         }

@@ -12,7 +12,7 @@ namespace MoneyFlow.Application.UseCases.FinancialRecordCases
             _financialRecordRepository = financialRecordRepository;
         }
 
-        public async Task<int> UpdateAsyncFinancialRecord(int idFinancialRecord, string? recordName, decimal? amount, string? description, int? idTransactionType, int? idUser, int? idCategory, int? idAccount, DateTime? date)
+        public async Task<int> UpdateAsync(int idFinancialRecord, string? recordName, decimal? amount, string? description, int? idTransactionType, int? idUser, int? idCategory, int? idSubcategory, int? idAccount, DateTime? date)
         {
             var exist = await _financialRecordRepository.GetAsync(idFinancialRecord);
 
@@ -21,9 +21,9 @@ namespace MoneyFlow.Application.UseCases.FinancialRecordCases
                 throw new Exception("Данной финансовой записи не существует!!");
             }
 
-            return await _financialRecordRepository.UpdateAsync(idFinancialRecord, recordName, amount, description, idTransactionType, idUser, idCategory, idAccount, date);
+            return await _financialRecordRepository.UpdateAsync(idFinancialRecord, recordName, amount, description, idTransactionType, idUser, idCategory, idSubcategory, idAccount, date);
         }
-        public int UpdateFinancialRecord(int idFinancialRecord, string? recordName, decimal? amount, string? description, int? idTransactionType, int? idUser, int? idCategory, int? idAccount, DateTime? date)
+        public int Update(int idFinancialRecord, string? recordName, decimal? amount, string? description, int? idTransactionType, int? idUser, int? idCategory, int? idSubcategory, int? idAccount, DateTime? date)
         {
             var exist = _financialRecordRepository.Get(idFinancialRecord);
 
@@ -32,7 +32,7 @@ namespace MoneyFlow.Application.UseCases.FinancialRecordCases
                 throw new Exception("Данной финансовой записи не существует!!");
             }
 
-            return _financialRecordRepository.Update(idFinancialRecord, recordName, amount, description, idTransactionType, idUser, idCategory, idAccount, date);
+            return _financialRecordRepository.Update(idFinancialRecord, recordName, amount, description, idTransactionType, idUser, idCategory, idSubcategory, idAccount, date);
         }
     }
 }

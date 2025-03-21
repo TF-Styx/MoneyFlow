@@ -14,9 +14,9 @@ namespace MoneyFlow.Application.UseCases.AccountCases
             _accountRepository = accountRepository;
         }
 
-        public async Task<int> UpdateAsyncAccount(int idAccount, int? numberAccount, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance)
+        public async Task<int> UpdateAsync(int idAccount, int? numberAccount, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance)
         {
-            var existAccount = await _accountRepository.GetIdAsync(idAccount);
+            var existAccount = await _accountRepository.GetAsync(idAccount);
 
             if (existAccount == null)
             {
@@ -25,9 +25,9 @@ namespace MoneyFlow.Application.UseCases.AccountCases
 
             return await _accountRepository.UpdateAsync(idAccount, numberAccount, bankDTO.ToDomain().BankDomain, accountTypeDTO.ToDomain().AccountTypeDomain, balance);
         }
-        public int UpdateAccount(int idAccount, int? numberAccount, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance)
+        public int Update(int idAccount, int? numberAccount, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance)
         {
-            var existUser = _accountRepository.GetId(idAccount);
+            var existUser = _accountRepository.Get(idAccount);
 
             if (existUser == null)
             {

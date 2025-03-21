@@ -2,7 +2,7 @@
 {
     public interface IDeleteFinancialRecordUseCase
     {
-        Task DeleteAsyncFinancialRecord(int idFinancialRecord);
-        void DeleteFinancialRecord(int idFinancialRecord);
+        Task DeleteAsync(int idFinancialRecord);
+        void Delete(int idFinancialRecord);
     }
 }

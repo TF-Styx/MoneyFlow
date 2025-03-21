@@ -216,7 +216,7 @@
                                         <!--#endregion-->
 
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Id" Binding="{Binding IdAccount}" Width="20"/>
+                                            <DataGridTextColumn Binding="{Binding Index}" Width="auto"/>
                                             <DataGridTextColumn Header="NumberAccount" Binding="{Binding NumberAccount}" Width="*"/>
                                             <DataGridTextColumn Header="Balance" Binding="{Binding Balance}" Width="*"/>
                                             <DataGridTextColumn Header="Bank" Binding="{Binding Bank.BankName}" Width="*"/>
@@ -268,7 +268,7 @@
                                         <!--#endregion-->
 
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Bank" Binding="{Binding IdBank}" Width="20"/>
+                                            <DataGridTextColumn Binding="{Binding Index}" Width="auto"/>
                                             <DataGridTextColumn Header="BankName" Binding="{Binding BankName}" Width="*"/>
                                         </DataGrid.Columns>
                                     </DataGrid>
@@ -305,7 +305,7 @@
                                         <!--#endregion-->
 
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Id" Binding="{Binding IdAccountType}" Width="20"/>
+                                            <DataGridTextColumn Binding="{Binding Index}" Width="auto"/>
                                             <DataGridTextColumn Header="AccountTypeName" Binding="{Binding AccountTypeName}" Width="*"/>
                                         </DataGrid.Columns>
                                     </DataGrid>
@@ -336,7 +336,7 @@
                                 <DockPanel>
                                     <StackPanel DockPanel.Dock="Top">
                                         <TextBlock Text="Категории" HorizontalAlignment="Center" FontSize="15"/>
-                                        <Button Content="Сбросить выделение" HorizontalAlignment="Center" Margin="2"
+                                        <Button Content="Сбросить выделение" HorizontalAlignment="Center" Margin="0 5 0 0"
                                                 Command="{Binding AllSubCommand}"/>
                                     </StackPanel>
                                     <DataGrid AutoGenerateColumns="False" 
@@ -359,7 +359,7 @@
                                         <!--#endregion-->
 
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Id" Binding="{Binding IdCategory}" Width="20"/>
+                                            <DataGridTextColumn Binding="{Binding Index}" Width="auto"/>
                                             <DataGridTextColumn Header="CategoryName" Binding="{Binding CategoryName}" Width="auto"/>
                                             <DataGridTemplateColumn Header="Decription" Width="*">
                                                 <DataGridTemplateColumn.CellTemplate>
@@ -403,7 +403,7 @@
                                         <!--#endregion-->
 
                                         <DataGrid.Columns>
-                                            <DataGridTextColumn Header="Id" Binding="{Binding IdSubcategory}" Width="20"/>
+                                            <DataGridTextColumn Binding="{Binding Index}" Width="auto"/>
                                             <DataGridTextColumn Header="SubcategoryName" Binding="{Binding SubcategoryName}" Width="auto"/>
                                             <DataGridTemplateColumn Header="Decription" Width="*">
                                                 <DataGridTemplateColumn.CellTemplate>
@@ -488,6 +488,14 @@
                                                                               HorizontalAlignment="Right"
                                                                               Width="150" Height="25"/>
                                                                 </DockPanel>
+                                                                <DockPanel Margin="0 0 0 10">
+                                                                    <TextBlock Text="Subcategory" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                                                                    <ComboBox ItemsSource="{Binding SubcategoriesFilter}" 
+                                                                              SelectedItem="{Binding SelectedSubcategoryFilter}"
+                                                                              DisplayMemberPath="SubcategoryName"
+                                                                              HorizontalAlignment="Right"
+                                                                              Width="150" Height="25"/>
+                                                                </DockPanel>
                                                                 <DockPanel Margin="0 0 0 20">
                                                                     <TextBlock Text="Account" DockPanel.Dock="Left" VerticalAlignment="Center"/>
                                                                     <ComboBox ItemsSource="{Binding AccountsFilter}" 
@@ -559,12 +567,20 @@
                                 <!--#endregion-->
                                 
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Id" Binding="{Binding IdFinancialRecord}" Width="20"/>
-                                    
-                                    <DataGridTemplateColumn Header="RecordName || Amount" Width="*">
-                                        <DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTextColumn Binding="{Binding Index}" Width="auto"/>
+
+                                    <DataGridTemplateColumn Width="*">
+                                        <DataGridTemplateColumn.HeaderTemplate>
                                             <DataTemplate>
                                                 <DockPanel>
+                                                    <TextBlock Text="RecordName" DockPanel.Dock="Top"/>
+                                                    <TextBlock Text="Amount"/>
+                                                </DockPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.HeaderTemplate>
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <DockPanel HorizontalAlignment="Center">
                                                     <TextBlock Text="{Binding RecordName}" DockPanel.Dock="Top"/>
                                                     <TextBlock Text="{Binding Amount}"/>
                                                 </DockPanel>
@@ -580,21 +596,36 @@
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
 
-                                    <DataGridTextColumn Header="TransactionTypeName" Binding="{Binding TransactionTypeName}"  Width="*"/>
+                                    <DataGridTemplateColumn Header="Transaction" Width="auto">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding TransactionTypeName, Converter={StaticResource StatusTransactionToIconConverter}}"
+                                                           Foreground="{Binding TransactionTypeName, Converter={StaticResource StatusTransactionToColorConverter}}"
+                                                           HorizontalAlignment="Center" FontSize="20"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
 
-                                    <DataGridTemplateColumn Header="CategoryName || SubcategoryName" Width="*">
+                                    <DataGridTemplateColumn Width="*">
+                                        <DataGridTemplateColumn.HeaderTemplate>
+                                            <DataTemplate>
+                                                <DockPanel HorizontalAlignment="Center">
+                                                    <TextBlock Text="CategoryName" DockPanel.Dock="Top"/>
+                                                    <TextBlock Text="SubcategoryName"/>
+                                                </DockPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.HeaderTemplate>
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
                                                 <DockPanel HorizontalAlignment="Center">
                                                     <TextBlock Text="{Binding CategoryName}" DockPanel.Dock="Top"/>
-                                                    <TextBlock Text="{Binding SubcategoryName.Count}" DockPanel.Dock="Top"/>
-                                                    <!--<ListView ItemsSource="{Binding SubcategoryName}"/>-->
+                                                    <TextBlock Text="{Binding SubcategoryName}" DockPanel.Dock="Top"/>
                                                 </DockPanel>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
 
-                                    <DataGridTextColumn Header="AccountNumber" Binding="{Binding AccountNumber}" Width="*"/>
+                                    <DataGridTextColumn Header="Account" Binding="{Binding AccountNumber}" Width="auto"/>
                                     <DataGridTextColumn Header="Date" Binding="{Binding Date, Converter={StaticResource DateConverter}}" Width="*"/>
                                 </DataGrid.Columns>
                             </DataGrid>

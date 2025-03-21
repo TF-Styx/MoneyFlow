@@ -2,7 +2,7 @@
 {
     public interface IUpdateAccountTypeUseCase
     {
-        Task<int> UpdateAsyncAccountType(int idAccountType, string accountTypeName);
-        int UpdateAccountType(int idAccountType, string accountTypeName);
+        Task<int> UpdateAsync(int idAccountType, string accountTypeName);
+        int Update(int idAccountType, string accountTypeName);
     }
 }

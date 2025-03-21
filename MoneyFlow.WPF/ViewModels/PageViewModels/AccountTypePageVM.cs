@@ -114,11 +114,13 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         {
             AccountTypes.Clear();
 
-            var list = await _accountTypeService.GetAllAsyncAccountType();
+            var list = await _accountTypeService.GetAllAsync();
 
             foreach (var item in list)
             {
                 AccountTypes.Add(item);
+                var index = AccountTypes.IndexOf(item);
+                item.Index = index + 1;
             }
         }
 

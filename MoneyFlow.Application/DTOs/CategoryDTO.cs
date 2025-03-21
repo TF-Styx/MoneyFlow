@@ -10,5 +10,7 @@ namespace MoneyFlow.Application.DTOs
         public string? Color { get; set; }
         public byte[]? Image { get; set; }
         public int IdUser { get; set; }
+
+        public int Index { get; set; }
     }
 }

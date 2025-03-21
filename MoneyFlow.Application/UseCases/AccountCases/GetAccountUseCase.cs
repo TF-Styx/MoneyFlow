@@ -14,14 +14,14 @@ namespace MoneyFlow.Application.UseCases.AccountCases
             _accountRepository = accountRepository;
         }
 
-        public async Task<List<AccountDTO>> GetAllAsyncAccount(int idUser)
+        public async Task<List<AccountDTO>> GetAllAsync(int idUser)
         {
             var accounts = await _accountRepository.GetAllAsync(idUser);
             var accountsDTO = accounts.ToListDTO();
 
             return accountsDTO;
         }
-        public List<AccountDTO> GetAllAccount(int idUser)
+        public List<AccountDTO> GetAll(int idUser)
         {
             var accounts = _accountRepository.GetAll(idUser);
             var accountsDTO = accounts.ToListDTO();
@@ -29,9 +29,9 @@ namespace MoneyFlow.Application.UseCases.AccountCases
             return accountsDTO;
         }
 
-        public async Task<AccountDTO> GetAsyncIdAccount(int idAccount)
+        public async Task<AccountDTO> GetAsync(int idAccount)
         {
-            var account = await _accountRepository.GetIdAsync(idAccount);
+            var account = await _accountRepository.GetAsync(idAccount);
 
             if (account == null) { return null; } // TODO : Сделать исключение
 
@@ -39,9 +39,9 @@ namespace MoneyFlow.Application.UseCases.AccountCases
 
             return accountDTO.AccountDTO;
         }
-        public AccountDTO GetIdAccount(int idAccount)
+        public AccountDTO Get(int idAccount)
         {
-            var account = _accountRepository.GetId(idAccount);
+            var account = _accountRepository.Get(idAccount);
 
             if (account == null) { return null; } // TODO : Сделать исключение
 
@@ -50,9 +50,9 @@ namespace MoneyFlow.Application.UseCases.AccountCases
             return accountDTO.AccountDTO;
         }
 
-        public async Task<AccountDTO> GetAsyncAccountNumber(int? numberAccount)
+        public async Task<AccountDTO> GetAsync(int? numberAccount)
         {
-            var account = await _accountRepository.GetNumberAsync(numberAccount);
+            var account = await _accountRepository.GetAsync(numberAccount);
 
             if (account == null) { return null; } // TODO : Сделать исключение
 
@@ -60,9 +60,9 @@ namespace MoneyFlow.Application.UseCases.AccountCases
 
             return accountDTO.AccountDTO;
         }
-        public AccountDTO GetAccountNumber(int? numberAccount)
+        public AccountDTO Get(int? numberAccount)
         {
-            var account = _accountRepository.GetNumber(numberAccount);
+            var account = _accountRepository.Get(numberAccount);
 
             if (account == null) { return null; } // TODO : Сделать исключение
 

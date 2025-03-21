@@ -111,7 +111,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
         // ------------------------------------------------------------------------------------------------------------------------------------------------
 
-        public async Task<AccountDomain> GetIdAsync(int idAccount)
+        public async Task<AccountDomain> GetAsync(int idAccount)
         {
             using (var context = _factory())
             {
@@ -126,7 +126,7 @@ namespace MoneyFlow.Infrastructure.Repositories
                 return accountDomain;
             }
         }
-        public AccountDomain GetId(int idAccount)
+        public AccountDomain Get(int idAccount)
         {
             using (var context = _factory())
             {
@@ -144,7 +144,7 @@ namespace MoneyFlow.Infrastructure.Repositories
 
         // ------------------------------------------------------------------------------------------------------------------------------------------------
 
-        public async Task<AccountDomain> GetNumberAsync(int? numberAccount)
+        public async Task<AccountDomain> GetAsync(int? numberAccount)
         {
             using (var context = _factory())
             {
@@ -159,7 +159,7 @@ namespace MoneyFlow.Infrastructure.Repositories
                 return accountDomain;
             }
         }
-        public AccountDomain GetNumber(int? numberAccount)
+        public AccountDomain Get(int? numberAccount)
         {
             using (var context = _factory())
             {

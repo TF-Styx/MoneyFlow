@@ -8,6 +8,8 @@
         <ResourceDictionary>
             <converter:AccountManagementControlsVisibilityConverter x:Key="AccountManagementControlsVisibilityConverter"/>
             <converter:DateConverter x:Key="DateConverter"/>
+            <converter:StatusTransactionToColorConverter x:Key="StatusTransactionToColorConverter"/>
+            <converter:StatusTransactionToIconConverter x:Key="StatusTransactionToIconConverter"/>
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles\ButtonStyle.xaml"/>

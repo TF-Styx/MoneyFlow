@@ -1,5 +1,4 @@
 ﻿using MoneyFlow.Application.DTOs.BaseDTOs;
-using System.Collections.ObjectModel;
 
 namespace MoneyFlow.Application.DTOs
 {
@@ -12,8 +11,10 @@ namespace MoneyFlow.Application.DTOs
         public string TransactionTypeName { get; set; }
         public int? IdUser { get; set; }
         public string CategoryName { get; set; }
-        public ObservableCollection<string> SubcategoryName { get; set; }
+        public string SubcategoryName { get; set; }
         public int? AccountNumber { get; set; }
         public DateTime? Date { get; set; }
+
+        public int Index { get; set; }
     }
 }

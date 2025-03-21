@@ -14,7 +14,7 @@ namespace MoneyFlow.Application.UseCases.BankCases
             _banksRepository = banksRepository;
         }
 
-        public async Task<(BankDTO BankDTO, string Message)> CreateAsyncBank(string bankName)
+        public async Task<(BankDTO BankDTO, string Message)> CreateAsync(string bankName)
         {
             string message = string.Empty;
 
@@ -35,7 +35,7 @@ namespace MoneyFlow.Application.UseCases.BankCases
 
             return (bankDomain.ToDTO().BankDTO, message);
         }
-        public (BankDTO BankDTO, string Message) CreateBank(string bankName)
+        public (BankDTO BankDTO, string Message) Create(string bankName)
         {
             string message = string.Empty;
 

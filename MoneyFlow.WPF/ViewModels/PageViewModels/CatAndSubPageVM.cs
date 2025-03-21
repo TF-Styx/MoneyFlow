@@ -52,28 +52,10 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             {
                 SelectedCategory = category;
 
-                CategoryName = SelectedCategory.CategoryName;
-                DescriptionCat = SelectedCategory.Description;
-                SelectedColorCat = SelectedCategory.Color;
-                SelectImageCat = SelectedCategory.Image;
-
-            }
-            if (parameter is SubcategoryDTO subcategory)
-            {
-                //var idCategory = _categoryService.GetIdSubCat(CurrentUser.IdUser, SelectedSubcategory.IdSubcategory);
-
-                //SelectedCategory = Categories.FirstOrDefault(x => x.IdUser == CurrentUser.IdUser && x.IdCategory == idCategory);
-
-                //CategoryName = SelectedCategory.CategoryName;
-                //DescriptionCat = SelectedCategory.Description;
-                ////SelectedColorCat = SelectedCategory.Color;
-                //SelectImageCat = SelectedCategory.Image;
-
-                SubcategoryName = subcategory.SubcategoryName;
-                DescriptionSub = subcategory.Description;
-                SelectImageSub = subcategory.Image;
-
-                GetSubcategoryByIdCategory();
+                CategoryName = category.CategoryName;
+                DescriptionCat = category.Description;
+                SelectedColorCat = category.Color;
+                SelectImageCat = category.Image;
             }
         }
 
@@ -178,6 +160,8 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             foreach (var item in list)
             {
                 Categories.Add(item);
+                var index = Categories.IndexOf(item);
+                item.Index = index + 1;
             }
         }
 
@@ -228,7 +212,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         {
             get => _categoryAddCommand ??= new(async obj =>
             {
-                var newCat = await _categoryService.CreateAsyncCategory(CategoryName, DescriptionCat, SelectedColorCat, SelectImageCat, CurrentUser.IdUser);
+                var newCat = await _categoryService.CreateAsync(CategoryName, DescriptionCat, SelectedColorCat, SelectImageCat, CurrentUser.IdUser);
 
                 if (newCat.Message != string.Empty)
                 {
@@ -237,6 +221,8 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                 }
 
                 Categories.Add(newCat.CategoryDTO);
+
+                _navigationPages.TransitObject(PageType.UserPage, newCat, ParameterType.Add);
             });
         }
 
@@ -323,19 +309,6 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             }
         }
 
-        // TODO : Сделать выбор цветов
-
-        //private Color _selectedColorSub;
-        //public Color SelectedColorSub
-        //{
-        //    get => _selectedColorSub;
-        //    set
-        //    {
-        //        _selectedColorSub = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
-
         private byte[] _selectImageSub;
         public byte[] SelectImageSub
         {
@@ -404,6 +377,8 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             foreach (var item in list)
             {
                 Subcategories.Add(item);
+                var index = Subcategories.IndexOf(item);
+                item.Index = index + 1;
             }
         }
 
@@ -420,6 +395,8 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             foreach (var item in list)
             {
                 Subcategories.Add(item);
+                var index = Subcategories.IndexOf(item);
+                item.Index = index + 1;
             }
         }
 

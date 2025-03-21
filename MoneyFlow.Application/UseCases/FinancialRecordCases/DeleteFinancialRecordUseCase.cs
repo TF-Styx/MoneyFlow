@@ -12,11 +12,11 @@ namespace MoneyFlow.Application.UseCases.FinancialRecordCases
             _financialRecordRepository = financialRecordRepository;
         }
 
-        public async Task DeleteAsyncFinancialRecord(int idFinancialRecord)
+        public async Task DeleteAsync(int idFinancialRecord)
         {
             await _financialRecordRepository.DeleteAsync(idFinancialRecord);
         }
-        public void DeleteFinancialRecord(int idFinancialRecord)
+        public void Delete(int idFinancialRecord)
         {
             _financialRecordRepository.Delete(idFinancialRecord);
         }

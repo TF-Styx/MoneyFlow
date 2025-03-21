@@ -109,7 +109,6 @@ namespace MoneyFlow.Infrastructure.Repositories
             }
         }
         
-
         // ------------------------------------------------------------------------------------------------------------------------------------------------
 
         public async Task<SubcategoryDomain> GetAsync(int idSubcategory)
@@ -130,6 +129,18 @@ namespace MoneyFlow.Infrastructure.Repositories
                 var domain = SubcategoryDomain.Create(entity.IdSubcategory, entity.SubcategoryName, entity.Description, entity.Image, entity.IdUser).SubcategoryDomain;
 
                 return domain;
+            }
+        }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
+        public async Task<int?> GetById(int idFinancialRecord)
+        {
+            using (var context = _factory())
+            {
+                var entity = await context.FinancialRecords.FirstOrDefaultAsync(x => x.IdFinancialRecord == idFinancialRecord);
+
+                return entity.IdSubcategory;
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Azure;
+using Microsoft.Extensions.DependencyInjection;
 using MoneyFlow.WPF.Interfaces;
 using MoneyFlow.WPF.ViewModels.PageViewModels;
 using MoneyFlow.WPF.Views.Pages;
@@ -18,9 +19,13 @@ namespace MoneyFlow.WPF.Factory.PageFactories
         public Page CreatePage(object parameter = null)
         {
             var viewModel = _serviceProvider.Value.GetRequiredService<UserPageVM>();
-            viewModel.Update(parameter);
+            var page = new UserPage() { DataContext = viewModel, };
+            page.Loaded += (sender, args) =>
+            {
+                viewModel.Update(parameter);
+            };
 
-            return new UserPage() { DataContext = viewModel, };
+            return page;
         }
     }
 }

@@ -65,9 +65,21 @@
                                           SelectedItem="{Binding SelectedCategory}"
                                           Margin="10" >
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="IdCategory" Binding="{Binding IdCategory}"/>
-                                        <DataGridTextColumn Header="CategoryName" Binding="{Binding CategoryName}" Width="*"/>
-                                        <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*"/>
+                                        <DataGridTextColumn Binding="{Binding Index}" Width="auto"/>
+                                        <DataGridTemplateColumn Header="CategoryName" Width="*">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding CategoryName}" HorizontalAlignment="Left" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTemplateColumn Header="Decription" Width="*">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Description}" HorizontalAlignment="Left" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </DockPanel>
@@ -102,8 +114,8 @@
                                           SelectedItem="{Binding SelectedSubcategory}"
                                           Margin="10">
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="IdSubcategory" Binding="{Binding IdSubcategory}"/>
-                                        <DataGridTextColumn Header="SubcategoryName" Binding="{Binding SubcategoryName}" Width="auto"/>
+                                        <DataGridTextColumn Binding="{Binding Index}" Width="auto"/>
+                                        <DataGridTextColumn Header="SubcategoryName" Binding="{Binding SubcategoryName}" Width="*"/>
                                         <DataGridTemplateColumn Header="Decription" Width="*">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
@@ -123,11 +135,11 @@
             
 
             <!--#region Форма заполнения информации о Категориях -->
-            <ScrollViewer Grid.Column="1">
-                <Border CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="5 10 5 5">
-                    <Border.Effect>
-                        <DropShadowEffect BlurRadius="10" Direction="300"/>
-                    </Border.Effect>
+            <Border Grid.Column="1" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="5 10 5 5">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" Direction="300"/>
+                </Border.Effect>
+                <ScrollViewer>
                     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                         <DockPanel DockPanel.Dock="Top">
                             <TextBlock Text="Информация о категории" HorizontalAlignment="Center" DockPanel.Dock="Top" FontSize="15"/>
@@ -142,12 +154,6 @@
                                         <TextBlock Text="Description" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
                                         <TextBox Text="{Binding DescriptionCat}" d:Text="Что-то очень заумное" TextWrapping="Wrap" Height="200"/>
                                     </DockPanel>
-                                    <DockPanel Margin="0 5 0 5">
-                                        <TextBlock Text="Color" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
-                                        <ComboBox ItemsSource="{Binding ColorCat}"
-                                                  SelectedItem="{Binding SelectedColorCat}"
-                                                  DisplayMemberPath="BankName"/>
-                                    </DockPanel>
                                     <DockPanel Margin="0 5 0 0">
                                         <TextBlock Text="Image Category" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
                                         <!--#region Категория -->
@@ -156,7 +162,7 @@
                                                 <StackPanel>
                                                     <Border BorderThickness="0 0 0 1" BorderBrush="Black">
                                                         <!--BorderThickness="0 0 0 2"-->
-                                                        <Image Source="{Binding SelectImageCat}" MinWidth="100" MinHeight="100" Margin="5"/>
+                                                        <Image Source="{Binding SelectImageCat}" MinWidth="100" MaxWidth="250" MinHeight="100" MaxHeight="250" Margin="5"/>
                                                     </Border>
                                                     <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 2 0 4">
                                                         <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Left" Command="{Binding SelectedImageCatCommand}">
@@ -171,6 +177,12 @@
                                         </DockPanel>
                                         <!--#endregion-->
                                     </DockPanel>
+                                    <DockPanel Margin="0 5 0 5">
+                                        <TextBlock Text="Color" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                                        <ComboBox ItemsSource="{Binding ColorCat}"
+                                                  SelectedItem="{Binding SelectedColorCat}"
+                                                  DisplayMemberPath="BankName"/>
+                                    </DockPanel>
                                 </StackPanel>
                                 <!--#endregion-->
                             </DockPanel>
@@ -184,17 +196,17 @@
                         </StackPanel>
                         <!--#endregion-->
                     </DockPanel>
-                </Border>
-            </ScrollViewer>
+                </ScrollViewer>
+            </Border>
             <!--#endregion-->
 
 
             <!--#region Форма заполнения информации о Подкатегориях -->
-            <ScrollViewer Grid.Column="2">
-                <Border CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="5 10 5 5">
+            <Border Grid.Column="2" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="5 10 5 5">
                     <Border.Effect>
                         <DropShadowEffect BlurRadius="10" Direction="300"/>
                     </Border.Effect>
+                <ScrollViewer>
                     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                         <DockPanel DockPanel.Dock="Top">
                             <TextBlock Text="Информация о категории" HorizontalAlignment="Center" DockPanel.Dock="Top" FontSize="15"/>
@@ -217,7 +229,7 @@
                                                 <StackPanel>
                                                     <Border BorderThickness="0 0 0 1" BorderBrush="Black">
                                                         <!--BorderThickness="0 0 0 2"-->
-                                                        <Image Source="{Binding SelectImageSub}" MinWidth="100" MinHeight="100" Margin="5"/>
+                                                        <Image Source="{Binding SelectImageSub}" MinWidth="100" MaxWidth="250" MinHeight="100" MaxHeight="250" Margin="5"/>
                                                     </Border>
                                                     <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 2 0 4">
                                                         <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Left" Command="{Binding SelectedImageSubCommand}">
@@ -236,7 +248,7 @@
                                 <!--#endregion-->
                             </DockPanel>
                         </DockPanel>
-                        
+
                         <!--#region Кнопки управления счетами -->
                         <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Bottom" Margin="10">
                             <Button Content="Добавить подкатегорию" Command="{Binding SubcategoryAddCommand}" Margin="0 0 0 0"/>
@@ -245,8 +257,8 @@
                         </StackPanel>
                         <!--#endregion-->
                     </DockPanel>
-                </Border>
-            </ScrollViewer>
+                </ScrollViewer>
+            </Border>
             <!--#endregion-->
             
 

@@ -4,7 +4,7 @@ namespace MoneyFlow.Domain.DomainModels
 {
     public class FinancialRecordDomain
     {
-        private FinancialRecordDomain(int idFinancialRecord, string? recordName, decimal? amount, string? description, int? idTransactionType, int? idUser, int? idCategory, int? idAccount, DateTime? date)
+        private FinancialRecordDomain(int idFinancialRecord, string? recordName, decimal? amount, string? description, int? idTransactionType, int? idUser, int? idCategory, int? idSubcategory, int? idAccount, DateTime? date)
         {
             IdFinancialRecord = idFinancialRecord;
             RecordName = recordName;
@@ -13,6 +13,7 @@ namespace MoneyFlow.Domain.DomainModels
             IdTransactionType = idTransactionType;
             IdUser = idUser;
             IdCategory = idCategory;
+            IdSubcategory = idSubcategory;
             IdAccount = idAccount;
             Date = date;
         }
@@ -24,10 +25,11 @@ namespace MoneyFlow.Domain.DomainModels
         public int? IdTransactionType { get; private set; }
         public int? IdUser { get; private set; }
         public int? IdCategory { get; private set; }
+        public int? IdSubcategory { get; private set; }
         public int? IdAccount { get; private set; }
         public DateTime? Date { get; private set; }
 
-        public static (FinancialRecordDomain FinancialRecordDomain, string Message) Create(int idFinancialRecord, string? recordName, decimal? amount, string? description, int? idTransactionType, int? idUser, int? idCategory, int? idAccount, DateTime? date)
+        public static (FinancialRecordDomain FinancialRecordDomain, string Message) Create(int idFinancialRecord, string? recordName, decimal? amount, string? description, int? idTransactionType, int? idUser, int? idCategory, int? idSubcategory, int? idAccount, DateTime? date)
         {
             var message = string.Empty;
 
@@ -43,7 +45,7 @@ namespace MoneyFlow.Domain.DomainModels
                 return (null, "Превышена максимально допустимая длина!!");
             }
 
-            var financialRecord = new FinancialRecordDomain(idFinancialRecord, recordName, amount, description, idTransactionType, idUser, idCategory, idAccount, date);
+            var financialRecord = new FinancialRecordDomain(idFinancialRecord, recordName, amount, description, idTransactionType, idUser, idCategory, idSubcategory, idAccount, date);
 
             return (financialRecord, message);
         }

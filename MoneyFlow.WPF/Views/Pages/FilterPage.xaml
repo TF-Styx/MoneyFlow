@@ -56,6 +56,14 @@
                                   HorizontalAlignment="Right"
                                   Width="150" Height="25"/>
                         </DockPanel>
+                        <DockPanel Margin="0 0 0 10">
+                            <TextBlock Text="Subcategory" DockPanel.Dock="Left" VerticalAlignment="Center"/>
+                            <ComboBox ItemsSource="{Binding SubcategoriesFilter}" 
+                                      SelectedItem="{Binding SelectedSubcategoryFilter}"
+                                      DisplayMemberPath="SubcategoryName"
+                                      HorizontalAlignment="Right"
+                                      Width="150" Height="25"/>
+                        </DockPanel>
                         <DockPanel Margin="0 0 0 20">
                             <TextBlock Text="Account" DockPanel.Dock="Left" VerticalAlignment="Center"/>
                             <ComboBox ItemsSource="{Binding AccountsFilter}" 

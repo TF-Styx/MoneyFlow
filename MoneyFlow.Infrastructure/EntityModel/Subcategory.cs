@@ -16,4 +16,6 @@ public partial class Subcategory
     public int IdUser { get; set; }
 
     public virtual ICollection<CatLinkSub> CatLinkSubs { get; set; } = new List<CatLinkSub>();
+
+    public virtual ICollection<FinancialRecord> FinancialRecords { get; set; } = new List<FinancialRecord>();
 }

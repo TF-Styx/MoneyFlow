@@ -1,10 +1,8 @@
-﻿using MoneyFlow.Shared.Constants;
-
-namespace MoneyFlow.Domain.DomainModels
+﻿namespace MoneyFlow.Domain.DomainModels
 {
     public class FinancialRecordViewingDomain
     {
-        private FinancialRecordViewingDomain(int idFinancialRecord, string? recordName, decimal? amount, string? description, string transactionTypeName, int? idUser, string categoryName, List<string> subcategoryName, int? accountNumber, DateTime? date)
+        private FinancialRecordViewingDomain(int idFinancialRecord, string? recordName, decimal? amount, string? description, string transactionTypeName, int? idUser, string categoryName, string subcategoryName, int? accountNumber, DateTime? date)
         {
             IdFinancialRecord = idFinancialRecord;
             RecordName = recordName;
@@ -25,11 +23,11 @@ namespace MoneyFlow.Domain.DomainModels
         public string TransactionTypeName { get; private set; }
         public int? IdUser { get; private set; }
         public string CategoryName { get; private set; }
-        public List<string> SubcategoryName { get; private set; }
+        public string SubcategoryName { get; private set; }
         public int? AccountNumber { get; private set; }
         public DateTime? Date { get; private set; }
 
-        public static (FinancialRecordViewingDomain FinancialRecordViewingDomain, string Message) Create(int idFinancialRecord, string? recordName, decimal? amount, string? description, string transactionTypeName, int? idUser, string categoryName, List<string> subcategoryName, int? accountNumber, DateTime? date)
+        public static (FinancialRecordViewingDomain FinancialRecordViewingDomain, string Message) Create(int idFinancialRecord, string? recordName, decimal? amount, string? description, string transactionTypeName, int? idUser, string categoryName, string subcategoryName, int? accountNumber, DateTime? date)
         {
             var message = string.Empty;
 

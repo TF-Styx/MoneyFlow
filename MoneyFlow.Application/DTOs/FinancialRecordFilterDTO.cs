@@ -8,6 +8,7 @@
 
         public int? IdTransactionType { get; set; }
         public int? IdCategory { get; set; }
+        public int? IdSubcategory { get; set; }
         public int? IdAccount { get; set; }
 
         public DateTime? DateStart { get; set; }

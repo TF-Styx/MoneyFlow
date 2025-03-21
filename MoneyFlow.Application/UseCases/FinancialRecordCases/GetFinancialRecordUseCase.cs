@@ -14,14 +14,14 @@ namespace MoneyFlow.Application.UseCases.FinancialRecordCases
             _financialRecordRepository = financialRecordRepository;
         }
 
-        public async Task<List<FinancialRecordDTO>> GetAllAsyncFinancialRecord(int idUser)
+        public async Task<List<FinancialRecordDTO>> GetAllAsync(int idUser)
         {
             var financialRecords = await _financialRecordRepository.GetAllAsync(idUser);
             var financialRecordsDTO = financialRecords.ToListDTO();
 
             return financialRecordsDTO;
         }
-        public List<FinancialRecordDTO> GetAllFinancialRecord(int idUser)
+        public List<FinancialRecordDTO> GetAll(int idUser)
         {
             var financialRecords = _financialRecordRepository.GetAll(idUser);
             var financialRecordsDTO = financialRecords.ToListDTO();
@@ -29,7 +29,7 @@ namespace MoneyFlow.Application.UseCases.FinancialRecordCases
             return financialRecordsDTO;
         }
 
-        public async Task<FinancialRecordDTO> GetAsyncFinancialRecord(int idFinancialRecord)
+        public async Task<FinancialRecordDTO> GetAsync(int idFinancialRecord)
         {
             var financialRecord = await _financialRecordRepository.GetAsync(idFinancialRecord);
 
@@ -39,7 +39,7 @@ namespace MoneyFlow.Application.UseCases.FinancialRecordCases
 
             return financialRecordDTO.FinancialRecordDTO;
         }
-        public FinancialRecordDTO GetFinancialRecord(int idFinancialRecord)
+        public FinancialRecordDTO Get(int idFinancialRecord)
         {
             var financialRecord = _financialRecordRepository.Get(idFinancialRecord);
 
@@ -50,25 +50,25 @@ namespace MoneyFlow.Application.UseCases.FinancialRecordCases
             return financialRecordDTO.FinancialRecordDTO;
         }
 
-        public async Task<FinancialRecordDTO> GetAsyncFinancialRecord(string recordName)
-        {
-            var financialRecord = await _financialRecordRepository.GetAsync(recordName);
+        //public async Task<FinancialRecordDTO> GetAsyncFinancialRecord(string recordName)
+        //{
+        //    var financialRecord = await _financialRecordRepository.GetAsync(recordName);
 
-            if (financialRecord == null) { return null; }
+        //    if (financialRecord == null) { return null; }
 
-            var financialRecordDTO = financialRecord.ToDTO();
+        //    var financialRecordDTO = financialRecord.ToDTO();
 
-            return financialRecordDTO.FinancialRecordDTO;
-        }
-        public FinancialRecordDTO GetFinancialRecord(string recordName)
-        {
-            var financialRecord = _financialRecordRepository.Get(recordName);
+        //    return financialRecordDTO.FinancialRecordDTO;
+        //}
+        //public FinancialRecordDTO GetFinancialRecord(string recordName)
+        //{
+        //    var financialRecord = _financialRecordRepository.Get(recordName);
 
-            if (financialRecord == null) { return null; }
+        //    if (financialRecord == null) { return null; }
 
-            var financialRecordDTO = financialRecord.ToDTO();
+        //    var financialRecordDTO = financialRecord.ToDTO();
 
-            return financialRecordDTO.FinancialRecordDTO;
-        }
+        //    return financialRecordDTO.FinancialRecordDTO;
+        //}
     }
 }

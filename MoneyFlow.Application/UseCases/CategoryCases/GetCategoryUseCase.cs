@@ -2,6 +2,7 @@
 using MoneyFlow.Application.Mappers;
 using MoneyFlow.Application.UseCaseInterfaces.CategoryCaseInterfaces;
 using MoneyFlow.Domain.Interfaces.Repositories;
+using System.Diagnostics;
 
 namespace MoneyFlow.Application.UseCases.CategoryCases
 {
@@ -14,7 +15,7 @@ namespace MoneyFlow.Application.UseCases.CategoryCases
             _categoryRepository = categoryRepository;
         }
 
-        public async Task<List<CategoryDTO>> GetAllAsyncCategory()
+        public async Task<List<CategoryDTO>> GetAllAsync()
         {
             var categories = await _categoryRepository.GetAllAsync();
             var toDTO = categories.ToListDTO();
@@ -29,7 +30,7 @@ namespace MoneyFlow.Application.UseCases.CategoryCases
             return toDTO;
         }
 
-        public int GetIdCat(int idUser)
+        public int GetIdCatByIdUser(int idUser)
         {
             return _categoryRepository.GetIdCat(idUser);
         }

@@ -4,25 +4,25 @@ namespace MoneyFlow.Application.Services.Abstraction
 {
     public interface IBankService
     {
-        Task<(BankDTO BankDTO, string Message)> CreateAsyncBank(string bankName);
-        (BankDTO BankDTO, string Message) CreateBank(string bankName);
+        Task<(BankDTO BankDTO, string Message)> CreateAsync(string bankName);
+        (BankDTO BankDTO, string Message) Create(string bankName);
 
-        Task<List<BankDTO>> GetAllAsyncBank();
-        List<BankDTO> GetAllBank();
+        Task<List<BankDTO>> GetAllAsync();
+        List<BankDTO> GetAll();
 
-        Task<BankDTO> GetAsyncBank(int idBank);
-        BankDTO GetBank(int idBank);
+        Task<BankDTO> GetAsync(int idBank);
+        BankDTO Get(int idBank);
 
-        Task<BankDTO> GetAsyncBank(string bankName);
-        BankDTO GetBank(string bankName);
+        Task<BankDTO> GetAsync(string bankName);
+        BankDTO Get(string bankName);
 
         Task<UserBanksDTO> GetByIdUserAsync(int idUser);
         UserBanksDTO GetByIdUser(int idUser);
 
-        Task<int> UpdateAsyncBank(int idBank, string bankName);
-        int UpdateBank(int idBank, string bankName);
+        Task<int> UpdateAsync(int idBank, string bankName);
+        int Update(int idBank, string bankName);
 
-        Task DeleteAsyncBank(int idBank);
-        void DeleteBank(int idBank);
+        Task DeleteAsync(int idBank);
+        void Delete(int idBank);
     }
 }

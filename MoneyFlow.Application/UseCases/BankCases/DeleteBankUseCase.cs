@@ -12,11 +12,11 @@ namespace MoneyFlow.Application.UseCases.BankCases
             _banksRepository = banksRepository;
         }
 
-        public async Task DeleteAsyncBank(int idBank)
+        public async Task DeleteAsync(int idBank)
         {
             await _banksRepository.DeleteAsync(idBank); // TODO : Сделать проверку на существование элемента
         }
-        public void DeleteBank(int idBank)
+        public void Delete(int idBank)
         {
             _banksRepository.Delete(idBank); // TODO : Сделать проверку на существование элемента
         }

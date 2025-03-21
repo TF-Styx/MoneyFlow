@@ -19,58 +19,54 @@ namespace MoneyFlow.Application.Services.Realization
             _updateFinancialRecordUseCase = updateFinancialRecordUseCase;
         }
 
-        public async Task<(FinancialRecordDTO FinancialRecordDTO, string Message)> CreateAsyncFinancialRecord(string? recordName, decimal? amount, string? description, int? idTransactionType, int? idUser, int? idCategory, int? idAccount, DateTime? date)
+        public async Task<(FinancialRecordDTO FinancialRecordDTO, string Message)> CreateAsync(string? recordName, decimal? amount, string? description, int? idTransactionType, int? idUser, int? idCategory, int? idSubcategory, int? idAccount, DateTime? date)
         {
-            return await _createFinancialRecordUseCase.CreateAsyncFinancialRecord(recordName, amount, description, idTransactionType, idUser, idCategory, idAccount, date);
-        }
-        public (FinancialRecordDTO FinancialRecordDTO, string Message) CreateFinancialRecord(string? recordName, decimal? amount, string? description, int? idTransactionType, int? idUser, int? idCategory, int? idAccount, DateTime? date)
-        {
-            return _createFinancialRecordUseCase.CreateFinancialRecord(recordName, amount, description, idTransactionType, idUser, idCategory, idAccount, date);
+            return await _createFinancialRecordUseCase.CreateAsync(recordName, amount, description, idTransactionType, idUser, idCategory, idSubcategory, idAccount, date);
         }
 
-        public async Task<List<FinancialRecordDTO>> GetAllAsyncFinancialRecord(int idUser)
+        public async Task<List<FinancialRecordDTO>> GetAllAsync(int idUser)
         {
-            return await _getFinancialRecordUseCase.GetAllAsyncFinancialRecord(idUser);
+            return await _getFinancialRecordUseCase.GetAllAsync(idUser);
         }
-        public List<FinancialRecordDTO> GetAllFinancialRecord(int idUser)
+        public List<FinancialRecordDTO> GetAll(int idUser)
         {
-            return _getFinancialRecordUseCase.GetAllFinancialRecord(idUser);
-        }
-
-        public async Task<FinancialRecordDTO> GetAsyncFinancialRecord(int idFinancialRecord)
-        {
-            return await _getFinancialRecordUseCase.GetAsyncFinancialRecord(idFinancialRecord);
-        }
-        public FinancialRecordDTO GetFinancialRecord(int idFinancialRecord)
-        {
-            return _getFinancialRecordUseCase.GetFinancialRecord(idFinancialRecord);
+            return _getFinancialRecordUseCase.GetAll(idUser);
         }
 
-        public async Task<FinancialRecordDTO> GetAsyncFinancialRecord(string recordName)
+        public async Task<FinancialRecordDTO> GetAsync(int idFinancialRecord)
         {
-            return await _getFinancialRecordUseCase.GetAsyncFinancialRecord(recordName);
+            return await _getFinancialRecordUseCase.GetAsync(idFinancialRecord);
         }
-        public FinancialRecordDTO GetFinancialRecord(string recordName)
+        public FinancialRecordDTO Get(int idFinancialRecord)
         {
-            return _getFinancialRecordUseCase.GetFinancialRecord(recordName);
-        }
-
-        public async Task<int> UpdateAsyncFinancialRecord(int idFinancialRecord, string? recordName, decimal? amount, string? description, int? idTransactionType, int? idUser, int? idCategory, int? idAccount, DateTime? date)
-        {
-            return await _updateFinancialRecordUseCase.UpdateAsyncFinancialRecord(idFinancialRecord, recordName, amount, description, idTransactionType, idUser, idCategory, idAccount, date);
-        }
-        public int UpdateFinancialRecord(int idFinancialRecord, string? recordName, decimal? amount, string? description, int? idTransactionType, int? idUser, int? idCategory, int? idAccount, DateTime? date)
-        {
-            return _updateFinancialRecordUseCase.UpdateFinancialRecord(idFinancialRecord, recordName, amount, description, idTransactionType, idUser, idCategory, idAccount, date);
+            return _getFinancialRecordUseCase.Get(idFinancialRecord);
         }
 
-        public async Task DeleteAsyncFinancialRecord(int idFinancialRecord)
+        //public async Task<FinancialRecordDTO> GetAsyncFinancialRecord(string recordName)
+        //{
+        //    return await _getFinancialRecordUseCase.GetAsyncFinancialRecord(recordName);
+        //}
+        //public FinancialRecordDTO GetFinancialRecord(string recordName)
+        //{
+        //    return _getFinancialRecordUseCase.GetFinancialRecord(recordName);
+        //}
+
+        public async Task<int> UpdateAsync(int idFinancialRecord, string? recordName, decimal? amount, string? description, int? idTransactionType, int? idUser, int? idCategory, int? idSubcategory, int? idAccount, DateTime? date)
         {
-            await _deleteFinancialRecordUseCase.DeleteAsyncFinancialRecord(idFinancialRecord);
+            return await _updateFinancialRecordUseCase.UpdateAsync(idFinancialRecord, recordName, amount, description, idTransactionType, idUser, idCategory, idSubcategory, idAccount, date);
         }
-        public void DeleteFinancialRecord(int idFinancialRecord)
+        public int Update(int idFinancialRecord, string? recordName, decimal? amount, string? description, int? idTransactionType, int? idUser, int? idCategory, int? idSubcategory, int? idAccount, DateTime? date)
         {
-            _deleteFinancialRecordUseCase.DeleteFinancialRecord(idFinancialRecord);
+            return _updateFinancialRecordUseCase.Update(idFinancialRecord, recordName, amount, description, idTransactionType, idUser, idCategory, idSubcategory, idAccount, date);
+        }
+
+        public async Task DeleteAsync(int idFinancialRecord)
+        {
+            await _deleteFinancialRecordUseCase.DeleteAsync(idFinancialRecord);
+        }
+        public void Delete(int idFinancialRecord)
+        {
+            _deleteFinancialRecordUseCase.Delete(idFinancialRecord);
         }
     }
 }

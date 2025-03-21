@@ -7,22 +7,22 @@ namespace MoneyFlow.Application.Services.Abstraction
         Task<(AccountTypeDTO AccountTypeDTO, string Message)> CreateAsyncAccountType(string accountTypeName);
         (AccountTypeDTO AccountTypeDTO, string Message) CreateAccountType(string accountTypeName);
 
-        Task<List<AccountTypeDTO>> GetAllAsyncAccountType();
-        List<AccountTypeDTO> GetAllAccountType();
+        Task<List<AccountTypeDTO>> GetAllAsync();
+        List<AccountTypeDTO> GetAll();
 
-        Task<AccountTypeDTO> GetAsyncAccountType(int idAccountType);
-        AccountTypeDTO GetAccountType(int idAccountType);
+        Task<AccountTypeDTO> GetAsync(int idAccountType);
+        AccountTypeDTO Get(int idAccountType);
 
-        Task<AccountTypeDTO> GetAsyncAccountType(string accountTypeName);
-        AccountTypeDTO GetAccountType(string accountTypeName);
+        Task<AccountTypeDTO> GetAsync(string accountTypeName);
+        AccountTypeDTO Get(string accountTypeName);
 
         Task<UserAccountTypesDTO> GetByIdUserAsync(int idUser);
         UserAccountTypesDTO GetByIdUser(int idUser);
 
-        Task<int> UpdateAsyncAccountType(int idAccountType, string accountTypeName);
-        int UpdateAccountType(int idAccountType, string accountTypeName);
+        Task<int> UpdateAsync(int idAccountType, string accountTypeName);
+        int Update(int idAccountType, string accountTypeName);
 
-        Task DeleteAsyncAccountType(int idAccountType);
-        void DeleteBank(int idAccountType);
+        Task DeleteAsync(int idAccountType);
+        void Delete(int idAccountType);
     }
 }

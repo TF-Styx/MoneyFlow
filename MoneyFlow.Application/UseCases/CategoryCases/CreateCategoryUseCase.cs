@@ -14,7 +14,7 @@ namespace MoneyFlow.Application.UseCases.CategoryCases
             _categoryRepository = categoryRepository;
         }
 
-        public async Task<(CategoryDTO CategoryDTO, string Message)> CreateAsyncCategory(string? categoryName, string? description, string? color, byte[]? image, int idUser)
+        public async Task<(CategoryDTO CategoryDTO, string Message)> CreateAsync(string? categoryName, string? description, string? color, byte[]? image, int idUser)
         {
             var message = string.Empty;
 
@@ -29,7 +29,7 @@ namespace MoneyFlow.Application.UseCases.CategoryCases
 
             return (domain.ToDTO().CategoryDTO, message);
         }
-        public (CategoryDTO CategoryDTO, string Message) CreateCategory(string? categoryName, string? description, string? color, byte[]? image, int idUser)
+        public (CategoryDTO CategoryDTO, string Message) Create(string? categoryName, string? description, string? color, byte[]? image, int idUser)
         {
             var message = string.Empty;
 

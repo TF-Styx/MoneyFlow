@@ -14,7 +14,7 @@ namespace MoneyFlow.Application.UseCases.AccountCases
             _accountRepository = accountRepository;
         }
 
-        public async Task<(AccountDTO AccountDTO, string Message)> CreateAsyncAccount(int? numberAccount, int idUser, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance)
+        public async Task<(AccountDTO AccountDTO, string Message)> CreateAsync(int? numberAccount, int idUser, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance)
         {
             string message = string.Empty;
 
@@ -31,11 +31,11 @@ namespace MoneyFlow.Application.UseCases.AccountCases
             //if (existAccount != null) { return (null, "Пользователь с таким логином уже есть!!"); }
 
             var idAccount = await _accountRepository.CreateAsync(numberAccount, idUser, bankDTO.ToDomain().BankDomain, accountTypeDTO.ToDomain().AccountTypeDomain, balance);
-            var accountDomain = await _accountRepository.GetIdAsync(idAccount);
+            var accountDomain = await _accountRepository.GetAsync(idAccount);
 
             return (accountDomain.ToDTO().AccountDTO, message);
         }
-        public (AccountDTO AccountDTO, string Message) CreateAccount(int? numberAccount, int idUser, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance)
+        public (AccountDTO AccountDTO, string Message) Create(int? numberAccount, int idUser, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance)
         {
             string message = string.Empty;
 
@@ -47,12 +47,12 @@ namespace MoneyFlow.Application.UseCases.AccountCases
                 return (null, "Вы не заполнили поля!!");
             }
 
-            var existAccount = _accountRepository.GetNumber(numberAccount);
+            var existAccount = _accountRepository.Get(numberAccount);
 
             if (existAccount != null) { return (null, "Пользователь с таким логином уже есть!!"); }
 
             var idAccount = _accountRepository.Create(numberAccount, idUser, bankDTO.ToDomain().BankDomain, accountTypeDTO.ToDomain().AccountTypeDomain, balance);
-            var accountDomain = _accountRepository.GetId(idAccount);
+            var accountDomain = _accountRepository.Get(idAccount);
 
             return (accountDomain.ToDTO().AccountDTO, message);
         }

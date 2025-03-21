@@ -14,14 +14,14 @@ namespace MoneyFlow.Application.UseCases.AccountTypeCases
             _accountTypeRepository = accountTypeRepository;
         }
 
-        public async Task<List<AccountTypeDTO>> GetAllAsyncAccountType()
+        public async Task<List<AccountTypeDTO>> GetAllAsync()
         {
             var accountsType = await _accountTypeRepository.GetAllAsync();
             var accountsTypeDTO = accountsType.ToListDTO();
 
             return accountsTypeDTO;
         }
-        public List<AccountTypeDTO> GetAllAccountType()
+        public List<AccountTypeDTO> GetAll()
         {
             var accountsType = _accountTypeRepository.GetAll();
             var accountsTypeDTO = accountsType.ToListDTO();
@@ -29,7 +29,7 @@ namespace MoneyFlow.Application.UseCases.AccountTypeCases
             return accountsTypeDTO;
         }
 
-        public async Task<AccountTypeDTO> GetAsyncAccountType(int idAccountType)
+        public async Task<AccountTypeDTO> GetAsync(int idAccountType)
         {
             var accountType = await _accountTypeRepository.GetAsync(idAccountType);
 
@@ -39,7 +39,7 @@ namespace MoneyFlow.Application.UseCases.AccountTypeCases
 
             return accountsTypeDTO.AccountTypeDTO;
         }
-        public AccountTypeDTO GetAccountType(int idAccountType)
+        public AccountTypeDTO Get(int idAccountType)
         {
             var accountType = _accountTypeRepository.Get(idAccountType);
 
@@ -50,7 +50,7 @@ namespace MoneyFlow.Application.UseCases.AccountTypeCases
             return accountsTypeDTO.AccountTypeDTO;
         }
 
-        public async Task<AccountTypeDTO> GetAsyncAccountType(string accountTypeName)
+        public async Task<AccountTypeDTO> GetAsync(string accountTypeName)
         {
             var accountType = await _accountTypeRepository.GetAsync(accountTypeName);
 
@@ -60,7 +60,7 @@ namespace MoneyFlow.Application.UseCases.AccountTypeCases
 
             return accountsTypeDTO.AccountTypeDTO;
         }
-        public AccountTypeDTO GetAccountType(string accountTypeName)
+        public AccountTypeDTO Get(string accountTypeName)
         {
             var accountType = _accountTypeRepository.Get(accountTypeName);
 

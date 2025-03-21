@@ -25,10 +25,10 @@ namespace MoneyFlow.Domain.DomainModels
         {
             var message = string.Empty;
 
-            if (categoryName.Length > IntConstants.MAX_SUBCATEGORYNAME_LENGHT)
-            {
-                return (null, "Превышена допустимая длина в «255» символов");
-            }
+            //if (categoryName.Length > IntConstants.MAX_SUBCATEGORYNAME_LENGHT)
+            //{
+            //    return (null, "Превышена допустимая длина в «255» символов");
+            //}
 
             var category = new CategoryDomain(idCategory, categoryName, description, color, image, idUser);
 

@@ -1,12 +1,10 @@
-﻿using Microsoft.Win32;
-using MoneyFlow.Application.DTOs;
+﻿using MoneyFlow.Application.DTOs;
 using MoneyFlow.Application.Services.Abstraction;
 using MoneyFlow.Application.UseCaseInterfaces.FinancialRecordViewingInterfaces;
 using MoneyFlow.WPF.Commands;
 using MoneyFlow.WPF.Enums;
 using MoneyFlow.WPF.Interfaces;
 using System.Collections.ObjectModel;
-using System.Drawing.Imaging.Effects;
 using System.Windows;
 
 namespace MoneyFlow.WPF.ViewModels.PageViewModels
@@ -74,6 +72,10 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                 var idCategory = await _categoryService.GetById(SelectedFinancialRecord.IdFinancialRecord);
                 SelectedCategory = Categories.FirstOrDefault(x => x.IdCategory == idCategory);
                 SelectImageCat = SelectedCategory?.Image;
+
+                var idSubcategory = await _subcategoryService.GetById(SelectedFinancialRecord.IdFinancialRecord);
+                SelectedSubcategory = Subcategories.FirstOrDefault(x => x.IdSubcategory == idSubcategory);
+                SelectImageSub = SelectedSubcategory?.Image;
 
                 SelectedAccount = Accounts.FirstOrDefault(x => x.NumberAccount == SelectedFinancialRecord.AccountNumber);
 
@@ -167,9 +169,6 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             set
             {
                 _selectImageCat = value;
-
-                if (value == null) { return; }
-
                 OnPropertyChanged();
             }
         }
@@ -195,9 +194,6 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             set
             {
                 _selectImageSub = value;
-
-                if (value == null) { return; }
-
                 OnPropertyChanged();
             }
         }
@@ -252,21 +248,18 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
         private FinancialRecordDTO _currentSelectedFinancialRecord;
 
-
         private async void GetFinancialRecordById(int idFinancialRecord)
         {
-            _currentSelectedFinancialRecord = await _financialRecordService.GetAsyncFinancialRecord(idFinancialRecord);
-            
-            
+            _currentSelectedFinancialRecord = await _financialRecordService.GetAsync(idFinancialRecord);
 
             RecordName = _currentSelectedFinancialRecord.RecordName;
             Amount = _currentSelectedFinancialRecord.Amount;
             Description = _currentSelectedFinancialRecord.Description;
             SelectedTransactionType = TransactionTypes.FirstOrDefault(x => x.IdTransactionType == _currentSelectedFinancialRecord.IdTransactionType);
             SelectedCategory = Categories.FirstOrDefault(x => x.IdCategory == _currentSelectedFinancialRecord.IdCategory);
-            SelectImageCat = SelectedCategory.Image;
-            //SelectedSubcategory = Subcategories.FirstOrDefault(x => x.IdSubcategory == _currentSelectedFinancialRecord.IdS);
-            //SelectImageSub = SelectedSubcategory.Image;
+            SelectImageCat = SelectedCategory?.Image;
+            SelectedSubcategory = Subcategories.FirstOrDefault(x => x.IdSubcategory == _currentSelectedFinancialRecord.IdSubcategory);
+            SelectImageSub = SelectedSubcategory?.Image;
             SelectedAccount = Accounts.FirstOrDefault(x => x.IdAccount == _currentSelectedFinancialRecord.IdAccount);
             Date = _currentSelectedFinancialRecord.Date;
         }
@@ -337,11 +330,6 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             }
         }
 
-        private async void GetByIdSub()
-        {
-            //var idSub = _subcategoryService.GetAsyncSubcategory();
-        }
-
         #endregion
 
 
@@ -356,7 +344,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         {
             Accounts.Clear();
 
-            var list = await _accountService.GetAllAsyncAccount(CurrentUser.IdUser);
+            var list = await _accountService.GetAllAsync(CurrentUser.IdUser);
 
             foreach (var item in list)
             {
@@ -370,7 +358,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         // ------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-        #region Финансовые записи
+        #region Заполнение финансовых записей
 
         public ObservableCollection<FinancialRecordViewingDTO> FinancialRecords { get; set; } = [];
 
@@ -386,6 +374,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
                 IdTransactionType = SelectedTransactionTypeFilter?.IdTransactionType == 0 ? null : SelectedTransactionTypeFilter?.IdTransactionType,
                 IdCategory = SelectedCategoryFilter?.IdCategory == 0 ? null : SelectedCategoryFilter?.IdCategory,
+                IdSubcategory = SelectedSubcategoryFilter?.IdSubcategory == 0 ? null : SelectedSubcategoryFilter?.IdSubcategory,
                 IdAccount = SelectedAccountFilter?.IdAccount == 0 ? null : SelectedAccountFilter?.IdAccount,
 
                 DateStart = DateStartFilter,
@@ -393,11 +382,13 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                 IsConsiderDate = IsConsiderDate,
             };
 
-            var list = await _getFinancialRecordViewingUseCase.GetAllAsyncFinancialRecordViewing(CurrentUser.IdUser, filter);
+            var list = await _getFinancialRecordViewingUseCase.GetAllViewingAsync(CurrentUser.IdUser, filter);
 
             foreach (var item in list)
             {
                 FinancialRecords.Add(item);
+                var index = FinancialRecords.IndexOf(item);
+                item.Index = index + 1;
             }
         }
 
@@ -414,7 +405,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         {
             get => _financialRecordAddCommand ??= new(async obj =>
             {
-                var newRecord = await _financialRecordService.CreateAsyncFinancialRecord(RecordName, Amount, Description, SelectedTransactionType.IdTransactionType, CurrentUser.IdUser, SelectedCategory.IdCategory, SelectedAccount.IdAccount, Date);
+                var newRecord = await _financialRecordService.CreateAsync(RecordName, Amount, Description, SelectedTransactionType.IdTransactionType, CurrentUser.IdUser, SelectedCategory.IdCategory, SelectedSubcategory.IdSubcategory, SelectedAccount.IdAccount, Date);
 
                 if (newRecord.Message != string.Empty)
                 {
@@ -435,7 +426,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         {
             get => _financialRecordUpdateCommand ??= new(async obj =>
             {
-                var idUpdateRecord = await _financialRecordService.UpdateAsyncFinancialRecord
+                var idUpdateRecord = await _financialRecordService.UpdateAsync
                     (
                         SelectedFinancialRecord.IdFinancialRecord,
                         RecordName,
@@ -444,6 +435,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                         SelectedTransactionType.IdTransactionType,
                         CurrentUser.IdUser,
                         SelectedCategory.IdCategory,
+                        SelectedSubcategory.IdSubcategory,
                         SelectedAccount.IdAccount,
                         Date
                     );
@@ -459,6 +451,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                             x.TransactionTypeName = SelectedTransactionType.TransactionTypeName;
                             x.IdUser = CurrentUser.IdUser;
                             x.CategoryName = SelectedCategory.CategoryName;
+                            x.SubcategoryName = SelectedSubcategory.SubcategoryName;
                             x.AccountNumber = SelectedAccount.NumberAccount;
                             x.Date = Date;
                         });
@@ -468,7 +461,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                 FinancialRecords.RemoveAt(index);
                 FinancialRecords.Insert(index, updateFinancialRecord);
 
-                _navigationPages.TransitObject(PageType.UserPage, updateFinancialRecord, ParameterType.Update);
+                _navigationPages.TransitObject(PageType.UserPage, (updateFinancialRecord, SelectedTransactionType.IdTransactionType), ParameterType.Update);
             });
         }
 
@@ -477,7 +470,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         {
             get => _financialRecordDeleteCommand ??= new(async obj =>
             {
-                await _financialRecordService.DeleteAsyncFinancialRecord(SelectedFinancialRecord.IdFinancialRecord);
+                await _financialRecordService.DeleteAsync(SelectedFinancialRecord.IdFinancialRecord);
 
                 _navigationPages.TransitObject(PageType.UserPage, SelectedFinancialRecord, ParameterType.Delete);
 
@@ -594,6 +587,22 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
                 if (value == null) { return; }
 
+                GetSubcategoryFilter();
+
+                OnPropertyChanged();
+            }
+        }
+
+        private SubcategoryDTO? _selectedSubcategoryFilter;
+        public SubcategoryDTO? SelectedSubcategoryFilter
+        {
+            get => _selectedSubcategoryFilter;
+            set
+            {
+                _selectedSubcategoryFilter = value;
+
+                if (value == null) { return; }
+
                 OnPropertyChanged();
             }
         }
@@ -658,6 +667,8 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
         // ---------------------------------------------------------------------------------------------------------------------------------
 
+        #region Заполнение списка для фильтрации
+
         public ObservableCollection<TransactionTypeDTO> TransactionTypesFilter { get; set; } = [];
         public async Task GetTransactionTypeFilter()
         {
@@ -700,12 +711,31 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             SelectedCategoryFilter = CategoriesFilter.FirstOrDefault();
         }
 
+        public ObservableCollection<SubcategoryDTO> SubcategoriesFilter { get; set; } = [];
+        public async Task GetSubcategoryFilter()
+        {
+            SubcategoriesFilter.Clear();
+
+            var list = _subcategoryService.GetIdUserIdCategorySub(CurrentUser.IdUser, SelectedCategoryFilter.IdCategory);
+
+            foreach (var item in list)
+            {
+                SubcategoriesFilter.Add(item);
+            }
+
+            SubcategoriesFilter.Insert(0, new SubcategoryDTO()
+            {
+                IdSubcategory = 0,
+                SubcategoryName = "<<Не выбрано!!>>",
+            });
+        }
+
         public ObservableCollection<AccountDTO> AccountsFilter { get; set; } = [];
         public async Task GetAccountFilter()
         {
             AccountsFilter.Clear();
 
-            var list = await _accountService.GetAllAsyncAccount(CurrentUser.IdUser);
+            var list = await _accountService.GetAllAsync(CurrentUser.IdUser);
 
             foreach (var item in list)
             {
@@ -721,6 +751,8 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             SelectedAccountFilter = AccountsFilter.FirstOrDefault();
         }
 
+        #endregion
+
         // ---------------------------------------------------------------------------------------------------------------------------------
 
         private RelayCommand _applyCommand;
@@ -735,6 +767,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
                 SelectedTransactionTypeFilter = TransactionTypesFilter.FirstOrDefault();
                 SelectedCategoryFilter = CategoriesFilter.FirstOrDefault();
+                SelectedSubcategoryFilter = SubcategoriesFilter.FirstOrDefault();
                 SelectedAccountFilter = AccountsFilter.FirstOrDefault();
 
                 var (Start, End) = DefaultDate();

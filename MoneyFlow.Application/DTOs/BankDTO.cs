@@ -6,5 +6,7 @@ namespace MoneyFlow.Application.DTOs
     {
         public int IdBank { get; set; }
         public string? BankName { get; set; }
+
+        public int Index { get; set; }
     }
 }

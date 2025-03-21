@@ -28,6 +28,8 @@ namespace MoneyFlow.Application.Mappers
             foreach (var item in userBanks.Banks.ToListDTO())
             {
                 obs.Add(item);
+                var index = obs.IndexOf(item);
+                item.Index = index + 1;
             }
 
             var dto = new UserBanksDTO()

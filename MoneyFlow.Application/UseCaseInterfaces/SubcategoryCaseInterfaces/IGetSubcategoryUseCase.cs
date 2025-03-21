@@ -14,6 +14,8 @@ namespace MoneyFlow.Application.UseCaseInterfaces.SubcategoryCaseInterfaces
         Task<SubcategoryDTO> GetAsyncSubcategory(int idSubcategory);
         SubcategoryDTO GetSubcategory(int idSubcategory);
 
+        Task<int?> GetById(int idFinancialRecord);
+
         Task<SubcategoryDTO> GetAsyncSubcategory(string subcategoryName);
         SubcategoryDTO GetSubcategory(string subcategoryName);
     }

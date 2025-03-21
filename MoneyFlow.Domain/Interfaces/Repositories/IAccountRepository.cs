@@ -10,11 +10,11 @@ namespace MoneyFlow.Domain.Interfaces.Repositories
         Task<List<AccountDomain>> GetAllAsync(int idUser);
         List<AccountDomain> GetAll(int idUser);
 
-        Task<AccountDomain> GetIdAsync(int idAccount);
-        AccountDomain GetId(int idAccount);
+        Task<AccountDomain> GetAsync(int idAccount);
+        AccountDomain Get(int idAccount);
 
-        Task<AccountDomain> GetNumberAsync(int? numberAccount);
-        AccountDomain GetNumber(int? numberAccount);
+        Task<AccountDomain> GetAsync(int? numberAccount);
+        AccountDomain Get(int? numberAccount);
 
         Task<int> UpdateAsync(int idAccount, int? numberAccount, BankDomain bankDomain, AccountTypeDomain accountTypeDomain, decimal? balance);
         int Update(int idAccount, int? numberAccount, BankDomain bankDomain, AccountTypeDomain accountTypeDomain, decimal? balance);

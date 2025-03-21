@@ -19,27 +19,27 @@ namespace MoneyFlow.Application.Services.Realization
             _updateCategoryUseCase = updateCategoryUseCase;
         }
 
-        public async Task<(CategoryDTO CategoryDTO, string Message)> CreateAsyncCategory(string? categoryName, string? description, string? color, byte[]? image, int idUser)
+        public async Task<(CategoryDTO CategoryDTO, string Message)> CreateAsync(string? categoryName, string? description, string? color, byte[]? image, int idUser)
         {
-            return await _createCategoryUseCase.CreateAsyncCategory(categoryName, description, color, image, idUser);
+            return await _createCategoryUseCase.CreateAsync(categoryName, description, color, image, idUser);
         }
-        public (CategoryDTO CategoryDTO, string Message) CreateCategory(string? categoryName, string? description, string? color, byte[]? image, int idUser)
+        public (CategoryDTO CategoryDTO, string Message) Create(string? categoryName, string? description, string? color, byte[]? image, int idUser)
         {
-            return _createCategoryUseCase.CreateCategory(categoryName, description, color, image, idUser);
+            return _createCategoryUseCase.Create(categoryName, description, color, image, idUser);
         }
 
-        public async Task<List<CategoryDTO>> GetAllAsyncCategory()
+        public async Task<List<CategoryDTO>> GetAllAsync()
         {
-            return await _getCategoryUseCase.GetAllAsyncCategory();
+            return await _getCategoryUseCase.GetAllAsync();
         }
         public List<CategoryDTO> GetAllCategory()
         {
             return _getCategoryUseCase.GetAllCategory();
         }
 
-        public int GetIdCat(int idUser)
+        public int GetIdCatByIdUser(int idUser)
         {
-            return _getCategoryUseCase.GetIdCat(idUser);
+            return _getCategoryUseCase.GetIdCatByIdUser(idUser);
         }
         public int GetIdSubCat(int idUser, int idSub)
         {

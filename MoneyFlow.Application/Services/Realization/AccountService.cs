@@ -19,58 +19,58 @@ namespace MoneyFlow.Application.Services.Realization
             _updateAccountUseCase = updateAccountUseCase;
         }
 
-        public async Task<(AccountDTO AccountDTO, string Message)> CreateAsyncAccount(int? numberAccount, int idUser, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance)
+        public async Task<(AccountDTO AccountDTO, string Message)> CreateAsync(int? numberAccount, int idUser, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance)
         {
-            return await _createAccountUseCase.CreateAsyncAccount(numberAccount, idUser, bankDTO, accountTypeDTO, balance);
+            return await _createAccountUseCase.CreateAsync(numberAccount, idUser, bankDTO, accountTypeDTO, balance);
         }
-        public (AccountDTO AccountDTO, string Message) CreateAccount(int? numberAccount, int idUser, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance)
+        public (AccountDTO AccountDTO, string Message) Create(int? numberAccount, int idUser, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance)
         {
-            return _createAccountUseCase.CreateAccount(numberAccount, idUser, bankDTO, accountTypeDTO, balance);
-        }
-
-        public async Task<List<AccountDTO>> GetAllAsyncAccount(int idUser)
-        {
-            return await _getAccountUseCase.GetAllAsyncAccount(idUser);
-        }
-        public List<AccountDTO> GetAllAccount(int idUser)
-        {
-            return _getAccountUseCase.GetAllAccount(idUser);
+            return _createAccountUseCase.Create(numberAccount, idUser, bankDTO, accountTypeDTO, balance);
         }
 
-        public async Task<AccountDTO> GetAsyncAccount(int idAccount)
+        public async Task<List<AccountDTO>> GetAllAsync(int idUser)
         {
-            return await _getAccountUseCase.GetAsyncIdAccount(idAccount);
+            return await _getAccountUseCase.GetAllAsync(idUser);
+        }
+        public List<AccountDTO> GetAll(int idUser)
+        {
+            return _getAccountUseCase.GetAll(idUser);
+        }
+
+        public async Task<AccountDTO> GetAsync(int idAccount)
+        {
+            return await _getAccountUseCase.GetAsync(idAccount);
         }
         public AccountDTO GetAccount(int idAccount)
         {
-            return _getAccountUseCase.GetIdAccount(idAccount);
+            return _getAccountUseCase.Get(idAccount);
         }
 
-        public async Task<AccountDTO> GetAsyncAccount(int? numberAccount)
+        public async Task<AccountDTO> GetAsync(int? numberAccount)
         {
-            return await _getAccountUseCase.GetAsyncAccountNumber(numberAccount);
+            return await _getAccountUseCase.GetAsync(numberAccount);
         }
-        public AccountDTO GetAccount(int? numberAccount)
+        public AccountDTO Get(int? numberAccount)
         {
-            return _getAccountUseCase.GetAccountNumber(numberAccount);
-        }
-
-        public async Task<int> UpdateAsyncAccount(int idAccount, int? numberAccount, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance)
-        {
-            return await _updateAccountUseCase.UpdateAsyncAccount(idAccount, numberAccount, bankDTO, accountTypeDTO, balance);
-        }
-        public int UpdateAccount(int idAccount, int? numberAccount, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance)
-        {
-            return _updateAccountUseCase.UpdateAccount(idAccount, numberAccount, bankDTO, accountTypeDTO, balance);
+            return _getAccountUseCase.Get(numberAccount);
         }
 
-        public async Task DeleteAsyncAccount(int idAccount)
+        public async Task<int> UpdateAsync(int idAccount, int? numberAccount, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance)
         {
-            await _deleteAccountUseCase.DeleteAsyncAccount(idAccount);
+            return await _updateAccountUseCase.UpdateAsync(idAccount, numberAccount, bankDTO, accountTypeDTO, balance);
         }
-        public void DeleteAccount(int idAccount)
+        public int Update(int idAccount, int? numberAccount, BankDTO bankDTO, AccountTypeDTO accountTypeDTO, decimal? balance)
         {
-            _deleteAccountUseCase.DeleteAccount(idAccount);
+            return _updateAccountUseCase.Update(idAccount, numberAccount, bankDTO, accountTypeDTO, balance);
+        }
+
+        public async Task DeleteAsync(int idAccount)
+        {
+            await _deleteAccountUseCase.DeleteAsync(idAccount);
+        }
+        public void Delete(int idAccount)
+        {
+            _deleteAccountUseCase.Delete(idAccount);
         }
     }
 }

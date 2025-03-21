@@ -1,6 +1,5 @@
 ﻿using MoneyFlow.Application.DTOs;
 using MoneyFlow.Domain.DomainModels;
-using System.Collections.ObjectModel;
 
 namespace MoneyFlow.Application.Mappers
 {
@@ -21,6 +20,7 @@ namespace MoneyFlow.Application.Mappers
                 IdTransactionType = financialRecord.IdTransactionType,
                 IdUser = financialRecord.IdUser,
                 IdCategory = financialRecord.IdCategory,
+                IdSubcategory = financialRecord.IdSubcategory,
                 IdAccount = financialRecord.IdAccount,
                 Date = financialRecord.Date,
             };
@@ -46,12 +46,6 @@ namespace MoneyFlow.Application.Mappers
 
             if (financialRecordViewing == null) { return (null, "Данной финансовой записи нет!!"); }
 
-            var subcategoryName = new ObservableCollection<string>();
-            foreach (var item in financialRecordViewing.SubcategoryName)
-            {
-                subcategoryName.Add(item);
-            }
-
             var dto = new FinancialRecordViewingDTO()
             {
                 IdFinancialRecord = financialRecordViewing.IdFinancialRecord,
@@ -61,7 +55,7 @@ namespace MoneyFlow.Application.Mappers
                 TransactionTypeName = financialRecordViewing.TransactionTypeName,
                 IdUser = financialRecordViewing.IdUser,
                 CategoryName = financialRecordViewing.CategoryName,
-                SubcategoryName = subcategoryName,
+                SubcategoryName = financialRecordViewing.SubcategoryName,
                 AccountNumber = financialRecordViewing.AccountNumber,
                 Date = financialRecordViewing.Date,
             };
@@ -90,6 +84,7 @@ namespace MoneyFlow.Application.Mappers
 
                 IdTransactionType = filter.IdTransactionType,
                 IdCategory = filter.IdCategory,
+                IdSubcategory = filter.IdSubcategory,
                 IdAccount = filter.IdAccount,
 
                 DateStart = filter.DateStart,

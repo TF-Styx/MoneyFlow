@@ -14,7 +14,7 @@ namespace MoneyFlow.Application.UseCases.AccountTypeCases
             _accountTypeRepository = accountTypeRepository;
         }
 
-        public async Task<(AccountTypeDTO AccountTypeDTO, string Message)> CreateAsyncAccountType(string accountTypeName)
+        public async Task<(AccountTypeDTO AccountTypeDTO, string Message)> CreateAsync(string accountTypeName)
         {
             string message = string.Empty;
 
@@ -35,7 +35,7 @@ namespace MoneyFlow.Application.UseCases.AccountTypeCases
 
             return (accountTypeDomain.ToDTO().AccountTypeDTO, message);
         }
-        public (AccountTypeDTO AccountTypeDTO, string Message) CreateAccountType(string accountTypeName)
+        public (AccountTypeDTO AccountTypeDTO, string Message) Create(string accountTypeName)
         {
             string message = string.Empty;
 
