@@ -9,9 +9,9 @@ using MoneyFlow.WPF.Interfaces;
 using System.Collections.ObjectModel;
 using System.Windows;
 
-namespace MoneyFlow.WPF.ViewModels.PageViewModels
+namespace MoneyFlow.WPF.ViewModels.WindowViewModels
 {
-    internal class CatAndSubPageVM : BaseViewModel, IUpdatable
+    class CatAndSubWindowVM : BaseViewModel, IUpdatable
     {
         private readonly IAuthorizationService _authorizationService;
         private readonly ICategoryService _categoryService;
@@ -22,7 +22,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
         private readonly INavigationPages _navigationPages;
 
-        public CatAndSubPageVM(IAuthorizationService authorizationService,
+        public CatAndSubWindowVM(IAuthorizationService authorizationService,
                               ICategoryService categoryService,
                               ISubcategoryService subcategoryService,
 
@@ -330,28 +330,27 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
                 if (value == null) { return; }
 
-                if (SelectedCategory == null)
-                {
-                    var idCategory = _categoryService.GetIdSubCat(CurrentUser.IdUser, SelectedSubcategory.IdSubcategory);
+                //if (SelectedCategory == null)
+                //{
+                //    var idCategory = _categoryService.GetIdSubCat(CurrentUser.IdUser, SelectedSubcategory.IdSubcategory);
 
-                    SelectedCategory = Categories.FirstOrDefault(x => x.IdUser == CurrentUser.IdUser && x.IdCategory == idCategory);
+                //    SelectedCategory = Categories.FirstOrDefault(x => x.IdUser == CurrentUser.IdUser && x.IdCategory == idCategory);
 
-                    CategoryName = SelectedCategory.CategoryName;
-                    DescriptionCat = SelectedCategory.Description;
-                    //SelectedColorCat = SelectedCategory.Color;
-                    SelectImageCat = SelectedCategory.Image;
+                //    CategoryName = SelectedCategory.CategoryName;
+                //    DescriptionCat = SelectedCategory.Description;
+                //    //SelectedColorCat = SelectedCategory.Color;
+                //    SelectImageCat = SelectedCategory.Image;
 
-                    SubcategoryName = value.SubcategoryName;
-                    DescriptionSub = value.Description;
-                    //SelectedColorCat = value.Color;
-                    SelectImageSub = value.Image;
+                //    SubcategoryName = value.SubcategoryName;
+                //    DescriptionSub = value.Description;
+                //    //SelectedColorCat = value.Color;
+                //    SelectImageSub = value.Image;
 
-                    GetSubcategoryByIdCategory();
-                }
+                //    GetSubcategoryByIdCategory();
+                //}
 
                 SubcategoryName = value.SubcategoryName;
                 DescriptionSub = value.Description;
-                //SelectedColorCat = value.Color;
                 SelectImageSub = value.Image;
 
                 //GetIdUserIdCategorySubcategory();
@@ -493,23 +492,6 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
                 SelectedSubcategory = null;
 
-            });
-        }
-
-        #endregion
-
-
-        // ------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-        #region Навигация
-
-        private RelayCommand _openProfileUserPageCommand;
-        public RelayCommand OpenProfileUserPageCommand
-        {
-            get => _openProfileUserPageCommand ??= new(obj =>
-            {
-                _navigationPages.OpenPage(PageType.UserPage, FrameType.MainFrame);
             });
         }
 

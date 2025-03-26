@@ -10,7 +10,7 @@ namespace MoneyFlow.WPF.Services
         private Dictionary<WindowType, Window> _windows = [];
         private readonly Dictionary<string, IWindowFactory> _windowFactories = []; // Хранит в себе методы на создание окон и VM
 
-        public NavigationWindows(IEnumerable<IWindowFactory> windowFactories)
+        public NavigationWindows(IEnumerable<IWindowFactory> windowFactories, INavigationPages navigationPages)
         {
             _windowFactories = windowFactories.ToDictionary(f => f.GetType().Name.Replace("Factory", ""), f => f);
         }
@@ -33,7 +33,14 @@ namespace MoneyFlow.WPF.Services
 
         public void TransitObject(WindowType nameWindow, object parameter, ParameterType typeParameter = ParameterType.None)
         {
-            throw new NotImplementedException();
+            if (_windows.TryGetValue(nameWindow, out var window))
+            {
+                if (window.DataContext is IUpdatable viewModel)
+                {
+                    viewModel.Update(parameter, typeParameter);
+                    window.Activate();
+                }
+            }
         }
 
         private void Open(WindowType nameWindow, object parameter = null, ParameterType typeParameter = ParameterType.None)
@@ -45,6 +52,8 @@ namespace MoneyFlow.WPF.Services
                 _windows[nameWindow] = window;
 
                 window.Closed += (c, e) => _windows.Remove(nameWindow);
+                window.StateChanged += MainWindowStateChangeRaised;
+
                 window.Show();
             }
             else

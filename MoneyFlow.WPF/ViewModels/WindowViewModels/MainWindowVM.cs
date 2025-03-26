@@ -20,49 +20,69 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
             
         }
 
+
+        // ---------------------------------------------------------------------------------------------------------------------------------
+
+
+        #region Навигация
+
         private RelayCommand _openAddBaseInformationWindowCommand;
-        public RelayCommand OpenAddBaseInformationWindowCommand 
-        { 
-            get => _openAddBaseInformationWindowCommand ??= new(obj => 
-            { 
-                _navigationWindows.OpenWindow(WindowType.AddBaseInformationWindow); 
-            }); 
-        }
-
-        private RelayCommand _openProfileUserPageCommand;
-        public RelayCommand OpenProfileUserPageCommand
+        public RelayCommand OpenAddBaseInformationWindowCommand
         {
-            get => _openProfileUserPageCommand ??= new(obj =>
+            get => _openAddBaseInformationWindowCommand ??= new(obj =>
             {
-                _navigationPages.OpenPage(PageType.UserPage);
+                _navigationWindows.OpenWindow(WindowType.AddBaseInformationWindow);
             });
         }
 
-        private RelayCommand _openBankPageCommand;
-        public RelayCommand OpenBankPageCommand
-        { 
-            get => _openBankPageCommand ??= new(obj => 
-            {
-                _navigationPages.OpenPage(PageType.BankPage);
-            }); 
-        }
-
-        private RelayCommand _openAccountPageCommand;
-        public RelayCommand OpenAccountPageCommand
+        private RelayCommand _openAccountWindowCommand;
+        public RelayCommand OpenAccountWindowCommand
         {
-            get => _openAccountPageCommand ??= new(obj =>
+            get => _openAccountWindowCommand ??= new(obj =>
             {
-                _navigationPages.OpenPage(PageType.AccountPage);
+                _navigationWindows.OpenWindow(WindowType.AccountWindow);
             });
         }
 
-        private RelayCommand _openAccountTypePageCommand;
-        public RelayCommand OpenAccountTypePageCommand
+        private RelayCommand _openAccountTypeWindowCommand;
+        public RelayCommand OpenAccountTypeWindowCommand
         {
-            get => _openAccountTypePageCommand ??= new(obj =>
+            get => _openAccountTypeWindowCommand ??= new(obj =>
             {
-                _navigationPages.OpenPage(PageType.AccountTypePage);
+                _navigationWindows.OpenWindow(WindowType.AccountTypeWindow);
             });
         }
+
+        private RelayCommand _openBankWindowCommand;
+        public RelayCommand OpenBankWindowCommand
+        {
+            get => _openBankWindowCommand ??= new(obj =>
+            {
+                _navigationWindows.OpenWindow(WindowType.BankWindow);
+            });
+        }
+
+        private RelayCommand _openCatAndSubWindowCommand;
+        public RelayCommand OpenCatAndSubWindowCommand
+        {
+            get => _openCatAndSubWindowCommand ??= new(obj =>
+            {
+                _navigationWindows.OpenWindow(WindowType.CatAndSubWindow);
+            });
+        }
+
+        private RelayCommand _openFinancialRecordWindowCommand;
+        public RelayCommand OpenFinancialRecordWindowCommand
+        {
+            get => _openFinancialRecordWindowCommand ??= new(obj =>
+            {
+                _navigationWindows.OpenWindow(WindowType.FinancialRecordWindow);
+            });
+        }
+
+        #endregion
+
+
+        // ---------------------------------------------------------------------------------------------------------------------------------
     }
 }

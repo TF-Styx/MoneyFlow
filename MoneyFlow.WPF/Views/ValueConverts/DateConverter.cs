@@ -9,7 +9,7 @@ namespace MoneyFlow.WPF.Views.ValueConverts
         {
             if (value is DateTime date)
             {
-                string formattedDate = date.ToString("dddd, d MMMM yyyy г. HH:mm", new CultureInfo("ru-RU"));
+                string formattedDate = date.ToString("dddd, d MMMM yyyy г.", new CultureInfo("ru-RU")); /*"dddd, d MMMM yyyy г. HH:mm"*/
                 return char.ToUpper(formattedDate[0]) + formattedDate.Substring(1);
             }
             return value;

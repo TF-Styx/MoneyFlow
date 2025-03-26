@@ -36,13 +36,13 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                     <Menu WindowChrome.IsHitTestVisibleInChrome="True" Grid.Row="0" VerticalAlignment="Center" Background="Transparent" FontSize="15">
                         <MenuItem Header="Пользователь">
-                            <MenuItem Header="Профиль" Command="{Binding OpenProfileUserPageCommand}"/>
-                            <MenuItem Header="Банки" Command="{Binding OpenBankPageCommand}"/>
-                            <MenuItem Header="Счета" Command="{Binding OpenAccountPageCommand}"/>
-                            <MenuItem Header="Тпы счетов" Command="{Binding OpenAccountTypePageCommand}"/>
-                            <MenuItem Header="Категории / Подкатегории" Command="{Binding OpenCatAndSubPageCommand}"/>
+                            <MenuItem Header="Счета" Command="{Binding OpenAccountWindowCommand}"/>
+                            <MenuItem Header="Тпы счетов" Command="{Binding OpenAccountTypeWindowCommand}"/>
+                            <MenuItem Header="Банки" Command="{Binding OpenBankWindowCommand}"/>
                             <Separator/>
-                            <MenuItem Header="Журнал финансов" Command="{Binding OpenFinancialRecordPageCommand}"/>
+                            <MenuItem Header="Категории / Подкатегории" Command="{Binding OpenCatAndSubWindowCommand}"/>
+                            <Separator/>
+                            <MenuItem Header="Журнал финансов" Command="{Binding OpenFinancialRecordWindowCommand}"/>
                         </MenuItem>
                         <MenuItem Header="Добавить">
                             <MenuItem Header="Основная информация" Command="{Binding OpenAddBaseInformationWindowCommand}"/>

@@ -6,9 +6,9 @@ using MoneyFlow.WPF.Interfaces;
 using System.Collections.ObjectModel;
 using System.Windows;
 
-namespace MoneyFlow.WPF.ViewModels.PageViewModels
+namespace MoneyFlow.WPF.ViewModels.WindowViewModels
 {
-    internal class AccountPageVM : BaseViewModel, IUpdatable
+    class AccountWindowVM : BaseViewModel, IUpdatable
     {
         private readonly IAuthorizationService _authorizationService;
         private readonly IAccountService _accountService;
@@ -17,11 +17,11 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
         private readonly INavigationPages _navigationPages;
 
-        public AccountPageVM(IAuthorizationService authorizationService,
-                             IAccountService accountService,
-                             IAccountTypeService accountTypeService,
-                             IBankService bankService,
-                             INavigationPages navigationPages)
+        public AccountWindowVM(IAuthorizationService authorizationService,
+                               IAccountService accountService,
+                               IAccountTypeService accountTypeService,
+                               IBankService bankService,
+                               INavigationPages navigationPages)
         {
             _authorizationService = authorizationService;
             _accountService = accountService;
@@ -258,25 +258,8 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                 SelectedBank = null;
                 SelectedAccountType = null;
                 Balance = 0;
-                
+
                 Accounts.Remove(SelectedAccount);
-            });
-        }
-
-        #endregion
-
-
-        // ------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-        #region Навигация
-
-        private RelayCommand _openProfileUserPageCommand;
-        public RelayCommand OpenProfileUserPageCommand
-        {
-            get => _openProfileUserPageCommand ??= new(obj =>
-            {
-                _navigationPages.OpenPage(PageType.UserPage, FrameType.MainFrame);
             });
         }
 

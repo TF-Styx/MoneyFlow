@@ -54,12 +54,22 @@ namespace MoneyFlow.WPF
         {
             services.AddTransient<IWindowFactory, AuthWindowFactory>();
             services.AddTransient<IWindowFactory, MainWindowFactory>();
+
+            services.AddTransient<IWindowFactory, AccountWindowFactory>();
+            services.AddTransient<IWindowFactory, AccountTypeWindowFactory>();
+            services.AddTransient<IWindowFactory, BankWindowFactory>();
+            services.AddTransient<IWindowFactory, CatAndSubWindowFactory>();
+            services.AddTransient<IWindowFactory, FinancialRecordWindowFactory>();
+
             services.AddTransient<IWindowFactory, AddBaseInformationWindowFactory>();
+            services.AddTransient<IWindowFactory, InteractionWithDataWindowFactory>();
 
             services.AddTransient<IPageFactory, AccountPageFactory>();
             services.AddTransient<IPageFactory, AccountTypePageFactory>();
             services.AddTransient<IPageFactory, BankPageFactory>();
             services.AddTransient<IPageFactory, CatAndSubPageFactory>();
+            services.AddTransient<IPageFactory, CategoryPageFactory>();
+            services.AddTransient<IPageFactory, SubcategoryPageFactory>();
             services.AddTransient<IPageFactory, FinancialRecordPageFactory>();
             services.AddTransient<IPageFactory, UserPageFactory>();
 
@@ -67,6 +77,12 @@ namespace MoneyFlow.WPF
 
             services.AddTransient<AuthWindowVM>();
             services.AddTransient<MainWindowVM>();
+
+            services.AddTransient<AccountWindowVM>();
+            services.AddTransient<AccountTypeWindowVM>();
+            services.AddTransient<BankWindowVM>();
+            services.AddTransient<CatAndSubWindowVM>();
+            services.AddTransient<FinancialRecordWindowVM>();
             services.AddTransient<AddBaseInformationVM>();
         }
 
@@ -84,6 +100,12 @@ namespace MoneyFlow.WPF
 
             services.AddSingleton<CatAndSubPage>();
             services.AddSingleton<CatAndSubPageVM>();
+
+            services.AddSingleton<CategoryPage>();
+            services.AddSingleton<CategoryPageVM>();
+
+            services.AddSingleton<SubcategoryPage>();
+            services.AddSingleton<SubcategoryPageVM>();
 
             services.AddSingleton<FinancialRecordPage>();
             services.AddSingleton<FinancialRecordPageVM>();

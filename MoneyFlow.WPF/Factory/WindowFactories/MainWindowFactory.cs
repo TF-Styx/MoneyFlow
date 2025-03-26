@@ -24,11 +24,10 @@ namespace MoneyFlow.WPF.Factory.WindowFactories
             viewModel.Update(parameter);
 
             var mainWindow = new MainWindow() { DataContext = viewModel };
-            var mainFrame = (Frame)mainWindow.FindName("MainFrame");
+            var mainFrame = (Frame)mainWindow.FindName(FrameType.MainFrame.ToString());
             
-            _navigationPages.SetFrame(mainFrame);
-            // Пример дефолтной загрузки фрейма 
-            _navigationPages.OpenPage(PageType.UserPage);
+            _navigationPages.RegisterFrame(FrameType.MainFrame, mainFrame);
+            _navigationPages.OpenPage(PageType.UserPage, FrameType.MainFrame);
 
             return mainWindow;
         }

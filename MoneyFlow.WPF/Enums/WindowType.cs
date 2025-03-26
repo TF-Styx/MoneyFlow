@@ -4,6 +4,13 @@
     {
         AuthWindow,
         MainWindow,
-        AddBaseInformationWindow
+
+        AccountWindow,
+        AccountTypeWindow,
+        BankWindow,
+        CatAndSubWindow,
+        FinancialRecordWindow,
+        AddBaseInformationWindow,
+        InteractionWithDataWindow,
     }
 }

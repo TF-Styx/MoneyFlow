@@ -1,25 +1,20 @@
 ﻿using MoneyFlow.Application.DTOs;
 using MoneyFlow.Application.Services.Abstraction;
-using MoneyFlow.WPF.Commands;
 using MoneyFlow.WPF.Enums;
 using MoneyFlow.WPF.Interfaces;
 using System.Collections.ObjectModel;
 
-namespace MoneyFlow.WPF.ViewModels.PageViewModels
+namespace MoneyFlow.WPF.ViewModels.WindowViewModels
 {
-    internal class AccountTypePageVM : BaseViewModel, IUpdatable
+    class AccountTypeWindowVM : BaseViewModel, IUpdatable
     {
         private readonly IAuthorizationService _authorizationService;
         private readonly IAccountTypeService _accountTypeService;
 
-        private readonly INavigationPages _navigationPages;
-
-        public AccountTypePageVM(IAuthorizationService authorizationService, IAccountTypeService accountTypeService, INavigationPages navigationPages)
+        public AccountTypeWindowVM(IAuthorizationService authorizationService, IAccountTypeService accountTypeService)
         {
             _authorizationService = authorizationService;
             _accountTypeService = accountTypeService;
-
-            _navigationPages = navigationPages;
 
             CurrentUser = _authorizationService.CurrentUser;
 
@@ -122,20 +117,6 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                 var index = AccountTypes.IndexOf(item);
                 item.Index = index + 1;
             }
-        }
-
-        #endregion
-
-
-        #region Навигация
-
-        private RelayCommand _openProfileUserPageCommand;
-        public RelayCommand OpenProfileUserPageCommand
-        {
-            get => _openProfileUserPageCommand ??= new(obj =>
-            {
-                _navigationPages.OpenPage(PageType.UserPage, FrameType.MainFrame);
-            });
         }
 
         #endregion

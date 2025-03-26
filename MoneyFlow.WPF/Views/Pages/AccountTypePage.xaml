@@ -87,7 +87,7 @@
                                   SelectedItem="{Binding SelectedAccountType}"
                                   Margin="10">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="IdAccountType" Binding="{Binding Index}"/>
+                                <DataGridTextColumn Binding="{Binding Index}" Width="auto"/>
                                 <DataGridTextColumn Header="AccountTypeName" Binding="{Binding AccountTypeName}" Width="*"/>
                             </DataGrid.Columns>
                         </DataGrid>

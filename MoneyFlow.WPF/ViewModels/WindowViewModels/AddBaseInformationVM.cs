@@ -89,7 +89,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
 
                 Banks.Add(newBank.BankDTO);
 
-                _navigationPages.TransitObject(PageType.BankPage, newBank.BankDTO, ParameterType.Add);
+                _navigationPages.TransitObject(PageType.BankPage, FrameType.MainFrame, newBank.BankDTO, ParameterType.Add);
             });
         }
 
@@ -106,7 +106,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
                 Banks.RemoveAt(index);
                 Banks.Insert(index, updatableBank);
 
-                _navigationPages.TransitObject(PageType.BankPage, updatableBank, ParameterType.Update);
+                _navigationPages.TransitObject(PageType.BankPage, FrameType.MainFrame, updatableBank, ParameterType.Update);
             });
         }
 
@@ -117,7 +117,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
             {
                 await _bankService.DeleteAsync(SelectedBank.IdBank);
 
-                _navigationPages.TransitObject(PageType.BankPage, SelectedBank, ParameterType.Delete);
+                _navigationPages.TransitObject(PageType.BankPage, FrameType.MainFrame, SelectedBank, ParameterType.Delete);
 
                 BankName = string.Empty;
 

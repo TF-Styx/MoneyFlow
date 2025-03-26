@@ -4,275 +4,61 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MoneyFlow.WPF.Views.Pages" 
+      xmlns:dto="clr-namespace:MoneyFlow.Application.DTOs;assembly=MoneyFlow.Application" 
       xmlns:pageviewmodels="clr-namespace:MoneyFlow.WPF.ViewModels.PageViewModels" 
       xmlns:fa="http://schemas.fontawesome.com/icons/"
       d:DataContext="{d:DesignInstance Type=pageviewmodels:FinancialRecordPageVM}"
       mc:Ignorable="d" 
-      d:Width="1000" d:Height="auto"
+      d:Width="400" d:Height="auto"
       Title="FinancialRecordPage"
       Background="White">
 
-    <Border>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="45"/>
-            </Grid.RowDefinitions>
-
-            <!--#region Финансовые записи пользователя -->
-            <Border Grid.Column="0" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="10 10 5 5">
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="10" Direction="300"/>
-                </Border.Effect>
-                <Grid>
-                    <DockPanel>
-                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Center">
-                            <TextBlock Text="Финансовые записи" DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15"/>
-                            <Button x:Name="btnFilter" DockPanel.Dock="Top" HorizontalAlignment="Right" VerticalAlignment="Top" 
-                                        Background="Transparent" BorderThickness="0" 
-                                        Width="25" Height="25" Margin="20 0 0 0"
-                                        Command="{Binding OpenPopupFilterCommand}">
-                                <StackPanel>
-                                    <fa:ImageAwesome Icon="Solid_Filter" Foreground="Gray"/>
-                                    <Popup IsOpen="{Binding IsOpenPopupFilter}" 
-                                               PlacementTarget="{Binding ElementName=btnFilter}"
-                                               Placement="Right" StaysOpen="False" AllowsTransparency="True">
-                                        <Border Width="320" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="5 10 5 5">
-                                            <Border.Effect>
-                                                <DropShadowEffect BlurRadius="10" Direction="300"/>
-                                            </Border.Effect>
-                                            <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                                <DockPanel DockPanel.Dock="Top">
-                                                    <TextBlock Text="Фильтрация" HorizontalAlignment="Center" DockPanel.Dock="Top" FontSize="15"/>
-                                                    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
-                                                        <StackPanel DockPanel.Dock="Top">
-                                                            <DockPanel Margin="0 0 0 20">
-                                                                <DockPanel DockPanel.Dock="Left" VerticalAlignment="Center">
-                                                                    <TextBlock Text="Amount" DockPanel.Dock="Top"/>
-                                                                    <DockPanel Margin="0 5 0 0">
-                                                                        <TextBlock Text="Consider"/>
-                                                                        <CheckBox IsChecked="{Binding IsConsiderAmount}" VerticalAlignment="Center" Margin="5 0 0 0"/>
-                                                                    </DockPanel>
-                                                                </DockPanel>
-                                                                <DockPanel HorizontalAlignment="Right">
-                                                                    <DockPanel DockPanel.Dock="Top">
-                                                                        <TextBlock Text="От" DockPanel.Dock="Left" VerticalAlignment="Center"/>
-                                                                        <TextBox Text="{Binding AmountStartFilter}" 
-                                                                                     HorizontalAlignment="Right"
-                                                                                     Width="150" Height="25"  Margin="5 0 0 0"/>
-                                                                    </DockPanel>
-                                                                    <DockPanel  Margin="0 20 0 0">
-                                                                        <TextBlock Text="До" DockPanel.Dock="Left" VerticalAlignment="Center"/>
-                                                                        <TextBox Text="{Binding AmountEndFilter}" 
-                                                                                     HorizontalAlignment="Right"
-                                                                                     Width="150" Height="25" Margin="5 0 0 0"/>
-                                                                    </DockPanel>
-                                                                </DockPanel>
-                                                            </DockPanel>
-                                                            <DockPanel Margin="0 0 0 10">
-                                                                <TextBlock Text="TransactionType" DockPanel.Dock="Left" VerticalAlignment="Center"/>
-                                                                <ComboBox ItemsSource="{Binding TransactionTypesFilter}" 
-                                                                              SelectedItem="{Binding SelectedTransactionTypeFilter}"
-                                                                              DisplayMemberPath="TransactionTypeName"
-                                                                              HorizontalAlignment="Right"
-                                                                              Width="150" Height="25"/>
-                                                            </DockPanel>
-                                                            <DockPanel Margin="0 0 0 10">
-                                                                <TextBlock Text="Category" DockPanel.Dock="Left" VerticalAlignment="Center"/>
-                                                                <ComboBox ItemsSource="{Binding CategoriesFilter}" 
-                                                                              SelectedItem="{Binding SelectedCategoryFilter}"
-                                                                              DisplayMemberPath="CategoryName"
-                                                                              HorizontalAlignment="Right"
-                                                                              Width="150" Height="25"/>
-                                                            </DockPanel>
-                                                            <DockPanel Margin="0 0 0 10">
-                                                                <TextBlock Text="Subcategory" DockPanel.Dock="Left" VerticalAlignment="Center"/>
-                                                                <ComboBox ItemsSource="{Binding SubcategoriesFilter}" 
-                                                                              SelectedItem="{Binding SelectedSubcategoryFilter}"
-                                                                              DisplayMemberPath="SubcategoryName"
-                                                                              HorizontalAlignment="Right"
-                                                                              Width="150" Height="25"/>
-                                                            </DockPanel>
-                                                            <DockPanel Margin="0 0 0 20">
-                                                                <TextBlock Text="Account" DockPanel.Dock="Left" VerticalAlignment="Center"/>
-                                                                <ComboBox ItemsSource="{Binding AccountsFilter}" 
-                                                                              SelectedItem="{Binding SelectedAccountFilter}"
-                                                                              DisplayMemberPath="NumberAccount"
-                                                                              HorizontalAlignment="Right"
-                                                                              Width="150" Height="25"/>
-                                                            </DockPanel>
-                                                            <DockPanel Margin="0 0 0 20">
-                                                                <DockPanel DockPanel.Dock="Left" VerticalAlignment="Center">
-                                                                    <TextBlock Text="Amount" DockPanel.Dock="Top"/>
-                                                                    <DockPanel Margin="0 5 0 0">
-                                                                        <TextBlock Text="Consider"/>
-                                                                        <CheckBox IsChecked="{Binding IsConsiderDate}" VerticalAlignment="Center" Margin="5 0 0 0"/>
-                                                                    </DockPanel>
-                                                                </DockPanel>
-                                                                <DockPanel HorizontalAlignment="Right">
-                                                                    <DockPanel DockPanel.Dock="Top">
-                                                                        <TextBlock Text="От" DockPanel.Dock="Left" VerticalAlignment="Center"/>
-                                                                        <DatePicker SelectedDate="{Binding DateStartFilter}" 
-                                                                                        HorizontalAlignment="Right"
-                                                                                        Width="150" Height="25"  Margin="5 0 0 0"/>
-                                                                    </DockPanel>
-                                                                    <DockPanel  Margin="0 20 0 0">
-                                                                        <TextBlock Text="До" DockPanel.Dock="Left" VerticalAlignment="Center"/>
-                                                                        <DatePicker SelectedDate="{Binding DateEndFilter}" 
-                                                                                        HorizontalAlignment="Right"
-                                                                                        Width="150" Height="25" Margin="5 0 0 0"/>
-                                                                    </DockPanel>
-                                                                </DockPanel>
-                                                            </DockPanel>
-                                                            <DockPanel Margin="0 0 0 10">
-                                                                <TextBlock Text="Sorting" DockPanel.Dock="Left" VerticalAlignment="Center"/>
-                                                                <ComboBox ItemsSource="{Binding Accounts}" 
-                                                                              SelectedItem="{Binding SelectedAccount}"
-                                                                              DisplayMemberPath="CNumberAccount"
-                                                                              HorizontalAlignment="Right"
-                                                                              Width="150" Height="25"/>
-                                                            </DockPanel>
-
-                                                            <Button Content=" Применить" FontSize="15" Command="{Binding ApplyCommand}"/>
-                                                            <Button Content=" Сбросить фильтр" FontSize="15" Margin="0 10 0 0" Command="{Binding DropCommand}"/>
-                                                        </StackPanel>
-                                                    </DockPanel>
-                                                </DockPanel>
-                                            </DockPanel>
-                                        </Border>
-                                    </Popup>
-                                </StackPanel>
-                            </Button>
-                        </StackPanel>
-                        <DataGrid AutoGenerateColumns="False" 
-                                  IsReadOnly="True"
-                                  GridLinesVisibility="None"
-                                  HeadersVisibility="Column"
-                                  RowHeaderWidth="0"
-                                  SelectionMode="Single" 
-                                  VerticalAlignment="Top"
-                                  ItemsSource="{Binding FinancialRecords}" 
-                                  d:ItemsSource="{d:SampleData ItemCount=15}"
-                                  SelectedItem="{Binding SelectedFinancialRecord}"
-                                  Margin="10">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Binding="{Binding Index}" Width="auto"/>
-
-                                <DataGridTemplateColumn Width="*">
-                                    <DataGridTemplateColumn.HeaderTemplate>
-                                        <DataTemplate>
-                                            <DockPanel>
-                                                <TextBlock Text="RecordName" DockPanel.Dock="Top"/>
-                                                <TextBlock Text="Amount"/>
-                                            </DockPanel>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.HeaderTemplate>
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <DockPanel HorizontalAlignment="Center">
-                                                <TextBlock Text="{Binding RecordName}" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
-                                                <TextBlock Text="{Binding Amount}" HorizontalAlignment="Center"/>
-                                            </DockPanel>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-
-                                <DataGridTemplateColumn Header="Decription" Width="*">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Description}" HorizontalAlignment="Left" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-
-                                <DataGridTemplateColumn Header="Transaction" Width="auto">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding TransactionTypeName, Converter={StaticResource StatusTransactionToIconConverter}}"
-                                                       Foreground="{Binding TransactionTypeName, Converter={StaticResource StatusTransactionToColorConverter}}"
-                                                       HorizontalAlignment="Center" FontSize="20"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-
-                                <DataGridTemplateColumn Width="*">
-                                    <DataGridTemplateColumn.HeaderTemplate>
-                                        <DataTemplate>
-                                            <DockPanel HorizontalAlignment="Center">
-                                                <TextBlock Text="CategoryName" DockPanel.Dock="Top"/>
-                                                <TextBlock Text="SubcategoryName"/>
-                                            </DockPanel>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.HeaderTemplate>
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <DockPanel HorizontalAlignment="Center">
-                                                <TextBlock Text="{Binding CategoryName}" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
-                                                <TextBlock Text="{Binding SubcategoryName}" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
-                                            </DockPanel>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-
-                                <DataGridTextColumn Header="Account" Binding="{Binding AccountNumber}" Width="auto"/>
-                                <DataGridTextColumn Header="Date" Binding="{Binding Date, Converter={StaticResource DateConverter}}" Width="*"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </DockPanel>
-                </Grid>
-            </Border>
-            <!--#endregion-->
-
-            <!--#region Информация о финансовой записе -->
-            <Border Grid.Column="1" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="5 10 10 5">
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="10" Direction="300"/>
-                </Border.Effect>
-                <ScrollViewer>
-                    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                        <TextBlock Text="Информация о финансовой записе" HorizontalAlignment="Center" DockPanel.Dock="Top" FontSize="15"/>
-                        <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
-                            <!--#region Поля -->
-                            <StackPanel DockPanel.Dock="Top">
-                                <DockPanel Margin="0 0 0 5">
-                                    <TextBlock Text="RecordName" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
-                                    <TextBox Text="{Binding RecordName}" d:Text="RecordName"/>
-                                </DockPanel>
-                                <DockPanel Margin="0 0 0 5">
-                                    <TextBlock Text="Amount" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
-                                    <TextBox Text="{Binding Amount}" d:Text="12342"/>
-                                </DockPanel>
-                                <DockPanel Margin="0 5 0 5">
-                                    <TextBlock Text="Description" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
-                                    <TextBox Text="{Binding Description}" d:Text="Что-то очень заумное" TextWrapping="Wrap" Height="200"/>
-                                </DockPanel>
-                                <DockPanel Margin="0 5 0 5">
-                                    <TextBlock Text="TransactionType" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
-                                    <ComboBox ItemsSource="{Binding TransactionTypes}"
+    <!--#region Информация о финансовой записе -->
+    <Border Grid.Column="1" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="5">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="10" Direction="300"/>
+        </Border.Effect>
+        <ScrollViewer>
+            <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <TextBlock Text="Информация о финансовой записе" HorizontalAlignment="Center" DockPanel.Dock="Top" FontSize="15"/>
+                <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10">
+                    <!--#region Поля -->
+                    <StackPanel DockPanel.Dock="Top">
+                        <DockPanel Margin="0 0 0 5">
+                            <TextBlock Text="RecordName" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                            <TextBox Text="{Binding RecordName}" d:Text="RecordName"/>
+                        </DockPanel>
+                        <DockPanel Margin="0 0 0 5">
+                            <TextBlock Text="Amount" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                            <TextBox Text="{Binding Amount}" d:Text="12342"/>
+                        </DockPanel>
+                        <DockPanel Margin="0 5 0 5">
+                            <TextBlock Text="Description" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                            <TextBox Text="{Binding Description}" d:Text="Что-то очень заумное" TextWrapping="Wrap" MaxHeight="200"/>
+                        </DockPanel>
+                        <DockPanel Margin="0 5 0 5">
+                            <TextBlock Text="TransactionType" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                            <ComboBox ItemsSource="{Binding TransactionTypes}"
                                           SelectedItem="{Binding SelectedTransactionType}"
                                           DisplayMemberPath="TransactionTypeName"/>
-                                </DockPanel>
-                                <DockPanel Margin="0 5 0 0">
-                                    <TextBlock Text="Categories" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
-                                    <ComboBox ItemsSource="{Binding Categories}" 
-                                      SelectedItem="{Binding SelectedCategory}" 
+                        </DockPanel>
+                        <DockPanel Margin="0 5 0 0">
+                            <TextBlock Text="Categories" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                            <ComboBox ItemsSource="{Binding Categories}" 
+                                      SelectedItem="{Binding SelectedCategory}"
                                       DisplayMemberPath="CategoryName"/>
-                                </DockPanel>
-                                <DockPanel Margin="0 5 0 0">
-                                    <TextBlock Text="Image Category" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
-                                    <!--#region Категория -->
-                                    <DockPanel HorizontalAlignment="Center">
-                                        <Border BorderBrush="Black" BorderThickness="1">
-                                            <StackPanel>
-                                                <Border BorderThickness="0 0 0 1" BorderBrush="Black">
-                                                    <!--BorderThickness="0 0 0 2"-->
-                                                    <Image Source="{Binding SelectImageCat}" MinWidth="100" MinHeight="100" Margin="5"/>
-                                                </Border>
-                                                <!--<WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 2 0 4">
+                        </DockPanel>
+                        <DockPanel Margin="0 5 0 0">
+                            <TextBlock Text="Image Category" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                            <!--#region Категория -->
+                            <DockPanel HorizontalAlignment="Center">
+                                <Border BorderBrush="Black" BorderThickness="1">
+                                    <StackPanel>
+                                        <Border BorderThickness="0 0 0 1" BorderBrush="Black">
+                                            <!--BorderThickness="0 0 0 2"-->
+                                            <Image Source="{Binding SelectImageCat}" MinWidth="100" MaxWidth="200" MinHeight="100" MaxHeight="200" Margin="5"/>
+                                        </Border>
+                                        <!--<WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 2 0 4">
                                                     <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Left" Command="{Binding SelectedImageCatCommand}">
                                                         <fa:ImageAwesome Icon="Regular_FileImage" Width="10" Foreground="#FF3053C2"/>
                                                     </Button>
@@ -280,72 +66,65 @@
                                                         <fa:ImageAwesome Icon="Solid_TrashAlt" Width="10" Foreground="#FFDD3D3D"/>
                                                     </Button>
                                                 </WrapPanel>-->
-                                            </StackPanel>
-                                        </Border>
-                                    </DockPanel>
-                                    <!--#endregion-->
-                                </DockPanel>
-                                <DockPanel Margin="0 5 0 0">
-                                    <TextBlock Text="Subcategories" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
-                                    <ComboBox ItemsSource="{Binding Subcategories}" 
-                                      SelectedItem="{Binding SelectedSubcategory}" 
-                                      DisplayMemberPath="SubcategoryName"/>
-                                </DockPanel>
-                                <DockPanel Margin="0 5 0 0">
-                                    <TextBlock Text="Image Subcategory" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
-                                    <!--#region Подкатегория -->
-                                    <DockPanel HorizontalAlignment="Center">
-                                        <Border BorderBrush="Black" BorderThickness="1">
-                                            <StackPanel>
-                                                <Border BorderThickness="0 0 0 1" BorderBrush="Black">
-                                                    <!--BorderThickness="0 0 0 2"-->
-                                                    <Image Source="{Binding SelectImageSub}" MinWidth="100" MinHeight="100" Margin="5"/>
-                                                </Border>
-                                                <!--<WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 2 0 4">
-                                                    <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Left" Command="{Binding SelectedImageCatCommand}">
-                                                        <fa:ImageAwesome Icon="Regular_FileImage" Width="10" Foreground="#FF3053C2"/>
-                                                    </Button>
-                                                    <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Right" Margin="10 0 0 0" Command="{Binding ClearImageCatCommand}">
-                                                        <fa:ImageAwesome Icon="Solid_TrashAlt" Width="10" Foreground="#FFDD3D3D"/>
-                                                    </Button>
-                                                </WrapPanel>-->
-                                            </StackPanel>
-                                        </Border>
-                                    </DockPanel>
-                                    <!--#endregion-->
-                                </DockPanel>
-                                <DockPanel Margin="0 5 0 0">
-                                    <TextBlock Text="Accounts" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
-                                    <ComboBox ItemsSource="{Binding Accounts}" 
-                                      SelectedItem="{Binding SelectedAccount}" 
-                                      DisplayMemberPath="NumberAccount"/>
-                                </DockPanel>
-                                <DockPanel Margin="0 5 0 0">
-                                    <TextBlock Text="Date" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
-                                    <DatePicker SelectedDate="{Binding Date}" 
-                                                ToolTip="Если хотите точное время, то запишите его после даты в таком формате число.месяц.год час:минуты:секунды (секунды не обязательны)"/>
-                                </DockPanel>
-                            </StackPanel>
-                            <!--#endregion-->
-
-                            <!--#region Кнопки управления финансовыми записями -->
-                            <StackPanel VerticalAlignment="Bottom">
-                                <Button Content="Добавить финаносвую запись" Command="{Binding FinancialRecordAddCommand}" Height="30" Margin="0 10 0 5"/>
-                                <Button Content="Изменить финаносвую запись" Command="{Binding FinancialRecordUpdateCommand}" Height="30" Margin="0 5 0 5"/>
-                                <Button Content="Удалить финаносвую запись" Command="{Binding FinancialRecordDeleteCommand}" Height="30" Margin="0 5 0 0"/>
-                            </StackPanel>
+                                    </StackPanel>
+                                </Border>
+                            </DockPanel>
                             <!--#endregion-->
                         </DockPanel>
-                    </DockPanel>
-                </ScrollViewer>
-            </Border>
-            <!--#endregion-->
+                        <DockPanel Margin="0 5 0 0">
+                            <TextBlock Text="Subcategories" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                            <ComboBox ItemsSource="{Binding Subcategories}" 
+                                      SelectedItem="{Binding SelectedSubcategory}" 
+                                      DisplayMemberPath="SubcategoryName"/>
+                        </DockPanel>
+                        <DockPanel Margin="0 5 0 0">
+                            <TextBlock Text="Image Subcategory" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                            <!--#region Подкатегория -->
+                            <DockPanel HorizontalAlignment="Center">
+                                <Border BorderBrush="Black" BorderThickness="1">
+                                    <StackPanel>
+                                        <Border BorderThickness="0 0 0 1" BorderBrush="Black">
+                                            <!--BorderThickness="0 0 0 2"-->
+                                            <Image Source="{Binding SelectImageSub}" MinWidth="100" MaxWidth="200" MinHeight="100" MaxHeight="200" Margin="5"/>
+                                        </Border>
+                                        <!--<WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 2 0 4">
+                                                    <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Left" Command="{Binding SelectedImageCatCommand}">
+                                                        <fa:ImageAwesome Icon="Regular_FileImage" Width="10" Foreground="#FF3053C2"/>
+                                                    </Button>
+                                                    <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Right" Margin="10 0 0 0" Command="{Binding ClearImageCatCommand}">
+                                                        <fa:ImageAwesome Icon="Solid_TrashAlt" Width="10" Foreground="#FFDD3D3D"/>
+                                                    </Button>
+                                                </WrapPanel>-->
+                                    </StackPanel>
+                                </Border>
+                            </DockPanel>
+                            <!--#endregion-->
+                        </DockPanel>
+                        <DockPanel Margin="0 5 0 0">
+                            <TextBlock Text="Accounts" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                            <ComboBox ItemsSource="{Binding Accounts}" 
+                                      SelectedItem="{Binding SelectedAccount}" 
+                                      DisplayMemberPath="NumberAccount"/>
+                        </DockPanel>
+                        <DockPanel Margin="0 5 0 0">
+                            <TextBlock Text="Date" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
+                            <DatePicker SelectedDate="{Binding Date}" 
+                                                ToolTip="Если хотите точное время, то запишите его после даты в таком формате число.месяц.год час:минуты:секунды (секунды не обязательны)"/>
+                        </DockPanel>
+                    </StackPanel>
+                    <!--#endregion-->
 
-            <!--#region Навигация -->
-            <Button Grid.Column="1" Grid.Row="1" Content="Назад" Width="100" Height="25" 
-                    HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10"
-                    Command="{Binding OpenProfileUserPageCommand}"/>
-            <!--#endregion-->
-        </Grid>
+                    <!--#region Кнопки управления финансовыми записями -->
+                    <StackPanel VerticalAlignment="Bottom">
+                        <Button Content="Добавить финаносвую запись" Command="{Binding FinancialRecordAddCommand}" Height="30" Margin="0 10 0 5"/>
+                        <Button Content="Изменить финаносвую запись" Command="{Binding FinancialRecordUpdateCommand}" Height="30" Margin="0 5 0 5"/>
+                        <Button Content="Удалить финаносвую запись" Command="{Binding FinancialRecordDeleteCommand}" Height="30" Margin="0 5 0 0"/>
+                    </StackPanel>
+                    <!--#endregion-->
+                </DockPanel>
+            </DockPanel>
+        </ScrollViewer>
     </Border>
+    <!--#endregion-->
+
 </Page>

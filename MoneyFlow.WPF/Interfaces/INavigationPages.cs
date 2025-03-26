@@ -5,8 +5,8 @@ namespace MoneyFlow.WPF.Interfaces
 {
     internal interface INavigationPages
     {
-        void OpenPage(PageType namePage, object parameter = null, ParameterType parameterType = ParameterType.None);
-        void TransitObject(PageType pageName, object parameter = null, ParameterType parameterType = ParameterType.None);
-        void SetFrame(Frame frame);
+        void OpenPage(PageType namePage, FrameType frameName, object parameter = null, ParameterType parameterType = ParameterType.None);
+        void TransitObject(PageType pageName, FrameType frameName, object parameter = null, ParameterType parameterType = ParameterType.None);
+        void RegisterFrame(FrameType frameName, Frame frame);
     }
 }

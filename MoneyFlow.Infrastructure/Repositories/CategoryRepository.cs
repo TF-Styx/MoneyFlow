@@ -108,7 +108,7 @@ namespace MoneyFlow.Infrastructure.Repositories
                 return idSubcategory;
             }
         }
-        
+
         //public async Task<CategoryDomain> GetIdCatAsync(int idUser)
         //{
         //    using (var context = _factory())

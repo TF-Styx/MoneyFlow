@@ -98,7 +98,7 @@
                                     <TextBlock Text="Подкатегории" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0 10 0 0">
                                         <TextBlock Text="Поиск: " FontSize="15" VerticalAlignment="Center"/>
-                                        <TextBox Text="{Binding SearchSub}" Width="200" HorizontalAlignment="Right" Margin="20 0 0 0" />
+                                        <TextBox Text="{Binding SearchSub}" Width="200" HorizontalAlignment="Right" Margin="0 0 0 0" />
                                     </DockPanel>
                                 </StackPanel>
                                 
@@ -152,7 +152,7 @@
                                     </DockPanel>
                                     <DockPanel Margin="0 5 0 5">
                                         <TextBlock Text="Description" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
-                                        <TextBox Text="{Binding DescriptionCat}" d:Text="Что-то очень заумное" TextWrapping="Wrap" Height="200"/>
+                                        <TextBox Text="{Binding DescriptionCat}" d:Text="Что-то очень заумное" TextWrapping="Wrap" MaxHeight="200"/>
                                     </DockPanel>
                                     <DockPanel Margin="0 5 0 0">
                                         <TextBlock Text="Image Category" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
@@ -162,7 +162,7 @@
                                                 <StackPanel>
                                                     <Border BorderThickness="0 0 0 1" BorderBrush="Black">
                                                         <!--BorderThickness="0 0 0 2"-->
-                                                        <Image Source="{Binding SelectImageCat}" MinWidth="100" MaxWidth="250" MinHeight="100" MaxHeight="250" Margin="5"/>
+                                                        <Image Source="{Binding SelectImageCat}" MinWidth="100" MaxWidth="200" MinHeight="100" MaxHeight="200" Margin="5"/>
                                                     </Border>
                                                     <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 2 0 4">
                                                         <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Left" Command="{Binding SelectedImageCatCommand}">
@@ -219,7 +219,7 @@
                                     </DockPanel>
                                     <DockPanel Margin="0 5 0 5">
                                         <TextBlock Text="Description" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
-                                        <TextBox Text="{Binding DescriptionSub}" d:Text="Что-то очень заумное" TextWrapping="Wrap" Height="200"/>
+                                        <TextBox Text="{Binding DescriptionSub}" d:Text="Что-то очень заумное" TextWrapping="Wrap" MaxHeight="200"/>
                                     </DockPanel>
                                     <DockPanel Margin="0 5 0 0">
                                         <TextBlock Text="Image Subcategory" DockPanel.Dock="Top" HorizontalAlignment="Center"/>
@@ -229,7 +229,7 @@
                                                 <StackPanel>
                                                     <Border BorderThickness="0 0 0 1" BorderBrush="Black">
                                                         <!--BorderThickness="0 0 0 2"-->
-                                                        <Image Source="{Binding SelectImageSub}" MinWidth="100" MaxWidth="250" MinHeight="100" MaxHeight="250" Margin="5"/>
+                                                        <Image Source="{Binding SelectImageSub}" MinWidth="100" MaxWidth="200" MinHeight="100" MaxHeight="200" Margin="5"/>
                                                     </Border>
                                                     <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 2 0 4">
                                                         <Button Background="#00DDDDDD" BorderBrush="#00707070" HorizontalAlignment="Left" Command="{Binding SelectedImageSubCommand}">

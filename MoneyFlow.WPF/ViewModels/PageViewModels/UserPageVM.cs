@@ -4,10 +4,7 @@ using MoneyFlow.Application.UseCaseInterfaces.FinancialRecordViewingInterfaces;
 using MoneyFlow.WPF.Commands;
 using MoneyFlow.WPF.Enums;
 using MoneyFlow.WPF.Interfaces;
-using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
 
 namespace MoneyFlow.WPF.ViewModels.PageViewModels
 {
@@ -25,6 +22,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         private readonly IGetFinancialRecordViewingUseCase _getFinancialRecordViewingUseCase;
 
         private readonly INavigationPages _navigationPages;
+        private readonly INavigationWindows _navigationWindows;
 
         public UserPageVM(IAuthorizationService authorizationService, 
                           IAccountService accountService, 
@@ -36,7 +34,8 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                           ITransactionTypeService transactionTypeService,
                           IFinancialRecordService financialRecordService, 
                           IGetFinancialRecordViewingUseCase getFinancialRecordViewingUseCase,
-                          INavigationPages navigationPages)
+                          INavigationPages navigationPages,
+                          INavigationWindows navigationWindows)
         {
             _authorizationService = authorizationService;
             _accountService = accountService;
@@ -50,12 +49,10 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             _getFinancialRecordViewingUseCase = getFinancialRecordViewingUseCase;
 
             _navigationPages = navigationPages;
+            _navigationWindows = navigationWindows;
 
             CurrentUser = _authorizationService.CurrentUser;
             UserTotalInfo = _userService.GetUserInfo(CurrentUser.IdUser);
-
-            //GetAccountType();
-            //GetBank();
 
             GetAccount();
             GetUserAccountTypes();
@@ -421,6 +418,8 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             {
                 _selectedCategory = value;
 
+                if (value == null) { return; }
+
                 GetIdUserIdCategorySubcategory();
 
                 OnPropertyChanged();
@@ -512,8 +511,8 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             }
         }
 
-        ////private RelayCommand _userSubcategoryTypeDoubleClickCommand;
-        //public RelayCommand UserSubcategoryTypeDoubleClickCommand => _userSubcategoryTypeDoubleClickCommand ??= new RelayCommand(DoubleClick);
+        private RelayCommand _userSubcategoryTypeDoubleClickCommand;
+        public RelayCommand UserSubcategoryTypeDoubleClickCommand => _userSubcategoryTypeDoubleClickCommand ??= new RelayCommand(DoubleClick);
 
         #endregion
 
@@ -561,6 +560,8 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             foreach (var item in list)
             {
                 FinancialRecords.Add(item);
+                var index = FinancialRecords.IndexOf(item);
+                item.Index = index + 1;
             }
         }
 
@@ -579,74 +580,74 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         {
             if (parameter is AccountDTO account)
             {
-                _navigationPages.OpenPage(PageType.AccountPage, account);
+                _navigationWindows.OpenWindow(WindowType.AccountWindow, account);
             }
             if (parameter is AccountTypeDTO accountType)
             {
-                _navigationPages.OpenPage(PageType.AccountTypePage, accountType);
+                _navigationWindows.OpenWindow(WindowType.AccountTypeWindow, accountType);
             }
             if (parameter is BankDTO bank)
             {
-                _navigationPages.OpenPage(PageType.BankPage, bank);
+                _navigationWindows.OpenWindow(WindowType.BankWindow, bank);
             }
             if (parameter is CategoryDTO category)
             {
-                _navigationPages.OpenPage(PageType.CatAndSubPage, category);
+                _navigationWindows.OpenWindow(WindowType.CatAndSubWindow, category);
             }
-            //if (parameter is SubcategoryDTO subcategory)
-            //{
-            //    _navigationPages.OpenPage(PageType.CatAndSubPage, subcategory);
-            //}
+            if (parameter is SubcategoryDTO subcategory)
+            {
+                _navigationWindows.OpenWindow(WindowType.CatAndSubWindow, subcategory);
+            }
             if (parameter is FinancialRecordViewingDTO financialRecordViewing)
             {
-                _navigationPages.OpenPage(PageType.FinancialRecordPage, financialRecordViewing);
+                _navigationWindows.OpenWindow(WindowType.FinancialRecordWindow, financialRecordViewing);
             }
         }
 
         // ---------------------------------------------------------------------------------------------------------------------------------
 
-        private RelayCommand _openBankPageCommand;
-        public RelayCommand OpenBankPageCommand
+        private RelayCommand _openAccountWindowCommand;
+        public RelayCommand OpenAccountWindowCommand
         {
-            get => _openBankPageCommand ??= new(obj =>
+            get => _openAccountWindowCommand ??= new(obj =>
             {
-                _navigationPages.OpenPage(PageType.BankPage);
+                _navigationWindows.OpenWindow(WindowType.AccountWindow);
             });
         }
 
-        private RelayCommand _openAccountPageCommand;
-        public RelayCommand OpenAccountPageCommand
+        private RelayCommand _openAccountTypeWindowCommand;
+        public RelayCommand OpenAccountTypeWindowCommand
         {
-            get => _openAccountPageCommand ??= new(obj =>
+            get => _openAccountTypeWindowCommand ??= new(obj =>
             {
-                _navigationPages.OpenPage(PageType.AccountPage);
+                _navigationWindows.OpenWindow(WindowType.AccountTypeWindow);
             });
         }
 
-        private RelayCommand _openAccountTypePageCommand;
-        public RelayCommand OpenAccountTypePageCommand
+        private RelayCommand _openBankWindowCommand;
+        public RelayCommand OpenBankWindowCommand
         {
-            get => _openAccountTypePageCommand ??= new(obj =>
+            get => _openBankWindowCommand ??= new(obj =>
             {
-                _navigationPages.OpenPage(PageType.AccountTypePage);
+                _navigationWindows.OpenWindow(WindowType.BankWindow);
             });
         }
 
-        private RelayCommand _openCatAndSubPageCommand;
-        public RelayCommand OpenCatAndSubPageCommand
+        private RelayCommand _openCatAndSubWindowCommand;
+        public RelayCommand OpenCatAndSubWindowCommand
         {
-            get => _openCatAndSubPageCommand ??= new(obj =>
+            get => _openCatAndSubWindowCommand ??= new(obj =>
             {
-                _navigationPages.OpenPage(PageType.CatAndSubPage);
+                _navigationWindows.OpenWindow(WindowType.CatAndSubWindow);
             });
         }
 
-        private RelayCommand _openFinancialRecordPageCommand;
-        public RelayCommand OpenFinancialRecordPageCommand
+        private RelayCommand _openFinancialRecordWindowCommand;
+        public RelayCommand OpenFinancialRecordWindowCommand
         {
-            get => _openFinancialRecordPageCommand ??= new(obj =>
+            get => _openFinancialRecordWindowCommand ??= new(obj =>
             {
-                _navigationPages.OpenPage(PageType.FinancialRecordPage);
+                _navigationWindows.OpenWindow(WindowType.FinancialRecordWindow);
             });
         }
 
