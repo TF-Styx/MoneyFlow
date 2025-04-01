@@ -2,7 +2,8 @@
 {
     public interface IDeleteFinancialRecordUseCase
     {
-        Task DeleteAsync(int idFinancialRecord);
-        void Delete(int idFinancialRecord);
+        Task<List<int>> DeleteListAsync(int id, bool isDeleteByIdCategory);
+        Task<int> DeleteAsync(int idFinancialRecord);
+        int Delete(int idFinancialRecord);
     }
 }

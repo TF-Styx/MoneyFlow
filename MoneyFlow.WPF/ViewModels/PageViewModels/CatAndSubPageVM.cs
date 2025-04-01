@@ -265,7 +265,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         {
             get => _categoryDeleteCommand ??= new(async obj =>
             {
-                await _categoryService.DeleteAsyncCategory(SelectedCategory.IdCategory);
+                //await _categoryService.DeleteAsyncCategory(SelectedCategory.IdCategory);
 
                 Categories.Remove(SelectedCategory);
 
@@ -482,16 +482,23 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         {
             get => _subcategoryDeleteCommand ??= new(async obj =>
             {
-                await _subcategoryService.DeleteAsyncSubcategory(SelectedSubcategory.IdSubcategory);
+                var message = await _subcategoryService.ExistRelatedDataAsync(SelectedSubcategory.IdSubcategory);
 
-                Subcategories.Remove(SelectedSubcategory);
+                if (message != null)
+                {
+                    if (MessageBox.Show(message) == MessageBoxResult.OK)
+                    {
+                        //await _subcategoryService.DeleteAsyncSubcategory(CurrentUser.IdUser, SelectedSubcategory.IdSubcategory);
 
-                SubcategoryName = string.Empty;
-                DescriptionSub = string.Empty;
-                //SelectedColorCat = null;
-                SelectImageSub = null;
+                        Subcategories.Remove(SelectedSubcategory);
 
-                SelectedSubcategory = null;
+                        SubcategoryName = string.Empty;
+                        DescriptionSub = string.Empty;
+                        SelectImageSub = null;
+
+                        SelectedSubcategory = null;
+                    }
+                }
 
             });
         }

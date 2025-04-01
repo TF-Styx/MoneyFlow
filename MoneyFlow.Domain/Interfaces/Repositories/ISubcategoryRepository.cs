@@ -25,7 +25,9 @@ namespace MoneyFlow.Domain.Interfaces.Repositories
         Task<int> UpdateAsync(int idSubcategory, string? subcategoryName, string? description, byte[]? image);
         int Update(int idSubcategory, string? subcategoryName, string? description, byte[]? image);
 
-        Task DeleteAsync(int idSubcategory);
-        void Delete(int idSubcategory);
+        Task<(bool catLinkSub, bool financialRecord)> ExistRelatedDataAsync(int idSubcategory);
+
+        Task<List<int>> DeleteAsync(int idSubcategory);
+        List<int> Delete(int idSubcategory);
     }
 }

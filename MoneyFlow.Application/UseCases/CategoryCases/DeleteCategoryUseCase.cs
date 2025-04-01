@@ -6,19 +6,53 @@ namespace MoneyFlow.Application.UseCases.CategoryCases
     public class DeleteCategoryUseCase : IDeleteCategoryUseCase
     {
         private readonly ICategoryRepository _categoryRepository;
+        private readonly ICatLinkSubRepository _catLinkSubRepository;
+        private readonly IFinancialRecordRepository _financialRecordRepository;
 
-        public DeleteCategoryUseCase(ICategoryRepository categoryRepository)
+        public DeleteCategoryUseCase(ICategoryRepository categoryRepository, ICatLinkSubRepository catLinkSubRepository, IFinancialRecordRepository financialRecordRepository)
         {
             _categoryRepository = categoryRepository;
+            _catLinkSubRepository = catLinkSubRepository;
+            _financialRecordRepository = financialRecordRepository;
         }
 
-        public async Task DeleteAsyncCategory(int idCategory)
+        public async Task<string?> ExistRelatedDataAsync(int idCategory)
         {
-            await _categoryRepository.DeleteAsync(idCategory);
+            string? messageFinancialRecord = null;
+
+            var (idUsedCatLinkSub, idUsedFinancialRecord) = await _categoryRepository.ExistRelatedDataAsync(idCategory);
+
+            if (idUsedFinancialRecord)
+            {
+                messageFinancialRecord = "У вас есть связанные данные!!\nХотите их удалить?";
+            }
+
+            return messageFinancialRecord;
         }
-        public void DeleteCategory(int idCategory)
+
+        public async Task<int?> DeleteAsync(int idUser, int id, bool isDeleteByIdCategory)
         {
-            _categoryRepository.Delete(idCategory);
+            int? idReturn = null;
+
+            var (idUsedCatLinkSub, idUsedFinancialRecord) = await _categoryRepository.ExistRelatedDataAsync(id);
+
+            if (idUsedCatLinkSub && !idUsedFinancialRecord)
+            {
+                await _catLinkSubRepository.DeleteAsync(idUser, id, isDeleteByIdCategory);
+                idReturn = await _categoryRepository.DeleteAsync(id);
+            }
+            else if (idUsedFinancialRecord && idUsedCatLinkSub)
+            {
+                await _catLinkSubRepository.DeleteAsync(idUser, id, isDeleteByIdCategory);
+                await _financialRecordRepository.DeleteListAsync(id, isDeleteByIdCategory);
+                idReturn = await _categoryRepository.DeleteAsync(id);
+            }
+
+            return idReturn;
+        }
+        public int? Delete(int idUser, int idCategory, bool isDeleteByIdCategory)
+        {
+            return Task.Run(() => DeleteAsync(idUser, idCategory, isDeleteByIdCategory)).Result;
         }
     }
 }

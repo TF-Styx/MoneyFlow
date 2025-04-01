@@ -79,13 +79,18 @@ namespace MoneyFlow.Application.Services.Realization
             return _updateSubcategoryUseCase.UpdateSubcategory(idSubcategory, subcategoryName, description, image);
         }
 
-        public async Task DeleteAsyncSubcategory(int idSubcategory)
+        public async Task<string?> ExistRelatedDataAsync(int idSubcategory)
         {
-            await _deleteSubcategoryUseCase.DeleteAsync(idSubcategory);
+            return await _deleteSubcategoryUseCase.ExistRelatedDataAsync(idSubcategory);
         }
-        public void DeleteSubcategory(int idSubcategory)
+
+        public async Task<List<int>> DeleteAsyncSubcategory(int idUser, int idSubcategory, bool isDeleteByIdCategory)
         {
-            _deleteSubcategoryUseCase.Delete(idSubcategory);
+            return await _deleteSubcategoryUseCase.DeleteAsync(idUser, idSubcategory, isDeleteByIdCategory);
+        }
+        public List<int> DeleteSubcategory(int idUser, int idSubcategory, bool isDeleteByIdCategory)
+        {
+            return _deleteSubcategoryUseCase.Delete(idUser, idSubcategory, isDeleteByIdCategory);
         }
     }
 }

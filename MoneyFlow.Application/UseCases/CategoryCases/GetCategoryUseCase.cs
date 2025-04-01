@@ -2,7 +2,6 @@
 using MoneyFlow.Application.Mappers;
 using MoneyFlow.Application.UseCaseInterfaces.CategoryCaseInterfaces;
 using MoneyFlow.Domain.Interfaces.Repositories;
-using System.Diagnostics;
 
 namespace MoneyFlow.Application.UseCases.CategoryCases
 {

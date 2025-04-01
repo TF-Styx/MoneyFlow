@@ -53,6 +53,53 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
             {
                 SelectedFinancialRecord = financialRecord;
             }
+
+
+            #region Обновление категорий
+
+            if (parameter is CategoryDTO categoryAdd && typeParameter is ParameterType.Add)
+            {
+                Categories.Add(categoryAdd);
+            }
+            if (parameter is CategoryDTO categoryUpdate && typeParameter is ParameterType.Update)
+            {
+                var itemForDelete = Categories.FirstOrDefault(x => x.IdCategory == categoryUpdate.IdCategory);
+                var index = Categories.IndexOf(itemForDelete);
+
+                Categories.Remove(itemForDelete);
+                Categories.Insert(index, categoryUpdate);
+            }
+            if (parameter is CategoryDTO categoryDelete && typeParameter is ParameterType.Delete)
+            {
+                Categories.Remove(Categories.FirstOrDefault(x => x.IdCategory == categoryDelete.IdCategory));
+            }
+
+            #endregion
+
+
+            #region Обновление подкатегорий
+
+            if (SelectedCategory != null)
+            {
+                if (parameter is SubcategoryDTO subcategoryAdd && typeParameter is ParameterType.Add)
+                {
+                    Subcategories.Add(subcategoryAdd);
+                }
+                if (parameter is SubcategoryDTO subcategoryUpdate && typeParameter is ParameterType.Update)
+                {
+                    var itemForDelete = Subcategories.FirstOrDefault(x => x.IdSubcategory == subcategoryUpdate.IdSubcategory);
+                    var index = Subcategories.IndexOf(itemForDelete);
+
+                    Subcategories.Remove(itemForDelete);
+                    Subcategories.Insert(index, subcategoryUpdate);
+                }
+                if (parameter is SubcategoryDTO subcategoryDelete && typeParameter is ParameterType.Delete)
+                {
+                    Subcategories.Remove(Subcategories.FirstOrDefault(x => x.IdSubcategory == subcategoryDelete.IdSubcategory));
+                }
+            }
+
+            #endregion
         }
 
         private UserDTO _currentUser;

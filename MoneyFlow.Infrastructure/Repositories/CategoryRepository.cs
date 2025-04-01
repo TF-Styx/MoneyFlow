@@ -221,6 +221,54 @@ namespace MoneyFlow.Infrastructure.Repositories
 
         // ------------------------------------------------------------------------------------------------------------------------------------------------
 
+        public async Task<List<CategoryWithSubcategoryDomain>> GetCategoryWithSubcategoryAsync(int idUser)
+        {
+            using (var context = _factory())
+            {
+                // Получаем все категории, связанные с пользователем.
+                var categories = await context.Categories
+                    .Where(x => x.IdUser == idUser)
+                    .Distinct()
+                    .ToListAsync();
+
+                // Получаем все подкатегории, связанные с пользователем.
+                var subcategories = await context.CatLinkSubs
+                    .Include(x => x.IdSubcategoryNavigation)
+                    .Where(x => x.IdUser == idUser)
+                    .ToListAsync();
+
+                var categoriesWithSubcategories = categories.Select(category =>
+                {
+                    var categorySubcategories = subcategories
+                        .Where(x => x.IdCategory == category.IdCategory)
+                        .Select(x => SubcategoryDomain.Create(
+                            x.IdSubcategoryNavigation.IdSubcategory,
+                            x.IdSubcategoryNavigation.SubcategoryName,
+                            x.IdSubcategoryNavigation.Description,
+                            x.IdSubcategoryNavigation.Image,
+                            x.IdSubcategoryNavigation.IdUser
+                        ).SubcategoryDomain)
+                        .ToList();
+
+                    return CategoryWithSubcategoryDomain.Create(
+                        CategoryDomain.Create(
+                            category.IdCategory,
+                            category.CategoryName,
+                            category.Description,
+                            category.Color,
+                            category.Image,
+                            category.IdUser
+                        ).CategoryDomain,
+                        categorySubcategories
+                    ).CategoryWithSubcategoryDomain;
+                }).ToList();
+
+                return categoriesWithSubcategories;
+            }
+        }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<int> UpdateAsync(int idCategory, string? categoryName, string? description, string? color, byte[]? image, int idUser)
         {
             using (var context = _factory())
@@ -260,18 +308,37 @@ namespace MoneyFlow.Infrastructure.Repositories
 
         // ------------------------------------------------------------------------------------------------------------------------------------------------
 
-        public async Task DeleteAsync(int idCategory)
+        public async Task<(bool catLinkSub, bool financialRecord)> ExistRelatedDataAsync(int idCategory)
         {
             using (var context = _factory())
             {
-                await context.Categories.Where(x => x.IdCategory == idCategory).ExecuteDeleteAsync();
+                bool idUsedCatLinkSub = await context.CatLinkSubs.AnyAsync(x => x.IdCategory == idCategory);
+                bool idUsedFinancialRecord = await context.FinancialRecords.AnyAsync(x => x.IdCategory == idCategory);
+
+                return (idUsedCatLinkSub, idUsedFinancialRecord);
             }
         }
-        public void Delete(int idCategory)
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
+        public async Task<int> DeleteAsync(int idCategory)
         {
             using (var context = _factory())
             {
-                context.Categories.Where(x => x.IdCategory == idCategory).ExecuteDelete();
+                await context.CatLinkSubs.Where(x => x.IdCategory == idCategory).ExecuteDeleteAsync();
+                var cat = await context.Categories.FirstOrDefaultAsync(x => x.IdCategory == idCategory);
+
+                return cat.IdCategory;
+            }
+        }
+        public int Delete(int idCategory)
+        {
+            using (var context = _factory())
+            {
+                context.CatLinkSubs.Where(x => x.IdCategory == idCategory).ExecuteDelete();
+                var cat = context.Categories.FirstOrDefault(x => x.IdCategory == idCategory);
+
+                return cat.IdCategory;
             }
         }
 

@@ -2,7 +2,8 @@
 {
     public interface IDeleteSubcategoryUseCase
     {
-        Task DeleteAsync(int idSubcategory);
-        void Delete(int idSubcategory);
+        Task<string?> ExistRelatedDataAsync(int idSubcategory);
+        Task<List<int>> DeleteAsync(int idUser, int idSubcategory, bool isDeleteByIdCategory);
+        List<int> Delete(int idUser, int idSubcategory, bool isDeleteByIdCategory);
     }
 }

@@ -76,16 +76,38 @@ namespace MoneyFlow.Infrastructure.Repositories
 
         // ------------------------------------------------------------------------------------------------------------------------------------------------
 
-        public async Task<int> DeleteAsync(int idUser, int idSubcategory)
+        public async Task<int> GetIdCatByIdSub(int idSubcategory)
         {
             using (var context = _factory())
             {
-                var delete = await context.CatLinkSubs.FirstOrDefaultAsync(x => x.IdUser == idUser && x.IdSubcategory == idSubcategory);
+                var entity = await context.CatLinkSubs.FirstOrDefaultAsync(x => x.IdSubcategory == idSubcategory);
 
-                context.CatLinkSubs.Remove(delete);
-                context.SaveChanges();
+                return entity.IdCategory;
+            }
+        }
 
-                return idSubcategory;
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
+        public async Task<int> DeleteAsync(int idUser, int id, bool isDeleteByIdCategory)
+        {
+            using (var context = _factory())
+            {
+                if (isDeleteByIdCategory)
+                {
+                    var delete = await context.CatLinkSubs.FirstOrDefaultAsync(x => x.IdUser == idUser && x.IdCategory == id);
+
+                    context.CatLinkSubs.Remove(delete);
+                    context.SaveChanges();
+                }
+                else
+                {
+                    var delete = await context.CatLinkSubs.FirstOrDefaultAsync(x => x.IdUser == idUser && x.IdSubcategory == id);
+
+                    context.CatLinkSubs.Remove(delete);
+                    context.SaveChanges();
+                }
+
+                return id;
             }
         }
 
@@ -93,7 +115,11 @@ namespace MoneyFlow.Infrastructure.Repositories
         {
             using (var context = _factory())
             {
-                var idSubcategories = await context.CatLinkSubs.Where(x => x.IdUser == idUser && x.IdCategory == idCategory).Select(x => x.IdSubcategory).ToListAsync();
+                var idSubcategories = await context.CatLinkSubs
+                    .Where(x => x.IdUser == idUser && x.IdCategory == idCategory)
+                    .Select(x => x.IdSubcategory)
+                    .ToListAsync();
+
                 await context.CatLinkSubs.Where(x => x.IdUser == idUser && x.IdCategory == idCategory).ExecuteDeleteAsync();
 
                 return (idCategory, idSubcategories);

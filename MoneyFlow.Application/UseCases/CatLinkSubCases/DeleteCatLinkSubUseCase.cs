@@ -12,9 +12,9 @@ namespace MoneyFlow.Application.UseCases.CatLinkSubCases
             _catLinkSubRepository = catLinkSubRepository;
         }
 
-        public async Task<int> DeleteSubcategoryAsync(int IdUser, int idSubcategory)
+        public async Task<int> DeleteSubcategoryAsync(int IdUser, int idSubcategory, bool isDeleteByIdCategory)
         {
-            return await _catLinkSubRepository.DeleteAsync(IdUser, idSubcategory);
+            return await _catLinkSubRepository.DeleteAsync(IdUser, idSubcategory, isDeleteByIdCategory);
         }
 
         public async Task<(int IdCategory, List<int> IdSubcategories)> DeleteAsyncCategory(int idUser, int IdCategory)

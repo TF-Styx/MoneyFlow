@@ -204,18 +204,47 @@ namespace MoneyFlow.Infrastructure.Repositories
 
         // ------------------------------------------------------------------------------------------------------------------------------------------------
 
-        public async Task DeleteAsync(int idSubcategory)
+        public async Task<(bool catLinkSub, bool financialRecord)> ExistRelatedDataAsync(int idSubcategory)
         {
             using (var context = _factory())
             {
-                await context.Subcategories.Where(x => x.IdSubcategory == idSubcategory).ExecuteDeleteAsync();
+                bool idUsedCatLinkSub = await context.CatLinkSubs.AnyAsync(x => x.IdSubcategory == idSubcategory);
+                bool idUsedFinancialRecord = await context.FinancialRecords.AnyAsync(x => x.IdSubcategory == idSubcategory);
+
+                return (idUsedCatLinkSub, idUsedFinancialRecord);
             }
         }
-        public void Delete(int idSubcategory)
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
+        public async Task<List<int>> DeleteAsync(int idSubcategory)
         {
+            var ids = new List<int>();
+
             using (var context = _factory())
             {
-                context.Subcategories.Where(x => x.IdSubcategory == idSubcategory).ExecuteDelete();
+                var models = await context.Subcategories.Where(x => x.IdSubcategory == idSubcategory).ToListAsync();
+                ids.AddRange(models.Select(x => x.IdSubcategory));
+
+                context.RemoveRange(models);
+                context.SaveChanges();
+
+                return ids;
+            }
+        }
+        public List<int> Delete(int idSubcategory)
+        {
+            var ids = new List<int>();
+
+            using (var context = _factory())
+            {
+                var models = context.Subcategories.Where(x => x.IdSubcategory == idSubcategory).ToList();
+                ids.AddRange(models.Select(x => x.IdSubcategory));
+
+                context.RemoveRange(models);
+                context.SaveChanges();
+
+                return ids;
             }
         }
 

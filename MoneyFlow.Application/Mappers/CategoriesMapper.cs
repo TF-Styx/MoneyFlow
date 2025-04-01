@@ -1,5 +1,6 @@
 ﻿using MoneyFlow.Application.DTOs;
 using MoneyFlow.Domain.DomainModels;
+using System.Collections.ObjectModel;
 
 namespace MoneyFlow.Application.Mappers
 {
@@ -34,6 +35,36 @@ namespace MoneyFlow.Application.Mappers
             }
 
             return list;
+        }
+
+        public static List<CategoriesWithSubcategoriesDTO> ToListDTO(this IEnumerable<CategoryWithSubcategoryDomain> categories)
+        {
+            return categories.Select(x => new CategoriesWithSubcategoriesDTO
+            {
+                Category = x.Category.ToDTO().CategoryDTO,
+                Subcategories = new ObservableCollection<SubcategoryDTO>(x.Subcategories.ToListDTO())
+            }).ToList();
+
+
+            //var list = new List<CategoriesWithSubcategoriesDTO>();
+
+            //list = categories.Select(x =>
+            //{
+            //    ObservableCollection<SubcategoryDTO> subcategories = [];
+
+            //    foreach (var item in x.Subcategories.ToListDTO())
+            //    {
+            //        subcategories.Add(item);
+            //    }
+
+            //    return new CategoriesWithSubcategoriesDTO()
+            //    {
+            //        Category = x.Category.ToDTO().CategoryDTO,
+            //        Subcategories = subcategories
+            //    };
+            //}).ToList();
+
+            //return list;
         }
     }
 }

@@ -47,10 +47,12 @@ namespace MoneyFlow.Application.Extension
 
             services.AddScoped<ICreateCatLinkSubUseCase, CreateCatLinkSubUseCase>();
             services.AddScoped<IDeleteCatLinkSubUseCase, DeleteCatLinkSubUseCase>();
+            services.AddScoped<IGetCatLinkSubUseCase,    GetCatLinkSubUseCase>();
 
             services.AddScoped<ICreateCategoryUseCase, CreateCategoryUseCase>();
             services.AddScoped<IDeleteCategoryUseCase, DeleteCategoryUseCase>();
             services.AddScoped<IGetCategoryUseCase,    GetCategoryUseCase>();
+            services.AddScoped<IGetCategoryWithSubcategoriesUseCase, GetCategoryWithSubcategoriesUseCase>();
             services.AddScoped<IUpdateCategoryUseCase, UpdateCategoryUseCase>();
 
             services.AddScoped<ICreateFinancialRecordUseCase, CreateFinancialRecordUseCase>();

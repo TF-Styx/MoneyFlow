@@ -16,27 +16,35 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
         private readonly IAuthorizationService _authorizationService;
         private readonly ICategoryService _categoryService;
         private readonly ISubcategoryService _subcategoryService;
+        private readonly IFinancialRecordService _financialRecordService;
 
         private readonly ICreateCatLinkSubUseCase _createCatLinkSubUseCase;
         private readonly IDeleteCatLinkSubUseCase _deleteCatLinkSubUseCase;
+        private readonly IGetCatLinkSubUseCase _getCatLinkSubUseCase;
 
         private readonly INavigationPages _navigationPages;
+        private readonly INavigationWindows _navigationWindows;
 
         public CatAndSubWindowVM(IAuthorizationService authorizationService,
                               ICategoryService categoryService,
                               ISubcategoryService subcategoryService,
+                              IFinancialRecordService financialRecordService,
 
                               ICreateCatLinkSubUseCase createCatLinkSubUseCase,
                               IDeleteCatLinkSubUseCase deleteCatLinkSubUseCase,
+                              IGetCatLinkSubUseCase getCatLinkSubUseCase,
 
-                              INavigationPages navigationPages)
+                              INavigationPages navigationPages,
+                              INavigationWindows navigationWindows)
         {
             _authorizationService = authorizationService;
             _categoryService = categoryService;
             _subcategoryService = subcategoryService;
+            _financialRecordService = financialRecordService;
 
             _createCatLinkSubUseCase = createCatLinkSubUseCase;
             _deleteCatLinkSubUseCase = deleteCatLinkSubUseCase;
+            _getCatLinkSubUseCase = getCatLinkSubUseCase;
 
             _navigationPages = navigationPages;
 
@@ -44,18 +52,48 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
 
             GetCategory();
             GetIdUserAllSubcategory();
+            _navigationWindows = navigationWindows;
         }
 
         public void Update(object parameter, ParameterType typeParameter = ParameterType.None)
         {
-            if (parameter is CategoryDTO category)
-            {
-                SelectedCategory = category;
+            //if (parameter is CategoryDTO category)
+            //{
+            //    SelectedCategory = category;
 
-                CategoryName = category.CategoryName;
-                DescriptionCat = category.Description;
-                SelectedColorCat = category.Color;
-                SelectImageCat = category.Image;
+            //    CategoryName = category.CategoryName;
+            //    DescriptionCat = category.Description;
+            //    SelectedColorCat = category.Color;
+            //    SelectImageCat = category.Image;
+            //}
+
+            if (parameter is ValueTuple<CategoriesWithSubcategoriesDTO, SubcategoryDTO> (CategoriesWithSubcategoriesDTO catWithSub, SubcategoryDTO subcategory))
+            {
+                if (subcategory == null)
+                {
+                    SelectedCategory = catWithSub.Category;
+
+                    CategoryName = SelectedCategory.CategoryName;
+                    DescriptionCat = SelectedCategory.Description;
+                    SelectedColorCat = SelectedCategory.Color;
+                    SelectImageCat = SelectedCategory.Image;
+                }
+                else
+                {
+                    SelectedCategory = catWithSub.Category;
+
+                    CategoryName = SelectedCategory.CategoryName;
+                    DescriptionCat = SelectedCategory.Description;
+                    SelectedColorCat = SelectedCategory.Color;
+                    SelectImageCat = SelectedCategory.Image;
+
+
+                    SelectedSubcategory = subcategory;
+
+                    SubcategoryName = SelectedSubcategory.SubcategoryName;
+                    DescriptionSub = SelectedSubcategory.Description;
+                    SelectImageSub = SelectedSubcategory.Image;
+                }
             }
         }
 
@@ -195,18 +233,6 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
 
         #region Команды Категорий
 
-        private RelayCommand _selectedImageCatCommand;
-        public RelayCommand SelectedImageCatCommand
-        {
-            get => _selectedImageCatCommand ??= new(async obj => { SelectedCategoryImage(); });
-        }
-
-        private RelayCommand _clearImageCatCommand;
-        public RelayCommand ClearImageCatCommand
-        {
-            get => _clearImageCatCommand ??= new(async obj => { SelectImageCat = null; });
-        }
-
         private RelayCommand _categoryAddCommand;
         public RelayCommand CategoryAddCommand
         {
@@ -223,6 +249,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
                 Categories.Add(newCat.CategoryDTO);
 
                 _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, newCat, ParameterType.Add);
+                _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, newCat, ParameterType.Add);
             });
         }
 
@@ -257,6 +284,9 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
 
                 Categories.RemoveAt(index);
                 Categories.Insert(index, updateCategory);
+
+                _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, updateCategory, ParameterType.Update);
+                _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, updateCategory, ParameterType.Update);
             });
         }
 
@@ -265,18 +295,79 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
         {
             get => _categoryDeleteCommand ??= new(async obj =>
             {
-                await _categoryService.DeleteAsyncCategory(SelectedCategory.IdCategory);
+                var message = await _categoryService.ExistRelatedDataAsync(SelectedCategory.IdCategory);
 
-                Categories.Remove(SelectedCategory);
+                if (message != null)
+                {
+                    if (MessageBox.Show(message, "Предупреждение!!", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                    {
+                        var financialRecordDelete = await _financialRecordService.DeleteListAsync(SelectedCategory.IdCategory, true);
+                        var categoryDelete = await _categoryService.DeleteAsync(CurrentUser.IdUser, SelectedCategory.IdCategory, true);
 
-                CategoryName = string.Empty;
-                DescriptionCat = string.Empty;
-                //SelectedColorCat = null;
-                SelectImageCat = null;
+                        Categories.Remove(SelectedCategory);
 
-                SelectedCategory = null;
+                        CategoryName = string.Empty;
+                        DescriptionCat = string.Empty;
+                        //SelectedColorCat = null;
+                        SelectImageCat = null;
 
+                        SelectedCategory = null;
+
+                        _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, financialRecordDelete, ParameterType.Delete);
+                        _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, financialRecordDelete, ParameterType.Delete);
+
+                        _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, categoryDelete, ParameterType.Delete);
+                        _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, categoryDelete, ParameterType.Delete);
+                    }
+                }
+                else
+                {
+                    var financialRecordDelete = await _financialRecordService.DeleteListAsync(SelectedCategory.IdCategory, true);
+                    var categoryDelete = await _categoryService.DeleteAsync(CurrentUser.IdUser, SelectedCategory.IdCategory, true);
+
+                    Categories.Remove(SelectedCategory);
+
+                    CategoryName = string.Empty;
+                    DescriptionCat = string.Empty;
+                    //SelectedColorCat = null;
+                    SelectImageCat = null;
+
+                    SelectedCategory = null;
+
+                    _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, financialRecordDelete, ParameterType.Delete);
+                    _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, financialRecordDelete, ParameterType.Delete);
+
+                    _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, categoryDelete, ParameterType.Delete);
+                    _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, categoryDelete, ParameterType.Delete);
+                }
             });
+        }
+
+
+        private RelayCommand _selectedImageCatCommand;
+        public RelayCommand SelectedImageCatCommand
+        {
+            get => _selectedImageCatCommand ??= new(async obj => { SelectedCategoryImage(); });
+        }
+
+        private RelayCommand _clearImageCatCommand;
+        public RelayCommand ClearImageCatCommand
+        {
+            get => _clearImageCatCommand ??= new(async obj => { SelectImageCat = null; });
+        }
+
+        public async void SelectedCategoryImage()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog()
+            {
+                Multiselect = false,
+                Filter = "Выберите (*.jpg; *.jpeg; *.png)|*.jpg; *.jpeg; *.png",
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                SelectImageCat = await ImageHelper.ImageByteArray(openFileDialog.FileName);
+            }
         }
 
         #endregion
@@ -407,18 +498,6 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
 
         #region Команды Подкатегорий
 
-        private RelayCommand _selectedImageSubCommand;
-        public RelayCommand SelectedImageSubCommand
-        {
-            get => _selectedImageSubCommand ??= new(async obj => { SelectedSubcategoryImage(); });
-        }
-
-        private RelayCommand _clearImageSubCommand;
-        public RelayCommand ClearImageSubCommand
-        {
-            get => _clearImageSubCommand ??= new(async obj => { SelectImageSub = null; });
-        }
-
         private RelayCommand _subcategoryAddCommand;
         public RelayCommand SubcategoryAddCommand
         {
@@ -442,6 +521,9 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
                 DescriptionSub = string.Empty;
                 //SelectedColorCat = null;
                 SelectImageSub = null;
+
+                _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, newSub.SubcategoryDTO, ParameterType.Add);
+                _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, newSub.SubcategoryDTO, ParameterType.Add);
             });
         }
 
@@ -473,6 +555,9 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
 
                 Subcategories.RemoveAt(index);
                 Subcategories.Insert(index, updateSubcategory);
+
+                _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, updateSubcategory, ParameterType.Update);
+                _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, updateSubcategory, ParameterType.Update);
             });
         }
 
@@ -481,40 +566,63 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
         {
             get => _subcategoryDeleteCommand ??= new(async obj =>
             {
-                await _subcategoryService.DeleteAsyncSubcategory(SelectedSubcategory.IdSubcategory);
+                var message = await _subcategoryService.ExistRelatedDataAsync(SelectedSubcategory.IdSubcategory);
 
-                Subcategories.Remove(SelectedSubcategory);
+                if (message != null)
+                {
+                    if (MessageBox.Show(message, "Предупреждение!!", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                    {
+                        var financialRecordDelete = await _financialRecordService.DeleteListAsync(SelectedSubcategory.IdSubcategory, false);
+                        var subcategoryDelete = await _subcategoryService.DeleteAsyncSubcategory(CurrentUser.IdUser, SelectedSubcategory.IdSubcategory, false);
 
-                SubcategoryName = string.Empty;
-                DescriptionSub = string.Empty;
-                //SelectedColorCat = null;
-                SelectImageSub = null;
+                        Subcategories.Remove(SelectedSubcategory);
 
-                SelectedSubcategory = null;
+                        SubcategoryName = string.Empty;
+                        DescriptionSub = string.Empty;
+                        SelectImageSub = null;
 
+                        SelectedSubcategory = null;
+
+                        _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, financialRecordDelete, ParameterType.Delete);
+                        _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, financialRecordDelete, ParameterType.Delete);
+
+                        _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, subcategoryDelete, ParameterType.Delete);
+                        _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, subcategoryDelete, ParameterType.Delete);
+                    }
+                }
+                else
+                {
+                    var financialRecordDelete = await _financialRecordService.DeleteListAsync(SelectedSubcategory.IdSubcategory, false);
+                    var subcategoryDelete = await _subcategoryService.DeleteAsyncSubcategory(CurrentUser.IdUser, SelectedSubcategory.IdSubcategory, false);
+
+                    Subcategories.Remove(SelectedSubcategory);
+
+                    SubcategoryName = string.Empty;
+                    DescriptionSub = string.Empty;
+                    SelectImageSub = null;
+
+                    SelectedSubcategory = null;
+
+                    _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, financialRecordDelete, ParameterType.Delete);
+                    _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, financialRecordDelete, ParameterType.Delete);
+
+                    _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, subcategoryDelete, ParameterType.Delete);
+                    _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, subcategoryDelete, ParameterType.Delete);
+                }
             });
         }
 
-        #endregion
 
-
-        // ------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-        #region Добавление картинок
-
-        public async void SelectedCategoryImage()
+        private RelayCommand _selectedImageSubCommand;
+        public RelayCommand SelectedImageSubCommand
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog()
-            {
-                Multiselect = false,
-                Filter = "Выберите (*.jpg; *.jpeg; *.png)|*.jpg; *.jpeg; *.png",
-            };
+            get => _selectedImageSubCommand ??= new(async obj => { SelectedSubcategoryImage(); });
+        }
 
-            if (openFileDialog.ShowDialog() == true)
-            {
-                SelectImageCat = await ImageHelper.ImageByteArray(openFileDialog.FileName);
-            }
+        private RelayCommand _clearImageSubCommand;
+        public RelayCommand ClearImageSubCommand
+        {
+            get => _clearImageSubCommand ??= new(async obj => { SelectImageSub = null; });
         }
 
         public async void SelectedSubcategoryImage()

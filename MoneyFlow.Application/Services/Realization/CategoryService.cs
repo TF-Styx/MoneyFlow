@@ -96,13 +96,18 @@ namespace MoneyFlow.Application.Services.Realization
             return _updateCategoryUseCase.UpdateCategory(idCategory, categoryName, description, color, image, idUser);
         }
 
-        public async Task DeleteAsyncCategory(int idCategory)
+        public async Task<string?> ExistRelatedDataAsync(int idCategory)
         {
-            await _deleteCategoryUseCase.DeleteAsyncCategory(idCategory);
+            return await _deleteCategoryUseCase.ExistRelatedDataAsync(idCategory);
         }
-        public void DeleteCategory(int idCategory)
+
+        public async Task<int?> DeleteAsync(int idUser, int idCategory, bool isDeleteByIdCategory)
         {
-            _deleteCategoryUseCase.DeleteCategory(idCategory);
+            return await _deleteCategoryUseCase.DeleteAsync(idUser, idCategory, isDeleteByIdCategory);
+        }
+        public int? Delete(int idUser, int idCategory, bool isDeleteByIdCategory)
+        {
+            return _deleteCategoryUseCase.Delete(idUser,idCategory, isDeleteByIdCategory);
         }
     }
 }

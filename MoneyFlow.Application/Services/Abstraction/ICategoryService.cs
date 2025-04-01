@@ -30,7 +30,9 @@ namespace MoneyFlow.Application.Services.Abstraction
         Task<int> UpdateAsyncCategory(int idCategory, string? categoryName, string? description, string? color, byte[]? image, int idUser);
         int UpdateCategory(int idCategory, string? categoryName, string? description, string? color, byte[]? image, int idUser);
 
-        Task DeleteAsyncCategory(int idCategory);
-        void DeleteCategory(int idCategory);
+        Task<string?> ExistRelatedDataAsync(int idCategory);
+
+        Task<int?> DeleteAsync(int idUser, int idCategory, bool isDeleteByIdCategory);
+        int? Delete(int idUser, int idCategory, bool isDeleteByIdCategory);
     }
 }

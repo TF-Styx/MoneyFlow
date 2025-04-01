@@ -7,9 +7,6 @@ namespace MoneyFlow.Application.Services.Abstraction
         Task<(SubcategoryDTO SubcategoryDTO, string Message)> CreateAsyncSubcategory(string? subcategoryName, string? description, byte[]? image, int idUser);
         (SubcategoryDTO SubcategoryDTO, string Message) CreateSubcategory(string? subcategoryName, string? description, byte[]? image, int idUser);
 
-        Task DeleteAsyncSubcategory(int idSubcategory);
-        void DeleteSubcategory(int idSubcategory);
-
         Task<List<SubcategoryDTO>> GetAllAsyncSubcategory();
         List<SubcategoryDTO> GetAllSubcategory();
 
@@ -27,5 +24,10 @@ namespace MoneyFlow.Application.Services.Abstraction
 
         Task<int> UpdateAsyncSubcategory(int idSubcategory, string? subcategoryName, string? description, byte[]? image);
         int UpdateSubcategory(int idSubcategory, string? subcategoryName, string? description, byte[]? image);
+
+        Task<string?> ExistRelatedDataAsync(int idSubcategory);
+
+        Task<List<int>> DeleteAsyncSubcategory(int idUser, int idSubcategory, bool isDeleteByIdCategory);
+        List<int> DeleteSubcategory(int idUser, int idSubcategory, bool isDeleteByIdCategory);
     }
 }

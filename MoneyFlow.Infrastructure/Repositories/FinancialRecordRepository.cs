@@ -280,18 +280,49 @@ namespace MoneyFlow.Infrastructure.Repositories
 
         #region Delete
 
-        public async Task DeleteAsync(int idFinancialRecord)
+        public async Task<List <int>> DeleteListAsync(int id, bool isDeleteByIdCategory)
         {
+            var ids = new List<int>();
+
             using (var context = _factory())
             {
-                await context.FinancialRecords.Where(x => x.IdFinancialRecord == idFinancialRecord).ExecuteDeleteAsync();
+                if (isDeleteByIdCategory)
+                {
+                    var models = await context.FinancialRecords.Where(x => x.IdCategory == id).ToListAsync();
+                    ids.AddRange(models.Select(x => x.IdFinancialRecord));
+
+                    context.RemoveRange(models);
+                    context.SaveChanges();
+                }
+                else
+                {
+                    var models = await context.FinancialRecords.Where(x => x.IdSubcategory == id).ToListAsync();
+                    ids.AddRange(models.Select(x => x.IdFinancialRecord));
+
+                    context.RemoveRange(models);
+                    context.SaveChanges();
+                }
+
+                return ids;
             }
         }
-        public void Delete(int idFinancialRecord)
+
+        public async Task<int> DeleteAsync(int idFinancialRecord)
         {
             using (var context = _factory())
             {
-                context.FinancialRecords.Where(x => x.IdFinancialRecord == idFinancialRecord).ExecuteDelete();
+                var id = await context.FinancialRecords.FirstOrDefaultAsync(x => x.IdFinancialRecord == idFinancialRecord);
+
+                return id.IdFinancialRecord;
+            }
+        }
+        public int Delete(int idFinancialRecord)
+        {
+            using (var context = _factory())
+            {
+                var id = context.FinancialRecords.FirstOrDefault(x => x.IdFinancialRecord == idFinancialRecord);
+
+                return id.IdFinancialRecord;
             }
         }
 

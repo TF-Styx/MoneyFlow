@@ -1,5 +1,7 @@
 ﻿using MoneyFlow.Application.DTOs;
 using MoneyFlow.Application.Services.Abstraction;
+using MoneyFlow.Application.UseCaseInterfaces.CategoryCaseInterfaces;
+using MoneyFlow.Application.UseCaseInterfaces.CatLinkSubCaseInterfaces;
 using MoneyFlow.Application.UseCaseInterfaces.FinancialRecordViewingInterfaces;
 using MoneyFlow.WPF.Commands;
 using MoneyFlow.WPF.Enums;
@@ -16,10 +18,12 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         private readonly IBankService _bankService;
         private readonly IUserService _userService;
         private readonly ICategoryService _categoryService;
+        private readonly IGetCategoryWithSubcategoriesUseCase _getCategoryWithSubcategoriesUseCase;
         private readonly ISubcategoryService _subcategoryService;
         private readonly ITransactionTypeService _transactionTypeService;
         private readonly IFinancialRecordService _financialRecordService;
         private readonly IGetFinancialRecordViewingUseCase _getFinancialRecordViewingUseCase;
+        private readonly IGetCatLinkSubUseCase _getCatLinkSubUseCase;
 
         private readonly INavigationPages _navigationPages;
         private readonly INavigationWindows _navigationWindows;
@@ -30,10 +34,12 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                           IBankService bankService, 
                           IUserService userService,
                           ICategoryService categoryService,
+                          IGetCategoryWithSubcategoriesUseCase getCategoryWithSubcategoriesUseCase,
                           ISubcategoryService subcategoryService,
                           ITransactionTypeService transactionTypeService,
                           IFinancialRecordService financialRecordService, 
                           IGetFinancialRecordViewingUseCase getFinancialRecordViewingUseCase,
+                          IGetCatLinkSubUseCase getCatLinkSubUseCase,
                           INavigationPages navigationPages,
                           INavigationWindows navigationWindows)
         {
@@ -43,10 +49,12 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             _bankService = bankService;
             _userService = userService;
             _categoryService = categoryService;
+            _getCategoryWithSubcategoriesUseCase = getCategoryWithSubcategoriesUseCase;
             _subcategoryService = subcategoryService;
             _transactionTypeService = transactionTypeService;
             _financialRecordService = financialRecordService;
             _getFinancialRecordViewingUseCase = getFinancialRecordViewingUseCase;
+            _getCatLinkSubUseCase = getCatLinkSubUseCase;
 
             _navigationPages = navigationPages;
             _navigationWindows = navigationWindows;
@@ -58,6 +66,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             GetUserAccountTypes();
             GetUserBanks();
             GetCategory();
+            GetCategoriesWithSubcategories();
             GetIdUserAllSubcategory();
 
             GetTransactionTypeFilter();
@@ -71,7 +80,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             GetFinancialRecord();
         }
 
-        public void Update(object parameter, ParameterType typeParameter = ParameterType.None)
+        public async void Update(object parameter, ParameterType typeParameter = ParameterType.None)
         {
             #region Обновление данных счетов и банков
 
@@ -113,6 +122,8 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                 Categories.Add(categoryAdd);
 
                 UserTotalInfo.CategoryCount += 1;
+
+                CategoriesWithSubcategories.Add(new CategoriesWithSubcategoriesDTO { Category = categoryAdd, Subcategories = [] });
             }
             if (parameter is CategoryDTO categoryUpdate && typeParameter is ParameterType.Update)
             {
@@ -121,12 +132,24 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
                 Categories.Remove(itemForDelete);
                 Categories.Insert(index, categoryUpdate);
+
+                // ----------------------------------------------------------------------------------------------------------------------------
+
+                var itemForDelete1 = CategoriesWithSubcategories.FirstOrDefault(x => x.Category.IdCategory == categoryUpdate.IdCategory);
+                var index1 = CategoriesWithSubcategories.IndexOf(itemForDelete1);
+
+                var catWithSub = new CategoriesWithSubcategoriesDTO { Category = categoryUpdate, Subcategories = itemForDelete1.Subcategories };
+
+                CategoriesWithSubcategories.Remove(itemForDelete1);
+                CategoriesWithSubcategories.Insert(index1, catWithSub);
             }
             if (parameter is CategoryDTO categoryDelete && typeParameter is ParameterType.Delete)
             {
                 Categories.Remove(Categories.FirstOrDefault(x => x.IdCategory == categoryDelete.IdCategory));
 
                 UserTotalInfo.AccountCount -= 1;
+
+                CategoriesWithSubcategories.Remove(CategoriesWithSubcategories.FirstOrDefault(x => x.Category.IdCategory == categoryDelete.IdCategory));
             }
 
             #endregion
@@ -137,21 +160,43 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
             if (parameter is SubcategoryDTO subcategoryAdd && typeParameter is ParameterType.Add)
             {
-                Subcategories.Add(subcategoryAdd);
+                //Subcategories.Add(subcategoryAdd);
+
+                var idCat = await _getCatLinkSubUseCase.GetIdCatByIdSub(subcategoryAdd.IdSubcategory);
+                var cat = CategoriesWithSubcategories.FirstOrDefault(x => x.Category.IdCategory == idCat);
+
+                //CategoriesWithSubcategories.Add(new CategoriesWithSubcategoriesDTO { Category = cat.Category, Subcategories = [subcategoryAdd] });
+                cat.Subcategories.Add(subcategoryAdd);
+                CategoriesWithSubcategories.Add(cat);
 
                 UserTotalInfo.SubcategoryCount += 1;
             }
             if (parameter is SubcategoryDTO subcategoryUpdate && typeParameter is ParameterType.Update)
             {
-                var itemForDelete = Subcategories.FirstOrDefault(x => x.IdSubcategory == subcategoryUpdate.IdSubcategory);
-                var index = Subcategories.IndexOf(itemForDelete);
+                //var itemForDelete = Subcategories.FirstOrDefault(x => x.IdSubcategory == subcategoryUpdate.IdSubcategory);
+                //var index = Subcategories.IndexOf(itemForDelete);
 
-                Subcategories.Remove(itemForDelete);
-                Subcategories.Insert(index, subcategoryUpdate);
+                //Subcategories.Remove(itemForDelete);
+                //Subcategories.Insert(index, subcategoryUpdate);
+
+                // ----------------------------------------------------------------------------------------------------------------------------
+
+                var idCat = await _getCatLinkSubUseCase.GetIdCatByIdSub(subcategoryUpdate.IdSubcategory);
+                var cat = CategoriesWithSubcategories.FirstOrDefault(x => x.Category.IdCategory == idCat);
+                var itemForDelete1 = cat.Subcategories.FirstOrDefault(x => x.IdSubcategory == subcategoryUpdate.IdSubcategory);
+                var indexSubcategory = cat.Subcategories.IndexOf(itemForDelete1);
+
+                cat.Subcategories.Remove(itemForDelete1);
+                cat.Subcategories.Insert(indexSubcategory, subcategoryUpdate);
             }
             if (parameter is SubcategoryDTO subcategoryDelete && typeParameter is ParameterType.Delete)
             {
-                Subcategories.Remove(Subcategories.FirstOrDefault(x => x.IdSubcategory == subcategoryDelete.IdSubcategory));
+                //Subcategories.Remove(Subcategories.FirstOrDefault(x => x.IdSubcategory == subcategoryDelete.IdSubcategory));
+
+                var idCat = await _getCatLinkSubUseCase.GetIdCatByIdSub(subcategoryDelete.IdSubcategory);
+                var cat = CategoriesWithSubcategories.FirstOrDefault(x => x.Category.IdCategory == idCat);
+
+                cat.Subcategories.Remove(Subcategories.FirstOrDefault(x => x.IdSubcategory == subcategoryDelete.IdSubcategory));
 
                 UserTotalInfo.AccountCount -= 1;
             }
@@ -460,6 +505,39 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         // ---------------------------------------------------------------------------------------------------------------------------------
 
 
+        #region Категории подкатегории GroupJoin
+
+        private CategoriesWithSubcategoriesDTO _selectedCategoriesWithSubcategories;
+        public CategoriesWithSubcategoriesDTO SelectedCategoriesWithSubcategories
+        {
+            get => _selectedCategoriesWithSubcategories;
+            set
+            {
+                _selectedCategoriesWithSubcategories = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<CategoriesWithSubcategoriesDTO> CategoriesWithSubcategories { get; set; } = [];
+
+        private async void GetCategoriesWithSubcategories()
+        {
+            CategoriesWithSubcategories.Clear();
+
+            var list = await _getCategoryWithSubcategoriesUseCase.GetCategoryWithSubcategories(CurrentUser.IdUser);
+
+            foreach (var item in list)
+            {
+                CategoriesWithSubcategories.Add(item);
+            }
+        }
+
+        #endregion
+
+
+        // ---------------------------------------------------------------------------------------------------------------------------------
+
+
         #region Подкатегории пользователя
 
         private SubcategoryDTO _selectedSubcategory;
@@ -511,8 +589,8 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             }
         }
 
-        private RelayCommand _userSubcategoryTypeDoubleClickCommand;
-        public RelayCommand UserSubcategoryTypeDoubleClickCommand => _userSubcategoryTypeDoubleClickCommand ??= new RelayCommand(DoubleClick);
+        private RelayCommand _userSubcategoryDoubleClickCommand;
+        public RelayCommand UserSubcategoryDoubleClickCommand => _userSubcategoryDoubleClickCommand ??= new RelayCommand(DoubleClick);
 
         #endregion
 
@@ -594,10 +672,16 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             {
                 _navigationWindows.OpenWindow(WindowType.CatAndSubWindow, category);
             }
+
+            if (parameter is CategoriesWithSubcategoriesDTO categoryWithSubcategory)
+            {
+                _navigationWindows.OpenWindow(WindowType.CatAndSubWindow, (categoryWithSubcategory.Category, categoryWithSubcategory.Subcategories));
+            }
             if (parameter is SubcategoryDTO subcategory)
             {
-                _navigationWindows.OpenWindow(WindowType.CatAndSubWindow, subcategory);
+                _navigationWindows.OpenWindow(WindowType.CatAndSubWindow, (SelectedCategoriesWithSubcategories.Category, subcategory));
             }
+
             if (parameter is FinancialRecordViewingDTO financialRecordViewing)
             {
                 _navigationWindows.OpenWindow(WindowType.FinancialRecordWindow, financialRecordViewing);

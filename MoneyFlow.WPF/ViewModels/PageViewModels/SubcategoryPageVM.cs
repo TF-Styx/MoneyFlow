@@ -244,14 +244,23 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         {
             get => _subcategoryDeleteCommand ??= new(async obj =>
             {
-                await _subcategoryService.DeleteAsyncSubcategory(SelectedSubcategory.IdSubcategory);
+                var message = await _subcategoryService.ExistRelatedDataAsync(SelectedSubcategory.IdSubcategory);
 
-                SubcategoryName = string.Empty;
-                DescriptionSub = string.Empty;
-                //SelectedColorCat = null;
-                SelectImageSub = null;
+                if (message != null)
+                {
+                    if (MessageBox.Show(message) == MessageBoxResult.OK)
+                    {
+                        //await _subcategoryService.DeleteAsyncSubcategory(CurrentUser.IdUser, SelectedSubcategory.IdSubcategory);
 
-                SelectedSubcategory = null;
+                        //Subcategories.Remove(SelectedSubcategory);
+
+                        SubcategoryName = string.Empty;
+                        DescriptionSub = string.Empty;
+                        SelectImageSub = null;
+
+                        SelectedSubcategory = null;
+                    }
+                }
             });
         }
 

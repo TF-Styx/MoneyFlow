@@ -196,7 +196,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         {
             get => _categoryDeleteCommand ??= new(async obj =>
             {
-                await _categoryService.DeleteAsyncCategory(SelectedCategory.IdCategory);
+                //await _categoryService.DeleteAsyncCategory(SelectedCategory.IdCategory);
                 _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, SelectedCategory, ParameterType.Delete);
 
                 //Categories.Remove(SelectedCategory);

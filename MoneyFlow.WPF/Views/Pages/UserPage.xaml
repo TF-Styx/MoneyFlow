@@ -601,11 +601,11 @@
             <Border Margin="10">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                        <!--<ColumnDefinition Width="*"/>-->
+                        <!--<ColumnDefinition Width="*"/>-->
                     </Grid.ColumnDefinitions>
                     <!--#region Категории -->
-                    <Border Grid.Column="0" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="0 0 5 0">
+                    <Border Grid.Column="0" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="0 0 5 0" Visibility="Collapsed">
                         <Border.Effect>
                             <DropShadowEffect BlurRadius="10" Direction="300"/>
                         </Border.Effect>
@@ -672,13 +672,23 @@
                             <DockPanel>
                                 <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Center">
                                     <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center">
-                                        <TextBlock Text="Подкатегории" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15"/>
-                                        <TextBlock Text="{Binding Subcategories.Count}" d:Text="15" 
+                                        <DockPanel>
+                                            <TextBlock Text="Категории" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15"/>
+                                            <TextBlock Text="{Binding Categories.Count}" d:Text="15" 
                                                    HorizontalAlignment="Center" VerticalAlignment="Center" 
                                                    FontSize="15" Margin="5 0 0 0"/>
-                                        <Button Content="+" HorizontalAlignment="Center" Margin="10 0 0 0"
+                                        </DockPanel>
+
+                                        <Button Content="+" HorizontalAlignment="Center" Margin="20 0 0 0"
                                                 BorderThickness="0" Background="Transparent"
                                                 Command="{Binding OpenCatAndSubWindowCommand}"/>
+
+                                        <DockPanel Margin="20 0 0 0">
+                                            <TextBlock Text="Подкатегории" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15"/>
+                                            <TextBlock Text="{Binding Subcategories.Count}" d:Text="15" 
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                   FontSize="15" Margin="5 0 0 0"/>
+                                        </DockPanel>
                                     </DockPanel>
                                     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0 10 0 0">
                                         <TextBlock Text="Поиск: " FontSize="15" VerticalAlignment="Center"/>
@@ -686,7 +696,65 @@
                                     </DockPanel>
                                 </StackPanel>
 
-                                <DataGrid AutoGenerateColumns="False" 
+                                <DataGrid AutoGenerateColumns="False"
+                                          IsReadOnly="True"
+                                          GridLinesVisibility="None"
+                                          HeadersVisibility="Column"
+                                          RowHeaderWidth="0"
+                                          SelectionMode="Single" 
+                                          ItemsSource="{Binding CategoriesWithSubcategories}" 
+                                          d:ItemsSource="{d:SampleData ItemCount=15}"
+                                          SelectedItem="{Binding SelectedCategoriesWithSubcategories}" 
+                                          Margin="10">
+                                    <!--#region DoubleClick-->
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="MouseDoubleClick">
+                                            <i:InvokeCommandAction Command="{Binding UserCategoryDoubleClickCommand}" CommandParameter="{Binding SelectedCategoriesWithSubcategories}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <!--#endregion-->
+                                    
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Binding="{Binding Category.Index}" Width="auto"/>
+                                        <DataGridTextColumn Header="CategoryName" Binding="{Binding Category.CategoryName}" Width="auto"/>
+                                        <DataGridTextColumn Header="Description" Binding="{Binding Category.Description}" Width="*"/>
+                                    </DataGrid.Columns>
+                                    <DataGrid.RowDetailsTemplate>
+                                        <DataTemplate>
+                                            <DataGrid AutoGenerateColumns="False"
+                                                      IsReadOnly="True"
+                                                      GridLinesVisibility="None"
+                                                      HeadersVisibility="Column"
+                                                      RowHeaderWidth="0" 
+                                                      SelectionMode="Single" 
+                                                      HorizontalAlignment="Stretch"
+                                                      ItemsSource="{Binding Subcategories}"
+                                                      SelectedItem="{Binding SelectedSubcategory}">
+                                                <!--#region DoubleClick-->
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="MouseDoubleClick">
+                                                        <i:InvokeCommandAction Command="{Binding UserSubcategoryDoubleClickCommand}" CommandParameter="{Binding SelectedSubcategory}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                                <!--#endregion-->
+                                                
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Binding="{Binding Index}" Width="auto"/>
+                                                    <DataGridTextColumn Header="SubcategoryName" Binding="{Binding SubcategoryName}" Width="auto"/>
+                                                    <DataGridTemplateColumn Header="Decription" MinWidth="215">
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock Text="{Binding Description}" HorizontalAlignment="Left" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                        </DataTemplate>
+                                    </DataGrid.RowDetailsTemplate>
+                                </DataGrid>
+
+                                <DataGrid AutoGenerateColumns="False" Visibility="Collapsed"
                                               IsReadOnly="True"
                                               GridLinesVisibility="None"
                                               HeadersVisibility="Column"

@@ -27,10 +27,14 @@ namespace MoneyFlow.Domain.Interfaces.Repositories
         Task<CategoryDomain> GetAsync(string categoryName);
         CategoryDomain Get(string categoryName);
 
+        Task<List<CategoryWithSubcategoryDomain>> GetCategoryWithSubcategoryAsync(int idUser);
+
         Task<int> UpdateAsync(int idCategory, string? categoryName, string? description, string? color, byte[]? image, int idUser);
         int Update(int idCategory, string? categoryName, string? description, string? color, byte[]? image, int idUser);
 
-        Task DeleteAsync(int idCategory);
-        void Delete(int idCategory);
+        Task<(bool catLinkSub, bool financialRecord)> ExistRelatedDataAsync(int idCategory);
+
+        Task<int> DeleteAsync(int idCategory);
+        int Delete(int idCategory);
     }
 }

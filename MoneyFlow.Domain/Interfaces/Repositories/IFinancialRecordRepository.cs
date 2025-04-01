@@ -21,7 +21,9 @@ namespace MoneyFlow.Domain.Interfaces.Repositories
         Task<int> UpdateAsync(int idFinancialRecord, string? recordName, decimal? amount, string? description, int? idTransactionType, int? idUser, int? idCategory, int? idSubcategory, int? idAccount, DateTime? date);
         int Update(int idFinancialRecord, string? recordName, decimal? amount, string? description, int? idTransactionType, int? idUser, int? idCategory, int? idSubcategory, int? idAccount, DateTime? date);
 
-        Task DeleteAsync(int idFinancialRecord);
-        void Delete(int idFinancialRecord);
+        Task<List<int>> DeleteListAsync(int id, bool isDeleteByIdCategory);
+
+        Task<int> DeleteAsync(int idFinancialRecord);
+        int Delete(int idFinancialRecord);
     }
 }
