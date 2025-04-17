@@ -89,6 +89,7 @@ namespace MoneyFlow.Application.Extension
             services.AddSingleton<IAccountTypeService,      AccountTypeService>();
             services.AddSingleton<IBankService,             BankService>();
             services.AddSingleton<ICategoryService,         CategoryService>();
+            services.AddSingleton<IStatisticsService,       StatisticsService>();
             services.AddSingleton<ISubcategoryService,      SubcategoryService>();
             services.AddSingleton<IFinancialRecordService,  FinancialRecordService>();
             services.AddSingleton<IGenderService,           GenderService>();

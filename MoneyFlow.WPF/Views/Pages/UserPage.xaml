@@ -13,7 +13,7 @@
       d:Width="800" d:Height="auto"
       Background="White">
 
-    <TabControl>
+    <TabControl SelectedIndex="3">
         <TabItem Header="Учёт">
             <!--#region Финансовые записи -->
             <Border Grid.Column="0" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="10">
@@ -386,7 +386,7 @@
                                     <ColumnDefinition Width="2*"/>
                                 </Grid.ColumnDefinitions>
                                 <!--#region Общая информация -->
-                                <Border Grid.Column="0" Grid.Row="1" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="10">
+                                <Border Grid.Column="0" Grid.Row="1" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="10 10 5 10">
                                     <Border.Effect>
                                         <DropShadowEffect BlurRadius="10" Direction="300"/>
                                     </Border.Effect>
@@ -428,6 +428,19 @@
                                                 </DockPanel>
                                             </StackPanel>
                                         </Border>
+                                    </StackPanel>
+                                </Border>
+                                <!--#endregion-->
+
+                                <!--#region График -->
+                                <Border Grid.Column="1" Grid.Row="1" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="5 10 10 10">
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="10" Direction="300"/>
+                                    </Border.Effect>
+                                    <StackPanel>
+                                        <DataGrid ItemsSource="{Binding DetailsTransactionByAccount}">
+                                            
+                                        </DataGrid>
                                     </StackPanel>
                                 </Border>
                                 <!--#endregion-->
@@ -600,10 +613,6 @@
             <!--#region Категории || Подкатегории -->
             <Border Margin="10">
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <!--<ColumnDefinition Width="*"/>-->
-                        <!--<ColumnDefinition Width="*"/>-->
-                    </Grid.ColumnDefinitions>
                     <!--#region Категории -->
                     <Border Grid.Column="0" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="0 0 5 0" Visibility="Collapsed">
                         <Border.Effect>
@@ -669,8 +678,110 @@
                             <DropShadowEffect BlurRadius="10" Direction="300"/>
                         </Border.Effect>
                         <Grid>
-                            <DockPanel>
-                                <StackPanel DockPanel.Dock="Top" HorizontalAlignment="Center">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="60"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" DockPanel.Dock="Top" HorizontalAlignment="Center">
+                                <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center">
+                                    <DockPanel>
+                                        <TextBlock Text="Категории" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15"/>
+                                        <TextBlock Text="{Binding Categories.Count}" d:Text="15" 
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                   FontSize="15" Margin="5 0 0 0"/>
+                                    </DockPanel>
+
+                                    <Button Content="+" HorizontalAlignment="Center" Margin="20 0 0 0"
+                                                BorderThickness="0" Background="Transparent"
+                                                Command="{Binding OpenCatAndSubWindowCommand}"/>
+
+                                    <DockPanel Margin="20 0 0 0">
+                                        <TextBlock Text="Подкатегории" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15"/>
+                                        <TextBlock Text="{Binding Subcategories.Count}" d:Text="15" 
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                   FontSize="15" Margin="5 0 0 0"/>
+                                    </DockPanel>
+                                </DockPanel>
+                                <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0 10 0 0">
+                                    <TextBlock Text="Поиск: " FontSize="15" VerticalAlignment="Center"/>
+                                    <TextBox Text="{Binding SearchSub}" Width="200" HorizontalAlignment="Right" Margin="20 0 0 0" />
+                                </DockPanel>
+                            </StackPanel>
+
+                            <ScrollViewer Grid.Row="1">
+                                <ItemsControl ItemsSource="{Binding CategoriesWithSubcategories}" 
+                                              d:ItemsSource="{d:SampleData ItemCount=3}" 
+                                              Margin="10">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0 0 0 10">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*" MaxWidth="200"/>
+                                                </Grid.ColumnDefinitions>
+                                                <!--#region Название, картинка и описание категории -->
+                                                <StackPanel HorizontalAlignment="Left" Grid.Column="0">
+                                                    <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
+                                                        <TextBlock Text="{Binding Index}" Margin="0 0 5 0"/>
+                                                        <TextBlock Text="{Binding Category.CategoryName}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    </StackPanel>
+                                                    <Border BorderBrush="Black" BorderThickness="1">
+                                                        <Image Source="{Binding SelectImage}" Width="100" Height="100" Margin="5"/>
+                                                    </Border>
+                                                </StackPanel>
+                                                <TextBlock Grid.Column="2" Text="{Binding Category.Description}" TextWrapping="Wrap" Margin="10 0 0 0"/>
+                                                <!--#endregion-->
+
+                                                <!--#region Подкатегории -->
+                                                <DataGrid Grid.Column="1"
+                                                          AutoGenerateColumns="False" 
+                                                          IsReadOnly="True"
+                                                          GridLinesVisibility="None"
+                                                          HeadersVisibility="Column"
+                                                          RowHeaderWidth="0" 
+                                                          SelectionMode="Single" 
+                                                          HorizontalAlignment="Stretch"
+                                                          ItemsSource="{Binding Subcategories}"
+                                                          SelectedItem="{Binding SelectedSubcategory}"
+                                                          Margin="20 0 0 0">
+                                                    <!--#region DoubleClick-->
+                                                    <i:Interaction.Triggers>
+                                                        <i:EventTrigger EventName="MouseDoubleClick">
+                                                            <i:InvokeCommandAction Command="{Binding UserSubcategoryDoubleClickCommand}"/>
+                                                        </i:EventTrigger>
+                                                    </i:Interaction.Triggers>
+                                                    <!--#endregion-->
+
+                                                    <DataGrid.Columns>
+                                                        <DataGridTextColumn Binding="{Binding Index}" Width="auto"/>
+                                                        <DataGridTextColumn Header="SubcategoryName" Binding="{Binding SubcategoryName}" Width="auto"/>
+                                                        <DataGridTemplateColumn Header="Decription" Width="auto">
+                                                            <DataGridTemplateColumn.CellTemplate>
+                                                                <DataTemplate>
+                                                                    <TextBlock Text="{Binding Description}" HorizontalAlignment="Left" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
+                                                                </DataTemplate>
+                                                            </DataGridTemplateColumn.CellTemplate>
+                                                        </DataGridTemplateColumn>
+                                                        <!--<DataGridTemplateColumn>
+                                                            <DataGridTemplateColumn.CellTemplate>
+                                                                <DataTemplate>
+                                                                    <Button Content="?" Command="{Binding DataContext.UserSubcategoryDoubleClickCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>
+                                                                </DataTemplate>
+                                                            </DataGridTemplateColumn.CellTemplate>
+                                                        </DataGridTemplateColumn>-->
+                                                    </DataGrid.Columns>
+                                                </DataGrid>
+                                                <!--#endregion-->
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+
+                            <DockPanel Visibility="Collapsed">
+                                <StackPanel Grid.Row="0" DockPanel.Dock="Top" HorizontalAlignment="Center">
                                     <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Center">
                                         <DockPanel>
                                             <TextBlock Text="Категории" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15"/>
@@ -696,7 +807,79 @@
                                     </DockPanel>
                                 </StackPanel>
 
-                                <DataGrid AutoGenerateColumns="False"
+                                <ScrollViewer HorizontalAlignment="Stretch">
+                                    <ItemsControl ItemsSource="{Binding CategoriesWithSubcategories}" 
+                                                  d:ItemsSource="{d:SampleData ItemCount=3}" 
+                                                  HorizontalAlignment="Stretch"
+                                                  Margin="10">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="auto"/>
+                                                        <ColumnDefinition Width="*" MaxWidth="200"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <!--#region Название, картинка и описание категории -->
+                                                    <StackPanel HorizontalAlignment="Left" Grid.Column="0">
+                                                        <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
+                                                            <TextBlock Text="{Binding Category.Index}" Margin="0 0 5 0"/>
+                                                            <TextBlock Text="{Binding Category.CategoryName}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </StackPanel>
+                                                        <Border BorderBrush="Black" BorderThickness="1">
+                                                            <Image Source="{Binding SelectImage}" Width="100" Height="100" Margin="5"/>
+                                                        </Border>
+                                                    </StackPanel>
+                                                    <TextBlock Grid.Column="1" Text="{Binding Category.Description}" TextWrapping="Wrap" Margin="15 0 0 0"/>
+                                                    <!--#endregion-->
+
+                                                    <!--#region Подкатегории -->
+                                                    <DataGrid Grid.Column="2" 
+                                                              AutoGenerateColumns="False" 
+                                                              IsReadOnly="True"
+                                                              GridLinesVisibility="None"
+                                                              HeadersVisibility="Column"
+                                                              RowHeaderWidth="0" 
+                                                              SelectionMode="Single" 
+                                                              HorizontalAlignment="Stretch"
+                                                              ItemsSource="{Binding Subcategories}"
+                                                              SelectedItem="{Binding SelectedSubcategory}"
+                                                              Margin="20 0 0 0">
+                                                        <!--#region DoubleClick-->
+                                                        <i:Interaction.Triggers>
+                                                            <i:EventTrigger EventName="MouseDoubleClick">
+                                                                <i:InvokeCommandAction Command="{Binding UserSubcategoryDoubleClickCommand}"/>
+                                                            </i:EventTrigger>
+                                                        </i:Interaction.Triggers>
+                                                        <!--#endregion-->
+
+                                                        <DataGrid.Columns>
+                                                            <DataGridTextColumn Binding="{Binding Index}" Width="auto"/>
+                                                            <DataGridTextColumn Header="SubcategoryName" Binding="{Binding SubcategoryName}" Width="auto"/>
+                                                            <DataGridTemplateColumn Header="Decription">
+                                                                <DataGridTemplateColumn.CellTemplate>
+                                                                    <DataTemplate>
+                                                                        <TextBlock Text="{Binding Description}" HorizontalAlignment="Left" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
+                                                                    </DataTemplate>
+                                                                </DataGridTemplateColumn.CellTemplate>
+                                                            </DataGridTemplateColumn>
+                                                            <!--<DataGridTemplateColumn>
+                                                            <DataGridTemplateColumn.CellTemplate>
+                                                                <DataTemplate>
+                                                                    <Button Content="?" Command="{Binding DataContext.UserSubcategoryDoubleClickCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>
+                                                                </DataTemplate>
+                                                            </DataGridTemplateColumn.CellTemplate>
+                                                        </DataGridTemplateColumn>-->
+                                                        </DataGrid.Columns>
+                                                    </DataGrid>
+                                                    <!--#endregion-->
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ScrollViewer>
+
+                                <DataGrid AutoGenerateColumns="False" Visibility="Collapsed"
                                           IsReadOnly="True"
                                           GridLinesVisibility="None"
                                           HeadersVisibility="Column"
@@ -733,7 +916,7 @@
                                                 <!--#region DoubleClick-->
                                                 <i:Interaction.Triggers>
                                                     <i:EventTrigger EventName="MouseDoubleClick">
-                                                        <i:InvokeCommandAction Command="{Binding UserSubcategoryDoubleClickCommand}" CommandParameter="{Binding SelectedSubcategory}" />
+                                                        <i:InvokeCommandAction Command="{Binding UserSubcategoryDoubleClickCommand}"/>
                                                     </i:EventTrigger>
                                                 </i:Interaction.Triggers>
                                                 <!--#endregion-->
@@ -745,6 +928,13 @@
                                                         <DataGridTemplateColumn.CellTemplate>
                                                             <DataTemplate>
                                                                 <TextBlock Text="{Binding Description}" HorizontalAlignment="Left" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
+                                                    <DataGridTemplateColumn>
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <Button Content="?" Command="{Binding DataContext.UserSubcategoryDoubleClickCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellTemplate>
                                                     </DataGridTemplateColumn>

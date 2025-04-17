@@ -1,12 +1,15 @@
-﻿using MoneyFlow.Application.DTOs;
+﻿using MoneyFlow.Application.ApplicationModel;
+using MoneyFlow.Application.DTOs;
 using MoneyFlow.Application.Services.Abstraction;
 using MoneyFlow.Application.UseCaseInterfaces.CategoryCaseInterfaces;
 using MoneyFlow.Application.UseCaseInterfaces.CatLinkSubCaseInterfaces;
 using MoneyFlow.Application.UseCaseInterfaces.FinancialRecordViewingInterfaces;
+using MoneyFlow.Domain.Enums;
 using MoneyFlow.WPF.Commands;
 using MoneyFlow.WPF.Enums;
 using MoneyFlow.WPF.Interfaces;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace MoneyFlow.WPF.ViewModels.PageViewModels
 {
@@ -19,6 +22,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         private readonly IUserService _userService;
         private readonly ICategoryService _categoryService;
         private readonly IGetCategoryWithSubcategoriesUseCase _getCategoryWithSubcategoriesUseCase;
+        private readonly IStatisticsService _statisticsService;
         private readonly ISubcategoryService _subcategoryService;
         private readonly ITransactionTypeService _transactionTypeService;
         private readonly IFinancialRecordService _financialRecordService;
@@ -35,6 +39,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                           IUserService userService,
                           ICategoryService categoryService,
                           IGetCategoryWithSubcategoriesUseCase getCategoryWithSubcategoriesUseCase,
+                          IStatisticsService statisticsService,
                           ISubcategoryService subcategoryService,
                           ITransactionTypeService transactionTypeService,
                           IFinancialRecordService financialRecordService, 
@@ -50,6 +55,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             _userService = userService;
             _categoryService = categoryService;
             _getCategoryWithSubcategoriesUseCase = getCategoryWithSubcategoriesUseCase;
+            _statisticsService = statisticsService;
             _subcategoryService = subcategoryService;
             _transactionTypeService = transactionTypeService;
             _financialRecordService = financialRecordService;
@@ -78,6 +84,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             DateEndFilter = End;
 
             GetFinancialRecord();
+            CalculateRecordTransactionByAccount();
         }
 
         public async void Update(object parameter, ParameterType typeParameter = ParameterType.None)
@@ -167,7 +174,6 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
                 //CategoriesWithSubcategories.Add(new CategoriesWithSubcategoriesDTO { Category = cat.Category, Subcategories = [subcategoryAdd] });
                 cat.Subcategories.Add(subcategoryAdd);
-                CategoriesWithSubcategories.Add(cat);
 
                 UserTotalInfo.SubcategoryCount += 1;
             }
@@ -322,6 +328,60 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                 OnPropertyChanged();
             }
         }
+
+
+        // ---------------------------------------------------------------------------------------------------------------------------------
+
+        #region Статистика
+
+        public ObservableCollection<NameValue> DetailsTransactionByAccount { get; set; } = [];
+
+        public void CalculateRecordTransactionByAccount()
+        {
+            DetailsTransactionByAccount.Clear();
+
+            var stat = _statisticsService.DetailingTransaction<AccountDTO>(
+                [.. FinancialRecords],
+                (record, account) => record.AccountNumber == account.NumberAccount,
+                type => (SelectedTransactionTypeFilter?.TransactionTypeName == "<<Не выбрано!!>>") ?
+                    (type.IdTransactionType == (int)TransactionType.Profit || type.IdTransactionType == (int)TransactionType.Expenses) :
+                    type.IdTransactionType == SelectedTransactionTypeFilter?.IdTransactionType,
+                [.. Accounts],
+                account => account.NumberAccount.ToString());
+
+            foreach (var item in stat)
+            {
+                DetailsTransactionByAccount.Add(item);
+            }
+        }
+
+        
+        // TODO : Что-то сделать с датами
+
+        //public ObservableCollection<NameValue> DetailsTransactionByData { get; set; } = [];
+
+        //public void CalculateRecordTransactionByData()
+        //{
+        //    DetailsTransactionByData.Clear();
+
+        //    var allMonths = Enum.GetValues<Month>().ToDictionary(month => ((int)month), month => month);
+
+        //    var stat = _statisticsService.DetailingTransaction<Dictionary<int, Month>>(
+        //        [.. FinancialRecords],
+        //        (record, month) => record.Date.Value.Month == (int)month.GetValueOrDefault(record.Date.Value.Month),
+        //        type => (SelectedTransactionTypeFilter?.TransactionTypeName == "<<Не выбрано!!>>") ?
+        //            (type.IdTransactionType == (int)TransactionType.Profit || type.IdTransactionType == (int)TransactionType.Expenses) :
+        //            type.IdTransactionType == SelectedTransactionTypeFilter?.IdTransactionType,
+        //        allMonths,
+        //        month => month.ToString());
+
+        //    foreach (var item in stat)
+        //    {
+        //        DetailsTransactionByData.Add(item);
+        //    }
+        //}
+
+        #endregion
 
         // ---------------------------------------------------------------------------------------------------------------------------------
 
@@ -505,7 +565,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         // ---------------------------------------------------------------------------------------------------------------------------------
 
 
-        #region Категории подкатегории GroupJoin
+        #region Категории Подкатегории
 
         private CategoriesWithSubcategoriesDTO _selectedCategoriesWithSubcategories;
         public CategoriesWithSubcategoriesDTO SelectedCategoriesWithSubcategories
@@ -514,6 +574,9 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             set
             {
                 _selectedCategoriesWithSubcategories = value;
+
+                SelectedSubcategory = null;
+
                 OnPropertyChanged();
             }
         }
@@ -529,6 +592,8 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             foreach (var item in list)
             {
                 CategoriesWithSubcategories.Add(item);
+                var index = CategoriesWithSubcategories.IndexOf(item);
+                item.Index = index + 1;
             }
         }
 
@@ -673,14 +738,27 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                 _navigationWindows.OpenWindow(WindowType.CatAndSubWindow, category);
             }
 
+            #region Главная страница
+
             if (parameter is CategoriesWithSubcategoriesDTO categoryWithSubcategory)
             {
-                _navigationWindows.OpenWindow(WindowType.CatAndSubWindow, (categoryWithSubcategory.Category, categoryWithSubcategory.Subcategories));
+                if (SelectedSubcategory is null)
+                {
+                    _navigationWindows.OpenWindow(WindowType.CatAndSubWindow, (categoryWithSubcategory.Category, SelectedSubcategory), ParameterType.CatWithSubWindowWithOutTuple);
+                }
+                else
+                {
+                    _navigationWindows.OpenWindow(WindowType.CatAndSubWindow, (categoryWithSubcategory.Category, SelectedSubcategory), ParameterType.CatWithSubWindowWithTuple);
+                }
+                
             }
             if (parameter is SubcategoryDTO subcategory)
             {
+                MessageBox.Show(SelectedCategoriesWithSubcategories.Category.CategoryName + subcategory.SubcategoryName);
                 _navigationWindows.OpenWindow(WindowType.CatAndSubWindow, (SelectedCategoriesWithSubcategories.Category, subcategory));
             }
+
+            #endregion
 
             if (parameter is FinancialRecordViewingDTO financialRecordViewing)
             {
@@ -992,7 +1070,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         // ---------------------------------------------------------------------------------------------------------------------------------
 
         private RelayCommand _applyCommand;
-        public RelayCommand ApplyCommand { get => _applyCommand ??= new(async obj => { await GetFinancialRecord(); }); }
+        public RelayCommand ApplyCommand { get => _applyCommand ??= new(async obj => { await GetFinancialRecord(); CalculateRecordTransactionByAccount(); }); }
 
         private RelayCommand _dropCommand;
         public RelayCommand DropCommand 

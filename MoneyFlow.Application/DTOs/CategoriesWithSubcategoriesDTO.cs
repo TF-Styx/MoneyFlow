@@ -6,5 +6,7 @@ namespace MoneyFlow.Application.DTOs
     {
         public CategoryDTO Category { get; set; }
         public ObservableCollection<SubcategoryDTO> Subcategories { get; set; }
+
+        public int Index { get; set; }
     }
 }

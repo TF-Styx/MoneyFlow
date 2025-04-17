@@ -55,47 +55,30 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
             _navigationWindows = navigationWindows;
         }
 
+        #region ViewModel CategoryWithSubcategory
+
         public void Update(object parameter, ParameterType typeParameter = ParameterType.None)
         {
-            //if (parameter is CategoryDTO category)
-            //{
-            //    SelectedCategory = category;
+            Type type = parameter.GetType();
+            MessageBox.Show(type.FullName);
 
-            //    CategoryName = category.CategoryName;
-            //    DescriptionCat = category.Description;
-            //    SelectedColorCat = category.Color;
-            //    SelectImageCat = category.Image;
-            //}
-
-            if (parameter is ValueTuple<CategoriesWithSubcategoriesDTO, SubcategoryDTO> (CategoriesWithSubcategoriesDTO catWithSub, SubcategoryDTO subcategory))
+            if (parameter is ValueTuple<CategoryDTO, SubcategoryDTO> value && typeParameter == ParameterType.CatWithSubWindowWithOutTuple)
             {
-                if (subcategory == null)
-                {
-                    SelectedCategory = catWithSub.Category;
+                SelectedCategory = value.Item1;
+                MessageBox.Show(SelectedCategory.CategoryName);
+            }
 
-                    CategoryName = SelectedCategory.CategoryName;
-                    DescriptionCat = SelectedCategory.Description;
-                    SelectedColorCat = SelectedCategory.Color;
-                    SelectImageCat = SelectedCategory.Image;
-                }
-                else
-                {
-                    SelectedCategory = catWithSub.Category;
+            if (parameter is ValueTuple<CategoryDTO, SubcategoryDTO> value1 && typeParameter == ParameterType.CatWithSubWindowWithTuple)
+            {
+                SelectedCategory = value1.Item1;
+                MessageBox.Show(SelectedCategory.CategoryName);
 
-                    CategoryName = SelectedCategory.CategoryName;
-                    DescriptionCat = SelectedCategory.Description;
-                    SelectedColorCat = SelectedCategory.Color;
-                    SelectImageCat = SelectedCategory.Image;
-
-
-                    SelectedSubcategory = subcategory;
-
-                    SubcategoryName = SelectedSubcategory.SubcategoryName;
-                    DescriptionSub = SelectedSubcategory.Description;
-                    SelectImageSub = SelectedSubcategory.Image;
-                }
+                SelectedSubcategory = value1.Item2;
+                MessageBox.Show(SelectedSubcategory.SubcategoryName);
             }
         }
+
+        #endregion
 
         private UserDTO _currentUser;
         public UserDTO CurrentUser
@@ -169,20 +152,24 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
 
                 if (value == null) { return; }
 
-                CategoryName = value.CategoryName;
-                DescriptionCat = value.Description;
-                //SelectedColorCat = value.Color;
-                SelectImageCat = value.Image;
-
-                SubcategoryName = string.Empty;
-                DescriptionSub = string.Empty;
-                //SelectedColorCat = null;
-                SelectImageSub = null;
+                SubstitutingCategories(value.IdCategory);
 
                 GetSubcategoryByIdCategory();
 
                 OnPropertyChanged();
             }
+        }
+
+        private CategoryDTO _currentCategory;
+
+        private void SubstitutingCategories(int idCategory)
+        {
+            _currentCategory = _categoryService.GetCategory(idCategory);
+
+            CategoryName = _currentCategory.CategoryName;
+            DescriptionCat = _currentCategory.Description;
+            //SelectedColorCat = _currentCatWithSub.Category.Color;
+            SelectImageCat = _currentCategory.Image;
         }
 
         //public ObservableCollection<Color> ColorCat { get; set; } = [];
@@ -246,6 +233,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
                     return;
                 }
 
+                newCat.CategoryDTO.Index = Categories.Count + 1;
                 Categories.Add(newCat.CategoryDTO);
 
                 _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, newCat, ParameterType.Add);
@@ -421,6 +409,8 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
 
                 if (value == null) { return; }
 
+                SubstitutingSubcategories(value.IdSubcategory);
+
                 //if (SelectedCategory == null)
                 //{
                 //    var idCategory = _categoryService.GetIdSubCat(CurrentUser.IdUser, SelectedSubcategory.IdSubcategory);
@@ -440,14 +430,25 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
                 //    GetSubcategoryByIdCategory();
                 //}
 
-                SubcategoryName = value.SubcategoryName;
-                DescriptionSub = value.Description;
-                SelectImageSub = value.Image;
+                //SubcategoryName = value.SubcategoryName;
+                //DescriptionSub = value.Description;
+                //SelectImageSub = value.Image;
 
                 //GetIdUserIdCategorySubcategory();
 
                 OnPropertyChanged();
             }
+        }
+
+        private SubcategoryDTO _currentSubcategory;
+
+        private async void SubstitutingSubcategories(int idSubcategory)
+        {
+            _currentSubcategory = await _subcategoryService.GetAsyncSubcategory(idSubcategory);
+
+            SubcategoryName = _currentSubcategory.SubcategoryName;
+            DescriptionSub = _currentSubcategory.Description;
+            SelectImageSub = _currentSubcategory.Image;
         }
 
         //public ObservableCollection<Color> ColorCat { get; set; } = [];

@@ -10,5 +10,8 @@
         Add,
         Update,
         Delete,
+
+        CatWithSubWindowWithTuple,
+        CatWithSubWindowWithOutTuple,
     }
 }

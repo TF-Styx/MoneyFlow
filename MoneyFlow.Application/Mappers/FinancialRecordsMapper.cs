@@ -52,6 +52,7 @@ namespace MoneyFlow.Application.Mappers
                 RecordName = financialRecordViewing.RecordName,
                 Amount = financialRecordViewing.Amount,
                 Description = financialRecordViewing.Description,
+                IdTransactionType = financialRecordViewing.IdTransactionType,
                 TransactionTypeName = financialRecordViewing.TransactionTypeName,
                 IdUser = financialRecordViewing.IdUser,
                 CategoryName = financialRecordViewing.CategoryName,

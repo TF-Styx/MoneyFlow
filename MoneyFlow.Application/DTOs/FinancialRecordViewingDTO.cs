@@ -8,6 +8,7 @@ namespace MoneyFlow.Application.DTOs
         public string? RecordName { get; set; }
         public decimal? Amount { get; set; }
         public string? Description { get; set; }
+        public int? IdTransactionType { get; set; }
         public string TransactionTypeName { get; set; }
         public int? IdUser { get; set; }
         public string CategoryName { get; set; }
