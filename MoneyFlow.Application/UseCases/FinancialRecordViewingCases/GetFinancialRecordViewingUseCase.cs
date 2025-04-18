@@ -29,6 +29,18 @@ namespace MoneyFlow.Application.UseCases.FinancialRecordViewingCases
             return financialRecordsDTO;
         }
 
+        public async Task<FinancialRecordViewingDTO> GetViewingAsync(int idFinancialRecord)
+        {
+            var financialRecord = await _financialRecordRepository.GetViewingAsync(idFinancialRecord);
+            var financialRecordDTO = financialRecord.ToDTO().FinancialRecordViewingDTO;
+
+            return financialRecordDTO;
+        }
+        public FinancialRecordViewingDTO GetViewing(int idFinancialRecord)
+        {
+            return Task.Run(() => GetViewingAsync(idFinancialRecord)).Result;
+        }
+
         public async Task<FinancialRecordViewingDTO> GetByIdAsync(int idUser, int idFinancialRecord, int idCategory, int idSubcategory)
         {
             var financialRecord = await _financialRecordRepository.GetByIdAsync(idUser, idFinancialRecord, idCategory, idSubcategory);

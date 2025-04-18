@@ -710,7 +710,7 @@
                             </StackPanel>
 
                             <ScrollViewer Grid.Row="1">
-                                <ItemsControl ItemsSource="{Binding CategoriesWithSubcategories}" 
+                                <ItemsControl ItemsSource="{Binding CategoriesWithSubcategories, UpdateSourceTrigger=PropertyChanged}" 
                                               d:ItemsSource="{d:SampleData ItemCount=3}" 
                                               Margin="10">
                                     <ItemsControl.ItemTemplate>

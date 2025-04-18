@@ -195,6 +195,43 @@ namespace MoneyFlow.Infrastructure.Repositories
             return Task.Run(() => GetAllViewingAsync(idUser, filter)).Result;
         }
 
+        public async Task<FinancialRecordViewingDomain> GetViewingAsync(int idFinancialRecord)
+        {
+            using (var context = _factory())
+            {
+                var entity = await context.FinancialRecords
+                    .AsNoTracking()
+                        .Include(x => x.IdUserNavigation)
+                        .Include(x => x.IdTransactionTypeNavigation)
+                        .Include(x => x.IdCategoryNavigation)
+                        .Include(x => x.IdSubcategoryNavigation)
+                        .Include(x => x.IdAccountNavigation)
+                            .FirstOrDefaultAsync(x => x.IdFinancialRecord == idFinancialRecord);
+
+                var domain = FinancialRecordViewingDomain.Create
+                    (
+                        idFinancialRecord,
+                        entity.RecordName,
+                        entity.Ammount,
+                        entity.Description,
+                        entity.IdTransactionType,
+                        entity.IdTransactionTypeNavigation.TransactionTypeName,
+                        entity.IdUser,
+                        entity.IdCategoryNavigation.CategoryName,
+                        entity.IdSubcategoryNavigation.SubcategoryName,
+                        entity.IdAccountNavigation.NumberAccount,
+                        entity.Date
+                    ).FinancialRecordViewingDomain;
+
+                return domain;
+            }
+        }
+
+        public FinancialRecordViewingDomain GetViewing(int idFinancialRecord)
+        {
+            return Task.Run(() => GetViewingAsync(idFinancialRecord)).Result;
+        }
+
         public async Task<FinancialRecordViewingDomain> GetByIdAsync(int idUser, int idFinancialRecord, int? idCategory, int idSubcategory)
         {
             using (var context = _factory())

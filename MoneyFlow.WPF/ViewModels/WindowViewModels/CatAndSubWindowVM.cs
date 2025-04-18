@@ -233,8 +233,8 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
                 newCat.CategoryDTO.Index = Categories.Count + 1;
                 Categories.Add(newCat.CategoryDTO);
 
-                _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, newCat, ParameterType.Add);
-                _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, newCat, ParameterType.Add);
+                _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, newCat.CategoryDTO, ParameterType.Add);
+                _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, newCat.CategoryDTO, ParameterType.Add);
             });
         }
 
@@ -289,6 +289,12 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
                         var financialRecordDelete = await _financialRecordService.DeleteListAsync(SelectedCategory.IdCategory, true);
                         var categoryDelete = await _categoryService.DeleteAsync(CurrentUser.IdUser, SelectedCategory.IdCategory, true);
 
+                        _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, financialRecordDelete, ParameterType.Delete);
+                        _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, financialRecordDelete, ParameterType.Delete);
+
+                        _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, SelectedCategory, ParameterType.Delete);
+                        _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, SelectedCategory, ParameterType.Delete);
+
                         Categories.Remove(SelectedCategory);
 
                         CategoryName = string.Empty;
@@ -297,18 +303,18 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
                         SelectImageCat = null;
 
                         SelectedCategory = null;
-
-                        _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, financialRecordDelete, ParameterType.Delete);
-                        _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, financialRecordDelete, ParameterType.Delete);
-
-                        _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, categoryDelete, ParameterType.Delete);
-                        _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, categoryDelete, ParameterType.Delete);
                     }
                 }
                 else
                 {
                     var financialRecordDelete = await _financialRecordService.DeleteListAsync(SelectedCategory.IdCategory, true);
                     var categoryDelete = await _categoryService.DeleteAsync(CurrentUser.IdUser, SelectedCategory.IdCategory, true);
+
+                    _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, financialRecordDelete, ParameterType.Delete);
+                    _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, financialRecordDelete, ParameterType.Delete);
+
+                    _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, SelectedCategory, ParameterType.Delete);
+                    _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, SelectedCategory, ParameterType.Delete);
 
                     Categories.Remove(SelectedCategory);
 
@@ -318,12 +324,6 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
                     SelectImageCat = null;
 
                     SelectedCategory = null;
-
-                    _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, financialRecordDelete, ParameterType.Delete);
-                    _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, financialRecordDelete, ParameterType.Delete);
-
-                    _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, categoryDelete, ParameterType.Delete);
-                    _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, categoryDelete, ParameterType.Delete);
                 }
             });
         }
@@ -554,6 +554,12 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
                 Subcategories.RemoveAt(index);
                 Subcategories.Insert(index, updateSubcategory);
 
+                SubcategoryName = string.Empty;
+                DescriptionSub = string.Empty;
+                SelectImageSub = null;
+
+                SelectedSubcategory = null;
+
                 _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, updateSubcategory, ParameterType.Update);
                 _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, updateSubcategory, ParameterType.Update);
             });
@@ -573,6 +579,12 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
                         var financialRecordDelete = await _financialRecordService.DeleteListAsync(SelectedSubcategory.IdSubcategory, false);
                         var subcategoryDelete = await _subcategoryService.DeleteAsyncSubcategory(CurrentUser.IdUser, SelectedSubcategory.IdSubcategory, false);
 
+                        _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, financialRecordDelete, ParameterType.Delete);
+                        _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, financialRecordDelete, ParameterType.Delete);
+
+                        _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, (SelectedCategory, SelectedSubcategory), ParameterType.Delete);
+                        _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, (SelectedCategory, SelectedSubcategory), ParameterType.Delete);
+
                         Subcategories.Remove(SelectedSubcategory);
 
                         SubcategoryName = string.Empty;
@@ -580,18 +592,18 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
                         SelectImageSub = null;
 
                         SelectedSubcategory = null;
-
-                        _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, financialRecordDelete, ParameterType.Delete);
-                        _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, financialRecordDelete, ParameterType.Delete);
-
-                        _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, subcategoryDelete, ParameterType.Delete);
-                        _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, subcategoryDelete, ParameterType.Delete);
                     }
                 }
                 else
                 {
                     var financialRecordDelete = await _financialRecordService.DeleteListAsync(SelectedSubcategory.IdSubcategory, false);
                     var subcategoryDelete = await _subcategoryService.DeleteAsyncSubcategory(CurrentUser.IdUser, SelectedSubcategory.IdSubcategory, false);
+
+                    _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, financialRecordDelete, ParameterType.Delete);
+                    _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, financialRecordDelete, ParameterType.Delete);
+
+                    _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, (SelectedCategory, SelectedSubcategory), ParameterType.Delete);
+                    _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, (SelectedCategory, SelectedSubcategory), ParameterType.Delete);
 
                     Subcategories.Remove(SelectedSubcategory);
 
@@ -600,12 +612,6 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
                     SelectImageSub = null;
 
                     SelectedSubcategory = null;
-
-                    _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, financialRecordDelete, ParameterType.Delete);
-                    _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, financialRecordDelete, ParameterType.Delete);
-
-                    _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, subcategoryDelete, ParameterType.Delete);
-                    _navigationWindows.TransitObject(WindowType.FinancialRecordWindow, subcategoryDelete, ParameterType.Delete);
                 }
             });
         }

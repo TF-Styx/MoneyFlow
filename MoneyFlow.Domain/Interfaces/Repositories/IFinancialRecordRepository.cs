@@ -15,6 +15,9 @@ namespace MoneyFlow.Domain.Interfaces.Repositories
         Task<List<FinancialRecordViewingDomain>> GetAllViewingAsync(int idUser, FinancialRecordFilterDomain filter);
         List<FinancialRecordViewingDomain> GetAllViewing(int idUser, FinancialRecordFilterDomain filter);
 
+        Task<FinancialRecordViewingDomain> GetViewingAsync(int idFinancialRecord);
+        FinancialRecordViewingDomain GetViewing(int idFinancialRecord);
+
         Task<FinancialRecordViewingDomain> GetByIdAsync(int idUser, int idFinancialRecord, int? idCategory, int idSubcategory);
         FinancialRecordViewingDomain GetById(int idUser, int idFinancialRecord, int? idCategory, int idSubcategory);
 

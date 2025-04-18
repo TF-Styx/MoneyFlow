@@ -395,6 +395,14 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
                     MessageBox.Show(newRecord.Message);
                     return;
                 }
+                if (SelectedTransactionType == null)
+                    MessageBox.Show("Вы не выбрали <<Тип операции>>!!");
+                if (SelectedCategory == null)
+                    MessageBox.Show("Вы не выбрали <<Категорию>>!!");
+                if (SelectedSubcategory == null)
+                    MessageBox.Show("Вы не выбрали <<Подкатегорию>>!!");
+                if (SelectedAccount== null)
+                    MessageBox.Show("Вы не выбрали <<Счёт>>!!");
 
                 var record = _getFinancialRecordViewingUseCase.GetById(CurrentUser.IdUser, newRecord.FinancialRecordDTO.IdFinancialRecord, SelectedCategory.IdCategory, SelectedSubcategory.IdSubcategory);
 
@@ -407,6 +415,9 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
         {
             get => _financialRecordUpdateCommand ??= new(async obj =>
             {
+                if (SelectedFinancialRecord == null)
+                    MessageBox.Show("Вы не выбрали <<Финансовую запись>>!!");
+
                 var idUpdateRecord = await _financialRecordService.UpdateAsync
                     (
                         SelectedFinancialRecord.IdFinancialRecord,
@@ -421,7 +432,9 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
                         Date
                     );
 
-                _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, (idUpdateRecord, SelectedTransactionType.IdTransactionType), ParameterType.Update);
+                var updateRecord = await _getFinancialRecordViewingUseCase.GetViewingAsync(idUpdateRecord);
+
+                _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, (updateRecord, SelectedTransactionType.IdTransactionType), ParameterType.Update);
             });
         }
 
@@ -430,6 +443,9 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
         {
             get => _financialRecordDeleteCommand ??= new(async obj =>
             {
+                if (SelectedFinancialRecord == null)
+                    MessageBox.Show("Вы не выбрали <<Финансовую запись>>!!");
+
                 await _financialRecordService.DeleteAsync(SelectedFinancialRecord.IdFinancialRecord);
 
                 _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, SelectedFinancialRecord, ParameterType.Delete);

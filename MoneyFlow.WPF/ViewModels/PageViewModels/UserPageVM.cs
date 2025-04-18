@@ -102,6 +102,8 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                 banksToAdd.Index = UserBanks.Banks.Count + 1;
                 UserBanks.Banks.Add(cartageAccountBankAdd.Item2);
                 UserTotalInfo.BankCount += 1;
+
+                UserTotalInfo.TotalBalance += cartageAccountBankAdd.Item1.Balance;
             }
             if (parameter is ValueTuple<AccountDTO, BankDTO> cartageAccountBankUpdate && typeParameter is ParameterType.Update)
             {
@@ -111,17 +113,28 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                 Accounts.Remove(itemForDeleteAccount);
                 Accounts.Insert(indexAccount, cartageAccountBankUpdate.Item1);
 
+
                 var itemForDeleteBank = UserBanks.Banks.FirstOrDefault(x => x.IdBank == cartageAccountBankUpdate.Item2.IdBank);
                 var indexBank = UserBanks.Banks.IndexOf(itemForDeleteBank);
 
                 UserBanks.Banks.Remove(itemForDeleteBank);
                 UserBanks.Banks.Insert(indexAccount, cartageAccountBankUpdate.Item2);
+
+
+                if (Accounts.FirstOrDefault(x => x.IdAccount == cartageAccountBankUpdate.Item1.IdAccount).Balance <= cartageAccountBankUpdate.Item1.Balance)
+                    UserTotalInfo.TotalBalance -= cartageAccountBankUpdate.Item1.Balance;
+                if (Accounts.FirstOrDefault(x => x.IdAccount == cartageAccountBankUpdate.Item1.IdAccount).Balance >= cartageAccountBankUpdate.Item1.Balance)
+                    UserTotalInfo.TotalBalance += cartageAccountBankUpdate.Item1.Balance;
             }
             if (parameter is ValueTuple<AccountDTO, BankDTO> cartageAccountBankDelete && typeParameter is ParameterType.Delete)
             {
                 Accounts.Remove(Accounts.FirstOrDefault(x => x.IdAccount == cartageAccountBankDelete.Item1.IdAccount));
+                UserTotalInfo.AccountCount -= 1;
+
                 UserBanks.Banks.Remove(UserBanks.Banks.FirstOrDefault(x => x.IdBank == cartageAccountBankDelete.Item2.IdBank));
                 UserTotalInfo.BankCount -= 1;
+
+                UserTotalInfo.TotalBalance -= cartageAccountBankDelete.Item1.Balance;
             }
 
             #endregion
@@ -129,28 +142,28 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             // -----------------------------------------------------------------------------------------------------------------------------
 
             #region Обновление категорий
-
+                
             if (parameter is CategoryDTO categoryAdd && typeParameter is ParameterType.Add)
             {
-                //Categories.Add(categoryAdd);
-                categoryAdd.Index = CategoriesWithSubcategories.Select(x => x.Category).ToList().Count + 1;
-
                 CategoriesWithSubcategories.Add(new CategoriesWithSubcategoriesDTO { Category = categoryAdd, Subcategories = [] });
+                categoryAdd.Index = CategoriesWithSubcategories.Count;
                 UserTotalInfo.CategoryCount += 1;
             }
             if (parameter is CategoryDTO categoryUpdate && typeParameter is ParameterType.Update)
             {
+                #region Страый варинат
+
                 var itemForDelete = Categories.FirstOrDefault(x => x.IdCategory == categoryUpdate.IdCategory);
                 var index = Categories.IndexOf(itemForDelete);
 
                 Categories.Remove(itemForDelete);
                 Categories.Insert(index, categoryUpdate);
 
+                #endregion
                 // ----------------------------------------------------------------------------------------------------------------------------
 
                 var itemForDelete1 = CategoriesWithSubcategories.FirstOrDefault(x => x.Category.IdCategory == categoryUpdate.IdCategory);
                 var index1 = CategoriesWithSubcategories.IndexOf(itemForDelete1);
-
                 var catWithSub = new CategoriesWithSubcategoriesDTO { Category = categoryUpdate, Subcategories = itemForDelete1.Subcategories };
 
                 CategoriesWithSubcategories.Remove(itemForDelete1);
@@ -158,11 +171,9 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             }
             if (parameter is CategoryDTO categoryDelete && typeParameter is ParameterType.Delete)
             {
-                Categories.Remove(Categories.FirstOrDefault(x => x.IdCategory == categoryDelete.IdCategory));
-
-                UserTotalInfo.AccountCount -= 1;
-
                 CategoriesWithSubcategories.Remove(CategoriesWithSubcategories.FirstOrDefault(x => x.Category.IdCategory == categoryDelete.IdCategory));
+
+                UserTotalInfo.CategoryCount -= 1;
             }
 
             #endregion
@@ -173,26 +184,16 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
             if (parameter is SubcategoryDTO subcategoryAdd && typeParameter is ParameterType.Add)
             {
-                //Subcategories.Add(subcategoryAdd);
-
                 var idCat = await _getCatLinkSubUseCase.GetIdCatByIdSub(subcategoryAdd.IdSubcategory);
                 var cat = CategoriesWithSubcategories.FirstOrDefault(x => x.Category.IdCategory == idCat);
 
-                //CategoriesWithSubcategories.Add(new CategoriesWithSubcategoriesDTO { Category = cat.Category, Subcategories = [subcategoryAdd] });
                 cat.Subcategories.Add(subcategoryAdd);
+                subcategoryAdd.Index = cat.Subcategories.Count;
 
                 UserTotalInfo.SubcategoryCount += 1;
             }
             if (parameter is SubcategoryDTO subcategoryUpdate && typeParameter is ParameterType.Update)
             {
-                //var itemForDelete = Subcategories.FirstOrDefault(x => x.IdSubcategory == subcategoryUpdate.IdSubcategory);
-                //var index = Subcategories.IndexOf(itemForDelete);
-
-                //Subcategories.Remove(itemForDelete);
-                //Subcategories.Insert(index, subcategoryUpdate);
-
-                // ----------------------------------------------------------------------------------------------------------------------------
-
                 var idCat = await _getCatLinkSubUseCase.GetIdCatByIdSub(subcategoryUpdate.IdSubcategory);
                 var cat = CategoriesWithSubcategories.FirstOrDefault(x => x.Category.IdCategory == idCat);
                 var itemForDelete1 = cat.Subcategories.FirstOrDefault(x => x.IdSubcategory == subcategoryUpdate.IdSubcategory);
@@ -201,16 +202,13 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                 cat.Subcategories.Remove(itemForDelete1);
                 cat.Subcategories.Insert(indexSubcategory, subcategoryUpdate);
             }
-            if (parameter is SubcategoryDTO subcategoryDelete && typeParameter is ParameterType.Delete)
+            if (parameter is ValueTuple<CategoryDTO, SubcategoryDTO> tupleDelete && typeParameter is ParameterType.Delete)
             {
-                //Subcategories.Remove(Subcategories.FirstOrDefault(x => x.IdSubcategory == subcategoryDelete.IdSubcategory));
+                var cat = CategoriesWithSubcategories.FirstOrDefault(x => x.Category.IdCategory == tupleDelete.Item1.IdCategory);
 
-                var idCat = await _getCatLinkSubUseCase.GetIdCatByIdSub(subcategoryDelete.IdSubcategory);
-                var cat = CategoriesWithSubcategories.FirstOrDefault(x => x.Category.IdCategory == idCat);
+                cat.Subcategories.Remove(cat.Subcategories.FirstOrDefault(x => x.IdSubcategory == tupleDelete.Item2.IdSubcategory));
 
-                cat.Subcategories.Remove(Subcategories.FirstOrDefault(x => x.IdSubcategory == subcategoryDelete.IdSubcategory));
-
-                UserTotalInfo.AccountCount -= 1;
+                UserTotalInfo.SubcategoryCount -= 1;
             }
 
             #endregion
@@ -229,17 +227,14 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                 var indexAccount = Accounts.IndexOf(account);
 
                 if (cartageFinancialRecordAdd.Item2 == 1)
-                {
                     UserTotalInfo.TotalBalance += cartageFinancialRecordAdd.Item1.Amount;
-                }
                 else if (cartageFinancialRecordAdd.Item2 == 2)
-                {
                     UserTotalInfo.TotalBalance -= cartageFinancialRecordAdd.Item1.Amount;
-                }
 
                 Accounts.Remove(account);
                 Accounts.Insert(indexAccount, accountDTO);
 
+                UserTotalInfo.FinancialRecordCount += 1;
                 UserTotalInfo.AccountCount += 1;
             }
             if (parameter is ValueTuple<FinancialRecordViewingDTO, int> cartageFinancialRecordUpdate && typeParameter is ParameterType.Update)
@@ -247,58 +242,27 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                 var itemForDelete = FinancialRecords.FirstOrDefault(x => x.IdFinancialRecord == cartageFinancialRecordUpdate.Item1.IdFinancialRecord);
                 var index = FinancialRecords.IndexOf(itemForDelete);
 
-                if (itemForDelete != null)
-                {
-                    FinancialRecords.Remove(itemForDelete);
-                    FinancialRecords.Insert(index, cartageFinancialRecordUpdate.Item1);
+                FinancialRecords.Remove(itemForDelete);
+                FinancialRecords.Insert(index, cartageFinancialRecordUpdate.Item1);
 
-                    var accountDTO = _accountService.Get(cartageFinancialRecordUpdate.Item1.AccountNumber);
+                var accountDTO = _accountService.Get(cartageFinancialRecordUpdate.Item1.AccountNumber);
 
-                    var account = Accounts.FirstOrDefault(x => x.IdAccount == accountDTO.IdAccount);
-                    var indexAccount = Accounts.IndexOf(account);
+                var account = Accounts.FirstOrDefault(x => x.IdAccount == accountDTO.IdAccount);
+                var indexAccount = Accounts.IndexOf(account);
 
-                    if (cartageFinancialRecordUpdate.Item2 == 1)
-                    {
-                        UserTotalInfo.TotalBalance += cartageFinancialRecordUpdate.Item1.Amount;
-                    }
-                    else if (cartageFinancialRecordUpdate.Item2 == 2)
-                    {
-                        UserTotalInfo.TotalBalance -= cartageFinancialRecordUpdate.Item1.Amount;
-                    }
+                Accounts.Remove(account);
+                Accounts.Insert(indexAccount, accountDTO);
 
-                    Accounts.Remove(account);
-                    Accounts.Insert(indexAccount, accountDTO);
-
-                    UserTotalInfo.AccountCount += 1;
-                }
-                else 
-                {
-                    var accountDTO = _accountService.Get(cartageFinancialRecordUpdate.Item1.AccountNumber);
-
-                    var account = Accounts.FirstOrDefault(x => x.IdAccount == accountDTO.IdAccount);
-                    var indexAccount = Accounts.IndexOf(account);
-
-                    if (cartageFinancialRecordUpdate.Item2 == 1)
-                    {
-                        UserTotalInfo.TotalBalance += cartageFinancialRecordUpdate.Item1.Amount;
-                    }
-                    else if (cartageFinancialRecordUpdate.Item2 == 2)
-                    {
-                        UserTotalInfo.TotalBalance -= cartageFinancialRecordUpdate.Item1.Amount;
-                    }
-
-                    Accounts.Remove(account);
-                    Accounts.Insert(indexAccount, accountDTO);
-
-                    UserTotalInfo.AccountCount += 1;
-
-                    return; 
-                }
+                if (cartageFinancialRecordUpdate.Item2 == 1)
+                    UserTotalInfo.TotalBalance += cartageFinancialRecordUpdate.Item1.Amount;
+                else if (cartageFinancialRecordUpdate.Item2 == 2)
+                    UserTotalInfo.TotalBalance -= cartageFinancialRecordUpdate.Item1.Amount;
             }
             if (parameter is FinancialRecordViewingDTO financialRecordDelete && typeParameter is ParameterType.Delete)
             {
                 FinancialRecords.Remove(FinancialRecords.FirstOrDefault(x => x.IdFinancialRecord == financialRecordDelete.IdFinancialRecord));
 
+                UserTotalInfo.FinancialRecordCount -= 1;
                 UserTotalInfo.AccountCount -= 1;
             }
 
