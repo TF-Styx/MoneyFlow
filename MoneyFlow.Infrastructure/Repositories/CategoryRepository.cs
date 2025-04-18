@@ -328,18 +328,15 @@ namespace MoneyFlow.Infrastructure.Repositories
                 await context.CatLinkSubs.Where(x => x.IdCategory == idCategory).ExecuteDeleteAsync();
                 var cat = await context.Categories.FirstOrDefaultAsync(x => x.IdCategory == idCategory);
 
+                context.Remove(cat);
+                context.SaveChanges();
+
                 return cat.IdCategory;
             }
         }
         public int Delete(int idCategory)
         {
-            using (var context = _factory())
-            {
-                context.CatLinkSubs.Where(x => x.IdCategory == idCategory).ExecuteDelete();
-                var cat = context.Categories.FirstOrDefault(x => x.IdCategory == idCategory);
-
-                return cat.IdCategory;
-            }
+            return Task.Run(() => DeleteAsync(idCategory)).Result;
         }
 
         // ------------------------------------------------------------------------------------------------------------------------------------------------

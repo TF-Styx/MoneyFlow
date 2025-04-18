@@ -719,12 +719,12 @@
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="auto"/>
                                                     <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="*" MaxWidth="200"/>
+                                                    <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <!--#region Название, картинка и описание категории -->
                                                 <StackPanel HorizontalAlignment="Left" Grid.Column="0">
                                                     <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
-                                                        <TextBlock Text="{Binding Index}" Margin="0 0 5 0"/>
+                                                        <TextBlock Text="{Binding Category.Index}" Margin="0 0 5 0"/>
                                                         <TextBlock Text="{Binding Category.CategoryName}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                     </StackPanel>
                                                     <Border BorderBrush="Black" BorderThickness="1">
@@ -757,20 +757,13 @@
                                                     <DataGrid.Columns>
                                                         <DataGridTextColumn Binding="{Binding Index}" Width="auto"/>
                                                         <DataGridTextColumn Header="SubcategoryName" Binding="{Binding SubcategoryName}" Width="auto"/>
-                                                        <DataGridTemplateColumn Header="Decription" Width="auto">
+                                                        <DataGridTemplateColumn Header="Decription" Width="auto" MaxWidth="500" MinWidth="200">
                                                             <DataGridTemplateColumn.CellTemplate>
                                                                 <DataTemplate>
                                                                     <TextBlock Text="{Binding Description}" HorizontalAlignment="Left" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
                                                                 </DataTemplate>
                                                             </DataGridTemplateColumn.CellTemplate>
                                                         </DataGridTemplateColumn>
-                                                        <!--<DataGridTemplateColumn>
-                                                            <DataGridTemplateColumn.CellTemplate>
-                                                                <DataTemplate>
-                                                                    <Button Content="?" Command="{Binding DataContext.UserSubcategoryDoubleClickCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}"/>
-                                                                </DataTemplate>
-                                                            </DataGridTemplateColumn.CellTemplate>
-                                                        </DataGridTemplateColumn>-->
                                                     </DataGrid.Columns>
                                                 </DataGrid>
                                                 <!--#endregion-->

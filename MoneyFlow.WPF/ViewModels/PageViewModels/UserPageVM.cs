@@ -93,7 +93,13 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
             if (parameter is ValueTuple<AccountDTO, BankDTO> cartageAccountBankAdd && typeParameter is ParameterType.Add)
             {
+                var accountToAdd = cartageAccountBankAdd.Item1;
+                accountToAdd.Index = Accounts.Count + 1;
                 Accounts.Add(cartageAccountBankAdd.Item1);
+                UserTotalInfo.AccountCount += 1;
+
+                var banksToAdd = cartageAccountBankAdd.Item2;
+                banksToAdd.Index = UserBanks.Banks.Count + 1;
                 UserBanks.Banks.Add(cartageAccountBankAdd.Item2);
                 UserTotalInfo.BankCount += 1;
             }
@@ -126,11 +132,11 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
             if (parameter is CategoryDTO categoryAdd && typeParameter is ParameterType.Add)
             {
-                Categories.Add(categoryAdd);
-
-                UserTotalInfo.CategoryCount += 1;
+                //Categories.Add(categoryAdd);
+                categoryAdd.Index = CategoriesWithSubcategories.Select(x => x.Category).ToList().Count + 1;
 
                 CategoriesWithSubcategories.Add(new CategoriesWithSubcategoriesDTO { Category = categoryAdd, Subcategories = [] });
+                UserTotalInfo.CategoryCount += 1;
             }
             if (parameter is CategoryDTO categoryUpdate && typeParameter is ParameterType.Update)
             {
@@ -332,6 +338,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
         // ---------------------------------------------------------------------------------------------------------------------------------
 
+
         #region Статистика
 
         public ObservableCollection<NameValue> DetailsTransactionByAccount { get; set; } = [];
@@ -382,6 +389,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         //}
 
         #endregion
+
 
         // ---------------------------------------------------------------------------------------------------------------------------------
 
@@ -592,8 +600,15 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             foreach (var item in list)
             {
                 CategoriesWithSubcategories.Add(item);
-                var index = CategoriesWithSubcategories.IndexOf(item);
-                item.Index = index + 1;
+
+                var indexCat = CategoriesWithSubcategories.Select(x => x.Category).ToList().IndexOf(item.Category);
+                item.Category.Index = indexCat + 1;
+
+                foreach (var sub in item.Subcategories)
+                {
+                    var indexSub = item.Subcategories.IndexOf(sub);
+                    sub.Index = indexSub + 1;
+                }
             }
         }
 

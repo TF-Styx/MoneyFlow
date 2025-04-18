@@ -59,9 +59,6 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
 
         public void Update(object parameter, ParameterType typeParameter = ParameterType.None)
         {
-            Type type = parameter.GetType();
-            MessageBox.Show(type.FullName);
-
             if (parameter is ValueTuple<CategoryDTO, SubcategoryDTO> value && typeParameter == ParameterType.CatWithSubWindowWithOutTuple)
             {
                 SelectedCategory = value.Item1;

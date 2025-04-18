@@ -41,10 +41,14 @@ namespace MoneyFlow.Application.UseCases.CategoryCases
                 await _catLinkSubRepository.DeleteAsync(idUser, id, isDeleteByIdCategory);
                 idReturn = await _categoryRepository.DeleteAsync(id);
             }
-            else if (idUsedFinancialRecord && idUsedCatLinkSub)
+            if (idUsedFinancialRecord && idUsedCatLinkSub)
             {
                 await _catLinkSubRepository.DeleteAsync(idUser, id, isDeleteByIdCategory);
                 await _financialRecordRepository.DeleteListAsync(id, isDeleteByIdCategory);
+                idReturn = await _categoryRepository.DeleteAsync(id);
+            }
+            if (!idUsedCatLinkSub && !idUsedFinancialRecord)
+            {
                 idReturn = await _categoryRepository.DeleteAsync(id);
             }
 
