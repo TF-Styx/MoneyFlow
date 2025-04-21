@@ -140,7 +140,7 @@ namespace MoneyFlow.Infrastructure.Repositories
                     query = query.Where(x => x.IdCategory == filter.IdCategory.Value);
 
                 if (filter.IdSubcategory.HasValue)
-                    query = query.Where(x => x.IdCategory == filter.IdSubcategory.Value);
+                    query = query.Where(x => x.IdSubcategory == filter.IdSubcategory.Value);
 
                 if (filter.IdAccount.HasValue)
                     query = query.Where(x => x.IdAccount == filter.IdAccount.Value);
@@ -157,7 +157,9 @@ namespace MoneyFlow.Infrastructure.Repositories
                         x.IdTransactionType,
                         x.IdTransactionTypeNavigation.TransactionTypeName,
                         idUser,
+                        x.IdCategory,
                         x.IdCategoryNavigation.CategoryName,
+                        x.IdSubcategory,
                         x.IdSubcategoryNavigation.SubcategoryName,
                         x.IdAccountNavigation.NumberAccount,
                         x.Date
@@ -217,7 +219,9 @@ namespace MoneyFlow.Infrastructure.Repositories
                         entity.IdTransactionType,
                         entity.IdTransactionTypeNavigation.TransactionTypeName,
                         entity.IdUser,
+                        entity.IdCategory,
                         entity.IdCategoryNavigation.CategoryName,
+                        entity.IdSubcategory,
                         entity.IdSubcategoryNavigation.SubcategoryName,
                         entity.IdAccountNavigation.NumberAccount,
                         entity.Date
@@ -254,7 +258,9 @@ namespace MoneyFlow.Infrastructure.Repositories
                         entity.IdTransactionType,
                         entity.IdTransactionTypeNavigation.TransactionTypeName,
                         idUser,
-                        entity.IdCategoryNavigation.CategoryName,
+                        entity.IdCategory, 
+                        entity.IdCategoryNavigation.CategoryName, 
+                        entity.IdSubcategory,
                         entity.IdSubcategoryNavigation.SubcategoryName,
                         entity.IdAccountNavigation.NumberAccount,
                         entity.Date

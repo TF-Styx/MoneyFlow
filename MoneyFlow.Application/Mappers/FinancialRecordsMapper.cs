@@ -55,7 +55,9 @@ namespace MoneyFlow.Application.Mappers
                 IdTransactionType = financialRecordViewing.IdTransactionType,
                 TransactionTypeName = financialRecordViewing.TransactionTypeName,
                 IdUser = financialRecordViewing.IdUser,
+                IdCategory = financialRecordViewing.IdCategory,
                 CategoryName = financialRecordViewing.CategoryName,
+                IdSubcategory = financialRecordViewing.IdSubcategory,
                 SubcategoryName = financialRecordViewing.SubcategoryName,
                 AccountNumber = financialRecordViewing.AccountNumber,
                 Date = financialRecordViewing.Date,
@@ -74,6 +76,7 @@ namespace MoneyFlow.Application.Mappers
             }
             return list;
         }
+
 
         public static FinancialRecordFilterDomain ToDomain(this FinancialRecordFilterDTO filter)
         {

@@ -13,15 +13,15 @@ namespace MoneyFlow.Application.Services.Realization
                 Func<FinancialRecordViewingDTO, bool> transactionTypeSelector,
                 List<TCollectionItem> collectionItem,
                 Func<TCollectionItem, string> collectionItemSelector
-            ) where TCollectionItem : class
+            )
         {
-            var values = collectionItem.Select(x =>
+            var values = collectionItem.Select(TItem =>
             {
-                var moneySum = records.Where(record => recordSelector(record, x)).Where(record => transactionTypeSelector(record)).Sum(x => x.Amount);
+                var moneySum = records.Where(record => recordSelector(record, TItem)).Where(record => transactionTypeSelector(record)).Sum(x => x.Amount);
 
                 return new NameValue
                 {
-                    Name = collectionItemSelector(x),
+                    Name = collectionItemSelector(TItem),
                     Value = moneySum
                 };
 

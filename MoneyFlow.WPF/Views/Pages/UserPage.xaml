@@ -13,7 +13,7 @@
       d:Width="800" d:Height="auto"
       Background="White">
 
-    <TabControl SelectedIndex="3">
+    <TabControl>
         <TabItem Header="Учёт">
             <!--#region Финансовые записи -->
             <Border Grid.Column="0" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="10">
@@ -241,9 +241,18 @@
         <TabItem Header="Профиль">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <Border Margin="10">
-                    <StackPanel>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        
                         <!--#region Шапка профиля -->
-                        <Border CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="0 0 0 5">
+                        <Border Grid.Row="0" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="0 0 0 5">
                             <Border.Effect>
                                 <DropShadowEffect BlurRadius="10" Direction="300"/>
                             </Border.Effect>
@@ -376,7 +385,7 @@
                         <!--#endregion-->
 
                         <!--#region Общая информация || Счета -->
-                        <Border CornerRadius="0" MaxHeight="300" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="0 5 0 5">
+                        <Border Grid.Row="1" MaxHeight="180" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="0 5 0 5">
                             <Border.Effect>
                                 <DropShadowEffect BlurRadius="10" Direction="300"/>
                             </Border.Effect>
@@ -386,7 +395,7 @@
                                     <ColumnDefinition Width="2*"/>
                                 </Grid.ColumnDefinitions>
                                 <!--#region Общая информация -->
-                                <Border Grid.Column="0" Grid.Row="1" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="10 10 5 10">
+                                <Border Grid.Column="0" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="0 0 5 0">
                                     <Border.Effect>
                                         <DropShadowEffect BlurRadius="10" Direction="300"/>
                                     </Border.Effect>
@@ -433,21 +442,120 @@
                                 <!--#endregion-->
 
                                 <!--#region График -->
-                                <Border Grid.Column="1" Grid.Row="1" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="5 10 10 10">
+                                <Border Grid.Column="1" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="5 0 0 0">
                                     <Border.Effect>
                                         <DropShadowEffect BlurRadius="10" Direction="300"/>
                                     </Border.Effect>
-                                    <StackPanel>
-                                        <DataGrid ItemsSource="{Binding DetailsTransactionByAccount}">
-                                            
-                                        </DataGrid>
-                                    </StackPanel>
+                                    <Grid>
+                                       
+                                    </Grid>
                                 </Border>
                                 <!--#endregion-->
                             </Grid>
                         </Border>
                         <!--#endregion-->
-                    </StackPanel>
+
+                        <!--#region Статистика по Счету -->
+                        <Border Grid.Row="2" MaxHeight="500" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="0 5 0 5">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="10" Direction="300"/>
+                            </Border.Effect>
+                            <Grid>
+                                <DataGrid Grid.Column="0" 
+                                          AutoGenerateColumns="False" 
+                                          IsReadOnly="True"
+                                          GridLinesVisibility="None"
+                                          HeadersVisibility="Column"
+                                          RowHeaderWidth="0"
+                                          SelectionMode="Single"
+                                          HorizontalAlignment="Center"
+                                          ItemsSource="{Binding DetailsTransactionByAccount}"
+                                          d:ItemsSource="{d:SampleData ItemCount=15}"
+                                          Margin="10">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="AccountNumber" Binding="{Binding Name}" Width="auto"/>
+                                        <DataGridTextColumn Header="Amount" Binding="{Binding Value}" Width="auto"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Border>
+                        <!--#endregion-->
+
+                        <!--#region Статистика по Дате -->
+                        <Border Grid.Row="3" MaxHeight="500" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="0 5 0 5">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="10" Direction="300"/>
+                            </Border.Effect>
+                            <Grid>
+                                <DataGrid Grid.Column="0" 
+                                          AutoGenerateColumns="False" 
+                                          IsReadOnly="True"
+                                          GridLinesVisibility="None"
+                                          HeadersVisibility="Column"
+                                          RowHeaderWidth="0"
+                                          SelectionMode="Single" 
+                                          HorizontalAlignment="Center"
+                                          ItemsSource="{Binding DetailsTransactionByData}"
+                                          Margin="10">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Month" Binding="{Binding Name}" Width="auto"/>
+                                        <DataGridTextColumn Header="Amount" Binding="{Binding Value}" Width="auto"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Border>
+                        <!--#endregion-->
+
+                        <!--#region Статистика по Категории -->
+                        <Border Grid.Row="4" MaxHeight="500" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="0 5 0 5">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="10" Direction="300"/>
+                            </Border.Effect>
+                            <Grid>
+                                <DataGrid Grid.Column="0" 
+                                          AutoGenerateColumns="False" 
+                                          IsReadOnly="True"
+                                          GridLinesVisibility="None"
+                                          HeadersVisibility="Column"
+                                          RowHeaderWidth="0"
+                                          SelectionMode="Single" 
+                                          HorizontalAlignment="Center"
+                                          ItemsSource="{Binding DetailsTransactionByCategory}"
+                                          Margin="10">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="CategoryName" Binding="{Binding Name}" Width="auto"/>
+                                        <DataGridTextColumn Header="Amount" Binding="{Binding Value}" Width="auto"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Border>
+                        <!--#endregion-->
+
+                        <!--#region Статистика по Подкатегории -->
+                        <Border Grid.Row="5" MaxHeight="500" CornerRadius="0" BorderThickness="0.1" BorderBrush="Black" Background="White" Margin="0 5 0 5">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="10" Direction="300"/>
+                            </Border.Effect>
+                            <Grid>
+                                <DataGrid Grid.Column="0" 
+                                          AutoGenerateColumns="False" 
+                                          IsReadOnly="True"
+                                          GridLinesVisibility="None"
+                                          HeadersVisibility="Column"
+                                          RowHeaderWidth="0"
+                                          SelectionMode="Single" 
+                                          HorizontalAlignment="Center"
+                                          ItemsSource="{Binding DetailsTransactionBySubcategory}"
+                                          Margin="10">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="SubcategoryName" Binding="{Binding Name}" Width="auto"/>
+                                        <DataGridTextColumn Header="Amount" Binding="{Binding Value}" Width="auto"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Border>
+                        <!--#endregion-->
+                    </Grid>
                 </Border>
             </ScrollViewer>
         </TabItem>
@@ -490,7 +598,7 @@
                                           RowHeaderWidth="0"
                                           SelectionMode="Single"
                                           ItemsSource="{Binding Accounts}" 
-                                          d:ItemsSource="{d:SampleData ItemCount=15}"
+                                          d:ItemsSource="{d:SampleData ItemCount=5}"
                                           SelectedItem="{Binding SelectedAccount}"
                                           Margin="10">
                                     <!--#region DoubleClick -->

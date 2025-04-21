@@ -85,6 +85,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
             GetFinancialRecord();
             CalculateRecordTransactionByAccount();
+            CalculateRecordTransactionByData();
         }
 
         public async void Update(object parameter, ParameterType typeParameter = ParameterType.None)
@@ -306,7 +307,6 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         #region Статистика
 
         public ObservableCollection<NameValue> DetailsTransactionByAccount { get; set; } = [];
-
         public void CalculateRecordTransactionByAccount()
         {
             DetailsTransactionByAccount.Clear();
@@ -326,31 +326,79 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             }
         }
 
-        
-        // TODO : Что-то сделать с датами
 
-        //public ObservableCollection<NameValue> DetailsTransactionByData { get; set; } = [];
+        public ObservableCollection<NameValue> DetailsTransactionByData { get; set; } = [];
+        public void CalculateRecordTransactionByData()
+        {
+            DetailsTransactionByData.Clear();
 
-        //public void CalculateRecordTransactionByData()
-        //{
-        //    DetailsTransactionByData.Clear();
+            var months = Enum.GetValues<Month>().ToDictionary(month => ((int)month), month => month);
+            var allMonths = new List<KeyValuePair<int, Month>>();
 
-        //    var allMonths = Enum.GetValues<Month>().ToDictionary(month => ((int)month), month => month);
+            allMonths.AddRange(months.Select(x => x));
 
-        //    var stat = _statisticsService.DetailingTransaction<Dictionary<int, Month>>(
-        //        [.. FinancialRecords],
-        //        (record, month) => record.Date.Value.Month == (int)month.GetValueOrDefault(record.Date.Value.Month),
-        //        type => (SelectedTransactionTypeFilter?.TransactionTypeName == "<<Не выбрано!!>>") ?
-        //            (type.IdTransactionType == (int)TransactionType.Profit || type.IdTransactionType == (int)TransactionType.Expenses) :
-        //            type.IdTransactionType == SelectedTransactionTypeFilter?.IdTransactionType,
-        //        allMonths,
-        //        month => month.ToString());
+            var stat = _statisticsService.DetailingTransaction<KeyValuePair<int, Month>>
+                (
+                    [.. FinancialRecords],
+                    (record, month) => record.Date.Value.Month == month.Key,
+                    type => (SelectedTransactionTypeFilter?.TransactionTypeName == "<<Не выбрано!!>>") ?
+                        (type.IdTransactionType == (int)TransactionType.Profit || type.IdTransactionType == (int)TransactionType.Expenses) :
+                        type.IdTransactionType == SelectedTransactionTypeFilter?.IdTransactionType,
+                    allMonths,
+                    month => month.Value.ToString()
+                );
 
-        //    foreach (var item in stat)
-        //    {
-        //        DetailsTransactionByData.Add(item);
-        //    }
-        //}
+            foreach (var item in stat)
+            {
+                DetailsTransactionByData.Add(item);
+            }
+        }
+
+
+        public ObservableCollection<NameValue> DetailsTransactionByCategory { get; set; } = [];
+        public void CalculateRecordTransactionByCategory()
+        {
+            DetailsTransactionByCategory.Clear();
+
+            var stat = _statisticsService.DetailingTransaction<CategoryDTO>
+                (
+                    [.. FinancialRecords],
+                    (record, category) => record.IdCategory == category.IdCategory,
+                    type => (SelectedTransactionTypeFilter?.TransactionTypeName == "<<Не выбрано!!>>") ?
+                        (type.IdTransactionType == (int)TransactionType.Profit || type.IdTransactionType == (int)TransactionType.Expenses) :
+                        type.IdTransactionType == SelectedTransactionTypeFilter?.IdTransactionType,
+                    [.. Categories],
+                    category => category.CategoryName
+                );
+
+            foreach (var item in stat)
+            {
+                DetailsTransactionByCategory.Add(item);
+            }
+        }
+
+
+        public ObservableCollection<NameValue> DetailsTransactionBySubcategory { get; set; } = [];
+        public void CalculateRecordTransactionBySubcategory()
+        {
+            DetailsTransactionBySubcategory.Clear();
+
+            var stat = _statisticsService.DetailingTransaction<SubcategoryDTO>
+                (
+                    [.. FinancialRecords],
+                    (record, subcategory) => record.IdSubcategory == subcategory.IdSubcategory,
+                    type => (SelectedTransactionTypeFilter?.TransactionTypeName == "<<Не выбрано!!>>") ?
+                        (type.IdTransactionType == (int)TransactionType.Profit || type.IdTransactionType == (int)TransactionType.Expenses) :
+                        type.IdTransactionType == SelectedTransactionTypeFilter?.IdTransactionType,
+                    [.. Subcategories],
+                    category => category.SubcategoryName
+                );
+
+            foreach (var item in stat)
+            {
+                DetailsTransactionBySubcategory.Add(item);
+            }
+        }
 
         #endregion
 
@@ -1049,7 +1097,17 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
         // ---------------------------------------------------------------------------------------------------------------------------------
 
         private RelayCommand _applyCommand;
-        public RelayCommand ApplyCommand { get => _applyCommand ??= new(async obj => { await GetFinancialRecord(); CalculateRecordTransactionByAccount(); }); }
+        public RelayCommand ApplyCommand 
+        { 
+            get => _applyCommand ??= new(async obj => 
+            { 
+                await GetFinancialRecord();
+                CalculateRecordTransactionByAccount();
+                CalculateRecordTransactionByData();
+                CalculateRecordTransactionByCategory();
+                CalculateRecordTransactionBySubcategory();
+            }); 
+        }
 
         private RelayCommand _dropCommand;
         public RelayCommand DropCommand 

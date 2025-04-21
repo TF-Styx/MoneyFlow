@@ -11,7 +11,9 @@
                 int? idTransactionType,
                 string transactionTypeName, 
                 int? idUser, 
+                int? idCategory, 
                 string categoryName, 
+                int? idSubcategory, 
                 string subcategoryName, 
                 int? accountNumber, 
                 DateTime? date
@@ -24,7 +26,9 @@
             IdTransactionType = idTransactionType;
             TransactionTypeName = transactionTypeName;
             IdUser = idUser;
+            IdCategory = idCategory;
             CategoryName = categoryName;
+            IdSubcategory = idSubcategory;
             SubcategoryName = subcategoryName;
             AccountNumber = accountNumber;
             Date = date;
@@ -37,7 +41,9 @@
         public int? IdTransactionType { get; private set; }
         public string TransactionTypeName { get; private set; }
         public int? IdUser { get; private set; }
+        public int? IdCategory { get; set; }
         public string CategoryName { get; private set; }
+        public int? IdSubcategory { get; set; }
         public string SubcategoryName { get; private set; }
         public int? AccountNumber { get; private set; }
         public DateTime? Date { get; private set; }
@@ -51,7 +57,9 @@
                 int? idTransactionType,
                 string transactionTypeName, 
                 int? idUser, 
+                int? idCategory, 
                 string categoryName, 
+                int? idSubcategory, 
                 string subcategoryName, 
                 int? accountNumber, 
                 DateTime? date
@@ -59,7 +67,21 @@
         {
             var message = string.Empty;
 
-            var financialRecord = new FinancialRecordViewingDomain(idFinancialRecord, recordName, amount, description, idTransactionType, transactionTypeName, idUser, categoryName, subcategoryName, accountNumber, date);
+            var financialRecord = new FinancialRecordViewingDomain
+                (
+                    idFinancialRecord, 
+                    recordName, 
+                    amount, 
+                    description, 
+                    idTransactionType, 
+                    transactionTypeName, 
+                    idUser, 
+                    idCategory,
+                    categoryName,
+                    idSubcategory,
+                    subcategoryName, 
+                    accountNumber, 
+                    date);
 
             return (financialRecord, message);
         }
