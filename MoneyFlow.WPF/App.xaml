@@ -8,6 +8,7 @@
         <ResourceDictionary>
             <converter:AccountManagementControlsVisibilityConverter x:Key="AccountManagementControlsVisibilityConverter"/>
             <converter:DateConverter x:Key="DateConverter"/>
+            <converter:DecimalToStringConverter x:Key="DecimalToStringConverter"/>
             <converter:StatusTransactionToColorConverter x:Key="StatusTransactionToColorConverter"/>
             <converter:StatusTransactionToIconConverter x:Key="StatusTransactionToIconConverter"/>
 

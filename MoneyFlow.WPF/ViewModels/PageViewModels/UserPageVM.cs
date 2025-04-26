@@ -68,6 +68,13 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             CurrentUser = _authorizationService.CurrentUser;
             UserTotalInfo = _userService.GetUserInfo(CurrentUser.IdUser);
 
+            foreach (var item in LoadTimePeriod())
+            {
+                TimePeriods.Add(item);
+            }
+
+            SelectedTimePeriod = TimePeriods.FirstOrDefault();
+
             GetAccount();
             GetUserAccountTypes();
             GetUserBanks();
@@ -306,8 +313,43 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
         #region Статистика
 
+        private KeyValuePair<TimePeriod, string> _selectedTimePeriod;
+        public KeyValuePair<TimePeriod, string> SelectedTimePeriod
+        {
+            get => _selectedTimePeriod;
+            set
+            {
+                _selectedTimePeriod = value;
+
+                // TODO : Добавить перерасчет нужных списков
+
+                CalculateRecordTransactionByData();
+
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<KeyValuePair<TimePeriod, string>> TimePeriods { get; set; } = [];
+        private List<KeyValuePair<TimePeriod, string>> LoadTimePeriod()
+        {
+            return Enum.GetValues<TimePeriod>().ToList().Select(x =>
+            {
+                string period = x switch
+                {
+                    TimePeriod.None => "<<Не выбрано!!>>",
+                    TimePeriod.Day => "По дням",
+                    TimePeriod.Week => "По неделям",
+                    TimePeriod.Month => "По месяцам",
+                    TimePeriod.Year => "По годам",
+                    _ => string.Empty
+                };
+
+                return new KeyValuePair<TimePeriod, string>(x, period);
+            }).Where(x => x.Value != string.Empty).ToList();
+        }
+
         public ObservableCollection<NameValue> DetailsTransactionByAccount { get; set; } = [];
-        public void CalculateRecordTransactionByAccount()
+        private void CalculateRecordTransactionByAccount()
         {
             DetailsTransactionByAccount.Clear();
 
@@ -328,35 +370,208 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
 
         public ObservableCollection<NameValue> DetailsTransactionByData { get; set; } = [];
-        public void CalculateRecordTransactionByData()
+        private void CalculateRecordTransactionByData()
         {
             DetailsTransactionByData.Clear();
 
-            var months = Enum.GetValues<Month>().ToDictionary(month => ((int)month), month => month);
-            var allMonths = new List<KeyValuePair<int, Month>>();
-
-            allMonths.AddRange(months.Select(x => x));
-
-            var stat = _statisticsService.DetailingTransaction<KeyValuePair<int, Month>>
-                (
-                    [.. FinancialRecords],
-                    (record, month) => record.Date.Value.Month == month.Key,
-                    type => (SelectedTransactionTypeFilter?.TransactionTypeName == "<<Не выбрано!!>>") ?
-                        (type.IdTransactionType == (int)TransactionType.Profit || type.IdTransactionType == (int)TransactionType.Expenses) :
-                        type.IdTransactionType == SelectedTransactionTypeFilter?.IdTransactionType,
-                    allMonths,
-                    month => month.Value.ToString()
-                );
-
-            foreach (var item in stat)
+            Action action = SelectedTimePeriod.Key switch
             {
-                DetailsTransactionByData.Add(item);
-            }
+                #region Первый вариант
+
+                //TimePeriod.Day => () =>
+                //{
+                //    var startDay = FinancialRecords.Min(date => date.Date.GetValueOrDefault().Date);
+                //    var endDay = FinancialRecords.Max(date => date.Date.GetValueOrDefault().Date);
+
+                //    var dateList = new List<DateTime>();
+
+                //    for (DateTime date = startDay; date <= endDay; date.AddDays(1))
+                //    {
+                //        dateList.Add(date);
+                //    }
+
+                //    var groupedRecord = FinancialRecords.GroupBy(date => date.Date.GetValueOrDefault().Date);
+
+                //    var result = dateList.GroupJoin
+                //    (
+                //        groupedRecord,
+                //        date => date,
+                //        group => group.Key,
+                //        (date, groups) => new
+                //        {
+                //            Date = date,
+                //            Groups = groups
+                //        }
+                //    ).SelectMany
+                //    (
+                //        joined => joined.Groups.DefaultIfEmpty(),
+                //        (joined, group) => new NameValue()
+                //        {
+                //            Name = joined.Date.ToString("yyyy-MM-dd"),
+                //            Value = group.Sum(x => x.Amount),
+
+                //            ConvertValue = joined.Date.ToOADate(),
+                //        }
+                //    ).OrderBy(date => date.ConvertValue).ToList();
+
+                //    foreach (var item in result)
+                //    {
+                //        DetailsTransactionByData.Add(item);
+                //    }
+                //},
+
+                #endregion
+
+                TimePeriod.Day => () =>
+                {
+                    // С нулями на датах
+                    //var startDay = FinancialRecords.Min(date => date.Date.GetValueOrDefault().Date);
+                    //var endDay = FinancialRecords.Max(date => date.Date.GetValueOrDefault().Date);
+
+                    //var allDates = new List<DateTime>();
+
+                    //for (DateTime date = startDay; date <= endDay; date = date.AddDays(1))
+                    //{
+                    //    allDates.Add(date);
+                    //}
+
+                    var stat = _statisticsService.DetailingTransaction
+                        (
+                            [.. FinancialRecords],
+                            (record, day) => record.Date.Value.Date.Day == day.Value.Day,
+                            type => (SelectedTransactionTypeFilter?.TransactionTypeName == "<<Не выбрано!!>>") ?
+                                (type.IdTransactionType == (int)TransactionType.Profit || type.IdTransactionType == (int)TransactionType.Expenses) :
+                                type.IdTransactionType == SelectedTransactionTypeFilter?.IdTransactionType,
+                            FinancialRecords.Select(x => x.Date).Distinct().ToList(), // allDates
+                            day => $"{day.Value.Day} : {day.Value.Month} : {day.Value.Year}"
+                            //day => $"День: {day.Value.Day}, Месяц: {day.Value.Month}, Год: {day.Value.Year}"
+                            //day => day?.Date.ToString("dd-MM-yyyy")
+                        );
+
+                    foreach (var item in stat)
+                    {
+                        DetailsTransactionByData.Add(item);
+                    }
+                },
+
+                TimePeriod.Week => () =>
+                {
+                    // С нулями на датах
+                    var startDay = FinancialRecords.Min(date => date.Date.GetValueOrDefault().Date);
+                    var endDay = FinancialRecords.Max(date => date.Date.GetValueOrDefault().Date);
+
+                    var allWeeks = new List<(int Year, int Month, int WeekOfMonth)>();
+                    DateTime currentDate = startDay;
+
+                    while (currentDate <= endDay)
+                    {
+                        int year = currentDate.Year;
+                        int month = currentDate.Month;
+                        int weekOfMonth = GetWeekOfMonth(currentDate);
+
+                        allWeeks.Add((year, month, weekOfMonth));
+                        currentDate = currentDate.AddDays(7);
+                    }
+
+                    allWeeks = allWeeks.Distinct().ToList();
+                    
+                    int GetWeekOfMonth(DateTime dateTime)
+                    {
+                        DateTime firstDayOfMonth = new DateTime(dateTime.Year, dateTime.Month, 1);
+                        int weekNumber = (dateTime.Day + (int)firstDayOfMonth.DayOfWeek + 6) / 7; // + 6 часов / 7 минут на неделю, начиная с понедельника
+
+                        return weekNumber;
+                    }
+
+                    var groupedRecord = FinancialRecords.GroupBy
+                        (
+                            r => new
+                            {
+                                Year = r.Date.GetValueOrDefault().Year,
+                                Month = r.Date.GetValueOrDefault().Month,
+                                WeekOfMonth = GetWeekOfMonth(r.Date.GetValueOrDefault()),
+                            }
+                        );
+
+                    var result = allWeeks.GroupJoin
+                        (
+                            groupedRecord,
+                            week => (week.Year, week.Month, week.WeekOfMonth),
+                            group => (group.Key.Year, group.Key.Month, group.Key.WeekOfMonth),
+                            (week, group) => new
+                            {
+                                Week = week,
+                                Group = group
+                            }
+                        ).SelectMany
+                        (
+                            joined => joined.Group.DefaultIfEmpty(),
+                            (joined, group) => new NameValue()
+                            {
+                                Name = $"{joined.Week.Year}:{joined.Week.Month:D2}: Неделя№ {joined.Week.WeekOfMonth}",
+                                Value = group == null ? 0 : group.Sum(x => x.Amount),
+                                ConvertValue = joined.Week.Year * 10000 + joined.Week.Month * 100 + joined.Week.WeekOfMonth,
+                            }
+                        ).OrderBy(x => x.ConvertValue).ToList();
+
+                    foreach (var item in result)
+                    {
+                        DetailsTransactionByData.Add(item);
+                    }
+                },
+
+                TimePeriod.Month => () =>
+                {
+                    var months = Enum.GetValues<Month>().ToDictionary(month => ((int)month), month => month);
+                    var allMonths = new List<KeyValuePair<int, Month>>();
+
+                    allMonths.AddRange(months.Select(x => x));
+
+                    var stat = _statisticsService.DetailingTransaction<KeyValuePair<int, Month>>
+                        (
+                            [.. FinancialRecords],
+                            (record, month) => record.Date.Value.Month == month.Key,
+                            type => (SelectedTransactionTypeFilter?.TransactionTypeName == "<<Не выбрано!!>>") ?
+                                (type.IdTransactionType == (int)TransactionType.Profit || type.IdTransactionType == (int)TransactionType.Expenses) :
+                                type.IdTransactionType == SelectedTransactionTypeFilter?.IdTransactionType,
+                            allMonths,
+                            month => month.Value.ToString()
+                        );
+
+                    foreach (var item in stat)
+                    {
+                        DetailsTransactionByData.Add(item);
+                    }
+                },
+
+                TimePeriod.Year => () =>
+                {
+                    var allYear = FinancialRecords.Select(x => x.Date.GetValueOrDefault().Year).Distinct();
+
+                    var stat = _statisticsService.DetailingTransaction
+                        (
+                            [.. FinancialRecords],
+                            (record, year) => record.Date.Value.Year == year,
+                            type => (SelectedTransactionTypeFilter?.TransactionTypeName == "<<Не выбрано!!>>") ?
+                                (type.IdTransactionType == (int)TransactionType.Profit || type.IdTransactionType == (int)TransactionType.Expenses) :
+                                type.IdTransactionType == SelectedTransactionTypeFilter?.IdTransactionType,
+                            allYear.ToList(),
+                            year => $"Год: {year}"
+                        );
+
+                    foreach (var item in stat)
+                    {
+                        DetailsTransactionByData.Add(item);
+                    }
+                },
+
+                _ => () => { },
+            };
+            action?.Invoke();
         }
 
-
         public ObservableCollection<NameValue> DetailsTransactionByCategory { get; set; } = [];
-        public void CalculateRecordTransactionByCategory()
+        private void CalculateRecordTransactionByCategory()
         {
             DetailsTransactionByCategory.Clear();
 
@@ -379,7 +594,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
 
         public ObservableCollection<NameValue> DetailsTransactionBySubcategory { get; set; } = [];
-        public void CalculateRecordTransactionBySubcategory()
+        private void CalculateRecordTransactionBySubcategory()
         {
             DetailsTransactionBySubcategory.Clear();
 
