@@ -18,8 +18,8 @@ namespace MoneyFlow.Domain.Interfaces.Repositories
         Task<FinancialRecordViewingDomain> GetViewingAsync(int idFinancialRecord);
         FinancialRecordViewingDomain GetViewing(int idFinancialRecord);
 
-        Task<FinancialRecordViewingDomain> GetByIdAsync(int idUser, int idFinancialRecord, int? idCategory, int idSubcategory);
-        FinancialRecordViewingDomain GetById(int idUser, int idFinancialRecord, int? idCategory, int idSubcategory);
+        Task<FinancialRecordViewingDomain> GetByIdAsync(int idUser, int idFinancialRecord, int? idCategory, int? idSubcategory);
+        FinancialRecordViewingDomain GetById(int idUser, int idFinancialRecord, int? idCategory, int? idSubcategory);
 
         Task<int> UpdateAsync(int idFinancialRecord, string? recordName, decimal? amount, string? description, int? idTransactionType, int? idUser, int? idCategory, int? idSubcategory, int? idAccount, DateTime? date);
         int Update(int idFinancialRecord, string? recordName, decimal? amount, string? description, int? idTransactionType, int? idUser, int? idCategory, int? idSubcategory, int? idAccount, DateTime? date);

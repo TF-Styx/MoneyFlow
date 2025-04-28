@@ -17,11 +17,43 @@ namespace MoneyFlow.Infrastructure.Repositories
 
         // ------------------------------------------------------------------------------------------------------------------------------------------------
 
+        //var entity = new Category()
+        //{
+        //    CategoryName = categoryName,
+        //    Description = description,
+        //    Color = color,
+        //    Image = image,
+        //    IdUser = idUser
+        //};
+
+        //await context.AddAsync(entity);
+        //await context.SaveChangesAsync();
+
+
+        //await context.Subcategories.AddAsync(new Subcategory
+        //{
+        //    SubcategoryName = "Отсутствует",
+        //    IdUser = idUser
+        //});
+        //await context.SaveChangesAsync();
+
+        //var category = await context.Categories.FirstOrDefaultAsync(x => x.IdCategory == entity.IdCategory);
+        //var subcategory = await context.Subcategories.FirstOrDefaultAsync(x => x.IdUser == idUser);
+
+        //var catLinkSub = await context.CatLinkSubs.AddAsync(new CatLinkSub
+        //{
+        //    IdCategory = category.IdCategory,
+        //    IdSubcategory = subcategory.IdSubcategory,
+        //    CreatedAt = DateTime.Now,
+        //    UpdatedAt = DateTime.Now,
+        //    IdUser = idUser
+        //});
+
         public async Task<int> CreateAsync(string? categoryName, string? description, string? color, byte[]? image, int idUser)
         {
             using (var context = _factory())
             {
-                var entity = new Category()
+                var createdCategory = new Category()
                 {
                     CategoryName = categoryName,
                     Description = description,
@@ -29,11 +61,35 @@ namespace MoneyFlow.Infrastructure.Repositories
                     Image = image,
                     IdUser = idUser
                 };
-
-                await context.AddAsync(entity);
+                await context.Categories.AddAsync(createdCategory);
                 await context.SaveChangesAsync();
 
-                return context.Categories.FirstOrDefault(x => x.CategoryName == categoryName).IdCategory;
+                var categoryEntity = await context.Categories.Where(x => x.IdUser == idUser).OrderByDescending(x => x.IdCategory).FirstOrDefaultAsync();
+
+                var createdDefaultSubcategory = new Subcategory
+                {
+                    SubcategoryName = $"Отсутствует ({categoryEntity.CategoryName})",
+                    IdUser = idUser
+                };
+                await context.Subcategories.AddAsync(createdDefaultSubcategory);
+                await context.SaveChangesAsync();
+
+                var subcategoryEntity = await context.Subcategories.Where(x => x.IdUser == idUser).OrderByDescending(x => x.IdSubcategory).FirstOrDefaultAsync();
+
+                var linkEntity = new CatLinkSub
+                {
+                    IdCategory = categoryEntity.IdCategory,
+                    IdSubcategory = subcategoryEntity.IdSubcategory,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                    IdUser = idUser
+                };                
+                await context.CatLinkSubs.AddAsync(linkEntity);
+                await context.SaveChangesAsync();
+
+                var idCategory = await context.Categories.FirstOrDefaultAsync(x => x.CategoryName == categoryName);
+
+                return idCategory.IdCategory;
             }
         }
         public int Create(string? categoryName, string? description, string? color, byte[]? image, int idUser)

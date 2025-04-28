@@ -388,23 +388,46 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
         {
             get => _financialRecordAddCommand ??= new(async obj =>
             {
-                var newRecord = await _financialRecordService.CreateAsync(RecordName, Amount, Description, SelectedTransactionType.IdTransactionType, CurrentUser.IdUser, SelectedCategory.IdCategory, SelectedSubcategory.IdSubcategory, SelectedAccount.IdAccount, Date);
+                int? idCategory = SelectedCategory == null ? null : SelectedCategory.IdCategory;
+                int? idSubcategory = SelectedSubcategory == null ? null : SelectedSubcategory.IdSubcategory;
+
+                if (SelectedTransactionType == null)
+                { 
+                    MessageBox.Show("Вы не выбрали <<Тип операции>>!!"); 
+                    return;
+                }
+                if (SelectedCategory == null)
+                {
+                    MessageBox.Show("Вы не выбрали <<Счёт>>!!");
+                    return;
+                }
+
+                var newRecord = await _financialRecordService.CreateAsync
+                (
+                    RecordName, 
+                    Amount, 
+                    Description, 
+                    SelectedTransactionType.IdTransactionType, 
+                    CurrentUser.IdUser, 
+                    idCategory, 
+                    idSubcategory, 
+                    SelectedAccount.IdAccount, 
+                    Date
+                );
 
                 if (newRecord.Message != string.Empty)
                 {
                     MessageBox.Show(newRecord.Message);
                     return;
                 }
-                if (SelectedTransactionType == null)
-                    MessageBox.Show("Вы не выбрали <<Тип операции>>!!");
-                if (SelectedCategory == null)
-                    MessageBox.Show("Вы не выбрали <<Категорию>>!!");
-                if (SelectedSubcategory == null)
-                    MessageBox.Show("Вы не выбрали <<Подкатегорию>>!!");
-                if (SelectedAccount== null)
-                    MessageBox.Show("Вы не выбрали <<Счёт>>!!");
 
-                var record = _getFinancialRecordViewingUseCase.GetById(CurrentUser.IdUser, newRecord.FinancialRecordDTO.IdFinancialRecord, SelectedCategory.IdCategory, SelectedSubcategory.IdSubcategory);
+                var record = _getFinancialRecordViewingUseCase.GetById
+                (
+                    CurrentUser.IdUser, 
+                    newRecord.FinancialRecordDTO.IdFinancialRecord, 
+                    idCategory.Value, 
+                    idSubcategory.Value
+                );
 
                 _navigationPages.TransitObject(PageType.UserPage, FrameType.MainFrame, (record, SelectedTransactionType.IdTransactionType), ParameterType.Add);
             });
@@ -416,7 +439,23 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
             get => _financialRecordUpdateCommand ??= new(async obj =>
             {
                 if (SelectedFinancialRecord == null)
+                {
                     MessageBox.Show("Вы не выбрали <<Финансовую запись>>!!");
+                    return;
+                }
+                if (SelectedTransactionType == null)
+                {
+                    MessageBox.Show("Вы не выбрали <<Тип операции>>!!");
+                    return;
+                }
+                if (SelectedCategory == null)
+                {
+                    MessageBox.Show("Вы не выбрали <<Счёт>>!!");
+                    return;
+                }
+
+                int? idCategory = SelectedCategory == null ? null : SelectedCategory.IdCategory;
+                int? idSubcategory = SelectedSubcategory == null ? null : SelectedSubcategory.IdSubcategory;
 
                 var idUpdateRecord = await _financialRecordService.UpdateAsync
                     (
@@ -426,8 +465,8 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
                         Description,
                         SelectedTransactionType.IdTransactionType,
                         CurrentUser.IdUser,
-                        SelectedCategory.IdCategory,
-                        SelectedSubcategory.IdSubcategory,
+                        idCategory,
+                        idSubcategory,
                         SelectedAccount.IdAccount,
                         Date
                     );

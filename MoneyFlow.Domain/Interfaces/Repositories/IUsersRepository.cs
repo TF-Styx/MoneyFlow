@@ -6,6 +6,10 @@ namespace MoneyFlow.Domain.Interfaces.Repositories
     {
         Task<int> CreateAsync(string userName, string login, string password);
         int Create(string userName, string login, string password);
+
+        Task CreateDefaultRecordAsync(int idUser);
+        void CreateDefaultRecord(int idUser);
+
         Task<List<UserDomain>> GetAllAsync();
         List<UserDomain> GetAll();
 

@@ -23,15 +23,15 @@ namespace MoneyFlow.Domain.DomainModels
         {
             var message = string.Empty;
 
-            if (string.IsNullOrWhiteSpace(subcategoryName))
-            {
-                return (null, "Вы не заполнили поря!!");
-            }
+            //if (string.IsNullOrWhiteSpace(subcategoryName))
+            //{
+            //    return (null, "Вы не заполнили поря!!");
+            //}
 
-            if (subcategoryName.Length > IntConstants.MAX_SUBCATEGORYNAME_LENGHT)
-            {
-                return (null, "Превышена допустимая длина в «255» символов");
-            }
+            //if (subcategoryName.Length > IntConstants.MAX_SUBCATEGORYNAME_LENGHT)
+            //{
+            //    return (null, "Превышена допустимая длина в «255» символов");
+            //}
 
             var subcategory = new SubcategoryDomain(idSubcategory, subcategoryName, description, image, idUser);
 

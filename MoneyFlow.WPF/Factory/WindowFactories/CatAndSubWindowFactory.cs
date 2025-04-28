@@ -18,12 +18,14 @@ namespace MoneyFlow.WPF.Factory.WindowFactories
         public Window CreateWindow(object parameter = null)
         {
             var viewModel = _serviceProvider.Value.GetRequiredService<CatAndSubWindowVM>();
-            viewModel.Update(parameter);
-
-            return new CatAndSubWindow()
+            viewModel.Initialize(parameter, Enums.ParameterType.None);
+            //viewModel.Update(parameter);
+            var window = new CatAndSubWindow()
             {
                 DataContext = viewModel,
             };
+
+            return window;
         }
     }
 }

@@ -52,6 +52,45 @@ namespace MoneyFlow.Infrastructure.Repositories
             }
         }
 
+        public async Task CreateDefaultRecordAsync(int idUser)
+        {
+            using (var context = _factory())
+            {
+                await context.Categories.AddAsync(new Category
+                {
+                    CategoryName = "Отсутствует",
+                    IdUser = idUser
+                });
+                await context.SaveChangesAsync();
+
+                await context.Subcategories.AddAsync(new Subcategory
+                {
+                    SubcategoryName = "Отсутствует",
+                    IdUser = idUser
+                });
+                await context.SaveChangesAsync();
+
+                var category = await context.Categories.FirstOrDefaultAsync(x => x.IdUser == idUser);
+                var subcategory = await context.Subcategories.FirstOrDefaultAsync(x => x.IdUser == idUser);
+
+                var catLinkSub = await context.CatLinkSubs.AddAsync(new CatLinkSub
+                {
+                    IdCategory = category.IdCategory,
+                    IdSubcategory = subcategory.IdSubcategory,
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now,
+                    IdUser = idUser
+                });
+
+                await context.SaveChangesAsync();
+            }
+        }
+
+        public void CreateDefaultRecord(int idUser)
+        {
+            Task.Run(() => CreateDefaultRecordAsync(idUser));
+        }
+
         // ------------------------------------------------------------------------------------------------------------------------------------------------
 
         public async Task<List<UserDomain>> GetAllAsync()
@@ -143,6 +182,13 @@ namespace MoneyFlow.Infrastructure.Repositories
         {
             using (var context = _factory())
             {
+                var user = context.Users.FirstOrDefault(x => x.IdUser == idUser);
+
+                if (string.IsNullOrEmpty(user.IdGenderNavigation?.GenderName))
+                {
+                    return UserTotalInfoDomain.Create("Отсутствует", 0, 0, 0, 0, 1, 1, 0).UserTotalInfoDomain;
+                }
+
                 var gender = context.Users.Include(x => x.IdGenderNavigation).FirstOrDefault(x => x.IdUser == idUser).IdGenderNavigation.GenderName;
                 var totalBalance = context.Accounts.Where(x => x.IdUser == idUser).Sum(x => x.Balance);
 

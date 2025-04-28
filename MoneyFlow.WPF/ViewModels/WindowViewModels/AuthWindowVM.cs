@@ -25,7 +25,7 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
             _registrationService = registrationService;
             _recoveryService = recoveryService;
 
-            Auth();
+            //Auth();
         }
 
         public void Update(object parameter, ParameterType typeParameter = ParameterType.None)
@@ -162,9 +162,9 @@ namespace MoneyFlow.WPF.ViewModels.WindowViewModels
         }
 
         private RelayCommand _registrationCommand;
-        public RelayCommand RegistrationCommand { get => _registrationCommand ??= new(obj => { Registration(); }); }
+        public RelayCommand RegistrationCommand { get => _registrationCommand ??= new(async obj => { await Registration(); }); }
 
-        private async void Registration()
+        private async Task Registration()
         {
             Action action = CurrentAuthorizationType == AuthenticationType.Registration ?
                 async () =>

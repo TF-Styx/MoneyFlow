@@ -47,6 +47,11 @@ namespace MoneyFlow.Application.Services.Realization
             return _getSubcategoryUseCase.GetIdUserIdCategorySub(idUser, idCategory);
         }
 
+        public async Task<SubcategoryDTO> GetByIdSub(int idUser, int idCategory)
+        {
+            return await _getSubcategoryUseCase.GetByIdSub(idUser, idCategory);
+        }
+
         public async Task<SubcategoryDTO> GetAsyncSubcategory(int idSubcategory)
         {
             return await _getSubcategoryUseCase.GetAsyncSubcategory(idSubcategory);

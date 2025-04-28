@@ -12,9 +12,9 @@
                 string transactionTypeName, 
                 int? idUser, 
                 int? idCategory, 
-                string categoryName, 
+                string? categoryName, 
                 int? idSubcategory, 
-                string subcategoryName, 
+                string? subcategoryName, 
                 int? accountNumber, 
                 DateTime? date
             )
@@ -27,9 +27,9 @@
             TransactionTypeName = transactionTypeName;
             IdUser = idUser;
             IdCategory = idCategory;
-            CategoryName = categoryName;
+            CategoryName = categoryName == null ? "Отсутствует!" : categoryName;
             IdSubcategory = idSubcategory;
-            SubcategoryName = subcategoryName;
+            SubcategoryName = subcategoryName == null ? "Отсутствует!" : subcategoryName;
             AccountNumber = accountNumber;
             Date = date;
         }
@@ -42,9 +42,9 @@
         public string TransactionTypeName { get; private set; }
         public int? IdUser { get; private set; }
         public int? IdCategory { get; set; }
-        public string CategoryName { get; private set; }
+        public string? CategoryName { get; private set; }
         public int? IdSubcategory { get; set; }
-        public string SubcategoryName { get; private set; }
+        public string? SubcategoryName { get; private set; }
         public int? AccountNumber { get; private set; }
         public DateTime? Date { get; private set; }
 
@@ -58,9 +58,9 @@
                 string transactionTypeName, 
                 int? idUser, 
                 int? idCategory, 
-                string categoryName, 
+                string? categoryName, 
                 int? idSubcategory, 
-                string subcategoryName, 
+                string? subcategoryName, 
                 int? accountNumber, 
                 DateTime? date
             )

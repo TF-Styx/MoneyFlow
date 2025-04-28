@@ -14,6 +14,8 @@ namespace MoneyFlow.Application.Services.Abstraction
 
         List<SubcategoryDTO> GetIdUserIdCategorySub(int idUser, int idCategory);
 
+        Task<SubcategoryDTO> GetByIdSub(int idUser, int idCategory);
+
         Task<int?> GetById(int idFinancialRecord);
 
         Task<SubcategoryDTO> GetAsyncSubcategory(int idSubcategory);

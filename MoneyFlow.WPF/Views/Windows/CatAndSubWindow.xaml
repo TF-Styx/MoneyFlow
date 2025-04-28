@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MoneyFlow.WPF.Views.Windows" 
         xmlns:fa="http://schemas.fontawesome.com/icons/" 
-        xmlns:windowviewmodels="clr-namespace:MoneyFlow.WPF.ViewModels.WindowViewModels" 
+        xmlns:windowviewmodels="clr-namespace:MoneyFlow.WPF.ViewModels.WindowViewModels" xmlns:behavior="clr-namespace:MoneyFlow.WPF.Behaviors" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         d:DataContext="{d:DesignInstance Type=windowviewmodels:CatAndSubWindowVM}"
         mc:Ignorable="d"
         Title="CatAndSubWindow" 
@@ -79,11 +79,14 @@
                                           GridLinesVisibility="None"
                                           HeadersVisibility="Column"
                                           RowHeaderWidth="0"
-                                          SelectionMode="Single" 
+                                          SelectionMode="Extended" 
                                           ItemsSource="{Binding Categories}" 
                                           d:ItemsSource="{d:SampleData ItemCount=15}"
                                           SelectedItem="{Binding SelectedCategory}"
                                           Margin="10" >
+                                    <i:Interaction.Behaviors>
+                                        <behavior:DataGridSelectedItemsBehavior SelectedItems="{Binding SelectedCategories}"/>
+                                    </i:Interaction.Behaviors>
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Binding="{Binding Index}" Width="auto"/>
                                         <DataGridTemplateColumn Header="CategoryName" Width="*">

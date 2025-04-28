@@ -111,6 +111,22 @@ namespace MoneyFlow.Infrastructure.Repositories
         
         // ------------------------------------------------------------------------------------------------------------------------------------------------
 
+        public async Task<SubcategoryDomain> GetByIdSub(int idUser, int idCategory)
+        {
+            using (var context = _factory())
+            {
+                var subcategory = await context.CatLinkSubs.Include(x => x.IdSubcategoryNavigation)
+                    .Where(x => x.IdUser == idUser)
+                    .Where(x => x.IdCategory == idCategory).FirstAsync();
+
+                var sub = SubcategoryDomain.Create(subcategory.IdSubcategoryNavigation.IdSubcategory, subcategory.IdSubcategoryNavigation.SubcategoryName, subcategory.IdSubcategoryNavigation.Description, subcategory.IdSubcategoryNavigation.Image, subcategory.IdUser);
+
+                return sub.SubcategoryDomain;
+            }
+        }
+
+        // ------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task<SubcategoryDomain> GetAsync(int idSubcategory)
         {
             using (var context = _factory())

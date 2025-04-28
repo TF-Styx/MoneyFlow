@@ -10,7 +10,7 @@ namespace MoneyFlow.Application.UseCaseInterfaces.FinancialRecordViewingInterfac
         Task<FinancialRecordViewingDTO> GetViewingAsync(int idFinancialRecord);
         FinancialRecordViewingDTO GetViewing(int idFinancialRecord);
 
-        Task<FinancialRecordViewingDTO> GetByIdAsync(int idUser, int idFinancialRecord, int idCategory, int idSubcategory);
-        FinancialRecordViewingDTO GetById(int idUser, int idFinancialRecord, int idCategory, int idSubcategory);
+        Task<FinancialRecordViewingDTO> GetByIdAsync(int idUser, int idFinancialRecord, int? idCategory, int? idSubcategory);
+        FinancialRecordViewingDTO GetById(int idUser, int idFinancialRecord, int? idCategory, int? idSubcategory);
     }
 }

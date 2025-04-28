@@ -1,5 +1,7 @@
 ﻿using MoneyFlow.Application.ApplicationModel;
 using MoneyFlow.Application.DTOs;
+using MoneyFlow.Application.Enums;
+using MoneyFlow.Application.Extension;
 using MoneyFlow.Application.Services.Abstraction;
 using MoneyFlow.Application.UseCaseInterfaces.CategoryCaseInterfaces;
 using MoneyFlow.Application.UseCaseInterfaces.CatLinkSubCaseInterfaces;
@@ -791,8 +793,17 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             });
         }
 
-        private RelayCommand _userCategoryDoubleClickCommand;
-        public RelayCommand UserCategoryDoubleClickCommand => _userCategoryDoubleClickCommand ??= new RelayCommand(DoubleClick);
+        private RelayCommand _categoryInfoCommand;
+        public RelayCommand CategoryInfoCommand => _categoryInfoCommand ??= new RelayCommand(CategoryInfoClick);
+
+        private void CategoryInfoClick(object parameter)
+        {
+            if (parameter is CategoriesWithSubcategoriesDTO catWithSub)
+            {
+                //_navigationWindows.OpenWindow(WindowType.CatAndSubWindow);
+                _navigationWindows.OpenWindow(WindowType.CatAndSubWindow, catWithSub, ParameterType.None);
+            }
+        }
 
         #endregion
 
@@ -963,6 +974,7 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
 
         private void DoubleClick(object parameter)
         {
+            MessageBox.Show("Дабл клик");
             if (parameter is AccountDTO account)
             {
                 _navigationWindows.OpenWindow(WindowType.AccountWindow, account);
@@ -996,8 +1008,8 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
             }
             if (parameter is SubcategoryDTO subcategory)
             {
-                MessageBox.Show(SelectedCategoriesWithSubcategories.Category.CategoryName + subcategory.SubcategoryName);
-                _navigationWindows.OpenWindow(WindowType.CatAndSubWindow, (SelectedCategoriesWithSubcategories.Category, subcategory));
+                MessageBox.Show("Подкатегория");
+                _navigationWindows.OpenWindow(WindowType.CatAndSubWindow, (CategoriesWithSubcategories.Where(x => x.Subcategories.Contains(subcategory)).FirstOrDefault(), subcategory));
             }
 
             #endregion
@@ -1343,7 +1355,63 @@ namespace MoneyFlow.WPF.ViewModels.PageViewModels
                 IsConsiderDate = false;
 
                 GetFinancialRecord();
-            }); 
+            });
+        }
+
+        #endregion
+
+
+        // ---------------------------------------------------------------------------------------------------------------------------------
+
+
+        #region Сортировка
+
+        private KeyValuePair<Sorting, string> _selectedSorting;
+        public KeyValuePair<Sorting, string> SelectedSorting
+        {
+            get => _selectedSorting;
+            set
+            {
+                _selectedSorting = value;
+
+                SortingRecord(value.Key);
+
+                OnPropertyChanged();
+            }
+        }
+        public ObservableCollection<KeyValuePair<Sorting, string>> SortingCollection { get; set; } = new() 
+        { 
+            new KeyValuePair<Sorting, string>(Sorting.RecordName, "По имени"),
+            new KeyValuePair<Sorting, string>(Sorting.Amount, "По тратам"),
+            new KeyValuePair<Sorting, string>(Sorting.Transaction, "По транзакциям"),
+            new KeyValuePair<Sorting, string>(Sorting.Category, "По категориям"),
+            new KeyValuePair<Sorting, string>(Sorting.Account, "По счетам"),
+            new KeyValuePair<Sorting, string>(Sorting.Date, "По дате"),
+        };
+
+        private void SortingRecord(Sorting sorting)
+        {
+            Action action = sorting switch
+            {
+                Sorting.RecordName => () => FinancialRecords.ReplaceCollection(FinancialRecords.OrderByDescending(x => x.RecordName).ToList()),
+                Sorting.Amount => () => FinancialRecords.ReplaceCollection(FinancialRecords.OrderByDescending(x => x.Amount).ToList()),
+                Sorting.Transaction => () => FinancialRecords.ReplaceCollection(FinancialRecords.OrderByDescending(x => x.IdTransactionType).ToList()),
+                Sorting.Category => () => FinancialRecords.ReplaceCollection(FinancialRecords.OrderByDescending(x => x.IdCategory).ToList()),
+                Sorting.Account => () => FinancialRecords.ReplaceCollection(FinancialRecords.OrderByDescending(x => x.AccountNumber).ToList()),
+                Sorting.Date => () => FinancialRecords.ReplaceCollection(FinancialRecords.OrderByDescending(x => x.Date).ToList()),
+
+                _ => () => { throw new Exception("Такая сортировка не реализована!"); },
+            };
+            action.Invoke();
+        }
+
+        private RelayCommand _reversListCommand;
+        public RelayCommand ReversListCommand
+        {
+            get => _reversListCommand ??= new(obj =>
+            {
+                FinancialRecords.ReversList();
+            });
         }
 
         #endregion

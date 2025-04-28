@@ -28,6 +28,16 @@ namespace MoneyFlow.Application.Services.Realization
             return _createUserUseCase.CreateUser(userName, login, password);
         }
 
+        public async Task CreateDefaultRecordAsync(int idUser)
+        {
+            await _createUserUseCase.CreateDefaultRecordAsync(idUser);
+        }
+
+        public void CreateDefaultRecord(int idUser)
+        {
+            Task.Run(() => CreateDefaultRecordAsync(idUser));
+        }
+
         public async Task<List<UserDTO>> GetAllAsyncUser()
         {
             return await _getUserUseCase.GetAllAsyncUser();

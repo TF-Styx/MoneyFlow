@@ -7,6 +7,9 @@ namespace MoneyFlow.Application.Services.Abstraction
         Task<(UserDTO UserDTO, string Message)> CreateAsyncUser(string userName, string login, string password);
         (UserDTO UserDTO, string Message) CreateUser(string userName, string login, string password);
 
+        Task CreateDefaultRecordAsync(int idUser);
+        void CreateDefaultRecord(int idUser);
+
         Task<List<UserDTO>> GetAllAsyncUser();
         List<UserDTO> GetAllUser();
 

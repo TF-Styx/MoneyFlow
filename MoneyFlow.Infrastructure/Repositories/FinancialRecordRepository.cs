@@ -127,8 +127,9 @@ namespace MoneyFlow.Infrastructure.Repositories
                         .Include(x => x.IdCategoryNavigation)
                         .Include(x => x.IdSubcategoryNavigation)
                         .Include(x => x.IdAccountNavigation)
-                            .AsSplitQuery()
-                                .AsQueryable();
+                            .Where(x => x.IdUser == idUser)
+                                .AsSplitQuery()
+                                    .AsQueryable();
 
                 if (filter.IsConsiderAmount == true)
                     query = query.Where(x => x.Ammount >= filter.AmountStart && x.Ammount <= filter.AmountEnd);
@@ -217,13 +218,13 @@ namespace MoneyFlow.Infrastructure.Repositories
                         entity.Ammount,
                         entity.Description,
                         entity.IdTransactionType,
-                        entity.IdTransactionTypeNavigation.TransactionTypeName,
+                        entity.IdTransactionTypeNavigation?.TransactionTypeName,
                         entity.IdUser,
                         entity.IdCategory,
-                        entity.IdCategoryNavigation.CategoryName,
+                        entity.IdCategoryNavigation?.CategoryName,
                         entity.IdSubcategory,
-                        entity.IdSubcategoryNavigation.SubcategoryName,
-                        entity.IdAccountNavigation.NumberAccount,
+                        entity.IdSubcategoryNavigation?.SubcategoryName,
+                        entity.IdAccountNavigation?.NumberAccount,
                         entity.Date
                     ).FinancialRecordViewingDomain;
 
@@ -236,7 +237,7 @@ namespace MoneyFlow.Infrastructure.Repositories
             return Task.Run(() => GetViewingAsync(idFinancialRecord)).Result;
         }
 
-        public async Task<FinancialRecordViewingDomain> GetByIdAsync(int idUser, int idFinancialRecord, int? idCategory, int idSubcategory)
+        public async Task<FinancialRecordViewingDomain> GetByIdAsync(int idUser, int idFinancialRecord, int? idCategory, int? idSubcategory)
         {
             using (var context = _factory())
             {
@@ -269,7 +270,7 @@ namespace MoneyFlow.Infrastructure.Repositories
                 return domain;
             }
         }
-        public FinancialRecordViewingDomain GetById(int idUser, int idFinancialRecord, int? idCategory, int idSubcategory)
+        public FinancialRecordViewingDomain GetById(int idUser, int idFinancialRecord, int? idCategory, int? idSubcategory)
         {
             return Task.Run(() => GetByIdAsync(idUser, idFinancialRecord, idCategory, idSubcategory)).Result;
         }

@@ -45,6 +45,14 @@ namespace MoneyFlow.Application.UseCases.SubcategoryCases
             return toDTO;
         }
 
+        public async Task<SubcategoryDTO> GetByIdSub(int idUser, int idCategory)
+        {
+            var sub = await _subcategoryRepository.GetByIdSub(idUser, idCategory);
+            var toDTO = sub.ToDTO().SubcategoryDTO;
+
+            return toDTO;
+        }
+
         public async Task<int?> GetById(int idFinancialRecord)
         {
             return await _subcategoryRepository.GetById(idFinancialRecord);

@@ -41,5 +41,15 @@ namespace MoneyFlow.Application.UseCases.UserCases
 
             return (userDomain.ToDTO().UserDTO, Message);
         }
+
+        public async Task CreateDefaultRecordAsync(int idUser)
+        {
+            await _usersRepository.CreateDefaultRecordAsync(idUser);
+        }
+
+        public void CreateDefaultRecord(int idUser)
+        {
+            Task.Run(() => CreateDefaultRecordAsync(idUser));
+        }
     }
 }

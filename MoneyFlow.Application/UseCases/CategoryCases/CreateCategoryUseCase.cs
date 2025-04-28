@@ -20,10 +20,6 @@ namespace MoneyFlow.Application.UseCases.CategoryCases
 
             if (string.IsNullOrWhiteSpace(categoryName)) { return (null, "Вы не заполнили поря!!"); }
 
-            //var exist = await _categoryRepository.GetAsync(categoryName);
-
-            //if (exist != null) { return (null, "Категория с таким именем уже есть!!"); }
-
             var id = await _categoryRepository.CreateAsync(categoryName, description, color, image, idUser);
             var domain = await _categoryRepository.GetAsync(id);
 
